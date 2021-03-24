@@ -1,3 +1,6 @@
 #!/bin/zsh
 
-cd build && ninja
+cd build
+ninja
+cd ../test/build
+ninja

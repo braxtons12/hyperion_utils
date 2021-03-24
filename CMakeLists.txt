@@ -14,36 +14,6 @@ SET(CMAKE_C_STANDARD_REQUIRED ON)
 SET(CMAKE_C_EXTENSIONS OFF)
 
 #############################################################################
-# Import GoogleTest
-#############################################################################
-configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-	RESULT_VARIABLE result
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-	message(FATAL_ERROR "CMake step for googletest failed: ${result}")
-endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-	RESULT_VARIABLE result
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-	message(FATAL_ERROR "Build step for googletest failed: ${result}")
-endif()
-
-# Prevent overriding the parent project's compiler/linker
-# settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-	${CMAKE_CURRENT_BINARY_DIR}/googletest-build
-	EXCLUDE_FROM_ALL)
-#############################################################################
-#############################################################################
-
-
-#############################################################################
 # Import Microsoft GSL Implementation
 #############################################################################
 FetchContent_Declare(GSL
@@ -52,6 +22,8 @@ FetchContent_Declare(GSL
 	)
 
 FetchContent_MakeAvailable(GSL)
+#############################################################################
+#############################################################################
 
 add_library(HyperionUtils INTERFACE)
 add_library(HyperionUtilsLib STATIC)
@@ -187,75 +159,4 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "cla
 endif()
 
 
-add_executable(Test "${CMAKE_SOURCE_DIR}/src/test/Test.cpp")
 
-if(MSVC)
-	target_compile_options(Test PRIVATE /WX /W4 /std:c++20)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
-	if(NOT WIN32)
-		target_compile_options(Test PRIVATE
-			-std=c++20
-			-Wall
-			-Wextra
-			-Wpedantic
-			-Weverything
-			-Werror
-			-Wno-c++98-compat
-			-Wno-c++98-compat-pedantic
-			-Wno-c++98-c++11-c++14-compat-pedantic
-			-Wno-c++20-compat
-			-Wno-global-constructors
-			-Wno-used-but-marked-unused
-			-Wno-covered-switch-default
-			-Wno-missing-prototypes
-			)
-	else()
-		target_compile_options(Test PRIVATE
-			-std=c++20
-			-Wall
-			-Wextra
-			-Wpedantic
-			-Weverything
-			-Werror
-			-Wno-c++98-compat
-			-Wno-c++98-compat-pedantic
-			-Wno-c++98-c++11-c++14-compat-pedantic
-			-Wno-c++20-compat
-			-Wno-global-constructors
-			-Wno-used-but-marked-unused
-			-Wno-covered-switch-default
-			-Wno-missing-prototypes
-			)
-	endif()
-else()
-	target_compile_options(Test PRIVATE
-		-std=c++20
-		-Wall
-		-Wextra
-		-Wpedantic
-		-Werror
-		-Wno-c++98-compat
-		-Wno-c++98-compat-pedantic
-		-Wno-c++98-c++11-c++14-compat-pedantic
-		-Wno-c++20-compat
-		-Wno-global-constructors
-		-Wno-used-but-marked-unused
-		-Wno-covered-switch-default
-		-Wno-missing-prototypes
-		)
-endif()
-
-target_include_directories(Test BEFORE INTERFACE
-	"${CMAKE_SOURCE_DIR}/src/test"
-	)
-
-if(UNIX AND NOT APPLE)
-	target_link_libraries(Test PRIVATE
-		curl
-		GSL
-		gtest)
-else()
-	target_link_libraries(Test PRIVATE
-		GSL
-		gtest)
-endif()

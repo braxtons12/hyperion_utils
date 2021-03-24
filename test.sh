@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-cd build && ./Test --gtest_color=yes
+cd test/build && ./Test --gtest_color=yes

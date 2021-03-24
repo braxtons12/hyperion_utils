@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../include/RingBuffer.h"
+#include "../../../include/RingBuffer.h"
 
 namespace hyperion::utils::test {
 

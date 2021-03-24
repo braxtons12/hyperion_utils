@@ -1,5 +1,5 @@
 #pragma once
-#include "../../include/ChangeDetector.h"
+#include "HyperionUtils/include/ChangeDetector.h"
 #include "gtest/gtest.h"
 
 namespace hyperion::utils::test {
