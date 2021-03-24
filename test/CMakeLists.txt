@@ -51,7 +51,7 @@ FetchContent_MakeAvailable(HyperionUtils)
 #############################################################################
 #############################################################################
 
-add_executable(Test "${CMAKE_SOURCE_DIR}/Test.cpp")
+add_executable(Test "${CMAKE_SOURCE_DIR}/src/Test.cpp")
 
 if(MSVC)
 	target_compile_options(Test PRIVATE /WX /W4 /std:c++20)

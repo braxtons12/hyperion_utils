@@ -2,8 +2,8 @@
 
 #include <tuple>
 
-#include "../../../include/Error.h"
-#include "../../../include/OptionAndResult.h"
+#include "HyperionUtils/Error.h"
+#include "HyperionUtils/OptionAndResult.h"
 #include "gtest/gtest.h"
 
 namespace hyperion::utils::test {

@@ -1,5 +1,5 @@
 
-#include "../include/Logger.h"
+#include "../include/HyperionUtils/Logger.h"
 
 namespace hyperion::utils {
 	std::atomic_bool Logger::INITIALIZED = std::atomic_bool(false);
