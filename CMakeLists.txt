@@ -122,20 +122,20 @@ set(IMPLS
 	)
 
 set(EXPORTS
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/ChangeDetector.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Concepts.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Error.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Ignore.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/LockFreeQueue.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Logger.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Macros.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/OptionAndResult.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/RingBuffer.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Span.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/TypeTraits.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/synchronization/ReadWriteLock.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/synchronization/ScopedLockGuard.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/ChangeDetector.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Concepts.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Error.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Ignore.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/LockFreeQueue.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Logger.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Macros.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/OptionAndResult.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/RingBuffer.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/Span.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/TypeTraits.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/synchronization/ReadWriteLock.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/synchronization/ScopedLockGuard.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/HyperionUtils.h"
 	)
 
 target_sources(HyperionUtils INTERFACE
