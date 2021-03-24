@@ -109,33 +109,33 @@ else()
 endif()
 
 target_include_directories(HyperionUtils BEFORE INTERFACE
-	"${CMAKE_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
 target_include_directories(HyperionUtilsLib BEFORE INTERFACE
-	"${CMAKE_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
 
 ###### We add headers to sources sets because it helps with `#include` lookup for some tooling #####
 
 set(IMPLS
-	"${CMAKE_SOURCE_DIR}/src/Logger.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/Logger.cpp"
 	)
 
 set(EXPORTS
-	"${CMAKE_SOURCE_DIR}/include/ChangeDetector.h"
-	"${CMAKE_SOURCE_DIR}/include/Concepts.h"
-	"${CMAKE_SOURCE_DIR}/include/Error.h"
-	"${CMAKE_SOURCE_DIR}/include/Ignore.h"
-	"${CMAKE_SOURCE_DIR}/include/LockFreeQueue.h"
-	"${CMAKE_SOURCE_DIR}/include/Logger.h"
-	"${CMAKE_SOURCE_DIR}/include/Macros.h"
-	"${CMAKE_SOURCE_DIR}/include/OptionAndResult.h"
-	"${CMAKE_SOURCE_DIR}/include/RingBuffer.h"
-	"${CMAKE_SOURCE_DIR}/include/Span.h"
-	"${CMAKE_SOURCE_DIR}/include/TypeTraits.h"
-	"${CMAKE_SOURCE_DIR}/include/synchronization/ReadWriteLock.h"
-	"${CMAKE_SOURCE_DIR}/include/synchronization/ScopedLockGuard.h"
-	"${CMAKE_SOURCE_DIR}/include/HyperionUtils.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/ChangeDetector.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Concepts.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Error.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Ignore.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/LockFreeQueue.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Logger.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Macros.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/OptionAndResult.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/RingBuffer.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Span.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/TypeTraits.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/synchronization/ReadWriteLock.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/synchronization/ScopedLockGuard.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils.h"
 	)
 
 target_sources(HyperionUtils INTERFACE
