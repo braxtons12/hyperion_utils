@@ -762,6 +762,15 @@ namespace hyperion::utils {
 			return _back;
 		}
 
+		/// @brief Removes the first element in the `RingBuffer` and returns it
+		///
+		/// @return The first element in the `RingBuffer`
+		[[nodiscard]] constexpr inline auto pop_front() noexcept -> T requires Copyable<T> {
+			T _front = front();
+			increment_indices_from_start();
+			return _front;
+		}
+
 		/// @brief Returns a Random Access Bidirectional iterator over the `RingBuffer`,
 		/// at the beginning
 		///
@@ -935,8 +944,9 @@ namespace hyperion::utils {
 			}
 		}
 
-		/// @brief Increments the start and write indices into the underlying `T` array,
-		/// and the size property, maintaining the logical `RingBuffer` structure
+		/// @brief Used to increment the start and write indices into the underlying `T` array,
+		/// and the size property, after pushing an element at the back,
+		/// maintaining the logical `RingBuffer` structure
 		constexpr inline auto increment_indices() noexcept -> void {
 			m_write_index++;
 			m_size = min(m_size + 1, m_capacity);
@@ -952,6 +962,29 @@ namespace hyperion::utils {
 				if(m_start_index > m_loop_index) {
 					m_start_index = 0;
 				}
+			}
+		}
+
+		/// @brief Used to increment the start index into the underlying `T` array
+		/// and the size property after popping an element from the front,
+		/// maintaining the logical `RingBuffer` structure
+		constexpr inline auto increment_indices_from_start() noexcept -> void {
+			if(m_start_index + 1 > m_write_index
+			   || (m_start_index == m_loop_index && m_write_index == 0)) {
+				m_write_index++;
+				if(m_write_index > m_loop_index) {
+					m_write_index = 0;
+				}
+			}
+			if(m_start_index == m_loop_index) {
+				m_start_index = 0;
+			}
+			else {
+				m_start_index++;
+			}
+
+			if(m_size != 0) {
+				m_size--;
 			}
 		}
 

@@ -11,3 +11,8 @@
 #include "RingBuffer.h"
 #include "Span.h"
 #include "TypeTraits.h"
+
+using hyperion::utils::Err;	 // NOLINT
+using hyperion::utils::None; // NOLINT
+using hyperion::utils::Ok;	 // NOLINT
+using hyperion::utils::Some; // NOLINT

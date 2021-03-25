@@ -1,10 +1,10 @@
 #pragma once
 
-#include <array>
 #include <cstdint>
 
 #include "Macros.h"
 #include "OptionAndResult.h"
+#include "RingBuffer.h"
 
 namespace hyperion::utils {
 #ifndef _MSVC_VER
@@ -17,11 +17,17 @@ namespace hyperion::utils {
 		QueueIsEmpty
 	};
 
+	enum class QueuePolicy : size_t
+	{
+		ErrWhenFull = 0,
+		OverwriteWhenFull = 1
+	};
+
 	IGNORE_PADDING_START
 	template<LockFreeQueueErrorTypes Type>
 	class LockFreeQueueError final : public Error {
 	  public:
-		constexpr LockFreeQueueError() noexcept {
+		LockFreeQueueError() noexcept {
 			if constexpr(Type == LockFreeQueueErrorTypes::QueueIsFull) {
 				this->m_message = "Failed to push entry into LockFreeQueue: LockFreeQueue Is Full";
 			}
@@ -29,70 +35,95 @@ namespace hyperion::utils {
 				this->m_message = "Failed to read entry from LockFreeQueue: LockFreeQueue Is Empty";
 			}
 		}
-		constexpr LockFreeQueueError(const LockFreeQueueError<Type>& error) noexcept = default;
-		constexpr LockFreeQueueError(LockFreeQueueError<Type>&& error) noexcept = default;
+		LockFreeQueueError(const LockFreeQueueError& error) noexcept = default;
+		LockFreeQueueError(LockFreeQueueError&& error) noexcept = default;
 		~LockFreeQueueError() noexcept final = default;
 
-		constexpr auto operator=(const LockFreeQueueError<Type>& error) noexcept
-			-> LockFreeQueueError<Type>& = default;
-		constexpr auto
-		operator=(LockFreeQueueError<Type>&& error) noexcept -> LockFreeQueueError<Type>& = default;
+		auto operator=(const LockFreeQueueError& error) noexcept -> LockFreeQueueError& = default;
+		auto operator=(LockFreeQueueError&& error) noexcept -> LockFreeQueueError& = default;
 	};
 
-	template<typename T, size_t Capacity = 512>
+	template<typename T, QueuePolicy Policy = QueuePolicy::ErrWhenFull, size_t Capacity = 512>
 	class LockFreeQueue {
 	  public:
 		using PushError = LockFreeQueueError<LockFreeQueueErrorTypes::QueueIsFull>;
 		using ReadError = LockFreeQueueError<LockFreeQueueErrorTypes::QueueIsEmpty>;
 
 		constexpr LockFreeQueue() noexcept = default;
-		constexpr LockFreeQueue(const LockFreeQueue<T, Capacity>& queue) noexcept = default;
-		constexpr LockFreeQueue(LockFreeQueue<T, Capacity>&& queue) noexcept = default;
+		constexpr LockFreeQueue(const LockFreeQueue& queue) noexcept = default;
+		constexpr LockFreeQueue(LockFreeQueue&& queue) noexcept = default;
 
-		[[nodiscard]] inline auto push(T entry) noexcept -> Result<bool, PushError> {
-			if(m_write_index == m_read_index && m_write_generation > m_read_generation) {
+		[[nodiscard]] inline auto push(const T& entry) noexcept -> Result<bool, PushError>
+		requires Copyable<T> &&(Policy == QueuePolicy::ErrWhenFull) {
+			if(m_data.size() == Capacity) {
 				return Err(PushError());
 			}
 
-			m_data.at(m_write_index) = entry;
-			m_write_index++;
-			if(m_write_index == m_capacity - 1) {
-				m_write_index = 0;
-				m_write_generation++;
-			}
+			m_data.push_back(std::forward<T>(entry));
 			return Ok(true);
 		}
 
+		[[nodiscard]] inline auto push(T&& entry) noexcept -> Result<bool, PushError>
+		requires(Policy == QueuePolicy::ErrWhenFull) {
+			if(m_data.size() == Capacity) {
+				return Err(PushError());
+			}
+
+			m_data.push_back(std::move(entry));
+			return Ok(true);
+		}
+
+		template<typename... Args>
+		requires ConstructibleFrom<T, Args...>
+		[[nodiscard]] inline auto push(Args&&... args) noexcept -> Result<bool, PushError>
+		requires(Policy == QueuePolicy::ErrWhenFull) {
+			if(m_data.size() == Capacity) {
+				return Err(PushError());
+			}
+
+			m_data.emplace_back(args...);
+			return Ok(true);
+		}
+
+		inline auto push(const T& entry) noexcept
+			-> void requires Copyable<T> &&(Policy == QueuePolicy::OverwriteWhenFull) {
+			m_data.push_back(std::forward<T>(entry));
+		}
+
+		inline auto
+		push(T&& entry) noexcept -> void requires(Policy == QueuePolicy::OverwriteWhenFull) {
+			m_data.push_back(std::move(entry));
+		}
+
+		template<typename... Args>
+		requires ConstructibleFrom<T, Args...>
+		inline auto
+		push(Args&&... args) noexcept -> void requires(Policy == QueuePolicy::OverwriteWhenFull) {
+			m_data.emplace_back(args...);
+		}
+
 		[[nodiscard]] inline auto read() noexcept -> Result<T, ReadError> {
-			if(isEmpty()) {
+			if(empty()) {
 				return Err(ReadError());
 			}
 			else {
-				m_read_index++;
-				if(m_read_index == m_capacity - 1) {
-					m_read_index = 0;
-					m_read_generation++;
-				}
-				return Ok(m_data.at(m_read_index));
+				return Ok(m_data.pop_front());
 			}
 		}
 
-		[[nodiscard]] inline auto isEmpty() const noexcept -> bool {
-			if(m_write_generation == m_read_generation) {
-				return m_write_index == m_read_index;
-			}
-			else {
-				return !(m_write_generation > m_read_generation);
-			}
+		[[nodiscard]] inline auto empty() const noexcept -> bool {
+			return m_data.empty();
 		}
+
+		[[nodiscard]] inline auto full() const noexcept -> bool {
+			return m_data.size() == Capacity;
+		}
+
+		constexpr auto operator=(const LockFreeQueue& queue) noexcept -> LockFreeQueue& = default;
+		constexpr auto operator=(LockFreeQueue&& queue) noexcept -> LockFreeQueue& = default;
 
 	  private:
-		static const constexpr size_t m_capacity = Capacity;
-		size_t m_read_index = 0;
-		size_t m_read_generation = 0;
-		size_t m_write_index = 0;
-		size_t m_write_generation = 0;
-		std::array<T, m_capacity> m_data = std::array<T, m_capacity>();
+		RingBuffer<T> m_data = RingBuffer<T>(Capacity);
 	};
 	IGNORE_PADDING_STOP
 } // namespace hyperion::utils

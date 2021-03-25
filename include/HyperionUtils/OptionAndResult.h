@@ -125,7 +125,27 @@ namespace hyperion::utils {
 		/// @return `Some(U)` if this is Some, or `None` if this is `None`
 		template<Passable U>
 		[[nodiscard]] inline auto
-		map(std::function<U(const T)> map_func) const noexcept -> Option<U> {
+		map(std::function<U(const T&)> map_func) const noexcept -> Option<U>
+		requires NotPointer<T> {
+			if(m_is_some) {
+				return Option<U>::Some(map_func(m_some));
+			}
+			else {
+				return Option<U>::None(none_t);
+			}
+		}
+
+		/// @brief Maps this `Option<T>` to an `Option<U>`,
+		/// returning `Some(U)` if this is Some, or `None` if this is `None`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		///
+		/// @return `Some(U)` if this is Some, or `None` if this is `None`
+		template<Passable U>
+		[[nodiscard]] inline auto
+		map(std::function<U(const T)> map_func) const noexcept -> Option<U>
+		requires Pointer<T> {
 			if(m_is_some) {
 				return Option<U>::Some(map_func(m_some));
 			}
@@ -145,7 +165,8 @@ namespace hyperion::utils {
 		/// @return The result of the mapping if this is `Some`, or `default_value`
 		template<Passable U>
 		[[nodiscard]] inline auto
-		map_or(std::function<U(const T)> map_func, const U& default_value) const noexcept -> U {
+		map_or(std::function<U(const T&)> map_func, const U& default_value) const noexcept
+			-> U requires NotPointer<T> {
 			if(m_is_some) {
 				return map_func(m_some);
 			}
@@ -165,7 +186,50 @@ namespace hyperion::utils {
 		/// @return The result of the mapping if this is `Some`, or `default_value`
 		template<Passable U>
 		[[nodiscard]] inline auto
-		map_or(std::function<U(const T)> map_func, U&& default_value) const noexcept -> U {
+		map_or(std::function<U(const T)> map_func, const U& default_value) const noexcept
+			-> U requires Pointer<T> {
+			if(m_is_some) {
+				return map_func(m_some);
+			}
+			else {
+				return default_value;
+			}
+		}
+
+		/// @brief Maps this `Option<T>` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Some`,
+		/// or `default_value` if this is `None`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_value - The default value
+		///
+		/// @return The result of the mapping if this is `Some`, or `default_value`
+		template<Passable U>
+		[[nodiscard]] inline auto
+		map_or(std::function<U(const T&)> map_func, U&& default_value) const noexcept
+			-> U requires NotPointer<T> {
+			if(m_is_some) {
+				return map_func(m_some);
+			}
+			else {
+				return std::forward<U>(default_value);
+			}
+		}
+
+		/// @brief Maps this `Option<T>` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Some`,
+		/// or `default_value` if this is `None`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_value - The default value
+		///
+		/// @return The result of the mapping if this is `Some`, or `default_value`
+		template<Passable U>
+		[[nodiscard]] inline auto
+		map_or(std::function<U(const T)> map_func, U&& default_value) const noexcept
+			-> U requires Pointer<T> {
 			if(m_is_some) {
 				return map_func(m_some);
 			}
@@ -187,9 +251,33 @@ namespace hyperion::utils {
 		///			or the value returned by `default_generator` if this is
 		///`None`
 		template<Passable U>
+		[[nodiscard]] inline auto map_or_else(std::function<U(const T&)> map_func,
+											  std::function<U()> default_generator) const noexcept
+			-> U requires NotPointer<T> {
+			if(m_is_some) {
+				return map_func(m_some);
+			}
+			else {
+				return default_generator();
+			}
+		}
+
+		/// @brief Maps this `Option<T>` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Some`,
+		/// or `U` (the default value returned by `default_generator`)
+		/// if this is `None`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_generator - The function to generate the default value
+		///
+		/// @return The result of the mapping if this is `Some`,
+		///			or the value returned by `default_generator` if this is
+		///`None`
+		template<Passable U>
 		[[nodiscard]] inline auto
 		map_or_else(std::function<U(const T)> map_func,
-					std::function<U()> default_generator) const noexcept -> U {
+					std::function<U()> default_generator) const noexcept -> U requires Pointer<T> {
 			if(m_is_some) {
 				return map_func(m_some);
 			}
@@ -952,7 +1040,30 @@ namespace hyperion::utils {
 		template<Passable U>
 		requires NotReference<U>
 		[[nodiscard]] inline auto
-		map(std::function<U(const T)> map_func) const noexcept -> Result<U, E> {
+		map(std::function<U(const T&)> map_func) const noexcept -> Result<U, E>
+		requires NotPointer<T> {
+			m_handled = true;
+			if(m_is_ok) {
+				return Result<U, E>::Ok(map_func(m_ok));
+			}
+			else {
+				return Result<U, E>::Err(m_err);
+			}
+		}
+
+		/// @brief Maps this `Result()<T, E>` to a `Result()<U, E>`,
+		/// returning `Ok(U)` (mapped by `map_func`) if this is an `Ok`,
+		/// or `Err` if this is `Err`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		///
+		/// @return `Ok(U)` if this is `Ok`, or `Err`
+		template<Passable U>
+		requires NotReference<U>
+		[[nodiscard]] inline auto
+		map(std::function<U(const T)> map_func) const noexcept -> Result<U, E>
+		requires Pointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
 				return Result<U, E>::Ok(map_func(m_ok));
@@ -973,7 +1084,8 @@ namespace hyperion::utils {
 		/// @return The result of the mapping if this is `Ok`, or `default_value`
 		template<Passable U>
 		[[nodiscard]] inline auto
-		map_or(std::function<U(const T)> map_func, const U& default_value) const noexcept -> U {
+		map_or(std::function<U(const T&)> map_func, const U& default_value) const noexcept
+			-> U requires NotPointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
 				return map_func(m_ok);
@@ -994,7 +1106,52 @@ namespace hyperion::utils {
 		/// @return The result of the mapping if this is `Ok`, or `default_value`
 		template<Passable U>
 		[[nodiscard]] inline auto
-		map_or(std::function<U(const T)> map_func, U&& default_value) const noexcept -> U {
+		map_or(std::function<U(const T)> map_func, const U& default_value) const noexcept
+			-> U requires Pointer<T> {
+			m_handled = true;
+			if(m_is_ok) {
+				return map_func(m_ok);
+			}
+			else {
+				return default_value;
+			}
+		}
+
+		/// @brief Maps this `Result()` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Ok`,
+		/// or `default_value` if this is `Err`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_value - The default value
+		///
+		/// @return The result of the mapping if this is `Ok`, or `default_value`
+		template<Passable U>
+		[[nodiscard]] inline auto
+		map_or(std::function<U(const T&)> map_func, U&& default_value) const noexcept
+			-> U requires NotPointer<T> {
+			m_handled = true;
+			if(m_is_ok) {
+				return map_func(m_ok);
+			}
+			else {
+				return std::forward<U>(default_value);
+			}
+		}
+
+		/// @brief Maps this `Result()` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Ok`,
+		/// or `default_value` if this is `Err`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_value - The default value
+		///
+		/// @return The result of the mapping if this is `Ok`, or `default_value`
+		template<Passable U>
+		[[nodiscard]] inline auto
+		map_or(std::function<U(const T)> map_func, U&& default_value) const noexcept
+			-> U requires Pointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
 				return map_func(m_ok);
@@ -1015,9 +1172,32 @@ namespace hyperion::utils {
 		/// @return The result of the mapping if this is `Ok`,
 		///			or the value returned by `default_generator`
 		template<Passable U>
+		[[nodiscard]] inline auto map_or_else(std::function<U(const T&)> map_func,
+											  std::function<U()> default_generator) const noexcept
+			-> U requires NotPointer<T> {
+			m_handled = true;
+			if(m_is_ok) {
+				return map_func(m_ok);
+			}
+			else {
+				return default_generator();
+			}
+		}
+
+		/// @brief Maps this `Result()` to a `U`,
+		/// returning `U` (mapped by `map_func`) if this is `Ok`,
+		/// or the value returned by `default_generator` if this is `Err`
+		///
+		/// @tparam U - The type to map to
+		/// @param map_func - The function to perform the mapping
+		/// @param default_generator - The function to generate the default value
+		///
+		/// @return The result of the mapping if this is `Ok`,
+		///			or the value returned by `default_generator`
+		template<Passable U>
 		[[nodiscard]] inline auto
 		map_or_else(std::function<U(const T)> map_func,
-					std::function<U()> default_generator) const noexcept -> U {
+					std::function<U()> default_generator) const noexcept -> U requires Pointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
 				return map_func(m_ok);
@@ -1039,7 +1219,31 @@ namespace hyperion::utils {
 		template<ErrorType F = Error>
 		requires NotReference<F>
 		[[nodiscard]] inline auto
-		map_err(std::function<F(const E)> map_func) const noexcept -> Result<T, F> {
+		map_err(std::function<F(const E&)> map_func) const noexcept -> Result<T, F>
+		requires NotPointer<E> {
+			m_handled = true;
+			if(!m_is_ok) {
+				return Result<T, F>::Err(map_func(m_err));
+			}
+			else {
+				return Result<T, F>::Ok(m_ok);
+			}
+		}
+
+		/// @brief Maps this `Result()<T, E>` to a `Result()<T, F>`,
+		/// returning `Ok` if this is `Ok`,
+		/// or `Err(F)` (mapped by `map_func`) if this is `Err`
+		///
+		/// @tparam F - The type to map to
+		///				Must be an `Error` type (`hyperion::utils::Error`)
+		/// @param map_func - The function to perform the mapping
+		///
+		/// @return `Ok` if this is `Ok`, or `Err(F)` if this is `Err`
+		template<ErrorType F = Error>
+		requires NotReference<F>
+		[[nodiscard]] inline auto
+		map_err(std::function<F(const E)> map_func) const noexcept -> Result<T, F>
+		requires Pointer<E> {
 			m_handled = true;
 			if(!m_is_ok) {
 				return Result<T, F>::Err(map_func(m_err));

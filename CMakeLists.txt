@@ -25,27 +25,25 @@ FetchContent_MakeAvailable(GSL)
 #############################################################################
 #############################################################################
 
+#############################################################################
+# Import fmtlib/fmt
+#############################################################################
+FetchContent_Declare(fmt
+	GIT_REPOSITORY "https://github.com/fmtlib/fmt"
+	GIT_TAG "7.1.3"
+	)
+
+FetchContent_MakeAvailable(fmt)
+#############################################################################
+#############################################################################
+
 add_library(HyperionUtils INTERFACE)
-add_library(HyperionUtilsLib STATIC)
 
 if(MSVC)
 	target_compile_options(HyperionUtils INTERFACE /WX /W4 /std:c++20)
-	target_compile_options(HyperionUtilsLib PRIVATE /WX /W4 /std:c++20)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	if(NOT WIN32)
 		target_compile_options(HyperionUtils INTERFACE
-			-std=c++20
-			-Wall
-			-Wextra
-			-Wpedantic
-			-Weverything
-			-Werror
-			-Wno-c++98-compat
-			-Wno-c++98-compat-pedantic
-			-Wno-c++98-c++11-c++14-compat-pedantic
-			-Wno-c++20-compat
-			)
-		target_compile_options(HyperionUtilsLib PRIVATE
 			-std=c++20
 			-Wall
 			-Wextra
@@ -70,32 +68,9 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL 
 			-Wno-c++98-c++11-c++14-compat-pedantic
 			-Wno-c++20-compat
 			)
-		target_compile_options(HyperionUtilsLib PRIVATE
-			-std=c++20
-			-Wall
-			-Wextra
-			-Wpedantic
-			-Weverything
-			-Werror
-			-Wno-c++98-compat
-			-Wno-c++98-compat-pedantic
-			-Wno-c++98-c++11-c++14-compat-pedantic
-			-Wno-c++20-compat
-			)
 	endif()
 else()
 	target_compile_options(HyperionUtils INTERFACE
-		-std=c++20
-		-Wall
-		-Wextra
-		-Wpedantic
-		-Werror
-		-Wno-c++98-compat
-		-Wno-c++98-compat-pedantic
-		-Wno-c++98-c++11-c++14-compat-pedantic
-		-Wno-c++20-compat
-		)
-	target_compile_options(HyperionUtilsLib PRIVATE
 		-std=c++20
 		-Wall
 		-Wextra
@@ -111,15 +86,8 @@ endif()
 target_include_directories(HyperionUtils BEFORE INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
-target_include_directories(HyperionUtilsLib BEFORE INTERFACE
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	)
 
 ###### We add headers to sources sets because it helps with `#include` lookup for some tooling #####
-
-set(IMPLS
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/Logger.cpp"
-	)
 
 set(EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/ChangeDetector.h"
@@ -140,23 +108,10 @@ set(EXPORTS
 
 target_sources(HyperionUtils INTERFACE
 	${EXPORTS}
-	${IMPLS}
-	)
-
-target_sources(HyperionUtilsLib PUBLIC
-	${EXPORTS}
-	${IMPLS}
 	)
 
 target_link_libraries(HyperionUtils INTERFACE
-	GSL)
-
-target_link_libraries(HyperionUtilsLib PUBLIC
-	GSL)
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang" OR APPLE)
-	set_target_properties(HyperionUtilsLib PROPERTIES CXX_CLANG_TIDY clang-tidy)
-endif()
-
-
+	GSL
+	fmt::fmt-header-only
+	)
 
