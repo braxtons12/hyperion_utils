@@ -21,7 +21,7 @@ HyperionUtils uses CMake, and incorporating it into your project is as easy as:
 
 in CMakeLists.txt:
 
-```
+```cmake
 FetchContent_Declare(HyperionUtils
 	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
 	)
@@ -35,7 +35,7 @@ target_link_libraries(YourExecutable HyperionUtils)
 
 and in code:
 
-```
+```cpp
 #include "HyperionUtils/HyperionUtils.h"
 
 using hyperion::utils::Option;
