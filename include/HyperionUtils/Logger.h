@@ -433,7 +433,29 @@ namespace hyperion::utils {
 				while(!m_messages.empty()) {
 				}
 			}
-			return log_dropping<Level>(format_string, args...);
+
+			const auto timestamp = create_time_stamp();
+			const auto entry = fmt::format(format_string, args...);
+			std::string log_type;
+			if constexpr(Level == LogLevel::MESSAGE) {
+				log_type = "MESSAGE"s;
+			}
+			else if constexpr(Level == LogLevel::TRACE) {
+				log_type = "TRACE"s;
+			}
+			else if constexpr(Level == LogLevel::INFO) {
+				log_type = "INFO"s;
+			}
+			else if constexpr(Level == LogLevel::WARN) {
+				log_type = "WARN"s;
+			}
+			else if constexpr(Level == LogLevel::ERROR) {
+				log_type = "ERROR"s;
+			}
+			const auto logline
+				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
+			return m_messages.push(logline).template map_err<LoggerError>(
+				[](const QueueError& error) { return LoggerError(error); });
 		}
 	};
 
