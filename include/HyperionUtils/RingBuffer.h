@@ -488,7 +488,7 @@ namespace hyperion::utils {
 		/// @brief Returns the current number of elements in the `RingBuffer`
 		///
 		/// @return The current number of elements
-		[[nodiscard]] constexpr inline auto size() noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto size() const noexcept -> size_t {
 			return m_size;
 		}
 
@@ -496,7 +496,7 @@ namespace hyperion::utils {
 		/// if grown to maximum possible capacity
 		///
 		/// @return The maximum possible number of storable elements
-		[[nodiscard]] constexpr inline auto max_size() noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto max_size() const noexcept -> size_t {
 			return allocator_traits::max_size(m_allocator);
 		}
 
@@ -504,7 +504,7 @@ namespace hyperion::utils {
 		/// the number of elements it can currently store
 		///
 		/// @return The current capacity
-		[[nodiscard]] constexpr inline auto capacity() noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto capacity() const noexcept -> size_t {
 			return m_capacity;
 		}
 

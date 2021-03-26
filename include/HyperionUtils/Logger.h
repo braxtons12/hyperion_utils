@@ -356,7 +356,7 @@ namespace hyperion::utils {
 			= fmt::fg(fmt::color::red) | fmt::emphasis::bold;
 
 		[[nodiscard]] inline static auto create_time_stamp() noexcept -> std::string {
-			return fmt::format(FMT_COMPILE("[{:%Y-%m-%d::%H-%M-%S}] "), std::time(nullptr));
+			return fmt::format("[{:%Y-%m-%d|%H-%M-%S}]", fmt::localtime(std::time(nullptr)));
 		}
 
 		[[nodiscard]] inline auto create_log_file_path() const noexcept -> std::string {
@@ -364,6 +364,7 @@ namespace hyperion::utils {
 			temp_dir.append(m_directory_name);
 			auto time_string = create_time_stamp();
 			temp_dir.append(time_string);
+			temp_dir.append(" ");
 			temp_dir.append(m_root_name);
 			temp_dir.replace_extension("log");
 			return temp_dir;
@@ -391,11 +392,8 @@ namespace hyperion::utils {
 			else if constexpr(Level == LogLevel::ERROR) {
 				log_type = "ERROR"s;
 			}
-			const auto logline = fmt::format(MESSAGE_STYLE,
-											 FMT_COMPILE("{0} {1}: {2}\n"),
-											 timestamp,
-											 log_type,
-											 entry);
+			const auto logline
+				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
 			return m_messages.push(logline).template map_err<LoggerError>(
 				[](const QueueError& error) { return LoggerError(error); });
 		}
@@ -421,11 +419,8 @@ namespace hyperion::utils {
 			else if constexpr(Level == LogLevel::ERROR) {
 				log_type = "ERROR"s;
 			}
-			const auto logline = fmt::format(MESSAGE_STYLE,
-											 FMT_COMPILE("{0} {1}: {2}\n"),
-											 timestamp,
-											 log_type,
-											 entry);
+			const auto logline
+				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
 
 			m_messages.push(logline);
 		}
@@ -468,7 +463,7 @@ namespace hyperion::utils {
 	[[nodiscard]] inline static auto
 	initialize_global_logger() noexcept -> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -485,7 +480,7 @@ namespace hyperion::utils {
 	[[nodiscard]] inline static auto initialize_global_logger(const std::string& root_name) noexcept
 		-> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -502,7 +497,7 @@ namespace hyperion::utils {
 	[[nodiscard]] inline static auto
 	initialize_global_logger(std::string&& root_name) noexcept -> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -521,7 +516,7 @@ namespace hyperion::utils {
 							 const std::string& directory_name) noexcept
 		-> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -540,7 +535,7 @@ namespace hyperion::utils {
 	initialize_global_logger(std::string&& root_name, const std::string& directory_name) noexcept
 		-> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -559,7 +554,7 @@ namespace hyperion::utils {
 	initialize_global_logger(const std::string& root_name, std::string&& directory_name) noexcept
 		-> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
@@ -578,7 +573,7 @@ namespace hyperion::utils {
 	initialize_global_logger(std::string&& root_name, std::string&& directory_name) noexcept
 		-> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
 			   initialized,
 			   true,
 			   std::memory_order_seq_cst))
