@@ -14,7 +14,6 @@
 #include <thread>
 
 #include "LockFreeQueue.h"
-#include "synchronization/ReadWriteLock.h"
 
 namespace hyperion::utils {
 
@@ -30,7 +29,9 @@ namespace hyperion::utils {
 		/// @brief Used for warnings and other more severe reports
 		WARN = 3,
 		/// @brief Used for system errors and other fatal or near-fatal reports
-		ERROR = 4
+		ERROR = 4,
+		/// @brief Disable logging.
+		DISABLED = 5
 	};
 
 	/// @brief Used to indicate the behavior of the logger when
@@ -58,14 +59,37 @@ namespace hyperion::utils {
 		FlushWhenFull = 2
 	};
 
-	using QueueError = LockFreeQueueError<LockFreeQueueErrorTypes::QueueIsFull>;
+	/// @brief Possible Error categories that can occur when using the logger
+	enum class LogErrorCategory : size_t
+	{
+		/// @brief failed to queue the entry for logging
+		QueueingError = 0,
+		/// @brief the requested log level for the entry is
+		/// lower than the minium level for the logger
+		LogLevelError = 1,
+	};
+
+	/// @brief Alias for the Error type we might recieve from the internal queue
+	using QueueError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsFull>;
 
 	IGNORE_PADDING_START
 	IGNORE_WEAK_VTABLES_START
+
+	/// @brief Error type for communicating logger errors
+	/// Errors can occur when an entry fails to be queued
+	/// or an entry is passed in at an invalid logging level
 	class LoggerError final : public Error {
 	  public:
 		LoggerError() noexcept {
 			Error::m_message = "Error writing to logging queue"s;
+		}
+		LoggerError(LogErrorCategory type) noexcept {
+			if(type == LogErrorCategory::QueueingError) {
+				Error::m_message = "Error writing to logging queue"s;
+			}
+			else {
+				Error::m_message = "Logging Level of this Logger is higher than the given entry"s;
+			}
 		}
 		LoggerError(const QueueError& error) noexcept { // NOLINT
 			Error::m_message = "Error writing to logging queue"s;
@@ -81,22 +105,76 @@ namespace hyperion::utils {
 		LoggerError(LoggerError& error) noexcept = default;
 		~LoggerError() noexcept final = default;
 
-		static inline auto
-		from_LockFreeQueueError(const QueueError& error) noexcept -> LoggerError {
-			return {error};
-		}
-		static inline auto from_LockFreeQueueError(QueueError&& error) noexcept -> LoggerError {
-			return {std::move(error)};
-		}
-
 		auto operator=(const LoggerError& error) noexcept -> LoggerError& = default;
 		auto operator=(LoggerError&& error) noexcept -> LoggerError& = default;
 	};
 	IGNORE_WEAK_VTABLES_STOP
 
+	/// @brief Wrapper type for `LogPolicy` for type-safe compile-time logger configuration
+	///
+	/// @tparam Policy - The `LogPolicy` to use for the logger
 	template<LogPolicy Policy = LogPolicy::DropWhenFull>
+	struct LoggerPolicy {
+		static constexpr LogPolicy policy = Policy;
+	};
+
+	/// @brief Concept that requires `T` to be a `LoggerPolicy` type
+	template<typename T>
+	concept LoggerPolicyType = requires() {
+		T::policy;
+	};
+
+	/// @brief Alias for the default logging policy
+	using DefaultLogPolicy = LoggerPolicy<>;
+
+	/// @brief Wrapper type for `LogLevel` for type-safe compile-time logger configuration
+	///
+	/// @tparam MinimumLevel - The `LogLevel` to use for the logger
+	template<LogLevel MinimumLevel = LogLevel::INFO>
+	struct LoggerLevel {
+		static constexpr LogLevel minimum_level = MinimumLevel;
+	};
+
+	/// @brief Concept that requires `T` to be a `LoggerLevel` type
+	template<typename T>
+	concept LoggerLevelType = requires() {
+		T::minimum_level;
+	};
+
+	/// @brief Alias for the default logging level
+	using DefaultLogLevel = LoggerLevel<>;
+
+	/// @brief Wrapper type for type-safe compile-time passing of logging configuration parameters
+	///
+	/// @tparam PolicyType - The policy to use for the logger
+	/// @tparam MinimumLevelType - The minimum logging level for the logger
+	template<LoggerPolicyType PolicyType = DefaultLogPolicy,
+			 LoggerLevelType MinimumLevelType = DefaultLogLevel>
+	struct LoggerParameters {
+		static constexpr auto policy = PolicyType::policy;
+		static constexpr auto minimum_level = MinimumLevelType::minimum_level;
+	};
+
+	/// @brief Concept that requires `T` to be a `LoggerParameters` type
+	template<typename T>
+	concept LoggerParametersType = requires() {
+		T::policy;
+		T::minimum_level;
+	};
+
+	/// @brief Alias for the default logging configuration parameters
+	using DefaultLogParameters = LoggerParameters<>;
+
+	/// @brief Hyperion logging type for formatted logging.
+	/// Uses fmtlib/fmt for entry formatting and stylizing
+	///
+	/// @tparam LogParameters
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
 	class Logger {
 	  public:
+		static constexpr LogPolicy POLICY = LogParameters::policy;
+		static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
+
 		Logger() noexcept
 			: m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
 			  m_message_thread([&]() {
@@ -192,53 +270,58 @@ namespace hyperion::utils {
 			m_log_file->close();
 		}
 
-		template<typename S,
-				 typename... Args,
-				 typename Char = fmt::char_t<S>,
-				 LogLevel Level = LogLevel::INFO>
+		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
 		log(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError>
-		requires(Policy == LogPolicy::DropWhenFull || Policy == LogPolicy::FlushWhenFull) {
-			if constexpr(Policy == LogPolicy::DropWhenFull) {
-				return log_dropping(format_string, args...);
+		requires(POLICY == LogPolicy::DropWhenFull || POLICY == LogPolicy::FlushWhenFull) {
+			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
+				if constexpr(POLICY == LogPolicy::DropWhenFull) {
+					return log_dropping<Level>(format_string, args...);
+				}
+				else {
+					return log_flushing<Level>(format_string, args...);
+				}
 			}
 			else {
-				return log_flushing(format_string, args...);
+				ignore(format_string, args...);
+				return Err(LoggerError(LogErrorCategory::LogLevelError));
 			}
 		}
 
-		template<typename S,
-				 typename... Args,
-				 typename Char = fmt::char_t<S>,
-				 LogLevel Level = LogLevel::INFO>
+		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline constexpr auto log(const S& format_string, Args&&... args) noexcept
-			-> void requires(Policy == LogPolicy::OverwriteWhenFull) {
-			log_overwriting(format_string, args...);
+			-> void requires(POLICY == LogPolicy::OverwriteWhenFull) {
+			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
+				log_overwriting<Level>(format_string, args...);
+			}
+			else {
+				ignore(format_string, args...);
+			}
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto message(const S& format_string, Args&&... args) noexcept {
-			return log<S, Args..., Char, LogLevel::MESSAGE>(format_string, args...);
+			return log<LogLevel::MESSAGE>(format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto trace(const S& format_string, Args&&... args) noexcept {
-			return log<S, Args..., Char, LogLevel::TRACE>(format_string, args...);
+			return log<LogLevel::TRACE>(format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto info(const S& format_string, Args&&... args) noexcept {
-			return log<S, Args..., Char, LogLevel::INFO>(format_string, args...);
+			return log<LogLevel::INFO>(format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto warn(const S& format_string, Args&&... args) noexcept {
-			return log<S, Args..., Char, LogLevel::WARN>(format_string, args...);
+			return log<LogLevel::WARN>(format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto error(const S& format_string, Args&&... args) noexcept {
-			return log<S, Args..., Char, LogLevel::ERROR>(format_string, args...);
+			return log<LogLevel::ERROR>(format_string, args...);
 		}
 
 		auto operator=(const Logger& logger) noexcept -> Logger& = delete;
@@ -246,7 +329,7 @@ namespace hyperion::utils {
 
 	  private:
 		[[nodiscard]] inline static constexpr auto get_queue_policy() noexcept -> QueuePolicy {
-			if constexpr(Policy == LogPolicy::DropWhenFull || Policy == LogPolicy::FlushWhenFull) {
+			if constexpr(POLICY == LogPolicy::DropWhenFull || POLICY == LogPolicy::FlushWhenFull) {
 				return QueuePolicy::ErrWhenFull;
 			}
 			else {
@@ -286,99 +369,76 @@ namespace hyperion::utils {
 			return temp_dir;
 		}
 
-		template<typename S,
-				 typename... Args,
-				 typename Char = fmt::char_t<S>,
-				 LogLevel Level = LogLevel::INFO>
+		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
 		log_dropping(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError>
-		requires(Policy == LogPolicy::DropWhenFull) {
+		requires(POLICY == LogPolicy::DropWhenFull) {
+			const auto timestamp = create_time_stamp();
+			const auto entry = fmt::format(format_string, args...);
+			std::string log_type;
 			if constexpr(Level == LogLevel::MESSAGE) {
-				return m_messages.push(fmt::format(MESSAGE_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
+				log_type = "MESSAGE"s;
 			}
 			else if constexpr(Level == LogLevel::TRACE) {
-				return m_messages.push(fmt::format(TRACE_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
+				log_type = "TRACE"s;
 			}
 			else if constexpr(Level == LogLevel::INFO) {
-				return m_messages.push(fmt::format(INFO_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
+				log_type = "INFO"s;
 			}
 			else if constexpr(Level == LogLevel::WARN) {
-				return m_messages.push(fmt::format(WARN_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
+				log_type = "WARN"s;
 			}
 			else if constexpr(Level == LogLevel::ERROR) {
-				return m_messages.push(fmt::format(ERROR_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
+				log_type = "ERROR"s;
 			}
+			const auto logline = fmt::format(MESSAGE_STYLE,
+											 FMT_COMPILE("{0} {1}: {2}\n"),
+											 timestamp,
+											 log_type,
+											 entry);
+			return m_messages.push(logline).template map_err<LoggerError>(
+				[](const QueueError& error) { return LoggerError(error); });
 		}
 
-		template<typename S,
-				 typename... Args,
-				 typename Char = fmt::char_t<S>,
-				 LogLevel Level = LogLevel::INFO>
-		inline constexpr auto log_overwriting(const S& format_string, Args&&... args) noexcept
-			-> void requires(Policy == LogPolicy::OverwriteWhenFull) {
+		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
+		inline auto log_overwriting(const S& format_string, Args&&... args) noexcept
+			-> void requires(POLICY == LogPolicy::OverwriteWhenFull) {
+			const auto timestamp = create_time_stamp();
+			const auto entry = fmt::format(format_string, args...);
+			std::string log_type;
 			if constexpr(Level == LogLevel::MESSAGE) {
-				m_messages.push(fmt::format(MESSAGE_STYLE, format_string, args...));
+				log_type = "MESSAGE"s;
 			}
 			else if constexpr(Level == LogLevel::TRACE) {
-				m_messages.push(fmt::format(TRACE_STYLE, format_string, args...));
+				log_type = "TRACE"s;
 			}
 			else if constexpr(Level == LogLevel::INFO) {
-				m_messages.push(fmt::format(INFO_STYLE, format_string, args...));
+				log_type = "INFO"s;
 			}
 			else if constexpr(Level == LogLevel::WARN) {
-				m_messages.push(fmt::format(WARN_STYLE, format_string, args...));
+				log_type = "WARN"s;
 			}
 			else if constexpr(Level == LogLevel::ERROR) {
-				m_messages.push(fmt::format(ERROR_STYLE, format_string, args...));
+				log_type = "ERROR"s;
 			}
+			const auto logline = fmt::format(MESSAGE_STYLE,
+											 FMT_COMPILE("{0} {1}: {2}\n"),
+											 timestamp,
+											 log_type,
+											 entry);
+
+			m_messages.push(logline);
 		}
 
-		template<typename S,
-				 typename... Args,
-				 typename Char = fmt::char_t<S>,
-				 LogLevel Level = LogLevel::INFO>
+		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
 		log_flushing(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError>
-		requires(Policy == LogPolicy::FlushWhenFull) {
+		requires(POLICY == LogPolicy::FlushWhenFull) {
 			if(m_messages.full()) {
 				while(!m_messages.empty()) {
 				}
 			}
-			if constexpr(Level == LogLevel::MESSAGE) {
-				return m_messages.push(fmt::format(MESSAGE_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
-			}
-			else if constexpr(Level == LogLevel::TRACE) {
-				return m_messages.push(fmt::format(TRACE_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
-			}
-			else if constexpr(Level == LogLevel::INFO) {
-				return m_messages.push(fmt::format(INFO_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
-			}
-			else if constexpr(Level == LogLevel::WARN) {
-				return m_messages.push(fmt::format(WARN_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
-			}
-			else if constexpr(Level == LogLevel::ERROR) {
-				return m_messages.push(fmt::format(ERROR_STYLE, format_string, args...))
-					.template map_err<LoggerError>(
-						[](const QueueError& error) { return LoggerError(error); });
-			}
+			return log_dropping<Level>(format_string, args...);
 		}
 	};
 
@@ -398,20 +458,133 @@ namespace hyperion::utils {
 	IGNORE_WEAK_VTABLES_STOP
 	IGNORE_PADDING_STOP
 
-	template<LogPolicy Policy = LogPolicy::DropWhenFull>
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
 	static std::atomic_bool GLOBAL_LOGGER_INITIALIZED;
 
-	template<LogPolicy Policy = LogPolicy::DropWhenFull>
-	static Logger<Policy> GLOBAL_LOGGER;
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	static Logger<LogParameters> GLOBAL_LOGGER;
 
-	template<LogPolicy Policy = LogPolicy::DropWhenFull>
-	inline static auto initialize_global_logger() noexcept -> Result<bool, LoggerInitError> {
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger() noexcept -> Result<bool, LoggerInitError> {
 		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<Policy>.compare_and_exchange_strong(initialized,
-																		 true,
-																		 std::memory_order_seq_cst))
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
 		{
-			GLOBAL_LOGGER<Policy> = std::move(Logger<Policy>());
+			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>());
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto initialize_global_logger(const std::string& root_name) noexcept
+		-> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>(root_name));
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger(std::string&& root_name) noexcept -> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>(root_name));
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger(const std::string& root_name,
+							 const std::string& directory_name) noexcept
+		-> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(
+				Logger<LogParameters>(root_name, directory_name));
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger(std::string&& root_name, const std::string& directory_name) noexcept
+		-> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(
+				Logger<LogParameters>(root_name, directory_name));
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger(const std::string& root_name, std::string&& directory_name) noexcept
+		-> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(
+				Logger<LogParameters>(root_name, directory_name));
+			return Ok(true);
+		}
+		else {
+			return Err(LoggerInitError());
+		}
+	}
+
+	template<LoggerParametersType LogParameters = DefaultLogParameters>
+	[[nodiscard]] inline static auto
+	initialize_global_logger(std::string&& root_name, std::string&& directory_name) noexcept
+		-> Result<bool, LoggerInitError> {
+		auto initialized = false;
+		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_and_exchange_strong(
+			   initialized,
+			   true,
+			   std::memory_order_seq_cst))
+		{
+			GLOBAL_LOGGER<LogParameters> = std::move(
+				Logger<LogParameters>(root_name, directory_name));
 			return Ok(true);
 		}
 		else {
@@ -421,47 +594,48 @@ namespace hyperion::utils {
 
 	template<typename S,
 			 typename... Args,
-			 LogPolicy Policy = LogPolicy::DropWhenFull,
+			 LoggerParametersType LogParameters = DefaultLogParameters,
 			 typename Char = fmt::char_t<S>>
+	requires IsLoggerParameters<LogParameters>
 	inline auto MESSAGE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<Policy>.template log<S, Args..., Char, LogLevel::MESSAGE>(
-			format_string,
-			args...);
+		return GLOBAL_LOGGER<LogParameters>.template message<S, Args..., Char>(format_string,
+																			   args...);
 	}
 
 	template<typename S,
 			 typename... Args,
-			 LogPolicy Policy = LogPolicy::DropWhenFull,
+			 LoggerParametersType LogParameters = DefaultLogParameters,
 			 typename Char = fmt::char_t<S>>
+	requires IsLoggerParameters<LogParameters>
 	inline auto TRACE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<Policy>.template log<S, Args..., Char, LogLevel::TRACE>(format_string,
-																					 args...);
+		return GLOBAL_LOGGER<LogParameters>.template trace<S, Args..., Char>(format_string,
+																			 args...);
 	}
 
 	template<typename S,
 			 typename... Args,
-			 LogPolicy Policy = LogPolicy::DropWhenFull,
+			 LoggerParametersType LogParameters = DefaultLogParameters,
 			 typename Char = fmt::char_t<S>>
+	requires IsLoggerParameters<LogParameters>
 	inline auto INFO(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<Policy>.template log<S, Args..., Char, LogLevel::INFO>(format_string,
-																					args...);
+		return GLOBAL_LOGGER<LogParameters>.template info<S, Args..., Char>(format_string, args...);
 	}
 
 	template<typename S,
 			 typename... Args,
-			 LogPolicy Policy = LogPolicy::DropWhenFull,
+			 LoggerParametersType LogParameters = DefaultLogParameters,
 			 typename Char = fmt::char_t<S>>
+	requires IsLoggerParameters<LogParameters>
 	inline auto WARN(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<Policy>.template log<S, Args..., Char, LogLevel::WARN>(format_string,
-																					args...);
+		return GLOBAL_LOGGER<LogParameters>.template warn<S, Args..., Char>(format_string, args...);
 	}
 
 	template<typename S,
 			 typename... Args,
-			 LogPolicy Policy = LogPolicy::DropWhenFull,
+			 LoggerParametersType LogParameters = DefaultLogParameters,
 			 typename Char = fmt::char_t<S>>
 	inline auto ERROR(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<Policy>.template log<S, Args..., Char, LogLevel::ERROR>(format_string,
-																					 args...);
+		return GLOBAL_LOGGER<LogParameters>.template error<S, Args..., Char>(format_string,
+																			 args...);
 	}
 } // namespace hyperion::utils

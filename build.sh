@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-cd build
-ninja
-cd ../test/build
-ninja
+cmake --build build
+cd test
+cmake --build build

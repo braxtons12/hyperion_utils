@@ -11,7 +11,7 @@ namespace hyperion::utils {
 	using std::size_t;
 #endif
 
-	enum class LockFreeQueueErrorTypes
+	enum class LockFreeQueueErrorCategory
 	{
 		QueueIsFull,
 		QueueIsEmpty
@@ -24,11 +24,11 @@ namespace hyperion::utils {
 	};
 
 	IGNORE_PADDING_START
-	template<LockFreeQueueErrorTypes Type>
+	template<LockFreeQueueErrorCategory Type>
 	class LockFreeQueueError final : public Error {
 	  public:
 		LockFreeQueueError() noexcept {
-			if constexpr(Type == LockFreeQueueErrorTypes::QueueIsFull) {
+			if constexpr(Type == LockFreeQueueErrorCategory::QueueIsFull) {
 				this->m_message = "Failed to push entry into LockFreeQueue: LockFreeQueue Is Full";
 			}
 			else {
@@ -46,8 +46,8 @@ namespace hyperion::utils {
 	template<typename T, QueuePolicy Policy = QueuePolicy::ErrWhenFull, size_t Capacity = 512>
 	class LockFreeQueue {
 	  public:
-		using PushError = LockFreeQueueError<LockFreeQueueErrorTypes::QueueIsFull>;
-		using ReadError = LockFreeQueueError<LockFreeQueueErrorTypes::QueueIsEmpty>;
+		using PushError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsFull>;
+		using ReadError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsEmpty>;
 
 		constexpr LockFreeQueue() noexcept = default;
 		constexpr LockFreeQueue(const LockFreeQueue& queue) noexcept = default;

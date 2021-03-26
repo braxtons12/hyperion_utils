@@ -37,7 +37,10 @@ FetchContent_MakeAvailable(fmt)
 #############################################################################
 #############################################################################
 
+SET(CMAKE_CXX_CLANG_TIDY clang-tidy)
+
 add_library(HyperionUtils INTERFACE)
+
 
 if(MSVC)
 	target_compile_options(HyperionUtils INTERFACE /WX /W4 /std:c++20)
