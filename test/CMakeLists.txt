@@ -45,6 +45,7 @@ FetchContent_MakeAvailable(googletest)
 #############################################################################
 FetchContent_Declare(HyperionUtils
 	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
+	GIT_TAG origin/master
 	)
 
 FetchContent_MakeAvailable(HyperionUtils)
