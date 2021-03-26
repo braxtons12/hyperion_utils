@@ -10,6 +10,6 @@ namespace hyperion::utils {
 	/// @param args - The things to ignore
 	template<typename... Args>
 	inline constexpr auto ignore(Args&&... args) noexcept -> void {
-		std::ignore = std::make_tuple<Args...>(args...);
+		std::ignore = std::make_tuple<Args...>(std::forward<Args...>(args...));
 	}
 } // namespace hyperion::utils
