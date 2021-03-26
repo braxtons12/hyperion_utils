@@ -592,7 +592,7 @@ namespace hyperion::utils {
 		}
 	}
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters,
+	template<LoggerParametersType LogParameters,
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
@@ -601,7 +601,7 @@ namespace hyperion::utils {
 																			   args...);
 	}
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters,
+	template<LoggerParametersType LogParameters,
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
@@ -610,7 +610,7 @@ namespace hyperion::utils {
 																			 args...);
 	}
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters,
+	template<LoggerParametersType LogParameters,
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
@@ -618,7 +618,7 @@ namespace hyperion::utils {
 		return GLOBAL_LOGGER<LogParameters>.template info<S, Args..., Char>(format_string, args...);
 	}
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters,
+	template<LoggerParametersType LogParameters,
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
@@ -626,7 +626,7 @@ namespace hyperion::utils {
 		return GLOBAL_LOGGER<LogParameters>.template warn<S, Args..., Char>(format_string, args...);
 	}
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters,
+	template<LoggerParametersType LogParameters,
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
