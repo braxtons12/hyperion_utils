@@ -481,7 +481,7 @@ namespace hyperion::utils {
 		/// @brief Returns whether the `RingBuffer` is empty
 		///
 		/// @return `true` if the `RingBuffer` is empty, `false` otherwise
-		[[nodiscard]] constexpr inline auto empty() noexcept -> bool {
+		[[nodiscard]] constexpr inline auto empty() const noexcept -> bool {
 			return m_size == 0;
 		}
 

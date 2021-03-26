@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "ChangeDetectorTest.h"
+#include "LoggerTest.h"
 #include "OptionTest.h"
 #include "ResultTest.h"
 #include "RingBufferTest.h"

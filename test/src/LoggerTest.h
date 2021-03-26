@@ -19,5 +19,12 @@ namespace hyperion::utils::test {
 				MESSAGE<Parameters>("{0}{1}", "message"s, i);
 			}
 		});
+
+		for(int i = 0; i < 512; ++i) {
+			MESSAGE<Parameters>("{0}{1}", "message"s, i);
+		}
+		close.store(true);
+
+		ASSERT_TRUE(true);
 	}
 } // namespace hyperion::utils::test

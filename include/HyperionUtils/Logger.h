@@ -597,8 +597,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto MESSAGE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.template message<S, Args..., Char>(format_string,
-																			   args...);
+		return GLOBAL_LOGGER<LogParameters>.message(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -606,8 +605,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto TRACE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.template trace<S, Args..., Char>(format_string,
-																			 args...);
+		return GLOBAL_LOGGER<LogParameters>.trace(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -615,7 +613,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto INFO(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.template info<S, Args..., Char>(format_string, args...);
+		return GLOBAL_LOGGER<LogParameters>.info(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -623,7 +621,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto WARN(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.template warn<S, Args..., Char>(format_string, args...);
+		return GLOBAL_LOGGER<LogParameters>.warn(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -631,7 +629,6 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto ERROR(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.template error<S, Args..., Char>(format_string,
-																			 args...);
+		return GLOBAL_LOGGER<LogParameters>.error(format_string, args...);
 	}
 } // namespace hyperion::utils
