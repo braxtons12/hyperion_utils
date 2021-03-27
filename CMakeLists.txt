@@ -79,9 +79,6 @@ else()
 		-Wextra
 		-Wpedantic
 		-Werror
-		-Wno-c++98-compat
-		-Wno-c++98-compat-pedantic
-		-Wno-c++98-c++11-c++14-compat-pedantic
 		-Wno-c++20-compat
 		)
 endif()
@@ -115,6 +112,5 @@ target_sources(HyperionUtils INTERFACE
 
 target_link_libraries(HyperionUtils INTERFACE
 	GSL
-	fmt::fmt-header-only
 	)
 
