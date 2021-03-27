@@ -3,17 +3,13 @@
 #include <atomic>
 #include <chrono>
 #include <filesystem>
-#include <fmt/chrono.h>
-#include <fmt/color.h>
-#include <fmt/compile.h>
-#include <fmt/format.h>
-#include <fmt/os.h>
 #include <gsl/gsl>
 #include <iostream>
 #include <memory>
 #include <thread>
 
 #include "LockFreeQueue.h"
+#include "fmtIncludes.h"
 
 namespace hyperion::utils {
 
@@ -83,7 +79,7 @@ namespace hyperion::utils {
 		LoggerError() noexcept {
 			Error::m_message = "Error writing to logging queue"s;
 		}
-		LoggerError(LogErrorCategory type) noexcept {
+		LoggerError(LogErrorCategory type) noexcept { // NOLINT
 			if(type == LogErrorCategory::QueueingError) {
 				Error::m_message = "Error writing to logging queue"s;
 			}
@@ -168,134 +164,140 @@ namespace hyperion::utils {
 	/// @brief Hyperion logging type for formatted logging.
 	/// Uses fmtlib/fmt for entry formatting and stylizing
 	///
-	/// @tparam LogParameters
+	/// @tparam LogParameters - The parameters for how this logger should operate
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
 	class Logger {
 	  public:
 		static constexpr LogPolicy POLICY = LogParameters::policy;
 		static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
 
-		Logger() noexcept
-			: m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
-					  }
-				  }
-			  }) {
+		Logger()
+			: m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread([messages = m_messages,
+								log_file_path = m_log_file_path] //, log_file = m_log_file]
+							   (const std::stop_token& stop) {
+								   auto log_file = fmt::output_file(log_file_path);
+								   while(!stop.stop_requested()) {
+									   if(auto res = messages->read()) {
+										   auto message = res.unwrap();
+										   log_file.print("{}", message);
+										   fmt::print("{}", message);
+									   }
+								   }
+								   log_file.close();
+							   }) {
 		}
-		explicit Logger(const std::string& root_name) noexcept // NOLINT
+		explicit Logger(const std::string& root_name) // NOLINT
 			: m_root_name(root_name), m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		explicit Logger(std::string&& root_name) noexcept
+		explicit Logger(std::string&& root_name)
 			: m_root_name(root_name), m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		Logger(const std::string& root_name, const std::string& directory_name) noexcept // NOLINT
+		Logger(const std::string& root_name, const std::string& directory_name) // NOLINT
 			: m_root_name(root_name), m_directory_name(directory_name),
 			  m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		Logger(const std::string& root_name, std::string&& directory_name) noexcept // NOLINT
+		Logger(const std::string& root_name, std::string&& directory_name) // NOLINT
 			: m_root_name(root_name), m_directory_name(directory_name),
 			  m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		Logger(std::string&& root_name, const std::string& directory_name) noexcept // NOLINT
+		Logger(std::string&& root_name, const std::string& directory_name) // NOLINT
 			: m_root_name(root_name), m_directory_name(directory_name),
 			  m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		Logger(std::string&& root_name, std::string&& directory_name) noexcept
+		Logger(std::string&& root_name, std::string&& directory_name)
 			: m_root_name(root_name), m_directory_name(directory_name),
 			  m_log_file_path(create_log_file_path()),
-			  m_log_file(std::make_unique<fmt::ostream>(fmt::output_file(m_log_file_path))),
-			  m_message_thread([&]() {
-				  while(!m_exit_signal->load()) {
-					  if(auto res = m_messages.read()) {
-						  auto message = res.unwrap();
-						  m_log_file->print("{}", message);
+			  m_log_file(std::make_shared<fmt::ostream>(fmt::output_file(m_log_file_path))),
+			  m_message_thread(
+				  [messages = m_messages, log_file = m_log_file](const std::stop_token& stop) {
+					  while(!stop.stop_requested()) {
+						  if(auto res = messages->read()) {
+							  auto message = res.unwrap();
+							  log_file->print("{}", message);
+						  }
 					  }
-				  }
-			  }) {
+					  log_file->close();
+				  }) {
 		}
-		~Logger() noexcept {
-			m_exit_signal->store(true);
-			if(m_message_thread.joinable()) {
-				m_message_thread.join();
-			}
-			m_log_file->close();
-		}
+		Logger(const Logger& logger) noexcept = delete;
+		Logger(Logger&& logger) noexcept = default;
+
+		~Logger() noexcept = default;
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		log(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError>
-		requires(POLICY == LogPolicy::DropWhenFull || POLICY == LogPolicy::FlushWhenFull) {
+		log(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError> {
 			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 				if constexpr(POLICY == LogPolicy::DropWhenFull) {
 					return log_dropping<Level>(format_string, args...);
 				}
-				else {
+				else if constexpr(POLICY == LogPolicy::FlushWhenFull) {
 					return log_flushing<Level>(format_string, args...);
+				}
+				else {
+					log_overwriting<Level>(format_string, args...);
+					return Ok(true);
 				}
 			}
 			else {
 				ignore(format_string, args...);
 				return Err(LoggerError(LogErrorCategory::LogLevelError));
-			}
-		}
-
-		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
-		inline constexpr auto log(const S& format_string, Args&&... args) noexcept
-			-> void requires(POLICY == LogPolicy::OverwriteWhenFull) {
-			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
-				log_overwriting<Level>(format_string, args...);
-			}
-			else {
-				ignore(format_string, args...);
 			}
 		}
 
@@ -337,14 +339,13 @@ namespace hyperion::utils {
 			}
 		}
 
-		LockFreeQueue<std::string, get_queue_policy()> m_messages
-			= LockFreeQueue<std::string, get_queue_policy()>();
+		std::shared_ptr<LockFreeQueue<std::string, get_queue_policy()>> m_messages
+			= std::make_shared<LockFreeQueue<std::string, get_queue_policy()>>();
 		std::string m_root_name = "HyperionLog"s;
 		std::string m_directory_name = "Hyperion"s;
 		std::string m_log_file_path = create_log_file_path();
-		std::unique_ptr<fmt::ostream> m_log_file = nullptr;
-		std::thread m_message_thread;
-		std::unique_ptr<std::atomic_bool> m_exit_signal = std::make_unique<std::atomic_bool>(false);
+		std::shared_ptr<fmt::ostream> m_log_file = nullptr;
+		std::jthread m_message_thread;
 
 		static constexpr fmt::text_style MESSAGE_STYLE = fmt::fg(fmt::color::white);
 		static constexpr fmt::text_style TRACE_STYLE = fmt::fg(fmt::color::steel_blue);
@@ -359,13 +360,12 @@ namespace hyperion::utils {
 			return fmt::format("[{:%Y-%m-%d|%H-%M-%S}]", fmt::localtime(std::time(nullptr)));
 		}
 
-		[[nodiscard]] inline auto create_log_file_path() const noexcept -> std::string {
+		[[nodiscard]] inline auto create_log_file_path() const -> std::string {
 			auto temp_dir = std::filesystem::temp_directory_path();
 			temp_dir.append(m_directory_name);
+			std::filesystem::create_directory(temp_dir);
 			auto time_string = create_time_stamp();
-			temp_dir.append(time_string);
-			temp_dir.append(" ");
-			temp_dir.append(m_root_name);
+			temp_dir.append(time_string + " "s + m_root_name);
 			temp_dir.replace_extension("log");
 			return temp_dir;
 		}
@@ -394,7 +394,7 @@ namespace hyperion::utils {
 			}
 			const auto logline
 				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
-			return m_messages.push(logline).template map_err<LoggerError>(
+			return m_messages->push(logline).template map_err<LoggerError>(
 				[](const QueueError& error) { return LoggerError(error); });
 		}
 
@@ -422,15 +422,15 @@ namespace hyperion::utils {
 			const auto logline
 				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
 
-			m_messages.push(logline);
+			m_messages->push(logline);
 		}
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
 		log_flushing(const S& format_string, Args&&... args) noexcept -> Result<bool, LoggerError>
 		requires(POLICY == LogPolicy::FlushWhenFull) {
-			if(m_messages.full()) {
-				while(!m_messages.empty()) {
+			if(m_messages->full()) {
+				while(!m_messages->empty()) {
 				}
 			}
 
@@ -454,7 +454,7 @@ namespace hyperion::utils {
 			}
 			const auto logline
 				= fmt::format(MESSAGE_STYLE, "{0} {1}: {2}\n", timestamp, log_type, entry);
-			return m_messages.push(logline).template map_err<LoggerError>(
+			return m_messages->push(logline).template map_err<LoggerError>(
 				[](const QueueError& error) { return LoggerError(error); });
 		}
 	};
@@ -475,138 +475,47 @@ namespace hyperion::utils {
 	IGNORE_WEAK_VTABLES_STOP
 	IGNORE_PADDING_STOP
 
-	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	static std::atomic_bool GLOBAL_LOGGER_INITIALIZED;
+	IGNORE_UNUSED_TEMPLATES_START
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	static Logger<LogParameters> GLOBAL_LOGGER;
-
-	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger() noexcept -> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>());
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	[[nodiscard]] static auto get_global_logger() -> Logger<LogParameters>& {
+		HYPERION_NO_DESTROY static Logger<LogParameters> GLOBAL_LOGGER{};
+		return GLOBAL_LOGGER;
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto initialize_global_logger(const std::string& root_name) noexcept
-		-> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>(root_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto initialize_global_logger(const std::string& root_name) -> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name);
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger(std::string&& root_name) noexcept -> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(Logger<LogParameters>(root_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto initialize_global_logger(std::string&& root_name) -> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name);
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger(const std::string& root_name,
-							 const std::string& directory_name) noexcept
-		-> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(
-				Logger<LogParameters>(root_name, directory_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto
+	initialize_global_logger(const std::string& root_name, const std::string& directory_name)
+		-> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name, directory_name);
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger(std::string&& root_name, const std::string& directory_name) noexcept
-		-> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(
-				Logger<LogParameters>(root_name, directory_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto
+	initialize_global_logger(std::string&& root_name, const std::string& directory_name) -> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name, directory_name);
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger(const std::string& root_name, std::string&& directory_name) noexcept
-		-> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(
-				Logger<LogParameters>(root_name, directory_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto
+	initialize_global_logger(const std::string& root_name, std::string&& directory_name) -> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name, directory_name);
 	}
 
 	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	[[nodiscard]] inline static auto
-	initialize_global_logger(std::string&& root_name, std::string&& directory_name) noexcept
-		-> Result<bool, LoggerInitError> {
-		auto initialized = false;
-		if(GLOBAL_LOGGER_INITIALIZED<LogParameters>.compare_exchange_strong(
-			   initialized,
-			   true,
-			   std::memory_order_seq_cst))
-		{
-			GLOBAL_LOGGER<LogParameters> = std::move(
-				Logger<LogParameters>(root_name, directory_name));
-			return Ok(true);
-		}
-		else {
-			return Err(LoggerInitError());
-		}
+	inline static auto
+	initialize_global_logger(std::string&& root_name, std::string&& directory_name) -> void {
+		get_global_logger<LogParameters>() = Logger<LogParameters>(root_name, directory_name);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -614,7 +523,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto MESSAGE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.message(format_string, args...);
+		return get_global_logger<LogParameters>().message(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -622,7 +531,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto TRACE(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.trace(format_string, args...);
+		return get_global_logger<LogParameters>().trace(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -630,7 +539,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto INFO(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.info(format_string, args...);
+		return get_global_logger<LogParameters>().info(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -638,7 +547,7 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto WARN(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.warn(format_string, args...);
+		return get_global_logger<LogParameters>().warn(format_string, args...);
 	}
 
 	template<LoggerParametersType LogParameters,
@@ -646,6 +555,9 @@ namespace hyperion::utils {
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
 	inline auto ERROR(const S& format_string, Args&&... args) noexcept {
-		return GLOBAL_LOGGER<LogParameters>.error(format_string, args...);
+		return get_global_logger<LogParameters>().error(format_string, args...);
 	}
+
+	IGNORE_UNUSED_TEMPLATES_STOP
+
 } // namespace hyperion::utils

@@ -155,12 +155,12 @@ namespace hyperion::utils {
 		/// @brief Returns the error message for this `Error`
 		///
 		/// @return The error message
-		[[nodiscard]] constexpr auto message() const noexcept -> const char* {
+		[[nodiscard]] auto message() const noexcept -> const char* {
 			return m_message.c_str();
 		}
 
 		[[nodiscard]] inline auto message_as_std_string() const noexcept -> std::string {
-			return {m_message};
+			return m_message;
 		}
 
 		/// @brief Converts this `Error` to a `std::string`

@@ -19,18 +19,38 @@ Some of the utilities include:
 
 HyperionUtils uses CMake, and incorporating it into your project is as easy as:
 
-in CMakeLists.txt:
+To make HyperionUtils visible:<br>
+In CMakeLists.txt:
 
 ```cmake
 FetchContent_Declare(HyperionUtils
 	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
+	GIT_TAG origin/master
 	)
 
 FetchContent_MakeAvailable(HyperionUtils)
+```
+Then, if using the entire library or the logging facilities,<br>
+e.g., you have either of
 
-add_executable(YourExecutable yourSource.cpp)
+```cpp
+#include <HyperionUtils/HyperionUtils.h>
+```
+OR
 
-target_link_libraries(YourExecutable HyperionUtils)
+```cpp
+#include <HyperionUtils/Logger.h>
+```
+in your code, add these link libraries:
+
+```cmake
+target_link_libraries(your_target fmt::fmt HyperionUtils)
+```
+
+or if using other individual components, just:
+
+```cmake
+target_link_libraries(your_target HyperionUtils)
 ```
 
 and in code:
@@ -56,9 +76,14 @@ inline auto get_thing() -> Option<Thing> {
 ### Testing
 
 Tests are currently setup as an isolated project in the "test" subdirectory.<br>
-We aren't currently *thrilled* about this approach, (or at least, our current *implementation* of this approach)<br>
-but it prevents collisions between other googletest builds in Hyperion's libraries.<br>
-To run the tests, simply configure and build the test project, then run the resulting "Test" executable.
+This prevents collisions between other googletest builds in Hyperion's other sublibraries.<br>
+To run the tests, simply configure and build the test project, then run the resulting "Test" executable:<br>
+
+```sh
+cmake -B build -G "Ninja"
+cmake --build build
+./build/Test
+```
 
 #### Toolchain Files?
 

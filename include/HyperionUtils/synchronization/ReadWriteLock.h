@@ -3,6 +3,7 @@
 #include <atomic>
 #include <memory>
 
+#include "../Macros.h"
 #include "../OptionAndResult.h"
 #include "ScopedLockGuard.h"
 
@@ -24,7 +25,6 @@ namespace hyperion::utils {
 		}
 		~ReadWriteLockError() noexcept final = default;
 	};
-	IGNORE_PADDING_STOP
 
 	/// @brief Basic Read/Write Lock for synchronizing a single piece of data
 	///
@@ -53,7 +53,14 @@ namespace hyperion::utils {
 		/// @brief Constructs a `ReadWriteLock` with the given initial data
 		///
 		/// @param data - The data to guard
-		explicit ReadWriteLock(T data) noexcept
+		explicit ReadWriteLock(const T& data) noexcept
+			: m_data(std::make_shared<T>(data)), m_cached(data) {
+		}
+
+		/// @brief Constructs a `ReadWriteLock` with the given initial data
+		///
+		/// @param data - The data to guard
+		explicit ReadWriteLock(T&& data) noexcept
 			: m_data(std::make_shared<T>(data)), m_cached(data) {
 		}
 		~ReadWriteLock() noexcept = default;
@@ -76,7 +83,7 @@ namespace hyperion::utils {
 				return Ok(std::move(ScopedLockGuard<T>(m_data, [this]() { this->unlock(); })));
 			}
 			else {
-				return Err<LockGuard, LockError>(LockError());
+				return Err(LockError());
 			}
 		}
 
@@ -107,4 +114,5 @@ namespace hyperion::utils {
 		std::shared_ptr<T> m_data = std::make_shared<T>(m_cached);
 		std::atomic_bool m_locked = std::atomic_bool(false);
 	};
+	IGNORE_PADDING_STOP
 } // namespace hyperion::utils

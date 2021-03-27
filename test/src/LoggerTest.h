@@ -10,18 +10,19 @@ namespace hyperion::utils::test {
 	TEST(LoggerTest, loggingCase1) {
 		using Parameters = LoggerParameters<LoggerPolicy<LogPolicy::FlushWhenFull>,
 											LoggerLevel<LogLevel::MESSAGE>>;
-		ignore(initialize_global_logger<Parameters>());
 
 		std::atomic_bool close = false;
 		auto thread = std::thread([&]() {
 			int i = 0;
 			while(!close.load()) {
-				MESSAGE<Parameters>("{0}{1}", "message"s, i);
+				auto result = MESSAGE<Parameters>("{0}{1}", "message"s, i);
+				ignore(result.is_ok());
 			}
 		});
 
 		for(int i = 0; i < 512; ++i) {
-			MESSAGE<Parameters>("{0}{1}", "message"s, i);
+			auto result = MESSAGE<Parameters>("{0}{1}", "message"s, i);
+			ignore(result.is_ok());
 		}
 		close.store(true);
 

@@ -332,9 +332,9 @@ namespace hyperion::utils {
 		[[nodiscard]] constexpr inline auto
 		unwrap() noexcept -> T requires Movable<T> && NotPointer<T> {
 			if(m_is_some) {
-				auto some = std::move(m_some);
+				auto some_ = std::move(m_some);
 				m_is_some = false;
-				return std::move(some);
+				return some_;
 			}
 			else {
 				std::cerr << "unwrap called on a None, terminating" << std::endl;
@@ -587,7 +587,8 @@ namespace hyperion::utils {
 		}
 		constexpr Result(const OkWrapper<T>& ok) noexcept : m_is_ok(true), m_ok(ok.m_ok) { // NOLINT
 		}
-		constexpr Result(OkWrapper<T>&& ok) noexcept : m_is_ok(true), m_ok(ok.m_ok) { // NOLINT
+		constexpr Result(OkWrapper<T>&& ok) noexcept // NOLINT
+			: m_is_ok(true), m_ok(std::move(ok.m_ok)) {
 		}
 		constexpr Result() noexcept = delete;
 		constexpr Result(Result& result) = delete;
@@ -777,9 +778,9 @@ namespace hyperion::utils {
 		unwrap() noexcept -> T requires Movable<T> && NotPointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
-				auto _ok = std::move(m_ok);
+				auto ok_ = std::move(m_ok);
 				m_is_ok = false;
-				return std::move(_ok);
+				return ok_;
 			}
 			else {
 				std::cerr << "unwrap called on an Error result, terminating" << std::endl;
@@ -882,8 +883,8 @@ namespace hyperion::utils {
 		unwrap_err() noexcept -> E requires Movable<E> && NotPointer<E> {
 			m_handled = true;
 			if(!m_is_ok) {
-				auto _err = std::move(m_err);
-				return std::move(_err);
+				auto err_ = std::move(m_err);
+				return err_;
 			}
 			else {
 				std::cerr << "unwrap_err called on an Ok result, terminating" << std::endl;
@@ -933,9 +934,9 @@ namespace hyperion::utils {
 		requires Movable<T> && NotPointer<T> {
 			m_handled = true;
 			if(m_is_ok) {
-				auto _ok = std::move(m_ok);
+				auto ok_ = std::move(m_ok);
 				m_is_ok = false;
-				return Some(std::move(_ok));
+				return Some(std::move(ok_));
 			}
 			else {
 				return None();
@@ -985,8 +986,8 @@ namespace hyperion::utils {
 		requires Movable<E> && NotPointer<E> {
 			m_handled = true;
 			if(!m_is_ok) {
-				auto _err = std::move(m_err);
-				return Some(std::move(_err));
+				auto err_ = std::move(m_err);
+				return Some(std::move(err_));
 			}
 			else {
 				m_is_ok = false;
@@ -1253,7 +1254,8 @@ namespace hyperion::utils {
 			}
 		}
 
-		explicit constexpr operator bool() const noexcept {
+		constexpr operator bool() const noexcept { // NOLINT
+			m_handled = true;
 			return m_is_ok;
 		}
 

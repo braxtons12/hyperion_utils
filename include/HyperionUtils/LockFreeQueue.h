@@ -59,7 +59,7 @@ namespace hyperion::utils {
 				return Err(PushError());
 			}
 
-			m_data.push_back(std::forward<T>(entry));
+			m_data.push_back(entry);
 			return Ok(true);
 		}
 
