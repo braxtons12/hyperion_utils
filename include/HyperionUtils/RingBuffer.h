@@ -757,18 +757,18 @@ namespace hyperion::utils {
 		///
 		/// @return The last element in the `RingBuffer`
 		[[nodiscard]] constexpr inline auto pop_back() noexcept -> T requires Copyable<T> {
-			T _back = back();
+			T back_ = back();
 			erase(--end());
-			return _back;
+			return back_;
 		}
 
 		/// @brief Removes the first element in the `RingBuffer` and returns it
 		///
 		/// @return The first element in the `RingBuffer`
 		[[nodiscard]] constexpr inline auto pop_front() noexcept -> T requires Copyable<T> {
-			T _front = front();
+			T front_ = front();
 			increment_indices_from_start();
-			return _front;
+			return front_;
 		}
 
 		/// @brief Returns a Random Access Bidirectional iterator over the `RingBuffer`,
@@ -948,43 +948,26 @@ namespace hyperion::utils {
 		/// and the size property, after pushing an element at the back,
 		/// maintaining the logical `RingBuffer` structure
 		constexpr inline auto increment_indices() noexcept -> void {
-			m_write_index++;
-			m_size = min(m_size + 1, m_capacity);
+			m_write_index = (m_write_index + 1) % (m_capacity + 1);
 
-			// if write index is at start - 1, we need to push start forward to maintain
+			// if write index is at start, we need to push start forward to maintain
 			// the "invalid" spacer element for this.end()
-			if(m_write_index > m_loop_index && m_start_index == 0) {
-				m_write_index = 0;
-				m_start_index = 1;
+			if(m_write_index == m_start_index) {
+				m_start_index = (m_start_index + 1) % (m_capacity + 1);
 			}
-			else if(m_write_index == m_start_index) {
-				m_start_index++;
-				if(m_start_index > m_loop_index) {
-					m_start_index = 0;
-				}
-			}
+			m_size = min(m_size + 1, m_capacity);
 		}
 
 		/// @brief Used to increment the start index into the underlying `T` array
 		/// and the size property after popping an element from the front,
 		/// maintaining the logical `RingBuffer` structure
 		constexpr inline auto increment_indices_from_start() noexcept -> void {
-			if(m_start_index + 1 > m_write_index
-			   || (m_start_index == m_loop_index && m_write_index == 0)) {
-				m_write_index++;
-				if(m_write_index > m_loop_index) {
-					m_write_index = 0;
-				}
-			}
-			if(m_start_index == m_loop_index) {
-				m_start_index = 0;
-			}
-			else {
-				m_start_index++;
-			}
+			if(m_start_index != m_write_index) {
+				m_start_index = (m_start_index + 1) % (m_capacity + 1);
 
-			if(m_size != 0) {
-				m_size--;
+				if(m_size != 0) {
+					m_size--;
+				}
 			}
 		}
 
