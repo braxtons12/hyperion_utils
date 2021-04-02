@@ -55,51 +55,66 @@ namespace hyperion::utils {
 
 		[[nodiscard]] inline auto push(const T& entry) noexcept -> Result<bool, PushError>
 		requires Copyable<T> &&(Policy == QueuePolicy::ErrWhenFull) {
-			if(m_data.size() == Capacity) {
+			const auto pusher = [&]() {
+				m_data.push_back(entry);
+				return Ok(true);
+			};
+
+			if(full()) {
 				return Err(PushError());
 			}
-
-			m_data.push_back(entry);
-			return Ok(true);
+			else {
+				return pusher();
+			}
 		}
 
 		[[nodiscard]] inline auto push(T&& entry) noexcept -> Result<bool, PushError>
 		requires(Policy == QueuePolicy::ErrWhenFull) {
-			if(m_data.size() == Capacity) {
+			const auto pusher = [&]() {
+				m_data.push_back(std::forward<T>(entry));
+				return Ok(true);
+			};
+
+			if(full()) {
 				return Err(PushError());
 			}
-
-			m_data.push_back(std::move(entry));
-			return Ok(true);
+			else {
+				return pusher();
+			}
 		}
 
 		template<typename... Args>
 		requires ConstructibleFrom<T, Args...>
 		[[nodiscard]] inline auto push(Args&&... args) noexcept -> Result<bool, PushError>
 		requires(Policy == QueuePolicy::ErrWhenFull) {
-			if(m_data.size() == Capacity) {
+			const auto pusher = [&]() {
+				m_data.emplace_back(std::forward<Args>(args)...);
+				return Ok(true);
+			};
+
+			if(full()) {
 				return Err(PushError());
 			}
-
-			m_data.emplace_back(args...);
-			return Ok(true);
+			else {
+				return pusher();
+			}
 		}
 
 		inline auto push(const T& entry) noexcept
 			-> void requires Copyable<T> &&(Policy == QueuePolicy::OverwriteWhenFull) {
-			m_data.push_back(std::forward<T>(entry));
+			m_data.push_back(entry);
 		}
 
 		inline auto
 		push(T&& entry) noexcept -> void requires(Policy == QueuePolicy::OverwriteWhenFull) {
-			m_data.push_back(std::move(entry));
+			m_data.push_back(std::forward<T>(entry));
 		}
 
 		template<typename... Args>
 		requires ConstructibleFrom<T, Args...>
 		inline auto
 		push(Args&&... args) noexcept -> void requires(Policy == QueuePolicy::OverwriteWhenFull) {
-			m_data.emplace_back(args...);
+			m_data.emplace_back(std::forward<Args>(args)...);
 		}
 
 		[[nodiscard]] inline auto read() noexcept -> Result<T, ReadError> {
@@ -107,7 +122,7 @@ namespace hyperion::utils {
 				return Err(ReadError());
 			}
 			else {
-				return Ok(m_data.pop_front());
+				return Ok(*(m_data.pop_back()));
 			}
 		}
 
@@ -123,7 +138,8 @@ namespace hyperion::utils {
 		constexpr auto operator=(LockFreeQueue&& queue) noexcept -> LockFreeQueue& = default;
 
 	  private:
-		RingBuffer<T> m_data = RingBuffer<T>(Capacity);
+		RingBuffer<T, RingBufferType::ThreadSafe> m_data
+			= RingBuffer<T, RingBufferType::ThreadSafe>(Capacity);
 	};
 	IGNORE_PADDING_STOP
 } // namespace hyperion::utils

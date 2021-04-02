@@ -17,6 +17,9 @@ namespace hyperion::utils::concepts {
 	template<typename T>
 	concept Integral = std::integral<T>;
 
+	template<typename T>
+	concept UnsignedIntegral = std::unsigned_integral<T>;
+
 	/// @brief Alias for `std::signed_integral<T>`
 	template<typename T>
 	concept SignedIntegral = std::signed_integral<T>;

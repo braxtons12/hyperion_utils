@@ -81,6 +81,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL 
 			-Wno-used-but-marked-unused
 			-Wno-covered-switch-default
 			-Wno-missing-prototypes
+			-ferror-limit=100
 			)
 	else()
 		target_compile_options(Test PRIVATE
@@ -108,6 +109,7 @@ else()
 		-Wpedantic
 		-Werror
 		-Wno-c++20-compat
+		-fconcepts-diagnostics-depth=4
 		)
 endif()
 

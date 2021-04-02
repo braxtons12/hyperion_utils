@@ -15,13 +15,14 @@ namespace hyperion::utils::test {
 		auto thread = std::thread([&]() {
 			int i = 0;
 			while(!close.load()) {
-				auto result = MESSAGE<Parameters>("{0}{1}", "message"s, i);
+				auto result = INFO<Parameters>(None(), "{0}{1}", "info"s, i);
 				ignore(result.is_ok());
+				i++;
 			}
 		});
 
 		for(int i = 0; i < 512; ++i) {
-			auto result = MESSAGE<Parameters>("{0}{1}", "message"s, i);
+			auto result = MESSAGE<Parameters>(None(), "{0}{1}", "message"s, i);
 			ignore(result.is_ok());
 		}
 		close.store(true);
