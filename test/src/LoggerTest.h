@@ -11,10 +11,9 @@ namespace hyperion::utils::test {
 		using Parameters = LoggerParameters<LoggerPolicy<LogPolicy::FlushWhenFull>,
 											LoggerLevel<LogLevel::MESSAGE>>;
 
-		std::atomic_bool close = false;
-		auto thread = std::thread([&]() {
+		auto thread = std::jthread([&](const std::stop_token& stop) {
 			int i = 0;
-			while(!close.load()) {
+			while(!stop.stop_requested()) {
 				auto result = INFO<Parameters>(None(), "{0}{1}", "info"s, i);
 				ignore(result.is_ok());
 				i++;
@@ -25,7 +24,7 @@ namespace hyperion::utils::test {
 			auto result = MESSAGE<Parameters>(None(), "{0}{1}", "message"s, i);
 			ignore(result.is_ok());
 		}
-		close.store(true);
+		thread.request_stop();
 
 		ASSERT_TRUE(true);
 	}

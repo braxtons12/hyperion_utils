@@ -181,7 +181,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -200,7 +200,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -219,7 +219,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -239,7 +239,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -259,7 +259,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -279,7 +279,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -299,7 +299,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 							log_file.print("{}", message);
-							fmt::print("{}", message);
+							//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -381,7 +381,6 @@ namespace hyperion::utils {
 		std::string m_root_name = "HyperionLog"s;
 		std::string m_directory_name = "Hyperion"s;
 		std::string m_log_file_path = create_log_file_path();
-		// std::shared_ptr<fmt::ostream> m_log_file = nullptr;
 		std::jthread m_message_thread;
 
 		static constexpr fmt::text_style MESSAGE_STYLE = fmt::fg(fmt::color::white);
