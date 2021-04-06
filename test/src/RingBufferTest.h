@@ -7,8 +7,8 @@
 namespace hyperion::utils::test {
 
 	TEST(RingBufferTest, defaults) {
-		auto buffer = RingBuffer<bool, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -19,7 +19,7 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, initialCapacity) {
-		auto buffer = RingBuffer<bool, RingBufferType::ThreadSafe>(32U);
+		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U);
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), 32ULL);
 		ASSERT_TRUE(buffer.empty());
@@ -30,7 +30,7 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, initialCapacityAndValue) {
-		auto buffer = RingBuffer<bool, RingBufferType::ThreadSafe>(32U, true);
+		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U, true);
 		ASSERT_EQ(buffer.size(), 32ULL);
 		ASSERT_EQ(buffer.capacity(), 32ULL);
 
@@ -40,8 +40,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, pushBackAndAt) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -56,8 +56,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, pushBackAndAtLooping) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -76,8 +76,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, emplaceBackAndAt) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -92,8 +92,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, emplaceBackAndAtLooping) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -113,7 +113,7 @@ namespace hyperion::utils::test {
 
 	TEST(RingBufferTest, reserveAndLooping) {
 		uint32_t initialCapacity = 8U;
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>(initialCapacity);
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>(initialCapacity);
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_TRUE(buffer.empty());
 		ASSERT_EQ(buffer.capacity(), initialCapacity);
@@ -144,8 +144,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, front) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -155,8 +155,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, back) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -167,8 +167,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insert) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -180,8 +180,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insertLooped) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -197,8 +197,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insertLoopedAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -215,8 +215,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insertEmplace) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -228,8 +228,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insertEmplaceLooped) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -245,8 +245,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, insertEmplaceLoopedAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -263,8 +263,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, erase) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -281,8 +281,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseFullFromEnd) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -301,8 +301,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseFullFromMiddle) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -321,8 +321,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseFullAndAHalfFromEnd) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -342,8 +342,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseFullAndAHalfFromMiddle) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -363,8 +363,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseRange) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -382,8 +382,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseRangeFull) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -401,8 +401,8 @@ namespace hyperion::utils::test {
 	}
 
 	TEST(RingBufferTest, eraseRangeFullAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::ThreadSafe>::DEFAULT_CAPACITY;
+		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
 		ASSERT_EQ(buffer.size(), 0ULL);
 		ASSERT_EQ(buffer.capacity(), capacity);
 		ASSERT_TRUE(buffer.empty());
@@ -432,10 +432,10 @@ namespace hyperion::utils::test {
 	}
 	//
 	// TEST(RingBufferTest, popBack) {
-	//	auto buffer = RingBuffer<int, RingBufferType::ThreadSafe>();
+	//	auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
 	//	ASSERT_EQ(buffer.size(), 0ULL);
 	//	ASSERT_EQ(buffer.capacity(), RingBuffer<int,
-	// RingBufferType::ThreadSafe>::DEFAULT_CAPACITY); 	ASSERT_TRUE(buffer.empty());
+	// RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY); 	ASSERT_TRUE(buffer.empty());
 	//
 	//	buffer.push_back(1);
 	//	buffer.push_back(2);

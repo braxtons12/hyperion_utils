@@ -448,10 +448,6 @@ namespace hyperion::utils {
 		[[nodiscard]] constexpr inline auto at(Integral auto index) noexcept -> T& {
 			auto i = get_adjusted_internal_index(index);
 
-			if(i > m_loop_index) {
-				i = m_loop_index;
-			}
-
 			return m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
 
@@ -499,8 +495,8 @@ namespace hyperion::utils {
 		///
 		/// @return The current number of elements
 		[[nodiscard]] constexpr inline auto size() const noexcept -> size_t {
-			return m_write_index >= m_start_index ? m_write_index - m_start_index :
-													  (m_capacity) - (m_start_index - m_write_index);
+			return m_write_index >= m_start_index ? (m_write_index - m_start_index) :
+													  (m_capacity - (m_start_index - m_write_index));
 		}
 
 		/// @brief Returns the maximum possible number of elements this `RingBuffer` could store
@@ -508,7 +504,7 @@ namespace hyperion::utils {
 		///
 		/// @return The maximum possible number of storable elements
 		[[nodiscard]] constexpr inline auto max_size() const noexcept -> size_t {
-			return allocator_traits::max_size(m_allocator);
+			return allocator_traits::max_size(m_allocator) - 1;
 		}
 
 		/// @brief Returns the current capacity of the `RingBuffer`;
@@ -582,12 +578,12 @@ namespace hyperion::utils {
 		requires ConstructibleFrom<T, Args...>
 		constexpr inline auto emplace_back(Args&&... args) noexcept -> T& {
 			allocator_traits::template construct<T>(m_allocator,
-													&m_buffer[m_write_index],
-													std::forward<Args>(args)...); // NOLINT
+													&m_buffer[m_write_index], // NOLINT
+													std::forward<Args>(args)...);
 
 			increment_indices();
 
-			auto index = m_write_index == 0ULL ? m_loop_index : m_write_index - 1;
+			auto index = (m_write_index == 0ULL ? m_loop_index : m_write_index - 1);
 			return m_buffer[index]; // NOLINT
 		}
 
@@ -606,8 +602,8 @@ namespace hyperion::utils {
 			auto index = get_adjusted_internal_index(position.get_index());
 
 			allocator_traits::template construct<T>(m_allocator,
-													&m_buffer[index],
-													std::forward<Args>(args)...); // NOLINT
+													&m_buffer[index], // NOLINT
+													std::forward<Args>(args)...);
 
 			return m_buffer[index]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
@@ -627,8 +623,8 @@ namespace hyperion::utils {
 			auto index = get_adjusted_internal_index(position.get_index());
 
 			allocator_traits::template construct<T>(m_allocator,
-													&m_buffer[index],
-													std::forward<Args>(args)...); // NOLINT
+													&m_buffer[index], // NOLINT
+													std::forward<Args>(args)...);
 
 			return m_buffer[index]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
@@ -766,7 +762,7 @@ namespace hyperion::utils {
 		/// @return The last element in the `RingBuffer`
 		[[nodiscard]] constexpr inline auto pop_back() noexcept -> T requires Copyable<T> {
 			T back_ = back();
-			erase(--end());
+			decrement_write();
 			return back_;
 		}
 
@@ -775,7 +771,7 @@ namespace hyperion::utils {
 		/// @return The first element in the `RingBuffer`
 		[[nodiscard]] constexpr inline auto pop_front() noexcept -> T requires Copyable<T> {
 			T front_ = front();
-			increment_indices_from_start();
+			increment_start();
 			return front_;
 		}
 
@@ -922,91 +918,31 @@ namespace hyperion::utils {
 		/// @brief Used to increment the start index into the underlying `T` array
 		/// and the size property after popping an element from the front,
 		/// maintaining the logical `RingBuffer` structure
-		constexpr inline auto increment_indices_from_start() noexcept -> void {
+		constexpr inline auto increment_start() noexcept -> void {
 			if(m_start_index != m_write_index) {
 				m_start_index = (m_start_index + 1) % (m_capacity);
 			}
 		}
 
-		/// @brief Inserts the given element at the position indicated
-		/// by the `external_index`
-		/// @note if `size() == capacity()` this drops the last element out of the `RingBuffer`
-		///
-		/// @param external_index - The user-facing index into the `RingBuffer` to insert the
-		/// element at
-		/// @param elem - The element to store in the `RingBuffer`
-		constexpr inline auto
-		insert_internal(size_t external_index, const T& elem) noexcept -> void requires Movable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
-
-			if(index == m_write_index) {
-				emplace_back(elem);
+		/// @brief Used to decrement the write index into the underlying `T` array
+		/// when popping an element from the back
+		constexpr inline auto decrement_write() noexcept -> void {
+			if(m_write_index == 0ULL) {
+				m_write_index = m_capacity - 1;
 			}
 			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = std::move(*(iter + j));
-					}
-				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = std::move(*(iter + j));
-					}
-				}
-				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					m_buffer[m_start_index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					m_buffer[index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
+				m_write_index--;
 			}
 		}
 
-		/// @brief Inserts the given element at the position indicated
-		/// by the `external_index`
-		/// @note if `size() == capacity()` this drops the last element out of the `RingBuffer`
-		///
-		/// @param external_index - The user-facing index into the `RingBuffer` to insert the
-		/// element at
-		/// @param elem - The element to store in the `RingBuffer`
-		constexpr inline auto insert_internal(size_t external_index, const T& elem) noexcept
-			-> void requires NotMovable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
-
-			if(index == m_write_index) {
-				emplace_back(elem);
+		constexpr inline auto decrement_write_n(UnsignedIntegral auto n) noexcept -> void {
+			auto amount_to_decrement = static_cast<size_t>(n);
+			if(amount_to_decrement > m_write_index) {
+				amount_to_decrement -= m_write_index;
+				m_write_index = (m_capacity - 1) - amount_to_decrement;
 			}
 			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = *(iter + j);
-					}
-				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = *(iter + j);
-					}
-				}
-				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					m_buffer[m_start_index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					m_buffer[index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
+				m_write_index -= amount_to_decrement;
 			}
 		}
 
@@ -1018,36 +954,37 @@ namespace hyperion::utils {
 		/// element at
 		/// @param elem - The element to store in the `RingBuffer`
 		constexpr inline auto
-		insert_internal(size_t external_index, T&& elem) noexcept -> void requires Movable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
+		insert_internal(size_t external_index, const T& elem) noexcept -> void {
+			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
 				emplace_back(elem);
 			}
 			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = std::move(*(iter + j));
+				const auto size_ = size();
+				auto num_to_move = size_ - external_index;
+				auto j = num_to_move - 1;
+
+				// if we're full, drop the last element in the buffer
+				if(size_ == m_capacity - 1) [[likely]] { // NOLINT
+					num_to_move--;
+					j--;
+					index++;
+				}
+
+				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+					if constexpr(Movable<T>) {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
+					}
+					else {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= m_buffer[get_adjusted_internal_index(external_index + j)];
 					}
 				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = std::move(*(iter + j));
-					}
-				}
+
+				m_buffer[index] = elem;
 				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					m_buffer[m_start_index] = std::move(elem); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					m_buffer[index] = std::move(elem); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
 			}
 		}
 
@@ -1058,37 +995,37 @@ namespace hyperion::utils {
 		/// @param external_index - The user-facing index into the `RingBuffer` to insert the
 		/// element at
 		/// @param elem - The element to store in the `RingBuffer`
-		constexpr inline auto
-		insert_internal(size_t external_index, T&& elem) noexcept -> void requires NotMovable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
+		constexpr inline auto insert_internal(size_t external_index, T&& elem) noexcept -> void {
+			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
-				emplace_back(elem);
+				emplace_back(std::forward<T>(elem));
 			}
 			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = *(iter + j);
+				const auto size_ = size();
+				auto num_to_move = size_ - external_index;
+				auto j = num_to_move - 1;
+
+				// if we're full, drop the last element in the buffer
+				if(size_ == m_capacity - 1) [[likely]] { // NOLINT
+					num_to_move--;
+					j--;
+					index++;
+				}
+
+				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+					if constexpr(Movable<T>) {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
+					}
+					else {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= m_buffer[get_adjusted_internal_index(external_index + j)];
 					}
 				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = *(iter + j);
-					}
-				}
+
+				m_buffer[index] = std::forward<T>(elem);
 				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					m_buffer[m_start_index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					m_buffer[index] = elem; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
 			}
 		}
 
@@ -1103,113 +1040,76 @@ namespace hyperion::utils {
 		template<typename... Args>
 		requires ConstructibleFrom<T, Args...>
 		constexpr inline auto
-		insert_emplace_internal(size_t external_index, Args&&... args) noexcept
-			-> T& requires Movable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
+		insert_emplace_internal(size_t external_index, Args&&... args) noexcept -> T& {
+			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
 				return emplace_back(std::forward<Args>(args)...);
 			}
 			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = std::move(*(iter + j));
-					}
-				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = std::move(*(iter + j));
-					}
-				}
-				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					allocator_traits::template construct<T>(m_allocator, &m_buffer[m_start_index], std::forward<Args>(args)...); // NOLINT
-					return m_buffer[m_start_index];// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					allocator_traits::template construct<T>(m_allocator, &m_buffer[index], std::forward<Args>(args)...); // NOLINT
-					return m_buffer[index];// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-			}
-		}
+				const auto size_ = size();
+				auto num_to_move = size_ - external_index;
+				auto j = num_to_move - 1;
 
-		/// @brief Constructs the given element at the insertion position indicated
-		/// by the `external_index`
-		/// @note if `size() == capacity()` this drops the last element out of the `RingBuffer`
-		///
-		/// @param external_index - The user-facing index into the `RingBuffer` to insert the
-		/// element at
-		/// @param args - The arguments to the constructor for
-		/// the element to store in the `RingBuffer`
-		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
-		constexpr inline auto
-		insert_emplace_internal(size_t external_index, Args&&... args) noexcept
-			-> T& requires NotMovable<T> {
-			const auto index = get_adjusted_internal_index(external_index);
+				// if we're full, drop the last element in the buffer
+				if(size_ == m_capacity - 1) [[likely]] { // NOLINT
+					num_to_move--;
+					j--;
+					index++;
+				}
 
-			if(index == m_write_index) {
-				return emplace_back(std::forward<Args>(args)...);
-			}
-			else {
-				auto num_to_move = size() - external_index;
-				auto iter = begin() + external_index;
-				if(full()) [[likely]] { // NOLINT
-					for(size_t i = 1ULL, j = num_to_move - 2; i < num_to_move; ++i, --j) {
-						*((end() - i) + 1) = *(iter + j);
+				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+					if constexpr(Movable<T>) {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
+					}
+					else {
+						m_buffer[get_adjusted_internal_index(size_ - i)]
+							= m_buffer[get_adjusted_internal_index(external_index + j)];
 					}
 				}
-				else {
-					for(size_t i = 0ULL, j = num_to_move - 1; i < num_to_move; ++i, --j) {
-						*(end() - i) = *(iter + j);
-					}
-				}
+
+				allocator_traits::template construct<T>(m_allocator,
+														&m_buffer[index],
+														std::forward<Args>(args)...);
+
 				increment_indices();
-				if(external_index == 0) {
-					// clang-format off
-					allocator_traits::template construct<T>(m_allocator, &m_buffer[m_start_index], std::forward<Args>(args)...); // NOLINT
-					return m_buffer[m_start_index];// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
-				else {
-					// clang-format off
-					allocator_traits::template construct<T>(m_allocator, &m_buffer[index], std::forward<Args>(args)...); // NOLINT
-					return m_buffer[index];// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
-				}
+				return m_buffer[index];
 			}
 		}
 
 		/// @brief Erases the element at the given index, returning an `Iterator` to the element
 		/// after the removed one
 		///
-		/// @param index - The index to the element to remove. This should be a `RingBuffer` index:
-		/// IE, not an interal one into the `T` array
+		/// @param external_index - The index to the element to remove. This should be a
+		/// `RingBuffer` index: IE, not an interal one into the `T` array
 		///
 		/// @return `Iterator` pointing to the element after the one removed
-		[[nodiscard]] constexpr inline auto erase_internal(size_t index) noexcept -> Iterator {
-			auto index_internal = get_adjusted_internal_index(index);
-			if(index_internal == m_write_index) [[unlikely]] { // NOLINT
+		[[nodiscard]] constexpr inline auto
+		erase_internal(size_t external_index) noexcept -> Iterator {
+			const auto index = get_adjusted_internal_index(external_index);
+
+			if(index == m_write_index) [[unlikely]] { // NOLINT
 				return end();
 			}
 			else {
-				auto num_to_move = (size() - 1) - index;
-				m_write_index = index_internal;
-				auto pos_to_move = index + 1;
+				const auto size_ = size();
+				auto num_to_move = (size_ - 1) - external_index;
+				const auto pos_to_move = external_index + 1;
+				const auto pos_to_replace = external_index;
 				for(auto i = 0ULL; i < num_to_move; ++i) {
-					// clang-format off
-					emplace_back(m_buffer[get_adjusted_internal_index(pos_to_move + i)]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
+					if constexpr(Movable<T>) {
+						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
+							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
+					}
+					else {
+						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
+							= m_buffer[get_adjusted_internal_index(pos_to_move + i)];
+					}
 				}
+				decrement_write();
 
-				auto iter = begin() + get_external_index_from_internal(m_write_index);
-				return iter;
+				return begin() + external_index;
 			}
 		}
 
@@ -1224,45 +1124,45 @@ namespace hyperion::utils {
 		/// @return `Iterator` pointing to the element after the last one erased
 		[[nodiscard]] constexpr inline auto
 		erase_internal(size_t first, size_t last) noexcept -> Iterator {
-			auto first_internal = get_adjusted_internal_index(first);
-			auto last_internal = get_adjusted_internal_index(last);
-			if(last_internal == m_write_index) {
-				if(m_write_index == m_loop_index) {
-					// m_start_index = m_loop_index;
-					m_write_index -= (last - first);
+			const auto size_ = size();
+			const auto last_internal = get_adjusted_internal_index(last);
+			const auto num_to_remove = (last - first);
+
+			if(last_internal > m_write_index) {
+				if(m_write_index > m_start_index) {
+					decrement_write_n(num_to_remove);
 				}
 				else if(m_write_index < m_start_index) {
-					auto num_to_remove = (last - first);
 					auto num_after_start_index
-						= (m_write_index > num_to_remove) ? m_write_index - num_to_remove : 0ULL;
+						= (m_write_index > num_to_remove ? m_write_index - num_to_remove : 0ULL);
 					auto num_before_start_index = num_to_remove - num_after_start_index;
 					if(num_after_start_index > 0) {
-						m_write_index = m_loop_index;
 						num_after_start_index--;
-						m_write_index -= num_after_start_index;
+						m_write_index = (m_capacity - 1) - num_after_start_index;
 					}
 					else {
-						m_write_index -= num_before_start_index;
+						decrement_write_n(num_before_start_index);
 					}
-				}
-				else if(m_write_index > m_start_index) {
-					auto num_to_remove = (last - first);
-					m_write_index -= num_to_remove;
 				}
 				return end();
 			}
 			else {
-				auto num_to_move = size() - last;
-				m_write_index = first_internal;
-				auto pos_to_move = last;
+				const auto num_to_move = size_ - last;
+				const auto pos_to_move = last;
+				const auto pos_to_replace = first;
 				for(auto i = 0ULL; i < num_to_move; ++i) {
-					// clang-format off
-					emplace_back(m_buffer[get_adjusted_internal_index(pos_to_move + i)]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-					// clang-format on
+					if constexpr(Movable<T>) {
+						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
+							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
+					}
+					else {
+						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
+							= m_buffer[get_adjusted_internal_index(pos_to_move + i)];
+					}
 				}
+				decrement_write_n(num_to_remove);
 
-				auto iter = begin() + first;
-				return iter;
+				return begin() + first;
 			}
 		}
 	};
@@ -1771,8 +1671,8 @@ namespace hyperion::utils {
 		///
 		/// @return The first element
 		[[nodiscard]] constexpr inline auto front() noexcept -> Element {
-			// return m_buffer[m_start_index.load()];
-			return m_buffer[m_state.start()];
+			return m_buffer
+				[m_state.start()]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
 
 		/// @brief Returns the last element in the `RingBuffer`
@@ -2642,8 +2542,7 @@ namespace hyperion::utils {
 				}
 				m_state.decrement_write_n(num_to_remove);
 
-				auto iter = begin() + first;
-				return iter;
+				return begin() + first;
 			}
 		}
 	};
