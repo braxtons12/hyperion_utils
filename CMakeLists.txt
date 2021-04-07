@@ -40,13 +40,27 @@ FetchContent_MakeAvailable(fmt)
 SET(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
 add_library(HyperionUtils INTERFACE)
-
+# Dummy library. A cheap hack to make tooling find fmt and gsl headers
+add_library(HyperionUtils.headers STATIC EXCLUDE_FROM_ALL "${CMAKE_CURRENT_SOURCE_DIR}/src/empty_cpp_for_tooling.cpp")
 
 if(MSVC)
 	target_compile_options(HyperionUtils INTERFACE /WX /W4 /std:c++20)
+	target_compile_options(HyperionUtils.headers INTERFACE /WX /W4 /std:c++20)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	if(NOT WIN32)
 		target_compile_options(HyperionUtils INTERFACE
+			-std=c++20
+			-Wall
+			-Wextra
+			-Wpedantic
+			-Weverything
+			-Werror
+			-Wno-c++98-compat
+			-Wno-c++98-compat-pedantic
+			-Wno-c++98-c++11-c++14-compat-pedantic
+			-Wno-c++20-compat
+			)
+		target_compile_options(HyperionUtils.headers INTERFACE
 			-std=c++20
 			-Wall
 			-Wextra
@@ -71,6 +85,18 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL 
 			-Wno-c++98-c++11-c++14-compat-pedantic
 			-Wno-c++20-compat
 			)
+		target_compile_options(HyperionUtils.headers INTERFACE
+			-std=c++20
+			-Wall
+			-Wextra
+			-Wpedantic
+			-Weverything
+			-Werror
+			-Wno-c++98-compat
+			-Wno-c++98-compat-pedantic
+			-Wno-c++98-c++11-c++14-compat-pedantic
+			-Wno-c++20-compat
+			)
 	endif()
 else()
 	target_compile_options(HyperionUtils INTERFACE
@@ -81,9 +107,21 @@ else()
 		-Werror
 		-Wno-c++20-compat
 		)
+	target_compile_options(HyperionUtils.headers INTERFACE
+		-std=c++20
+		-Wall
+		-Wextra
+		-Wpedantic
+		-Werror
+		-Wno-c++20-compat
+		)
 endif()
 
 target_include_directories(HyperionUtils BEFORE INTERFACE
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	)
+
+target_include_directories(HyperionUtils.headers BEFORE INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
 
@@ -114,3 +152,7 @@ target_link_libraries(HyperionUtils INTERFACE
 	GSL
 	)
 
+target_link_libraries(HyperionUtils.headers PUBLIC
+	fmt::fmt
+	GSL
+	)

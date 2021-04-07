@@ -43,7 +43,12 @@ namespace hyperion::utils {
 		auto operator=(LockFreeQueueError&& error) noexcept -> LockFreeQueueError& = default;
 	};
 
-	template<typename T, QueuePolicy Policy = QueuePolicy::ErrWhenFull, size_t Capacity = 512>
+	/// @brief The default capacityfor `LockFreeQueue`
+	static constexpr size_t DEFAULT_QUEUE_CAPACITY = 512ULL;
+
+	template<typename T,
+			 QueuePolicy Policy = QueuePolicy::ErrWhenFull,
+			 size_t Capacity = DEFAULT_QUEUE_CAPACITY>
 	class LockFreeQueue {
 	  public:
 		using PushError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsFull>;
@@ -52,6 +57,7 @@ namespace hyperion::utils {
 		constexpr LockFreeQueue() noexcept = default;
 		constexpr LockFreeQueue(const LockFreeQueue& queue) noexcept = default;
 		constexpr LockFreeQueue(LockFreeQueue&& queue) noexcept = default;
+		constexpr ~LockFreeQueue() noexcept = default;
 
 		[[nodiscard]] inline auto push(const T& entry) noexcept -> Result<bool, PushError>
 		requires Copyable<T> &&(Policy == QueuePolicy::ErrWhenFull) {

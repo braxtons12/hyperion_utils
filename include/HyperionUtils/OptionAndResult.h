@@ -35,6 +35,7 @@ namespace hyperion::utils {
 		}
 		constexpr NoneType(const NoneType& none) noexcept = default;
 		constexpr NoneType(NoneType&& none) noexcept = default;
+		constexpr ~NoneType() noexcept = default;
 		constexpr auto operator=(const NoneType& none) noexcept -> NoneType& = default;
 		constexpr auto operator=(NoneType&& none) noexcept -> NoneType& = default;
 	};
@@ -535,17 +536,19 @@ namespace hyperion::utils {
 	template<ErrorType E = Error>
 	requires NotReference<E>
 	struct ErrorWrapper {
-		explicit ErrorWrapper(const E& error) : m_error(error) {
+		explicit constexpr ErrorWrapper(const E& error) : m_error(error) {
 		}
-		explicit ErrorWrapper(E&& error) : m_error(std::forward<E>(error)) {
+		explicit constexpr ErrorWrapper(E&& error) : m_error(std::forward<E>(error)) {
 		}
-		ErrorWrapper(const ErrorWrapper& error) noexcept requires Copyable<E>
+		constexpr ErrorWrapper(const ErrorWrapper& error) noexcept requires Copyable<E>
 		= default;
-		ErrorWrapper(ErrorWrapper&& error) noexcept requires Movable<E>
+		constexpr ErrorWrapper(ErrorWrapper&& error) noexcept requires Movable<E>
 		= default;
-		auto operator=(const ErrorWrapper& error) noexcept -> ErrorWrapper& requires Copyable<E>
+		constexpr ~ErrorWrapper() noexcept = default;
+		constexpr auto
+		operator=(const ErrorWrapper& error) noexcept -> ErrorWrapper& requires Copyable<E>
 		= default;
-		auto operator=(ErrorWrapper&& error) noexcept -> ErrorWrapper& requires Movable<E>
+		constexpr auto operator=(ErrorWrapper&& error) noexcept -> ErrorWrapper& requires Movable<E>
 		= default;
 
 		E m_error;
@@ -562,6 +565,7 @@ namespace hyperion::utils {
 		= default;
 		constexpr OkWrapper(OkWrapper&& ok) noexcept requires Movable<T>
 		= default;
+		constexpr ~OkWrapper() noexcept = default;
 		constexpr auto operator=(const OkWrapper& ok) noexcept -> OkWrapper& requires Copyable<T>
 		= default;
 		constexpr auto operator=(OkWrapper&& ok) noexcept -> OkWrapper& requires Movable<T>

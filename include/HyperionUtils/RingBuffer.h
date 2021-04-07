@@ -131,10 +131,9 @@ namespace hyperion::utils {
 				if(m_current_index == 0) {
 					return *this;
 				}
-				else {
-					m_current_index--;
-					m_ptr = &(*m_container_ptr)[m_current_index];
-				}
+
+				m_current_index--;
+				m_ptr = &(*m_container_ptr)[m_current_index];
 				return *this;
 			}
 
@@ -291,10 +290,9 @@ namespace hyperion::utils {
 				if(m_current_index == 0) {
 					return *this;
 				}
-				else {
-					m_current_index--;
-					m_ptr = &(*m_container_ptr)[m_current_index];
-				}
+
+				m_current_index--;
+				m_ptr = &(*m_container_ptr)[m_current_index];
 				return *this;
 			}
 
@@ -1223,6 +1221,7 @@ namespace hyperion::utils {
 			}
 			constexpr Element(const Element& element) noexcept = default;
 			constexpr Element(Element&& element) noexcept = default;
+			constexpr ~Element() noexcept = default;
 
 			inline constexpr auto operator=(const Element& element) noexcept -> Element& = default;
 			inline constexpr auto operator=(Element&& element) noexcept -> Element& = default;
