@@ -95,6 +95,14 @@ namespace hyperion::utils::concepts {
 	concept Derived = std::derived_from<std::remove_pointer_t<std::decay_t<Der>>,
 										std::remove_pointer_t<std::decay_t<Base>>>;
 
+	/// @brief Concept that requires `From` is convertible to `To`
+	template<typename From, typename To>
+	concept Convertible = std::is_convertible_v<From, To>;
+
+	/// @brief Concept that requires `From` is __not__ convertible to `To`
+	template<typename From, typename To>
+	concept NotConvertible = !Convertible<From, To>;
+
 	/// @brief Concept that requires `E` to be an `ErrorType`
 	/// (aka derived from `hyperion::utils::Error`)
 	template<typename E>

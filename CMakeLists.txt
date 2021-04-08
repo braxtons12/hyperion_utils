@@ -123,6 +123,9 @@ target_include_directories(HyperionUtils BEFORE INTERFACE
 
 target_include_directories(HyperionUtils.headers BEFORE INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/synchronization"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/detail"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/logging"
 	)
 
 ###### We add headers to sources sets because it helps with `#include` lookup for some tooling #####
@@ -141,6 +144,9 @@ set(EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/TypeTraits.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/synchronization/ReadWriteLock.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/synchronization/ScopedLockGuard.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/detail/AllocateUnique.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/Config.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/Entry.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/HyperionUtils.h"
 	)
 

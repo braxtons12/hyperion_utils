@@ -1,9 +1,32 @@
+#pragma once
+
+#include <version>
+
 #define APEX_DECLARE_NON_HEAP_ALLOCATABLE()	   /** NOLINT(cppcoreguidelines-macro-usage): This isn't \
 												  a function-like macro                      **/     \
 	static auto operator new(std::size_t size) noexcept->void* = delete;                             \
 	static auto operator new[](std::size_t size) noexcept->void* = delete;                           \
 	static auto operator delete(void* obj) noexcept->void = delete;                                  \
 	static auto operator delete[](void* obj) noexcept->void = delete;
+
+/// Use to mark variable as no_destroy on clang
+#ifdef __clang__
+	#define HYPERION_NO_DESTROY [[clang::no_destroy]] // NOLINT
+#else
+	#define HYPERION_NO_DESTROY
+#endif
+
+/// Use to conditionally mark something `constexpr` if `std::string` is `constexpr
+/// This will be removable once all stdlibs impl `constexpr std::string`
+#ifdef __cpp_lib_constexpr_string
+	#if(__cpp_lib_constexpr_string == 201907L)
+		#define HYPERION_CONSTEXPR_STRINGS constexpr
+	#else
+		#define HYPERION_CONSTEXPR_STRINGS
+	#endif
+#else
+	#define HYPERION_CONSTEXPR_STRINGS
+#endif
 
 /// Use to temporarily disable unused macros warning on GCC/Clang
 // clang-format off
@@ -239,11 +262,5 @@ IGNORE_UNUSED_MACROS_START
 	#define IGNORE_COMMA_MISUSE_STOP
 #endif
 
-/// Use to mark variable as no_destroy on clang
-#ifdef __clang__
-	#define HYPERION_NO_DESTROY [[clang::no_destroy]] // NOLINT
-#else
-	#define HYPERION_NO_DESTROY
-#endif
 // clang-format on
 IGNORE_UNUSED_MACROS_STOP

@@ -9,51 +9,11 @@
 #include <thread>
 
 #include "LockFreeQueue.h"
-#include "fmtIncludes.h"
+#include "logging/Config.h"
+#include "logging/Entry.h"
+#include "logging/fmtIncludes.h"
 
 namespace hyperion::utils {
-
-	/// @brief Used to indicate the desired logging level of the logger.
-	enum class LogLevel : size_t
-	{
-		/// @brief General messages such as "log started" or "log closing"
-		MESSAGE = 0,
-		/// @brief Used for logging call traces
-		TRACE = 1,
-		/// @brief Used for general information reports
-		INFO = 2,
-		/// @brief Used for warnings and other more severe reports
-		WARN = 3,
-		/// @brief Used for system errors and other fatal or near-fatal reports
-		ERROR = 4,
-		/// @brief Disable logging.
-		DISABLED = 5
-	};
-
-	/// @brief Used to indicate the behavior of the logger when
-	/// queueing an entry for logging. This is the behavior the user will experience
-	/// when calling `log` or one of the logging-level-specific methods.
-	/// There are three policy types, each with differing levels of data preservation.
-	///
-	/// - `DropWhenFull`: The logger will return an error when the
-	/// 				  logging queue is full and fail to log the given entry
-	/// - `OverwriteWhenFull`: The logger's queue will act as a ring buffer,
-	/// 					   and when full, entries not yet logged to disk will be
-	/// 					   overwritten and discarded
-	/// - `FlushWhenFull`: The logger will block when the logging queue is full
-	/// 				   until the queue is empty again
-	enum class LogPolicy : size_t
-	{
-		/// @brief The logger will return an error when the logging queue is full
-		/// and fial to log the given entry
-		DropWhenFull = 0,
-		/// @brief The logger's queue will act as a ring buffer, and when full,
-		/// entries not yet logged to disk will be overwritten and discarded
-		OverwriteWhenFull = 1,
-		/// @brief The logger will block when the loggign queue is full,
-		/// until the queue is empty again
-		FlushWhenFull = 2
-	};
 
 	/// @brief Possible Error categories that can occur when using the logger
 	enum class LogErrorCategory : size_t
@@ -98,68 +58,13 @@ namespace hyperion::utils {
 			Error::m_has_source = true;
 		}
 		LoggerError(const LoggerError& error) noexcept = default;
-		LoggerError(LoggerError& error) noexcept = default;
+		LoggerError(LoggerError&& error) noexcept = default;
 		~LoggerError() noexcept final = default;
 
 		auto operator=(const LoggerError& error) noexcept -> LoggerError& = default;
 		auto operator=(LoggerError&& error) noexcept -> LoggerError& = default;
 	};
 	IGNORE_WEAK_VTABLES_STOP
-
-	/// @brief Wrapper type for `LogPolicy` for type-safe compile-time logger configuration
-	///
-	/// @tparam Policy - The `LogPolicy` to use for the logger
-	template<LogPolicy Policy = LogPolicy::DropWhenFull>
-	struct LoggerPolicy {
-		static constexpr LogPolicy policy = Policy;
-	};
-
-	/// @brief Concept that requires `T` to be a `LoggerPolicy` type
-	template<typename T>
-	concept LoggerPolicyType = requires() {
-		T::policy;
-	};
-
-	/// @brief Alias for the default logging policy
-	using DefaultLogPolicy = LoggerPolicy<>;
-
-	/// @brief Wrapper type for `LogLevel` for type-safe compile-time logger configuration
-	///
-	/// @tparam MinimumLevel - The `LogLevel` to use for the logger
-	template<LogLevel MinimumLevel = LogLevel::INFO>
-	struct LoggerLevel {
-		static constexpr LogLevel minimum_level = MinimumLevel;
-	};
-
-	/// @brief Concept that requires `T` to be a `LoggerLevel` type
-	template<typename T>
-	concept LoggerLevelType = requires() {
-		T::minimum_level;
-	};
-
-	/// @brief Alias for the default logging level
-	using DefaultLogLevel = LoggerLevel<>;
-
-	/// @brief Wrapper type for type-safe compile-time passing of logging configuration parameters
-	///
-	/// @tparam PolicyType - The policy to use for the logger
-	/// @tparam MinimumLevelType - The minimum logging level for the logger
-	template<LoggerPolicyType PolicyType = DefaultLogPolicy,
-			 LoggerLevelType MinimumLevelType = DefaultLogLevel>
-	struct LoggerParameters {
-		static constexpr auto policy = PolicyType::policy;
-		static constexpr auto minimum_level = MinimumLevelType::minimum_level;
-	};
-
-	/// @brief Concept that requires `T` to be a `LoggerParameters` type
-	template<typename T>
-	concept LoggerParametersType = requires() {
-		T::policy;
-		T::minimum_level;
-	};
-
-	/// @brief Alias for the default logging configuration parameters
-	using DefaultLogParameters = LoggerParameters<>;
 
 	/// @brief Hyperion logging type for formatted logging.
 	/// Uses fmtlib/fmt for entry formatting and stylizing
@@ -180,8 +85,8 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
-							//fmt::print("{}", message);
+								log_file.print(message.style(), "{}", message.entry());
+								//fmt::print("{}", message);
 						}
 					}
 					log_file.close();
@@ -199,7 +104,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -218,7 +123,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -238,7 +143,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -258,7 +163,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -278,7 +183,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -298,7 +203,7 @@ namespace hyperion::utils {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print("{}", message);
+							log_file.print(message.style(), "{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -320,7 +225,8 @@ namespace hyperion::utils {
 					return log_dropping<Level>(thread_id, format_string, args...);
 				}
 				else if constexpr(POLICY == LogPolicy::FlushWhenFull) {
-					return log_flushing<Level>(thread_id, format_string, args...);
+					log_flushing<Level>(thread_id, format_string, args...);
+					return Ok(true);
 				}
 				else {
 					log_overwriting<Level>(thread_id, format_string, args...);
@@ -376,8 +282,8 @@ namespace hyperion::utils {
 			}
 		}
 
-		std::shared_ptr<LockFreeQueue<std::string, get_queue_policy()>> m_messages
-			= std::make_shared<LockFreeQueue<std::string, get_queue_policy()>>();
+		std::shared_ptr<LockFreeQueue<Entry, get_queue_policy()>> m_messages
+			= std::make_shared<LockFreeQueue<Entry, get_queue_policy()>>();
 		std::string m_root_name = "HyperionLog"s;
 		std::string m_directory_name = "Hyperion"s;
 		std::string m_log_file_path = create_log_file_path();
@@ -434,15 +340,14 @@ namespace hyperion::utils {
 				log_type = "ERROR"s;
 			}
 
-			const auto logline = fmt::format(MESSAGE_STYLE,
-											 "{0}  [Thread ID: {1}] [{2}]: {3}\n",
-											 timestamp,
-											 id,
-											 log_type,
-											 entry);
-
-			return m_messages->push(logline).template map_err<LoggerError>(
-				[](const QueueError& error) { return LoggerError(error); });
+			return m_messages->push(make_entry<entry_level_t<Level>>(
+									"{0}  [Thread ID: {1}] [{2}]: {3}\n",
+									 timestamp,
+									 id,
+									 log_type,
+									 entry))
+						.template map_err<LoggerError>(
+								[](const QueueError& error) { return LoggerError(error); });
 		}
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
@@ -472,20 +377,18 @@ namespace hyperion::utils {
 				log_type = "ERROR"s;
 			}
 
-			const auto logline = fmt::format(MESSAGE_STYLE,
-											 "{0}  [Thread ID: {1}] [{2}]: {3}\n",
-											 timestamp,
-											 id,
-											 log_type,
-											 entry);
-
-			m_messages->push(logline);
+			m_messages->push(make_entry<entry_level_t<Level>>(
+									"{0}  [Thread ID: {1}] [{2}]: {3}\n",
+									 timestamp,
+									 id,
+									 log_type,
+									 entry));
 		}
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
 		log_flushing(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept
-			-> Result<bool, LoggerError>
+			-> void
 		requires(POLICY == LogPolicy::FlushWhenFull) {
 			const auto timestamp = create_time_stamp();
 			const auto entry = fmt::format(format_string, args...);
@@ -522,8 +425,12 @@ namespace hyperion::utils {
 				}
 			}
 
-			return m_messages->push(logline).template map_err<LoggerError>(
-				[](const QueueError& error) { return LoggerError(error); });
+			while(!m_messages->push(make_entry<entry_level_t<Level>>(
+									"{0}  [Thread ID: {1}] [{2}]: {3}\n",
+									 timestamp,
+									 id,
+									 log_type,
+									 entry))) {}
 		}
 	};
 
@@ -534,7 +441,7 @@ namespace hyperion::utils {
 			Error::m_message = "Global logger already initialized"s;
 		}
 		LoggerInitError(const LoggerInitError& error) noexcept = default;
-		LoggerInitError(LoggerInitError& error) noexcept = default;
+		LoggerInitError(LoggerInitError&& error) noexcept = default;
 		~LoggerInitError() noexcept final = default;
 
 		auto operator=(const LoggerInitError& error) noexcept -> LoggerInitError& = default;
