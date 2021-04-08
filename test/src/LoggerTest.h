@@ -11,20 +11,19 @@ namespace hyperion::utils::test {
 		using Parameters = LoggerParameters<LoggerPolicy<LogPolicy::FlushWhenFull>,
 											LoggerLevel<LogLevel::MESSAGE>>;
 
-		auto thread = std::jthread([&](const std::stop_token& stop) {
-			int i = 0;
-			while(!stop.stop_requested()) {
+		constexpr auto num_entries = 512;
+		auto thread = std::jthread([&]() {
+			for(int i = 0; i < num_entries; ++i) {
 				auto result = INFO<Parameters>(None(), "{0}{1}", "info"s, i);
 				ignore(result.is_ok());
-				i++;
 			}
 		});
 
-		for(int i = 0; i < 512; ++i) {
+		for(int i = 0; i < num_entries; ++i) {
 			auto result = MESSAGE<Parameters>(None(), "{0}{1}", "message"s, i);
 			ignore(result.is_ok());
 		}
-		thread.request_stop();
+		thread.join();
 
 		ASSERT_TRUE(true);
 	}
