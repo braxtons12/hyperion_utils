@@ -9,22 +9,6 @@
 
 namespace hyperion::utils {
 
-	/// @brief Requirements for what constitutes a log entry type
-	template<typename T>
-	concept EntryType = requires(T val) {
-		{
-			val.log_level()
-		}
-		noexcept->std::same_as<LogLevel>;
-		{
-			val.log_style()
-			} -> std::same_as<fmt::text_style>;
-		{
-			val.log_entry()
-		}
-		noexcept->std::same_as<std::string_view>;
-	};
-
 	/// @brief Base CRTP for logging entry types
 	///
 	/// @tparam T - The entry type
@@ -53,11 +37,11 @@ namespace hyperion::utils {
 		}
 
 	  private:
-		[[nodiscard]] inline constexpr auto underlying() const noexcept -> const EntryType auto& {
+		[[nodiscard]] inline constexpr auto underlying() const noexcept -> const T& {
 			return static_cast<const T&>(*this);
 		}
 
-		[[nodiscard]] inline constexpr auto underlying() noexcept -> EntryType auto& {
+		[[nodiscard]] inline constexpr auto underlying() noexcept -> T& {
 			return static_cast<T&>(*this);
 		}
 
@@ -69,6 +53,22 @@ namespace hyperion::utils {
 		constexpr auto operator=(EntryBase&& entry) noexcept -> EntryBase& = default;
 
 		friend T;
+	};
+
+	/// @brief Requirements for what constitutes a log entry type
+	template<typename T>
+	concept EntryType = concepts::Derived<T, EntryBase<T>> && requires(T val) {
+		{
+			val.log_level()
+		}
+		noexcept->std::same_as<LogLevel>;
+		{
+			val.log_style()
+			} -> std::same_as<fmt::text_style>;
+		{
+			val.log_entry()
+		}
+		noexcept->std::same_as<std::string_view>;
 	};
 
 	/// @brief Entry type for `LogLevel::MESSAGE` log entries
@@ -396,8 +396,15 @@ namespace hyperion::utils {
 		return Entry(std::in_place_type_t<T>(), std::forward<Args>(args)...);
 	}
 
+	/// @brief Tag type for logging level of an entry
+	///
+	/// @tparam Level - The logging level
 	template<LogLevel Level>
 	struct entry_level { };
+
+	/// @brief Alias for `entry_level<Level>::type`
+	///
+	/// @tparam Level - The logging level
 	template<LogLevel Level>
 	using entry_level_t = typename entry_level<Level>::type;
 
