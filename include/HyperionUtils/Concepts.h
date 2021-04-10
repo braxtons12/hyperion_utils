@@ -139,7 +139,7 @@ namespace hyperion::utils::concepts {
 
 	/// @brief Concept that requires `T` and `U` to be the same type
 	template<typename T, typename U>
-	concept Same = std::is_same_v<T, U>;
+	concept Same = std::same_as<T, U>;
 
 	/// @brief Concept requiring `T` to be inequality comparable to `U`
 	/// (`T` has `operator!=` for `U`)
