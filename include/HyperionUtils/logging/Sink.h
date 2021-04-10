@@ -61,6 +61,9 @@ namespace hyperion::utils {
 		FileCreationError(FileCreationError&& error) noexcept = default;
 		~FileCreationError() noexcept final = default;
 
+		/// @brief Returns the `FileCreationErrorCategory` associated with this error
+		///
+		/// @return The associated `FileCreationErrorCategory`
 		[[nodiscard]] inline auto category() const noexcept -> FileCreationErrorCategory {
 			return m_category;
 		}
@@ -129,9 +132,9 @@ namespace hyperion::utils {
 		/// - creating or accessing the given subdirectory fails
 		/// - creating a file with the given `file_name` fails
 		///
-		/// @param root_file_name - The relative root file name (JUST the file name, ie: "Hyperion")
-		/// of the the output file. This will have a timestamp prepended and the ".log" extension
-		/// appended
+		/// @param root_file_name - The relative root file name (JUST the file name, ie:
+		/// "HyperionLog") of the the output file. This will have a timestamp prepended and the
+		/// ".log" extension appended
 		/// @param subdirectory_name - The relative subdirectory (JUST the subdirectory name, ie:
 		/// "Hyperion") to store the file in
 		///
@@ -369,6 +372,14 @@ namespace hyperion::utils {
 		variant_type m_inner;
 	};
 
+	/// @brief Creates a `Sink` of the given `SinkType` from the given arguments
+	/// Constructs the underlying `SinkType` in place in the `Sink`
+	///
+	/// @tparam T - The `SinkType` to create the `Sink` as
+	/// @tparam Args - The types of the arguments for constructing the `SinkType`
+	/// @param args - The arguments to pass to the `SinkType`'s constructor
+	///
+	/// @return A new `Sink`
 	template<SinkType T, typename... Args>
 	requires ConstructibleFrom<T, Args...>
 	inline auto make_sink(Args&&... args) noexcept -> Sink {
