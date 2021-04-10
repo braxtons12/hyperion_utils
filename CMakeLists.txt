@@ -147,6 +147,8 @@ set(EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/detail/AllocateUnique.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/Config.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/Entry.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/Sink.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/logging/SinkBase.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/HyperionUtils/HyperionUtils.h"
 	)
 

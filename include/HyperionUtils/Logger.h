@@ -11,12 +11,13 @@
 #include "LockFreeQueue.h"
 #include "logging/Config.h"
 #include "logging/Entry.h"
+#include "logging/Sink.h"
 #include "logging/fmtIncludes.h"
 
 namespace hyperion::utils {
 
 	/// @brief Possible Error categories that can occur when using the logger
-	enum class LogErrorCategory : size_t
+	enum class LogErrorCategory : uint8_t
 	{
 		/// @brief failed to queue the entry for logging
 		QueueingError = 0,
