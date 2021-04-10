@@ -7,7 +7,7 @@
 namespace hyperion::utils {
 
 	/// @brief Used to indicate the desired logging level of the logger.
-	enum class LogLevel : size_t
+	enum class LogLevel : uint8_t
 	{
 		/// @brief General messages such as "log started" or "log closing"
 		MESSAGE = 0,
@@ -35,7 +35,7 @@ namespace hyperion::utils {
 	/// 					   overwritten and discarded
 	/// - `FlushWhenFull`: The logger will block when the logging queue is full
 	/// 				   until the queue is empty again
-	enum class LogPolicy : size_t
+	enum class LogPolicy : uint8_t
 	{
 		/// @brief The logger will return an error when the logging queue is full
 		/// and fial to log the given entry
