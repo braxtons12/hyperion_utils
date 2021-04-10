@@ -407,6 +407,18 @@ namespace hyperion::utils {
 			  m_capacity(intitial_capacity + 1) {
 		}
 
+		constexpr RingBuffer(std::initializer_list<T> values) noexcept requires Copyable<T>
+			: m_buffer(allocate_unique<T[]>(m_allocator, // NOLINT
+											values.size() + 1)),
+			  m_loop_index(values.size()),
+			  m_capacity(values.size() + 1) {
+
+			auto end_ = values.end();
+			for(auto iter = values.begin(); iter != end_; ++iter) {
+				push_back(std::move(*iter));
+			}
+		}
+
 		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires Copyable<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, buffer.m_capacity)), // NOLINT
 			  m_write_index(0ULL),											  // NOLINT
