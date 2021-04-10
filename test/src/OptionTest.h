@@ -85,7 +85,7 @@ namespace hyperion::utils::test {
 
 		auto res = none.ok_or(std::move(error));
 		ASSERT_TRUE(res.is_err());
-		ASSERT_TRUE(res.unwrap_err().message_as_std_string() == std::string("TestErrorMessage"));
+		ASSERT_TRUE(res.unwrap_err().message() == std::string("TestErrorMessage"));
 	}
 
 	TEST(OptionTest, someOkOrElseValue) {
@@ -122,7 +122,7 @@ namespace hyperion::utils::test {
 
 		auto res = none.ok_or_else<Error>([]() { return Error("TestErrorMessage"); });
 		ASSERT_TRUE(res.is_err());
-		ASSERT_TRUE(res.unwrap_err().message_as_std_string() == std::string("TestErrorMessage"));
+		ASSERT_TRUE(res.unwrap_err().message() == std::string("TestErrorMessage"));
 	}
 
 	TEST(OptionTest, someUnwrapValue) {

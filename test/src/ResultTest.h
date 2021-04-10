@@ -293,7 +293,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.unwrap_err().message_as_std_string(), "TestErrorMessage");
+		ASSERT_EQ(err.unwrap_err().message(), "TestErrorMessage");
 	}
 
 	TEST(ResultTest, errUnwrapErrPointer) {
@@ -304,7 +304,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.unwrap_err()->message_as_std_string(), "TestErrorMessage");
+		ASSERT_EQ(err.unwrap_err()->message(), "TestErrorMessage");
 	}
 
 	TEST(ResultTest, okokValue) {
@@ -400,7 +400,7 @@ namespace hyperion::utils::test {
 
 		auto maybe_ok = err.err();
 		ASSERT_TRUE(maybe_ok.is_some());
-		ASSERT_EQ(maybe_ok.unwrap().message_as_std_string(), "TestErrorMessage");
+		ASSERT_EQ(maybe_ok.unwrap().message(), "TestErrorMessage");
 	}
 
 	TEST(ResultTest, errerrPointer) {
@@ -413,7 +413,7 @@ namespace hyperion::utils::test {
 
 		auto maybe_ok = err.err();
 		ASSERT_TRUE(maybe_ok.is_some());
-		ASSERT_EQ(maybe_ok.unwrap()->message_as_std_string(), "TestErrorMessage");
+		ASSERT_EQ(maybe_ok.unwrap()->message(), "TestErrorMessage");
 	}
 
 	TEST(ResultTest, okMapValue) {
@@ -460,7 +460,7 @@ namespace hyperion::utils::test {
 						 return 2;
 					 })
 					  .unwrap_err()
-					  .message_as_std_string(),
+					  .message(),
 				  "TestErrorMessage");
 	}
 
@@ -477,7 +477,7 @@ namespace hyperion::utils::test {
 						 return 2;
 					 })
 					  .unwrap_err()
-					  ->message_as_std_string(),
+					  ->message(),
 				  "TestErrorMessage");
 	}
 
@@ -666,7 +666,7 @@ namespace hyperion::utils::test {
 						 return Error("TestErrorMessage2");
 					 })
 					  .unwrap_err()
-					  .message_as_std_string(),
+					  .message(),
 				  "TestErrorMessage2");
 	}
 
@@ -684,7 +684,7 @@ namespace hyperion::utils::test {
 						 return Error("TestErrorMessage2");
 					 })
 					  .unwrap_err()
-					  .message_as_std_string(),
+					  .message(),
 				  "TestErrorMessage2");
 	}
 
@@ -713,7 +713,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err.is_ok());
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
-		ASSERT_EQ(err.unwrap_err()->message_as_std_string(), "TestErrorMessage");
+		ASSERT_EQ(err.unwrap_err()->message(), "TestErrorMessage");
 	}
 
 	TEST(ResultTest, errMovePointer) {

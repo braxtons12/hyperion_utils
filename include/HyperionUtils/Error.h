@@ -28,20 +28,14 @@ namespace hyperion::utils {
 		///
 		/// @param code - The error code
 		Error(const std::error_code& code) noexcept // NOLINT
-			: m_error_code(code), m_has_error_code(true) {
-		}
-
-		/// @brief Constructs an `Error` from the given `std::error_code`
-		///
-		/// @param code - The error code
-		Error(std::error_code&& code) noexcept // NOLINT
-			: m_error_code(code), m_has_error_code(true) {
+			: m_error_code(code), m_message(code.message()), m_has_error_code(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message
 		///
 		/// @param message - The error message
-		explicit Error(const char* message) noexcept : m_message(message, std::strlen(message)) {
+		template<size_t N>
+		explicit Error(const char(message)[N]) noexcept : m_message(message, N) { // NOLINT
 		}
 
 		/// @brief Constructs an `Error` with the given message
@@ -53,7 +47,8 @@ namespace hyperion::utils {
 		/// @brief Constructs an `Error` with the given message
 		///
 		/// @param message - The error message
-		explicit Error(std::string&& message) noexcept : m_message(message) {
+		explicit Error(std::string&& message) noexcept
+			: m_message(std::forward<std::string>(message)) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
@@ -61,8 +56,9 @@ namespace hyperion::utils {
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		Error(const char* message, gsl::owner<Error*> source) noexcept
-			: m_source(source), m_message(message, std::strlen(message)), m_has_source(true) {
+		template<size_t N>
+		Error(const char(message)[N], gsl::owner<Error*> source) noexcept // NOLINT
+			: m_source(source), m_message(message, N), m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
@@ -80,15 +76,16 @@ namespace hyperion::utils {
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
 		Error(std::string&& message, gsl::owner<Error*> source) noexcept
-			: m_source(source), m_message(message), m_has_source(true) {
+			: m_source(source), m_message(std::forward<std::string>(message)), m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		Error(const char* message, const Error& source) noexcept
-			: m_source(std::make_shared<Error>(source)), m_message(message), m_has_source(true) {
+		template<size_t N>
+		Error(const char(message)[N], const Error& source) noexcept // NOLINT
+			: m_source(std::make_shared<Error>(source)), m_message(message, N), m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
@@ -104,15 +101,18 @@ namespace hyperion::utils {
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
 		Error(std::string&& message, const Error& source) noexcept
-			: m_source(std::make_shared<Error>(source)), m_message(message), m_has_source(true) {
+			: m_source(std::make_shared<Error>(source)),
+			  m_message(std::forward<std::string>(message)), m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		Error(const char* message, Error&& source) noexcept
-			: m_source(std::make_shared<Error>(source)), m_message(message), m_has_source(true) {
+		template<size_t N>
+		Error(const char(message)[N], Error&& source) noexcept // NOLINT
+			: m_source(std::make_shared<Error>(std::forward<Error>(source))), m_message(message, N),
+			  m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
@@ -120,7 +120,8 @@ namespace hyperion::utils {
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
 		Error(const std::string& message, Error&& source) noexcept // NOLINT
-			: m_source(std::make_shared<Error>(source)), m_message(message), m_has_source(true) {
+			: m_source(std::make_shared<Error>(std::forward<Error>(source))), m_message(message),
+			  m_has_source(true) {
 		}
 
 		/// @brief Constructs an `Error` with the given message and source.
@@ -128,7 +129,8 @@ namespace hyperion::utils {
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
 		Error(std::string&& message, Error&& source) noexcept
-			: m_source(std::make_shared<Error>(source)), m_message(message), m_has_source(true) {
+			: m_source(std::make_shared<Error>(std::forward<Error>(source))),
+			  m_message(std::forward<std::string>(message)), m_has_source(true) {
 		}
 
 		Error(const Error& error) = default;
@@ -144,10 +146,16 @@ namespace hyperion::utils {
 			return m_source;
 		}
 
+		/// @brief Returns whether this `Error` resulted from a `std::error_code`
+		///
+		/// @return `true` if this originated from a `std::error_code`, `false` otherwise
 		[[nodiscard]] constexpr auto has_std_error_code() const noexcept -> bool {
 			return m_has_error_code;
 		}
 
+		/// @brief Returns the `std::error_code` associated with this `Error`
+		///
+		/// @return The associated `std::error_code`
 		[[nodiscard]] auto error_code() const noexcept -> const std::error_code {
 			return m_error_code;
 		}
@@ -155,12 +163,15 @@ namespace hyperion::utils {
 		/// @brief Returns the error message for this `Error`
 		///
 		/// @return The error message
-		[[nodiscard]] auto message() const noexcept -> const char* {
-			return m_message.c_str();
+		[[nodiscard]] inline auto message() const noexcept -> std::string {
+			return m_message;
 		}
 
-		[[nodiscard]] inline auto message_as_std_string() const noexcept -> std::string {
-			return m_message;
+		/// @brief Returns the error message for this `Error`
+		///
+		/// @return The error message
+		[[nodiscard]] auto message_as_cstr() const noexcept -> const char* {
+			return m_message.c_str();
 		}
 
 		/// @brief Converts this `Error` to a `std::string`
