@@ -7,6 +7,7 @@
 #include <system_error>
 #include <type_traits>
 
+#include "BasicTypes.h"
 #include "Macros.h"
 
 namespace hyperion::utils {
@@ -34,7 +35,7 @@ namespace hyperion::utils {
 		/// @brief Constructs an `Error` with the given message
 		///
 		/// @param message - The error message
-		template<size_t N>
+		template<usize N>
 		explicit Error(const char(message)[N]) noexcept : m_message(message, N) { // NOLINT
 		}
 
@@ -56,7 +57,7 @@ namespace hyperion::utils {
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		template<size_t N>
+		template<usize N>
 		Error(const char(message)[N], gsl::owner<Error*> source) noexcept // NOLINT
 			: m_source(source), m_message(message, N), m_has_source(true) {
 		}
@@ -83,7 +84,7 @@ namespace hyperion::utils {
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		template<size_t N>
+		template<usize N>
 		Error(const char(message)[N], const Error& source) noexcept // NOLINT
 			: m_source(std::make_shared<Error>(source)), m_message(message, N), m_has_source(true) {
 		}
@@ -109,7 +110,7 @@ namespace hyperion::utils {
 		///
 		/// @param message - The error message
 		/// @param source - The source/cause `Error`
-		template<size_t N>
+		template<usize N>
 		Error(const char(message)[N], Error&& source) noexcept // NOLINT
 			: m_source(std::make_shared<Error>(std::forward<Error>(source))), m_message(message, N),
 			  m_has_source(true) {

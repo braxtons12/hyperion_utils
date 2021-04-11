@@ -8,6 +8,7 @@
 #include <memory>
 #include <thread>
 
+#include "BasicTypes.h"
 #include "LockFreeQueue.h"
 #include "logging/Config.h"
 #include "logging/Entry.h"
@@ -17,7 +18,7 @@
 namespace hyperion::utils {
 
 	/// @brief Possible Error categories that can occur when using the logger
-	enum class LogErrorCategory : uint8_t
+	enum class LogErrorCategory : u8
 	{
 		/// @brief failed to queue the entry for logging
 		QueueingError = 0,
@@ -219,7 +220,7 @@ namespace hyperion::utils {
 		~Logger() noexcept = default;
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
-		inline auto log(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept
+		inline auto log(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
 			-> Result<bool, LoggerError> {
 			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 				if constexpr(POLICY == LogPolicy::DropWhenFull) {
@@ -242,31 +243,31 @@ namespace hyperion::utils {
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		message(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+		message(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 			return log<LogLevel::MESSAGE>(thread_id, format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		trace(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+		trace(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 			return log<LogLevel::TRACE>(thread_id, format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		info(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+		info(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 			return log<LogLevel::INFO>(thread_id, format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		warn(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+		warn(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 			return log<LogLevel::WARN>(thread_id, format_string, args...);
 		}
 
 		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		error(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+		error(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 			return log<LogLevel::ERROR>(thread_id, format_string, args...);
 		}
 
@@ -315,7 +316,7 @@ namespace hyperion::utils {
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		log_dropping(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept
+		log_dropping(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
 			-> Result<bool, LoggerError>
 		requires(POLICY == LogPolicy::DropWhenFull) {
 			const auto timestamp = create_time_stamp();
@@ -353,7 +354,7 @@ namespace hyperion::utils {
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		log_overwriting(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept
+		log_overwriting(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
 			-> void requires(POLICY == LogPolicy::OverwriteWhenFull) {
 			const auto timestamp = create_time_stamp();
 			const auto entry = fmt::format(format_string, args...);
@@ -388,7 +389,7 @@ namespace hyperion::utils {
 
 		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
 		inline auto
-		log_flushing(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept
+		log_flushing(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
 			-> void
 		requires(POLICY == LogPolicy::FlushWhenFull) {
 			const auto timestamp = create_time_stamp();
@@ -498,7 +499,7 @@ namespace hyperion::utils {
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
-	inline auto MESSAGE(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+	inline auto MESSAGE(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 		return get_global_logger<LogParameters>().message(thread_id, format_string, args...);
 	}
 
@@ -506,7 +507,7 @@ namespace hyperion::utils {
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
-	inline auto TRACE(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+	inline auto TRACE(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 		return get_global_logger<LogParameters>().trace(thread_id, format_string, args...);
 	}
 
@@ -514,7 +515,7 @@ namespace hyperion::utils {
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
-	inline auto INFO(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+	inline auto INFO(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 		return get_global_logger<LogParameters>().info(thread_id, format_string, args...);
 	}
 
@@ -522,7 +523,7 @@ namespace hyperion::utils {
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
-	inline auto WARN(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+	inline auto WARN(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 		return get_global_logger<LogParameters>().warn(thread_id, format_string, args...);
 	}
 
@@ -530,7 +531,7 @@ namespace hyperion::utils {
 			 typename S,
 			 typename... Args,
 			 typename Char = fmt::char_t<S>>
-	inline auto ERROR(Option<size_t> thread_id, const S& format_string, Args&&... args) noexcept {
+	inline auto ERROR(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
 		return get_global_logger<LogParameters>().error(thread_id, format_string, args...);
 	}
 

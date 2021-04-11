@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <compare>
-#include <cstddef>
 #include <gsl/gsl>
 #include <iostream>
 #include <iterator>
@@ -11,6 +10,7 @@
 #include <memory_resource>
 #include <tuple>
 
+#include "BasicTypes.h"
 #include "Concepts.h"
 #include "Macros.h"
 #include "detail/AllocateUnique.h"
@@ -22,7 +22,7 @@ namespace hyperion::utils {
 	using detail::allocate_unique;
 
 	/// @brief The thread-safety type of the `RingBuffer`
-	enum class RingBufferType : size_t
+	enum class RingBufferType : usize
 	{
 		NotThreadSafe = 0,
 		ThreadSafe = 1
@@ -56,7 +56,7 @@ namespace hyperion::utils {
 	class RingBuffer {
 	  public:
 		/// Default capacity of `RingBuffer`
-		static const constexpr size_t DEFAULT_CAPACITY = 16;
+		static const constexpr usize DEFAULT_CAPACITY = 16;
 		using allocator_traits = std::allocator_traits<Allocator<T>>;
 		using unique_pointer
 			= decltype(allocate_unique<T[]>(std::declval<Allocator<T[]>>(), // NOLINT
@@ -75,7 +75,7 @@ namespace hyperion::utils {
 
 			constexpr explicit Iterator(pointer ptr,
 										RingBuffer* containerPtr,
-										size_t currentIndex) noexcept
+										usize currentIndex) noexcept
 				: m_ptr(ptr), m_container_ptr(containerPtr), m_current_index(currentIndex) {
 			}
 			constexpr Iterator(const Iterator& iter) noexcept = default;
@@ -86,7 +86,7 @@ namespace hyperion::utils {
 			/// to the element this iterator points to
 			///
 			/// @return The index corresponding with the element this points to
-			[[nodiscard]] constexpr inline auto get_index() const noexcept -> size_t {
+			[[nodiscard]] constexpr inline auto get_index() const noexcept -> usize {
 				return m_current_index;
 			}
 
@@ -144,7 +144,7 @@ namespace hyperion::utils {
 			}
 
 			constexpr inline auto operator+(Integral auto rhs) const noexcept -> Iterator {
-				const auto diff = static_cast<size_t>(rhs);
+				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
 				}
@@ -167,7 +167,7 @@ namespace hyperion::utils {
 			}
 
 			constexpr inline auto operator-(Integral auto rhs) const noexcept -> Iterator {
-				const auto diff = static_cast<size_t>(rhs);
+				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
 				}
@@ -217,7 +217,7 @@ namespace hyperion::utils {
 		  private:
 			pointer m_ptr;
 			RingBuffer* m_container_ptr = nullptr;
-			size_t m_current_index = 0;
+			usize m_current_index = 0;
 		};
 
 		/// @brief Read-only Random-Access Bidirectional iterator for `RingBuffer`
@@ -233,7 +233,7 @@ namespace hyperion::utils {
 
 			constexpr explicit ConstIterator(pointer ptr,
 											 RingBuffer* containerPtr,
-											 size_t currentIndex) noexcept
+											 usize currentIndex) noexcept
 				: m_ptr(ptr), m_container_ptr(containerPtr), m_current_index(currentIndex) {
 			}
 			constexpr ConstIterator(const ConstIterator& iter) noexcept = default;
@@ -244,7 +244,7 @@ namespace hyperion::utils {
 			/// to the element this iterator points to
 			///
 			/// @return The index corresponding with the element this points to
-			[[nodiscard]] constexpr inline auto get_index() const noexcept -> size_t {
+			[[nodiscard]] constexpr inline auto get_index() const noexcept -> usize {
 				return m_current_index;
 			}
 
@@ -303,7 +303,7 @@ namespace hyperion::utils {
 			}
 
 			constexpr inline auto operator+(Integral auto rhs) const noexcept -> ConstIterator {
-				const auto diff = static_cast<size_t>(rhs);
+				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
 				}
@@ -326,7 +326,7 @@ namespace hyperion::utils {
 			}
 
 			constexpr inline auto operator-(Integral auto rhs) const noexcept -> ConstIterator {
-				const auto diff = static_cast<size_t>(rhs);
+				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
 				}
@@ -377,7 +377,7 @@ namespace hyperion::utils {
 		  private:
 			pointer m_ptr;
 			RingBuffer* m_container_ptr = nullptr;
-			size_t m_current_index = 0;
+			usize m_current_index = 0;
 		};
 
 		/// @brief Creates a `RingBuffer` with default capacity
@@ -386,7 +386,7 @@ namespace hyperion::utils {
 		/// @brief Creates a `RingBuffer` with (at least) the given initial capacity
 		///
 		/// @param intitial_capacity - The initial capacity of the `RingBuffer`
-		constexpr explicit RingBuffer(size_t intitial_capacity) noexcept
+		constexpr explicit RingBuffer(usize intitial_capacity) noexcept
 			: m_buffer(allocate_unique<T[]>(m_allocator, intitial_capacity + 1)), // NOLINT
 			  m_loop_index(intitial_capacity), m_capacity(intitial_capacity + 1) {
 		}
@@ -396,13 +396,13 @@ namespace hyperion::utils {
 		///
 		/// @param intitial_capacity - The initial capacity of the `RingBuffer`
 		/// @param default_value - The value to fill the `RingBuffer` with
-		constexpr RingBuffer(size_t intitial_capacity,
+		constexpr RingBuffer(usize intitial_capacity,
 							 const T& default_value) noexcept requires Copyable<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, // NOLINT
 											intitial_capacity + 1,
 											default_value)),
 			  m_write_index(intitial_capacity),
-			  m_start_index(0ULL), // NOLINT
+			  m_start_index(0_usize), // NOLINT
 			  m_loop_index(intitial_capacity),
 			  m_capacity(intitial_capacity + 1) {
 		}
@@ -421,12 +421,12 @@ namespace hyperion::utils {
 
 		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires Copyable<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, buffer.m_capacity)), // NOLINT
-			  m_write_index(0ULL),											  // NOLINT
-			  m_start_index(0ULL),											  // NOLINT
+			  m_write_index(0_usize),										  // NOLINT
+			  m_start_index(0_usize),										  // NOLINT
 			  m_loop_index(buffer.m_loop_index),
 			  m_capacity(buffer.m_capacity) {
 			const auto size = m_buffer.size();
-			for(auto i = 0ULL; i < size; ++i) {
+			for(auto i = 0_usize; i < size; ++i) {
 				push_back(buffer.m_buffer[i]);
 			}
 			// clang-format off
@@ -439,10 +439,10 @@ namespace hyperion::utils {
 			: m_allocator(buffer.m_allocator), m_buffer(std::move(buffer.m_buffer)),
 			  m_write_index(buffer.m_write_index), m_start_index(buffer.m_start_index),
 			  m_loop_index(buffer.m_loop_index), m_capacity(buffer.m_capacity) {
-			buffer.m_capacity = 0ULL;
-			buffer.m_loop_index = 0ULL;
-			buffer.m_write_index = 0ULL;
-			buffer.m_start_index = 0ULL;
+			buffer.m_capacity = 0_usize;
+			buffer.m_loop_index = 0_usize;
+			buffer.m_write_index = 0_usize;
+			buffer.m_start_index = 0_usize;
 			buffer.m_buffer = nullptr;
 		}
 
@@ -504,7 +504,7 @@ namespace hyperion::utils {
 		/// @brief Returns the current number of elements in the `RingBuffer`
 		///
 		/// @return The current number of elements
-		[[nodiscard]] constexpr inline auto size() const noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto size() const noexcept -> usize {
 			return m_write_index >= m_start_index ? (m_write_index - m_start_index) :
 													  (m_capacity - (m_start_index - m_write_index));
 		}
@@ -513,7 +513,7 @@ namespace hyperion::utils {
 		/// if grown to maximum possible capacity
 		///
 		/// @return The maximum possible number of storable elements
-		[[nodiscard]] constexpr inline auto max_size() const noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto max_size() const noexcept -> usize {
 			return allocator_traits::max_size(m_allocator) - 1;
 		}
 
@@ -521,7 +521,7 @@ namespace hyperion::utils {
 		/// the number of elements it can currently store
 		///
 		/// @return The current capacity
-		[[nodiscard]] constexpr inline auto capacity() const noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto capacity() const noexcept -> usize {
 			return m_capacity - 1;
 		}
 
@@ -532,7 +532,7 @@ namespace hyperion::utils {
 		/// However, all iterators and references to elements will be invalidated.
 		///
 		/// @param new_capacity - The new capacity of the `RingBuffer`
-		constexpr inline auto reserve(size_t new_capacity) noexcept -> void {
+		constexpr inline auto reserve(usize new_capacity) noexcept -> void {
 			// we only need to do anything if `new_capacity` is actually larger than `m_capacity`
 			if(new_capacity > m_capacity) {
 				auto temp
@@ -593,7 +593,7 @@ namespace hyperion::utils {
 
 			increment_indices();
 
-			auto index = (m_write_index == 0ULL ? m_loop_index : m_write_index - 1);
+			auto index = (m_write_index == 0_usize ? m_loop_index : m_write_index - 1);
 			return m_buffer[index]; // NOLINT
 		}
 
@@ -793,7 +793,7 @@ namespace hyperion::utils {
 			T* p = &m_buffer
 					   [m_start_index]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-			return Iterator(p, this, 0ULL);
+			return Iterator(p, this, 0_usize);
 		}
 
 		/// @brief Returns a Random Access Bidirectional iterator over the `RingBuffer`,
@@ -815,7 +815,7 @@ namespace hyperion::utils {
 			T* p = &m_buffer
 					   [m_start_index]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-			return ConstIterator(p, this, 0ULL);
+			return ConstIterator(p, this, 0_usize);
 		}
 
 		/// @brief Returns a Random Access Bidirectional read-only iterator over the `RingBuffer`,
@@ -846,7 +846,7 @@ namespace hyperion::utils {
 			}
 			auto temp = allocate_unique<T[]>(m_allocator, buffer.m_capacity); // NOLINT
 			const auto size = buffer.size();
-			for(auto i = 0ULL; i < size; ++i) {
+			for(auto i = 0_usize; i < size; ++i) {
 				temp[i] = buffer.m_buffer[i];
 			}
 			m_buffer = std::move(temp);
@@ -864,21 +864,21 @@ namespace hyperion::utils {
 			m_loop_index = buffer.m_loop_index;
 			m_capacity = buffer.m_capacity;
 			buffer.m_buffer = nullptr;
-			buffer.m_write_index = 0ULL;
-			buffer.m_start_index = 0ULL;
-			buffer.m_capacity = 0ULL;
+			buffer.m_write_index = 0_usize;
+			buffer.m_start_index = 0_usize;
+			buffer.m_capacity = 0_usize;
 			return *this;
 		}
 
 	  private:
-		static const constexpr size_t DEFAULT_CAPACITY_INTERNAL = DEFAULT_CAPACITY + 1;
+		static const constexpr usize DEFAULT_CAPACITY_INTERNAL = DEFAULT_CAPACITY + 1;
 		Allocator<T> m_allocator = Allocator<T>();
 		unique_pointer m_buffer
 			= allocate_unique<T[]>(m_allocator, DEFAULT_CAPACITY_INTERNAL); // NOLINT
-		size_t m_write_index = 0ULL;
-		size_t m_start_index = 0ULL;
-		size_t m_loop_index = DEFAULT_CAPACITY;
-		size_t m_capacity = DEFAULT_CAPACITY_INTERNAL;
+		usize m_write_index = 0_usize;
+		usize m_start_index = 0_usize;
+		usize m_loop_index = DEFAULT_CAPACITY;
+		usize m_capacity = DEFAULT_CAPACITY_INTERNAL;
 
 		/// @brief Converts the given `RingBuffer` index into the corresponding index into then
 		/// underlying `T` array
@@ -887,8 +887,8 @@ namespace hyperion::utils {
 		///
 		/// @return The corresponding index into the underlying `T` array
 		[[nodiscard]] constexpr inline auto
-		get_adjusted_internal_index(Integral auto index) const noexcept -> size_t {
-			auto i = static_cast<size_t>(index);
+		get_adjusted_internal_index(Integral auto index) const noexcept -> usize {
+			auto i = static_cast<usize>(index);
 			return (m_start_index + i) % (m_capacity);
 		}
 
@@ -899,8 +899,8 @@ namespace hyperion::utils {
 		///
 		/// @return The corresponding user-facing index
 		[[nodiscard]] constexpr inline auto
-		get_external_index_from_internal(Integral auto index) const noexcept -> size_t {
-			auto i = static_cast<size_t>(index);
+		get_external_index_from_internal(Integral auto index) const noexcept -> usize {
+			auto i = static_cast<usize>(index);
 			if(i >= m_start_index && i <= m_loop_index) {
 				return i - m_start_index;
 			}
@@ -937,7 +937,7 @@ namespace hyperion::utils {
 		/// @brief Used to decrement the write index into the underlying `T` array
 		/// when popping an element from the back
 		constexpr inline auto decrement_write() noexcept -> void {
-			if(m_write_index == 0ULL) {
+			if(m_write_index == 0_usize) {
 				m_write_index = m_capacity - 1;
 			}
 			else {
@@ -946,7 +946,7 @@ namespace hyperion::utils {
 		}
 
 		constexpr inline auto decrement_write_n(UnsignedIntegral auto n) noexcept -> void {
-			auto amount_to_decrement = static_cast<size_t>(n);
+			auto amount_to_decrement = static_cast<usize>(n);
 			if(amount_to_decrement > m_write_index) {
 				amount_to_decrement -= m_write_index;
 				m_write_index = (m_capacity - 1) - amount_to_decrement;
@@ -964,7 +964,7 @@ namespace hyperion::utils {
 		/// element at
 		/// @param elem - The element to store in the `RingBuffer`
 		constexpr inline auto
-		insert_internal(size_t external_index, const T& elem) noexcept -> void {
+		insert_internal(usize external_index, const T& elem) noexcept -> void {
 			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
@@ -982,7 +982,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
 					if constexpr(Movable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
@@ -1005,7 +1005,7 @@ namespace hyperion::utils {
 		/// @param external_index - The user-facing index into the `RingBuffer` to insert the
 		/// element at
 		/// @param elem - The element to store in the `RingBuffer`
-		constexpr inline auto insert_internal(size_t external_index, T&& elem) noexcept -> void {
+		constexpr inline auto insert_internal(usize external_index, T&& elem) noexcept -> void {
 			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
@@ -1023,7 +1023,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
 					if constexpr(Movable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
@@ -1050,7 +1050,7 @@ namespace hyperion::utils {
 		template<typename... Args>
 		requires ConstructibleFrom<T, Args...>
 		constexpr inline auto
-		insert_emplace_internal(size_t external_index, Args&&... args) noexcept -> T& {
+		insert_emplace_internal(usize external_index, Args&&... args) noexcept -> T& {
 			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
@@ -1068,7 +1068,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0ULL; i < num_to_move; ++i, --j) {
+				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
 					if constexpr(Movable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
@@ -1096,7 +1096,7 @@ namespace hyperion::utils {
 		///
 		/// @return `Iterator` pointing to the element after the one removed
 		[[nodiscard]] constexpr inline auto
-		erase_internal(size_t external_index) noexcept -> Iterator {
+		erase_internal(usize external_index) noexcept -> Iterator {
 			const auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) [[unlikely]] { // NOLINT
@@ -1107,7 +1107,7 @@ namespace hyperion::utils {
 				auto num_to_move = (size_ - 1) - external_index;
 				const auto pos_to_move = external_index + 1;
 				const auto pos_to_replace = external_index;
-				for(auto i = 0ULL; i < num_to_move; ++i) {
+				for(auto i = 0_usize; i < num_to_move; ++i) {
 					if constexpr(Movable<T>) {
 						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
 							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
@@ -1133,7 +1133,7 @@ namespace hyperion::utils {
 		///
 		/// @return `Iterator` pointing to the element after the last one erased
 		[[nodiscard]] constexpr inline auto
-		erase_internal(size_t first, size_t last) noexcept -> Iterator {
+		erase_internal(usize first, usize last) noexcept -> Iterator {
 			const auto size_ = size();
 			const auto last_internal = get_adjusted_internal_index(last);
 			const auto num_to_remove = (last - first);
@@ -1144,7 +1144,7 @@ namespace hyperion::utils {
 				}
 				else if(m_write_index < m_start_index) {
 					auto num_after_start_index
-						= (m_write_index > num_to_remove ? m_write_index - num_to_remove : 0ULL);
+						= (m_write_index > num_to_remove ? m_write_index - num_to_remove : 0_usize);
 					auto num_before_start_index = num_to_remove - num_after_start_index;
 					if(num_after_start_index > 0) {
 						num_after_start_index--;
@@ -1160,7 +1160,7 @@ namespace hyperion::utils {
 				const auto num_to_move = size_ - last;
 				const auto pos_to_move = last;
 				const auto pos_to_replace = first;
-				for(auto i = 0ULL; i < num_to_move; ++i) {
+				for(auto i = 0_usize; i < num_to_move; ++i) {
 					if constexpr(Movable<T>) {
 						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
 							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
@@ -1201,7 +1201,7 @@ namespace hyperion::utils {
 	template<DefaultConstructible T, template<typename ElementType> typename Allocator>
 	class RingBuffer<T, RingBufferType::ThreadSafe, Allocator> {
 	  public:
-		using index_type = uint32_t;
+		using index_type = u32;
 
 		/// Default capacity of `RingBuffer`
 		static const constexpr index_type DEFAULT_CAPACITY = 16;
@@ -1650,7 +1650,7 @@ namespace hyperion::utils {
 												  m_allocator)),
 			  m_state(buffer.m_capacity) {
 			const auto size = buffer.size();
-			for(auto i = 0U; i < size; ++i) {
+			for(auto i = 0_u32; i < size; ++i) {
 				push_back(buffer.m_buffer[i]);
 			}
 			m_state = buffer.m_state;
@@ -2095,7 +2095,7 @@ namespace hyperion::utils {
 												   buffer.m_capacity,
 												   m_allocator);
 			const auto size = buffer.size();
-			for(auto i = 0U; i < size; ++i) {
+			for(auto i = 0_u32; i < size; ++i) {
 				temp[i]					  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 					= buffer.m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 			}
@@ -2113,7 +2113,7 @@ namespace hyperion::utils {
 		}
 
 	  private:
-		static const constexpr uint32_t DEFAULT_CAPACITY_INTERNAL = DEFAULT_CAPACITY + 1;
+		static const constexpr u32 DEFAULT_CAPACITY_INTERNAL = DEFAULT_CAPACITY + 1;
 
 		class State {
 		  public:
@@ -2194,7 +2194,7 @@ namespace hyperion::utils {
 			}
 
 			[[nodiscard]] inline constexpr auto empty() const noexcept -> bool {
-				return size() == 0U;
+				return size() == 0_u32;
 			}
 
 			[[nodiscard]] inline constexpr auto full() const noexcept -> bool {
@@ -2329,9 +2329,9 @@ namespace hyperion::utils {
 			}
 
 		  private:
-			static constexpr uint8_t START_SHIFT = 32U;
-			static constexpr merged_type MASK = 0x0000'0000'FFFF'FFFFU;
-			atomic_merged_type m_indices = 0ULL;
+			static constexpr uint8_t START_SHIFT = 32_u32;
+			static constexpr merged_type MASK = 0x0000'0000'FFFF'FFFF_u32;
+			atomic_merged_type m_indices = 0_usize;
 			atomic_index_type m_capacity = DEFAULT_CAPACITY_INTERNAL;
 
 			[[nodiscard]] static inline constexpr auto
@@ -2383,7 +2383,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0U; i < num_to_move; ++i, --j) {
+				for(auto i = 0_u32; i < num_to_move; ++i, --j) {
 					m_buffer[m_state.adjusted_index(size_ - i, start, capacity_)] = std::move(
 						m_buffer[m_state.adjusted_index(external_index + j, start, capacity_)]);
 				}
@@ -2420,7 +2420,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0U; i < num_to_move; ++i, --j) {
+				for(auto i = 0_u32; i < num_to_move; ++i, --j) {
 					m_buffer[m_state.adjusted_index(size_ - i, start, capacity_)] = std::move(
 						m_buffer[m_state.adjusted_index(external_index + j, start, capacity_)]);
 				}
@@ -2460,7 +2460,7 @@ namespace hyperion::utils {
 					index++;
 				}
 
-				for(auto i = 0U; i < num_to_move; ++i, --j) {
+				for(auto i = 0_u32; i < num_to_move; ++i, --j) {
 					m_buffer[m_state.adjusted_index(size_ - i, start, capacity_)] = std::move(
 						m_buffer[m_state.adjusted_index(external_index + j, start, capacity_)]);
 				}
@@ -2497,7 +2497,7 @@ namespace hyperion::utils {
 				const auto num_to_move = (size_ - 1) - external_index;
 				const auto pos_to_move = external_index + 1;
 				const auto pos_to_replace = external_index;
-				for(auto i = 0U; i < num_to_move; ++i) {
+				for(auto i = 0_u32; i < num_to_move; ++i) {
 					m_buffer[m_state.adjusted_index(pos_to_replace + i, start, capacity_)]
 						= m_buffer[m_state.adjusted_index(pos_to_move + i, start, capacity_)];
 				}
@@ -2531,7 +2531,7 @@ namespace hyperion::utils {
 				}
 				else if(write < start) {
 					auto num_after_start_index
-						= (write > num_to_remove) ? write - num_to_remove : 0U;
+						= (write > num_to_remove) ? write - num_to_remove : 0_u32;
 					auto num_before_start_index = num_to_remove - num_after_start_index;
 					if(num_after_start_index > 0) {
 						num_after_start_index--;
@@ -2547,7 +2547,7 @@ namespace hyperion::utils {
 				const auto num_to_move = size_ - last;
 				const auto pos_to_move = last;
 				const auto pos_to_replace = first;
-				for(auto i = 0U; i < num_to_move; ++i) {
+				for(auto i = 0_u32; i < num_to_move; ++i) {
 					m_buffer[m_state.adjusted_index(pos_to_replace + i, start, capacity_)]
 						= m_buffer[m_state.adjusted_index(pos_to_move + i, start, capacity_)];
 				}

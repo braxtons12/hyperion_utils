@@ -145,4 +145,8 @@ namespace hyperion::utils::concepts {
 	/// (`T` has `operator!=` for `U`)
 	template<typename T, typename U = T>
 	concept InequalityComparable = type_traits::has_not_equal_v<T, U>;
+
+	/// @brief Concept that requires that the parameter pack `Types` contains the type `T`
+	template<typename T, typename... Types>
+	concept Contains = type_traits::contains_v<T, Types...>;
 } // namespace hyperion::utils::concepts

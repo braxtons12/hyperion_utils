@@ -1,15 +1,11 @@
 #pragma once
 
-#include <cstdint>
-
+#include "BasicTypes.h"
 #include "Macros.h"
 #include "OptionAndResult.h"
 #include "RingBuffer.h"
 
 namespace hyperion::utils {
-#ifndef _MSVC_VER
-	using std::size_t;
-#endif
 
 	enum class LockFreeQueueErrorCategory
 	{
@@ -17,7 +13,7 @@ namespace hyperion::utils {
 		QueueIsEmpty
 	};
 
-	enum class QueuePolicy : size_t
+	enum class QueuePolicy : usize
 	{
 		ErrWhenFull = 0,
 		OverwriteWhenFull = 1
@@ -44,11 +40,11 @@ namespace hyperion::utils {
 	};
 
 	/// @brief The default capacityfor `LockFreeQueue`
-	static constexpr size_t DEFAULT_QUEUE_CAPACITY = 512ULL;
+	static constexpr usize DEFAULT_QUEUE_CAPACITY = 512_usize;
 
 	template<typename T,
 			 QueuePolicy Policy = QueuePolicy::ErrWhenFull,
-			 size_t Capacity = DEFAULT_QUEUE_CAPACITY>
+			 usize Capacity = DEFAULT_QUEUE_CAPACITY>
 	class LockFreeQueue {
 	  public:
 		using PushError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsFull>;

@@ -1,28 +1,26 @@
 #pragma once
 
 #include <array>
-#include <cstdint>
 #include <gsl/gsl>
 #include <gsl/span>
+
+#include "BasicTypes.h"
 
 #ifndef HYPERION_SPAN
 	#define HYPERION_SPAN
 namespace hyperion::utils {
-	#ifndef _MSC_VER
-	using std::size_t;
-	#endif // _MSC_VER
 
 	/// @brief Thin wrapper around `gsl::span`
 	///
 	/// @tparam T - The type contained in the `Span`
 	/// @tparam Size - The number of elements for constexpr sizes, or gsl::dynamic_extent (default)
 	/// for run-time sizes
-	template<typename T, size_t Size = gsl::dynamic_extent>
+	template<typename T, usize Size = gsl::dynamic_extent>
 	class Span {
 	  public:
 		using Iterator = typename gsl::span<T, Size>::iterator;
 		using ReverseIterator = typename gsl::span<T, Size>::reverse_iterator;
-		template<size_t Offset, size_t Count>
+		template<usize Offset, usize Count>
 		using SubSpan = typename gsl::details::calculate_subspan_type<T, Size, Offset, Count>::type;
 
 		Span() noexcept = default;
@@ -48,7 +46,7 @@ namespace hyperion::utils {
 		///
 		/// @param index - The index of the desired element
 		/// @return - The element at `index`
-		[[nodiscard]] constexpr inline auto at(size_t index) noexcept -> T& {
+		[[nodiscard]] constexpr inline auto at(usize index) noexcept -> T& {
 			return gsl::at(m_span_internal, static_cast<gsl::index>(index));
 		}
 
@@ -57,7 +55,7 @@ namespace hyperion::utils {
 		/// @tparam Count - The number of elements to get
 		/// @tparam size - The size of the `Span`, this should always be left defaulted
 		/// @return - The first `Count` elements in the `Span`, as a `Span`
-		template<size_t Count, size_t size = Size>
+		template<usize Count, usize size = Size>
 		requires(size != gsl::dynamic_extent)
 			[[nodiscard]] constexpr inline auto first() const noexcept -> Span<T, Count> {
 			return Span(m_span_internal.template first<Count>());
@@ -68,10 +66,9 @@ namespace hyperion::utils {
 		/// @tparam size - The size of the `Span`, this should always be left defaulted
 		/// @param count - The number of elements to get
 		/// @return - The first `count` elements in the `Span`, as a `Span`
-		template<size_t size = Size>
+		template<usize size = Size>
 		requires(size == gsl::dynamic_extent)
-			[[nodiscard]] constexpr inline auto first(size_t count) const noexcept
-			-> Span<T, Size> {
+			[[nodiscard]] constexpr inline auto first(usize count) const noexcept -> Span<T, Size> {
 			return Span(m_span_internal.first(count));
 		}
 
@@ -80,7 +77,7 @@ namespace hyperion::utils {
 		/// @tparam Count - The number of elements to get
 		/// @tparam size - The size of the `Span`, this should always be left defaulted
 		/// @return - The last `Count` elements in the `Span`, as a `Span`
-		template<size_t Count, size_t size = Size>
+		template<usize Count, usize size = Size>
 		requires(size != gsl::dynamic_extent)
 			[[nodiscard]] constexpr inline auto last() const noexcept -> Span<T, Count> {
 			return Span(m_span_internal.template last<Count>());
@@ -91,9 +88,9 @@ namespace hyperion::utils {
 		/// @tparam size - The size of the `Span`, this should always be left defaulted
 		/// @param count - The number of elements to get
 		/// @return- The last `count` elements in the `Span` as a `Span`
-		template<size_t size = Size>
+		template<usize size = Size>
 		requires(size == gsl::dynamic_extent)
-			[[nodiscard]] constexpr inline auto last(size_t count) const noexcept -> Span<T, Size> {
+			[[nodiscard]] constexpr inline auto last(usize count) const noexcept -> Span<T, Size> {
 			return Span(m_span_internal.last(count));
 		}
 
@@ -102,7 +99,7 @@ namespace hyperion::utils {
 		/// @tparam Offset - The offset to start the subspan at
 		/// @tparam Count - The number of elements to get in the subspan
 		/// @return - The subspan starting at `Offset` of size `Count`
-		template<size_t Offset, size_t Count = gsl::dynamic_extent>
+		template<usize Offset, usize Count = gsl::dynamic_extent>
 		[[nodiscard]] constexpr inline auto subspan() const noexcept -> SubSpan<Offset, Count> {
 			return Span(m_span_internal.template subspan<Offset, Count>());
 		}
@@ -113,7 +110,7 @@ namespace hyperion::utils {
 		/// @param count - The number of elements to get in the subspan
 		/// @return - The subspan starting at `offset` of size `count`
 		[[nodiscard]] constexpr inline auto
-		subspan(size_t offset, size_t count = gsl::dynamic_extent) const noexcept
+		subspan(usize offset, usize count = gsl::dynamic_extent) const noexcept
 			-> Span<T, gsl::dynamic_extent> {
 			return Span(m_span_internal.subspan(offset, count));
 		}
@@ -121,14 +118,14 @@ namespace hyperion::utils {
 		/// @brief Returns the number of elements in the `Span`
 		///
 		/// @return - The number of elements in the `Span`
-		[[nodiscard]] constexpr inline auto size() const noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto size() const noexcept -> usize {
 			return m_span_internal.size();
 		}
 
 		/// @brief Returns the size of the `Span` in bytes
 		///
 		/// @return - The size of the `Span` in bytes
-		[[nodiscard]] constexpr inline auto size_bytes() const noexcept -> size_t {
+		[[nodiscard]] constexpr inline auto size_bytes() const noexcept -> usize {
 			return m_span_internal.size_bytes();
 		}
 
@@ -203,7 +200,7 @@ namespace hyperion::utils {
 	#endif // _MSC_VER
 
 		[[nodiscard]] constexpr static inline auto
-		make_span(T* ptr, typename gsl::span<T>::size_type size) noexcept -> Span<T> {
+		make_span(T* ptr, typename gsl::span<T>::usizeype size) noexcept -> Span<T> {
 			return Span(gsl::make_span(ptr, size));
 		}
 
@@ -212,7 +209,7 @@ namespace hyperion::utils {
 			return Span(gsl::make_span(first, last));
 		}
 
-		template<size_t Count>
+		template<usize Count>
 		[[nodiscard]] constexpr static inline auto
 			make_span(T (&array)[Count]) noexcept -> Span<T, Count> { // NOLINT
 			return Span(gsl::make_span(array));
@@ -232,7 +229,7 @@ namespace hyperion::utils {
 
 		template<typename Tptr>
 		[[nodiscard]] constexpr static inline auto
-		make_span(Tptr& container, size_t size) noexcept -> Span<typename Tptr::element_type> {
+		make_span(Tptr& container, usize size) noexcept -> Span<typename Tptr::element_type> {
 			return Span(gsl::make_span(container, size));
 		}
 
@@ -247,7 +244,7 @@ namespace hyperion::utils {
 			return Span(gsl::make_span(array));
 		}
 
-		[[nodiscard]] constexpr inline auto operator[](size_t index) noexcept -> T& {
+		[[nodiscard]] constexpr inline auto operator[](usize index) noexcept -> T& {
 			return this->at(index);
 		}
 

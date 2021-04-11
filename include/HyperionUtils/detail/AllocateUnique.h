@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "../BasicTypes.h"
 #include "../Concepts.h"
 #include "../Macros.h"
 
@@ -19,7 +20,7 @@ namespace hyperion::utils::detail {
 		concepts::Same<std::decay_t<U>,typename std::allocator_traits<Allocator>::value_type> ||
 			concepts::Derived<U, typename std::allocator_traits<Allocator>::value_type>;
 		// clang-format on
-		std::allocator_traits<Allocator>::allocate(alloc, 1ULL);
+		std::allocator_traits<Allocator>::allocate(alloc, 1_usize);
 	};
 
 	IGNORE_PADDING_START
@@ -30,7 +31,7 @@ namespace hyperion::utils::detail {
 	/// @tparam Allocator - The allocator to use
 	// clang-format off
 	template<typename T,
-			 size_t N,
+			 usize N,
 			 typename Allocator = std::allocator<T>,
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
 	requires Allocatable<U, Allocator> &&(N != 0)
@@ -88,7 +89,7 @@ namespace hyperion::utils::detail {
 		using pointer = typename traits::pointer;
 
 		UniqueDeleterDynSize() = delete;
-		constexpr UniqueDeleterDynSize(const Allocator& allocator, size_t num_elements) noexcept
+		constexpr UniqueDeleterDynSize(const Allocator& allocator, usize num_elements) noexcept
 			: m_allocator(allocator), m_num_elements(num_elements) {
 		}
 		constexpr UniqueDeleterDynSize(const UniqueDeleterDynSize& deleter) noexcept = default;
@@ -115,7 +116,7 @@ namespace hyperion::utils::detail {
 
 	  private:
 		Alloc m_allocator;
-		size_t m_num_elements = 1;
+		usize m_num_elements = 1;
 	};
 
 	/// @brief Allocates and constructs new `std::unique_ptr<T>`,
@@ -129,7 +130,7 @@ namespace hyperion::utils::detail {
 	///
 	/// @return a new `std::unique_ptr`
 	template<typename T,
-			 size_t N,
+			 usize N,
 			 typename Allocator = std::allocator<T>,
 			 typename... Args,
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
@@ -145,7 +146,7 @@ namespace hyperion::utils::detail {
 		auto p = traits::allocate(allocator, N);
 
 		try {
-			auto i = 0ULL;
+			auto i = 0_usize;
 			do {
 				traits::construct(allocator, std::addressof(*p) + i, std::forward<Args>(args)...);
 				i++;
@@ -172,7 +173,7 @@ namespace hyperion::utils::detail {
 	///
 	/// @return a new `std::unique_ptr`
 	template<typename T,
-			 size_t N,
+			 usize N,
 			 typename Allocator = std::allocator<T>,
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
 	requires concepts::DefaultConstructible<U> && Allocatable<U, Allocator> &&(N != 0)
@@ -187,7 +188,7 @@ namespace hyperion::utils::detail {
 		auto p = traits::allocate(allocator, N);
 
 		try {
-			auto i = 0ULL;
+			auto i = 0_usize;
 			do {
 				traits::construct(allocator, std::addressof(*p) + i);
 				i++;
@@ -222,7 +223,7 @@ namespace hyperion::utils::detail {
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
 	requires concepts::ConstructibleFrom<U, Args...> && Allocatable<U, Allocator>
 	[[nodiscard]] inline constexpr auto
-	allocate_unique(const Allocator& alloc, size_t N, Args&&... args)
+	allocate_unique(const Allocator& alloc, usize N, Args&&... args)
 		-> std::unique_ptr<T, UniqueDeleterDynSize<T,
 								typename std::allocator_traits<Allocator>::template rebind_alloc<U>>>
 	{
@@ -236,7 +237,7 @@ namespace hyperion::utils::detail {
 		auto p = traits::allocate(allocator, N);
 
 		try {
-			auto i = 0ULL;
+			auto i = 0_usize;
 			do {
 				traits::construct(allocator, std::addressof(*p) + i, std::forward<Args>(args)...);
 				++i;
@@ -269,7 +270,7 @@ namespace hyperion::utils::detail {
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
 	requires concepts::DefaultConstructible<U> && Allocatable<U, Allocator>
 	[[nodiscard]] inline constexpr auto
-	allocate_unique(const Allocator& alloc, size_t N)
+	allocate_unique(const Allocator& alloc, usize N)
 		-> std::unique_ptr<T, UniqueDeleterDynSize<T,
 								typename std::allocator_traits<Allocator>::template rebind_alloc<U>>>
 	{
@@ -283,7 +284,7 @@ namespace hyperion::utils::detail {
 		auto p = traits::allocate(allocator, N);
 
 		try {
-			auto i = 0ULL;
+			auto i = 0_usize;
 			do {
 				traits::construct(allocator, std::addressof(*p) + i);
 				++i;
