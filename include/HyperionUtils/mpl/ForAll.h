@@ -58,7 +58,7 @@ namespace hyperion::utils::mpl {
 	/// @brief Type Trait to determine that every type "Type" in the `mpl::list`, `List`, satisfies
 	/// that the value of `ConditionType<Type>` equals the value of `RequirementType`
 	///
-	/// @tparam template<typename> ConditionType - The condition to check
+	/// @tparam ConditionType - The condition to check
 	/// @tparam RequirementType - The required value of the condition
 	/// @tparam List - The `mpl::list` of types to check the condition for
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
@@ -137,7 +137,7 @@ namespace hyperion::utils::mpl {
 	/// will check that `std::is_constructible<umax, Args>::value` is true for `Args` equal to each
 	/// of `u8`, `u32`, `u64`
 	///
-	/// @tparam template<typename, typename...> ConditionType - The condition to check for each
+	/// @tparam ConditionType - The condition to check for each
 	/// combination of `<Evaluatee, Type>`
 	/// @tparam RequirementType - The required value of `ConditionType`
 	/// @tparam Evaluatee - The type that should perform some operator on "Type"
