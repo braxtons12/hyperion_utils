@@ -5,8 +5,9 @@
 #include <type_traits>
 
 #include "Error.h"
-#include "MPL.h"
 #include "TypeTraits.h"
+#include "mpl/ForAll.h"
+#include "mpl/List.h"
 
 namespace hyperion::utils::concepts {
 
