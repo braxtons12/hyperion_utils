@@ -5,6 +5,7 @@
 #include <type_traits>
 
 #include "Error.h"
+#include "MPL.h"
 #include "TypeTraits.h"
 
 namespace hyperion::utils::concepts {
@@ -141,12 +142,105 @@ namespace hyperion::utils::concepts {
 	template<typename T, typename U>
 	concept Same = std::same_as<T, U>;
 
+	/// @brief Concept that requires `T` and `U` to be the same type
+	template<typename T, typename U>
+	concept NotSame = !Same<T, U>;
+
 	/// @brief Concept requiring `T` to be inequality comparable to `U`
 	/// (`T` has `operator!=` for `U`)
 	template<typename T, typename U = T>
 	concept InequalityComparable = type_traits::has_not_equal_v<T, U>;
 
-	/// @brief Concept that requires that the parameter pack `Types` contains the type `T`
-	template<typename T, typename... Types>
-	concept Contains = type_traits::contains_v<T, Types...>;
+	/// @brief  Concept requiring that the `mpl::list`, `List`, contains the type `T`
+	template<typename T, typename List>
+	concept Contains = mpl::contains_v<T, List>;
+
+	/// @brief Concept that requires that T is copy constructible
+	template<typename T>
+	concept CopyConstructible = std::is_copy_constructible_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is copy
+	/// constructible
+	template<typename List>
+	concept AllCopyConstructible
+		= mpl::for_all_types_v<std::is_copy_constructible, std::true_type, List>;
+
+	/// @brief Concept that requires that T is copy assignable
+	template<typename T>
+	concept CopyAssignable = std::is_copy_assignable_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is copy
+	/// assignable
+	template<typename List>
+	concept AllCopyAssignable = mpl::for_all_types_v<std::is_copy_assignable, std::true_type, List>;
+
+	/// @brief Concept that requires that T is noexcept copy constructible
+	template<typename T>
+	concept NoexceptCopyConstructible = std::is_nothrow_copy_constructible_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow copy
+	/// constructible
+	template<typename List>
+	concept AllNoexceptCopyConstructible
+		= mpl::for_all_types_v<std::is_nothrow_copy_constructible, std::true_type, List>;
+
+	/// @brief Concept that requires that T is noexcept copy assignable
+	template<typename T>
+	concept NoexceptCopyAssignable = std::is_nothrow_copy_assignable_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow copy
+	/// assignable
+	template<typename List>
+	concept AllNoexceptCopyAssignable
+		= mpl::for_all_types_v<std::is_nothrow_copy_assignable, std::true_type, List>;
+
+	/// @brief Concept that requires that T is move constructible
+	template<typename T>
+	concept MoveConstructible = std::is_move_constructible_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is move
+	/// constructible
+	template<typename List>
+	concept AllMoveConstructible
+		= mpl::for_all_types_v<std::is_move_constructible, std::true_type, List>;
+
+	/// @brief Concept that requires that T is move assignable
+	template<typename T>
+	concept MoveAssignable = std::is_move_assignable_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is move
+	/// assignable
+	template<typename List>
+	concept AllMoveAssignable = mpl::for_all_types_v<std::is_move_assignable, std::true_type, List>;
+
+	/// @brief Concept that requires that T is noexcept move constructible
+	template<typename T>
+	concept NoexceptMoveConstructible = std::is_nothrow_move_constructible_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow move
+	/// constructible
+	template<typename List>
+	concept AllNoexceptMoveConstructible
+		= mpl::for_all_types_v<std::is_nothrow_move_constructible, std::true_type, List>;
+
+	/// @brief Concept that requires that T is noexcept move assignable
+	template<typename T>
+	concept NoexceptMoveAssignable = std::is_nothrow_move_assignable_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow move
+	/// assignable
+	template<typename List>
+	concept AllNoexceptMoveAssignable
+		= mpl::for_all_types_v<std::is_nothrow_move_assignable, std::true_type, List>;
+
+	/// @brief Concept that requires that T is noexcept destructible
+	template<typename T>
+	concept NoexceptDestructible = std::is_nothrow_destructible_v<T>;
+
+	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow
+	/// destructible
+	template<typename List>
+	concept AllNoexceptDestructible
+		= mpl::for_all_types_v<std::is_nothrow_destructible, std::true_type, List>;
+
 } // namespace hyperion::utils::concepts

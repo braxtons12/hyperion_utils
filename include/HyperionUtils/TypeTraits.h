@@ -49,47 +49,4 @@ namespace hyperion::utils::type_traits {
 	/// @brief Value of Type Trait `has_not_equal`
 	template<typename T, typename U = T>
 	static inline constexpr auto has_not_equal_v = has_not_equal<T, U>::value;
-
-	/// @brief Type Trait to determine if the given parameter pack `Types` contains the type `T`
-	///
-	/// @tparam T - The type to search for
-	/// @tparam Types - The parameter pack to search in
-	template<typename T, typename... Types>
-	struct contains : std::true_type { };
-
-	/// @brief Type Trait to determine if the given parameter pack `Types` contains the type `T`
-	///
-	/// @tparam T - The type to search for
-	/// @tparam Head - The first type in the parameter pack
-	/// @tparam Types - The parameter pack to search in
-	template<typename T, typename Head, typename... Types>
-	struct contains<T, Head, Types...>
-		: std::conditional_t<std::is_same_v<T, Head>, std::true_type, contains<T, Types...>> { };
-
-	/// @brief Type Trait to determine if the given parameter pack `Types` contains the type `T`
-	///
-	/// @tparam T - The type to search for
-	template<typename T>
-	struct contains<T> : std::false_type { };
-
-	/// @brief Value of Type Trait `contains`. Used to determine if the given parameter pack `Types`
-	/// contains the given type `T`
-	template<typename T, typename... Types>
-	static inline constexpr auto contains_v = contains<T, Types...>::value;
-
-	/// @brief Type Trait to find the `N`th type in the parameter pack `Types`
-	///
-	/// @tparam N - The index in the parameter pack to get the type of
-	/// @tparam Types - The parameter pack to search in
-	template<usize N, typename... Types>
-	struct type_index : std::tuple_element<N, std::tuple<Types...>> { };
-
-	/// @brief Type of Type Trait `type_index`. Used to get the `N`th type from the parameter pack
-	/// `Types`
-	///
-	/// @tparam N - The index in the parameter pack to get the type of
-	/// @tparam Types - The parameter pack to search in
-	template<usize N, typename... Types>
-	using type_index_t = typename type_index<N, Types...>::type;
-
 } // namespace hyperion::utils::type_traits

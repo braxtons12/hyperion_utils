@@ -28,6 +28,20 @@
 	#define HYPERION_CONSTEXPR_STRINGS
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+	#define HYPERION_UNREACHABLE() __builtin_unreachable();
+#elif defined(_MSC_VER)
+	#define HYPERION_UNREACHABLE() __assume(false);
+#else
+	#define HYPERION_UNREACHABLE()
+#endif
+
+#if defined(__has_builtin)
+	#if __has_builtin(__type_pack_element)
+		#define HYPERION_HAS_TYPE_PACK_ELEMENT
+	#endif
+#endif
+
 /// Use to temporarily disable unused macros warning on GCC/Clang
 // clang-format off
 #ifndef _MSC_VER
