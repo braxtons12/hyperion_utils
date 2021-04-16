@@ -16,6 +16,10 @@ Some of the features of HyperionUtils include:
 - Concepts, Type Traits, and meta-programming functions (in progress; Those already implemented unlikely to change)
 - Rust-style owning synchronization types (in progress)
 
+## Documentation
+
+You can view the documentation [here](braxtons12.github.io/Hyperion-Utils)
+
 ## Getting Started
 
 HyperionUtils uses CMake, and incorporating it into your project is easy!
