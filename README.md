@@ -18,7 +18,7 @@ Some of the features of HyperionUtils include:
 
 ## Documentation
 
-You can view the documentation [here](braxtons12.github.io/Hyperion-Utils)
+You can view the documentation [here](https://braxtons12.github.io/Hyperion-Utils/)
 
 ## Getting Started
 
