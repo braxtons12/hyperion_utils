@@ -1,3 +1,7 @@
+/// @brief Hyperion meta-programming library
+///
+/// This is a collection of basic meta-programming functions for traversing, querying, and
+/// determining properties of lists of types
 #pragma once
 
 #include "Concepts.h"

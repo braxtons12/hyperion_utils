@@ -1,3 +1,5 @@
+/// @brief This is a small collection of simple Concepts useful for requiring basic attributes of a
+/// type
 #pragma once
 
 #include <cmath>

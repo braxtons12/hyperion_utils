@@ -1,3 +1,4 @@
+/// @brief This is a small collection of basic type traits
 #pragma once
 
 #include <tuple>

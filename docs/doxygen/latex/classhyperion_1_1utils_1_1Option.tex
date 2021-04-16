@@ -1,0 +1,865 @@
+\hypertarget{classhyperion_1_1utils_1_1Option}{}\doxysection{hyperion\+::utils\+::Option$<$ T $>$ Class Template Reference}
+\label{classhyperion_1_1utils_1_1Option}\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+
+
+Represents an optional value. Every {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}} is either {\ttfamily Some} and contains a value, or {\ttfamily None}, and does not. Useful for things such as\+:  
+
+
+
+
+{\ttfamily \#include $<$Option\+And\+Result.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a54a8cfccd966a3ea5385ff3cd461d88a}\label{classhyperion_1_1utils_1_1Option_a54a8cfccd966a3ea5385ff3cd461d88a}} 
+constexpr {\bfseries Option} (\mbox{\hyperlink{structhyperion_1_1utils_1_1NoneType}{None\+Type}} none) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_aa0c927b8b6bad13ced95ccb796d7e7c2}\label{classhyperion_1_1utils_1_1Option_aa0c927b8b6bad13ced95ccb796d7e7c2}} 
+constexpr {\bfseries Option} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&option) noexcept requires Copyable$<$ T $>$=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_abc841b9bb059e54792212a080b47b990}\label{classhyperion_1_1utils_1_1Option_abc841b9bb059e54792212a080b47b990}} 
+constexpr {\bfseries Option} (\mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&\&option) noexcept requires Movable$<$ T $>$
+\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a5d7022c6108b2236eb076e28f51de1ec}{is\+\_\+some}} () const noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} if this is {\ttfamily Some}, {\ttfamily false} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a7600cdffac19e50db81c6df72e38da14}{is\+\_\+none}} () const noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} if this is {\ttfamily None}, {\ttfamily false} if this is {\ttfamily Some} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ac5f993a8b77adb1aade9aa5796f29c8d}{map}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ U $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a5a72d53a98236b4fdd018008b26acd8e}{map}} (std\+::function$<$ U(const T)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ U $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_afb037d4cb8c7eafa5a08c498ebad575a}{map}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ U $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a7176eba544b26237b4d2bb798f5bf6cf}{map}} (std\+::function$<$ U(T)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ U $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a1435d40724461c4f55831b9ad8325deb}{map\+\_\+or}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, const U \&default\+\_\+value) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_af6565ecc6477bfcc18546029e6075a3a}{map\+\_\+or}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, const U \&default\+\_\+value) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_aeecbf3e09f9abcbc73082fdcb66f6f95}{map\+\_\+or}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, U \&\&default\+\_\+value) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a14b3b4e0567852da6214260e8155a394}{map\+\_\+or}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, U \&\&default\+\_\+value) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ac318c44d9a549c883c97e7f5869956f5}{map\+\_\+or}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, const U \&default\+\_\+value) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a11d1e668d546f5513866d308a44dcecb}{map\+\_\+or}} (std\+::function$<$ U(T)$>$ map\+\_\+func, const U \&default\+\_\+value) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_aa3f0c9101793f10dec3bf5e6f0e2100a}{map\+\_\+or}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, U \&\&default\+\_\+value) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a825b7cacb3ab884c7b3713e2658d5edc}{map\+\_\+or}} (std\+::function$<$ U(T)$>$ map\+\_\+func, U \&\&default\+\_\+value) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a1cbb0b83a15f45ddb6c5a0a31e12e27d}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ade4e38a3fab6307978c44761b2854901}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_afef9a853ff7726c0152cb3d381a12631}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_aded464a18aa455f49fb1ecc000ddd359}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(T)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ab3984b5aa618bebb80b2717b8e60d6fd}{ok\+\_\+or}} (const Error\+Type auto \&error) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, decltype(error)$>$ requires Not\+Reference$<$ std\+::remove\+\_\+reference\+\_\+t$<$ decltype(error)$>$$>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some} or {\ttfamily Err(error)} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a7143c01c612dc55a1ab6d958d6dc9ee5}{ok\+\_\+or}} (Error\+Type auto \&\&error) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, std\+::remove\+\_\+reference\+\_\+t$<$ decltype(error)$>$$>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some} or {\ttfamily Err(error)} if this is {\ttfamily None} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Error\+Type E = Error$>$ }\\requires Not\+Reference$<$ E $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a6f5a2fc155f9e00fa536c4a10b07e475}{ok\+\_\+or\+\_\+else}} (std\+::function$<$ E()$>$ error\+\_\+generator) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()$<$T, E$>$}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some}, or {\ttfamily Err(\+E)} (where E is generated by {\ttfamily error\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a61b04ab6b17f4fd2483d123cc73b13ce}{unwrap}} () noexcept -\/$>$ T requires Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a2fdacb103fb631083c2b1dda6205d02a}{unwrap}} () noexcept -\/$>$ T requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a82a3c5e348c004e1cae580dda37ae461}{unwrap}} () noexcept -\/$>$ T requires Not\+Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_aaec935992dd09195d28751289b80bd69}{unwrap\+\_\+or}} (const T \&default\+\_\+value) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then returns {\ttfamily default\+\_\+value}. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a909d94716b23a9a14600d01832ea255e}{unwrap\+\_\+or}} (T \&\&default\+\_\+value) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then returns {\ttfamily default\+\_\+value}. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a62498580976bc955afda70ece82b68e1}{unwrap\+\_\+or\+\_\+else}} (std\+::function$<$ T()$>$ default\+\_\+generator) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. If this is not {\ttfamily Some}, then returns the value generated by {\ttfamily default\+\_\+generator}. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ab3c745a8d3c9f24fbe538eae324412e9}{get\+\_\+mut}} () noexcept
+\begin{DoxyCompactList}\small\item\em Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. Returns a pointer to the mutable {\ttfamily T} if this is {\ttfamily Some}, otherwise calls {\ttfamily std\+::terminate} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a24246c2da075f10ee5fa49699796e108}{get\+\_\+const}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. Returns a pointer to the const {\ttfamily T} if this is {\ttfamily Some}, otherwise calls {\ttfamily std\+::terminate} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a813df19da0e32101f4cc859756e25b07}\label{classhyperion_1_1utils_1_1Option_a813df19da0e32101f4cc859756e25b07}} 
+constexpr {\bfseries operator bool} () const noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a3d7577dfef5c044bbfa57184a337ab24}\label{classhyperion_1_1utils_1_1Option_a3d7577dfef5c044bbfa57184a337ab24}} 
+constexpr auto {\bfseries operator=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&option) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&requires Copyable$<$ T $>$=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_adc3d1fb4ec3f14cff5f5b764422253cd}\label{classhyperion_1_1utils_1_1Option_adc3d1fb4ec3f14cff5f5b764422253cd}} 
+constexpr auto {\bfseries operator=} (\mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&\&option) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \&requires Movable$<$ T $>$
+\item 
+{\footnotesize template$<$Error\+Type E$>$ }\\requires Not\+Reference$<$ T $>$ requires Not\+Reference$<$ E $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a201f9ef41a5675b40694aeba23ea74bc}{ok\+\_\+or\+\_\+else}} (std\+::function$<$ E()$>$ error\+\_\+generator) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()$<$T, E$>$}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some}, or {\ttfamily Err(\+E)} (where E is generated by {\ttfamily error\+\_\+generator}) if this is {\ttfamily None} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_abe85f4e95805830cff7726191c99bbba}{Some}} (const T \&some) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}
+\begin{DoxyCompactList}\small\item\em Constructs an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} containing {\ttfamily some}, aka a {\ttfamily Some} variant containing {\ttfamily some} aka {\ttfamily Some(some)} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_a72ef6028e8f0447a359806a6463d27dc}{Some}} (T \&\&some) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}
+\begin{DoxyCompactList}\small\item\em Constructs an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} containing {\ttfamily some}, aka a {\ttfamily Some} variant containing {\ttfamily some} aka {\ttfamily Some(some)} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option_ae43444cc63daa5ad6aa3f2fb2cd68f8a}{None}} (\mbox{\hyperlink{structhyperion_1_1utils_1_1NoneType}{None\+Type}} none) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}
+\begin{DoxyCompactList}\small\item\em Constructs an empty {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, aka a {\ttfamily None} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Passable T$>$\newline
+class hyperion\+::utils\+::\+Option$<$ T $>$}
+
+Represents an optional value. Every {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}} is either {\ttfamily Some} and contains a value, or {\ttfamily None}, and does not. Useful for things such as\+: 
+
+
+\begin{DoxyItemize}
+\item $\ast$ Optional members/fields
+\item $\ast$ Members/fields that can be loaned or \char`\"{}taken\char`\"{}
+\item $\ast$ Optional function arguments
+\item $\ast$ Nullable types/pointers
+\item $\ast$ Return values for functions not defined over their entire input range
+\end{DoxyItemize}
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & -\/ The type of the potentially-\/contained value \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a24246c2da075f10ee5fa49699796e108}\label{classhyperion_1_1utils_1_1Option_a24246c2da075f10ee5fa49699796e108}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!get\_const@{get\_const}}
+\index{get\_const@{get\_const}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_const()}{get\_const()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::get\+\_\+const (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. Returns a pointer to the const {\ttfamily T} if this is {\ttfamily Some}, otherwise calls {\ttfamily std\+::terminate} 
+
+\begin{DoxyReturn}{Returns}
+A pointer (or reference if {\ttfamily T} is a reference) to const {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ab3c745a8d3c9f24fbe538eae324412e9}\label{classhyperion_1_1utils_1_1Option_ab3c745a8d3c9f24fbe538eae324412e9}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!get\_mut@{get\_mut}}
+\index{get\_mut@{get\_mut}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{get\_mut()}{get\_mut()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::get\+\_\+mut (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. Returns a pointer to the mutable {\ttfamily T} if this is {\ttfamily Some}, otherwise calls {\ttfamily std\+::terminate} 
+
+\begin{DoxyReturn}{Returns}
+A pointer (or reference if {\ttfamily T} is a reference) to {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a7600cdffac19e50db81c6df72e38da14}\label{classhyperion_1_1utils_1_1Option_a7600cdffac19e50db81c6df72e38da14}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!is\_none@{is\_none}}
+\index{is\_none@{is\_none}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_none()}{is\_none()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::is\+\_\+none (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns {\ttfamily true} if this is {\ttfamily None}, {\ttfamily false} if this is {\ttfamily Some} 
+
+\begin{DoxyReturn}{Returns}
+Whether this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a5d7022c6108b2236eb076e28f51de1ec}\label{classhyperion_1_1utils_1_1Option_a5d7022c6108b2236eb076e28f51de1ec}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!is\_some@{is\_some}}
+\index{is\_some@{is\_some}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{is\_some()}{is\_some()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::is\+\_\+some (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns {\ttfamily true} if this is {\ttfamily Some}, {\ttfamily false} if this is {\ttfamily None} 
+
+\begin{DoxyReturn}{Returns}
+Whether this is {\ttfamily Some} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ac5f993a8b77adb1aade9aa5796f29c8d}\label{classhyperion_1_1utils_1_1Option_ac5f993a8b77adb1aade9aa5796f29c8d}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a5a72d53a98236b4fdd018008b26acd8e}\label{classhyperion_1_1utils_1_1Option_a5a72d53a98236b4fdd018008b26acd8e}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_afb037d4cb8c7eafa5a08c498ebad575a}\label{classhyperion_1_1utils_1_1Option_afb037d4cb8c7eafa5a08c498ebad575a}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a7176eba544b26237b4d2bb798f5bf6cf}\label{classhyperion_1_1utils_1_1Option_a7176eba544b26237b4d2bb798f5bf6cf}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$U$>$}, returning {\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(\+U)} if this is Some, or {\ttfamily None} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a1435d40724461c4f55831b9ad8325deb}\label{classhyperion_1_1utils_1_1Option_a1435d40724461c4f55831b9ad8325deb}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_aeecbf3e09f9abcbc73082fdcb66f6f95}\label{classhyperion_1_1utils_1_1Option_aeecbf3e09f9abcbc73082fdcb66f6f95}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_af6565ecc6477bfcc18546029e6075a3a}\label{classhyperion_1_1utils_1_1Option_af6565ecc6477bfcc18546029e6075a3a}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a14b3b4e0567852da6214260e8155a394}\label{classhyperion_1_1utils_1_1Option_a14b3b4e0567852da6214260e8155a394}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ac318c44d9a549c883c97e7f5869956f5}\label{classhyperion_1_1utils_1_1Option_ac318c44d9a549c883c97e7f5869956f5}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_aa3f0c9101793f10dec3bf5e6f0e2100a}\label{classhyperion_1_1utils_1_1Option_aa3f0c9101793f10dec3bf5e6f0e2100a}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a11d1e668d546f5513866d308a44dcecb}\label{classhyperion_1_1utils_1_1Option_a11d1e668d546f5513866d308a44dcecb}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a825b7cacb3ab884c7b3713e2658d5edc}\label{classhyperion_1_1utils_1_1Option_a825b7cacb3ab884c7b3713e2658d5edc}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a1cbb0b83a15f45ddb6c5a0a31e12e27d}\label{classhyperion_1_1utils_1_1Option_a1cbb0b83a15f45ddb6c5a0a31e12e27d}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ade4e38a3fab6307978c44761b2854901}\label{classhyperion_1_1utils_1_1Option_ade4e38a3fab6307978c44761b2854901}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_afef9a853ff7726c0152cb3d381a12631}\label{classhyperion_1_1utils_1_1Option_afef9a853ff7726c0152cb3d381a12631}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_aded464a18aa455f49fb1ecc000ddd359}\label{classhyperion_1_1utils_1_1Option_aded464a18aa455f49fb1ecc000ddd359}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Some}, or {\ttfamily U} (the default value returned by {\ttfamily default\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Some}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ae43444cc63daa5ad6aa3f2fb2cd68f8a}\label{classhyperion_1_1utils_1_1Option_ae43444cc63daa5ad6aa3f2fb2cd68f8a}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!None@{None}}
+\index{None@{None}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{None()}{None()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::None (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperion_1_1utils_1_1NoneType}{None\+Type}}}]{none }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs an empty {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, aka a {\ttfamily None} 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_ab3984b5aa618bebb80b2717b8e60d6fd}\label{classhyperion_1_1utils_1_1Option_ab3984b5aa618bebb80b2717b8e60d6fd}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!ok\_or@{ok\_or}}
+\index{ok\_or@{ok\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ok\_or()}{ok\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+requires constexpr Not\+Reference$<$ T $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::ok\+\_\+or (\begin{DoxyParamCaption}\item[{const Error\+Type auto \&}]{error }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, decltype(error)$>$
+		requires Not\+Reference$<$std\+::remove\+\_\+reference\+\_\+t$<$decltype(error)$>$$>$\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some} or {\ttfamily Err(error)} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & -\/ The type to return if this is {\ttfamily None}. Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em error} & -\/ The {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} to return if this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} is {\ttfamily None}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+T)} if this is {\ttfamily Some}, {\ttfamily Err(error)} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a7143c01c612dc55a1ab6d958d6dc9ee5}\label{classhyperion_1_1utils_1_1Option_a7143c01c612dc55a1ab6d958d6dc9ee5}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!ok\_or@{ok\_or}}
+\index{ok\_or@{ok\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ok\_or()}{ok\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+requires constexpr Not\+Reference$<$ T $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::ok\+\_\+or (\begin{DoxyParamCaption}\item[{Error\+Type auto \&\&}]{error }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, std\+::remove\+\_\+reference\+\_\+t$<$decltype(error)$>$$>$\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some} or {\ttfamily Err(error)} if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & -\/ The type to return if this is {\ttfamily None}. Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em error} & -\/ The {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} to return if this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} is {\ttfamily None}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+T)} if this is {\ttfamily Some}, {\ttfamily Err(error)} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a6f5a2fc155f9e00fa536c4a10b07e475}\label{classhyperion_1_1utils_1_1Option_a6f5a2fc155f9e00fa536c4a10b07e475}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!ok\_or\_else@{ok\_or\_else}}
+\index{ok\_or\_else@{ok\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ok\_or\_else()}{ok\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Error\+Type E = Error$>$ \\
+requires Not\+Reference$<$E$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::ok\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ E()$>$}]{error\+\_\+generator }\end{DoxyParamCaption}) -\/$>$  \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()$<$T, E$>$}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some}, or {\ttfamily Err(\+E)} (where E is generated by {\ttfamily error\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & -\/ The type to return if this is {\ttfamily None}. Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em error\+\_\+generator} & -\/ The function to generate the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+T)} if this is {\ttfamily Some}, {\ttfamily Err(\+E)} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a201f9ef41a5675b40694aeba23ea74bc}\label{classhyperion_1_1utils_1_1Option_a201f9ef41a5675b40694aeba23ea74bc}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!ok\_or\_else@{ok\_or\_else}}
+\index{ok\_or\_else@{ok\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ok\_or\_else()}{ok\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+template$<$Error\+Type E$>$ \\
+requires Not\+Reference$<$T$>$ requires Not\+Reference$<$E$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::ok\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ E()$>$}]{error\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} to a {\ttfamily Result()$<$T, E$>$}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. Returns {\ttfamily Ok(\+T)} if this is {\ttfamily Some}, or {\ttfamily Err(\+E)} (where E is generated by {\ttfamily error\+\_\+generator}) if this is {\ttfamily None} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & -\/ The type to return if this is {\ttfamily None}. Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em error\+\_\+generator} & -\/ The function to generate the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+T)} if this is {\ttfamily Some}, {\ttfamily Err(\+E)} if this is {\ttfamily None} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_abe85f4e95805830cff7726191c99bbba}\label{classhyperion_1_1utils_1_1Option_abe85f4e95805830cff7726191c99bbba}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!Some@{Some}}
+\index{Some@{Some}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Some()}{Some()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::Some (\begin{DoxyParamCaption}\item[{const T \&}]{some }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} containing {\ttfamily some}, aka a {\ttfamily Some} variant containing {\ttfamily some} aka {\ttfamily Some(some)} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em some} & -\/ The value to store in this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(some)} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a72ef6028e8f0447a359806a6463d27dc}\label{classhyperion_1_1utils_1_1Option_a72ef6028e8f0447a359806a6463d27dc}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!Some@{Some}}
+\index{Some@{Some}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Some()}{Some()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::Some (\begin{DoxyParamCaption}\item[{T \&\&}]{some }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} containing {\ttfamily some}, aka a {\ttfamily Some} variant containing {\ttfamily some} aka {\ttfamily Some(some)} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em some} & -\/ The value to store in this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Some(some)} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a61b04ab6b17f4fd2483d123cc73b13ce}\label{classhyperion_1_1utils_1_1Option_a61b04ab6b17f4fd2483d123cc73b13ce}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a82a3c5e348c004e1cae580dda37ae461}\label{classhyperion_1_1utils_1_1Option_a82a3c5e348c004e1cae580dda37ae461}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Not\+Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a2fdacb103fb631083c2b1dda6205d02a}\label{classhyperion_1_1utils_1_1Option_a2fdacb103fb631083c2b1dda6205d02a}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_aaec935992dd09195d28751289b80bd69}\label{classhyperion_1_1utils_1_1Option_aaec935992dd09195d28751289b80bd69}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap\_or@{unwrap\_or}}
+\index{unwrap\_or@{unwrap\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or()}{unwrap\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap\+\_\+or (\begin{DoxyParamCaption}\item[{const T \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then returns {\ttfamily default\+\_\+value}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+value} & -\/ The value to return if this is {\ttfamily None}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a909d94716b23a9a14600d01832ea255e}\label{classhyperion_1_1utils_1_1Option_a909d94716b23a9a14600d01832ea255e}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap\_or@{unwrap\_or}}
+\index{unwrap\_or@{unwrap\_or}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or()}{unwrap\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap\+\_\+or (\begin{DoxyParamCaption}\item[{T \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}}. If this is not {\ttfamily Some}, then returns {\ttfamily default\+\_\+value}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+value} & -\/ The value to return if this is {\ttfamily None}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Some}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Option_a62498580976bc955afda70ece82b68e1}\label{classhyperion_1_1utils_1_1Option_a62498580976bc955afda70ece82b68e1}} 
+\index{hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}!unwrap\_or\_else@{unwrap\_or\_else}}
+\index{unwrap\_or\_else@{unwrap\_or\_else}!hyperion::utils::Option$<$ T $>$@{hyperion::utils::Option$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or\_else()}{unwrap\_or\_else()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion\+::utils\+::\+Option}}$<$ T $>$\+::unwrap\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ T()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Some}, consuming this {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}. If this is not {\ttfamily Some}, then returns the value generated by {\ttfamily default\+\_\+generator}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+generator} & -\/ The function to generate the value returned if this is {\ttfamily None}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Some}, or the value generated by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Option\+And\+Result.\+h\end{DoxyCompactItemize}

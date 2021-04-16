@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal" kind="struct" language="C++" prot="public">
+    <compoundname>hyperion::utils::type_traits::has_not_equal</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">false_type</basecompoundref>
+    <includes refid="TypeTraits_8h" local="no">TypeTraits.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>typename U</type>
+        <defval>T</defval>
+      </param>
+      <param>
+        <type>typename</type>
+        <defval>std::void_t&lt;&gt;</defval>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>Type Trait to determine if <computeroutput>T</computeroutput> has the <computeroutput>!=</computeroutput> operator comparing to type <computeroutput>U</computeroutput>, where <computeroutput>U</computeroutput> defaults to <computeroutput>T</computeroutput> </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The LHS type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The RHS type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+      <node id="1">
+        <label>hyperion::utils::type_traits::has_not_equal&lt; T, U, typename &gt;</label>
+        <link refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+      <node id="1">
+        <label>hyperion::utils::type_traits::has_not_equal&lt; T, U, typename &gt;</label>
+        <link refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="39" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" bodystart="39" bodyend="39"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

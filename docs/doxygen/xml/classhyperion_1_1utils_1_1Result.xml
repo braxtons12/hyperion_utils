@@ -1,0 +1,2300 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classhyperion_1_1utils_1_1Result" kind="class" language="C++" prot="public">
+    <compoundname>hyperion::utils::Result</compoundname>
+    <includes refid="OptionAndResult_8h" local="no">OptionAndResult.h</includes>
+    <templateparamlist>
+      <param>
+        <type>Passable</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+      <param>
+        <type>ErrorType</type>
+        <declname>E</declname>
+        <defname>E</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1Result_1a22546db91c13e47f5a85ce31c438c9dd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool hyperion::utils::Result&lt; T, E &gt;::m_is_ok</definition>
+        <argsstring></argsstring>
+        <name>m_is_ok</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>whether this is <computeroutput>Ok</computeroutput> (<computeroutput>true</computeroutput>) or <computeroutput>Err</computeroutput> (<computeroutput>false</computeroutput>) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1789" column="6" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1789" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1Result_1a1d2044fae567ae8ab93e2e58542def24" prot="private" static="no" mutable="yes">
+        <type>bool</type>
+        <definition>bool hyperion::utils::Result&lt; T, E &gt;::m_handled</definition>
+        <argsstring></argsstring>
+        <name>m_handled</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>whether this <computeroutput>Result()</computeroutput> has been handled </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1791" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1791" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1Result_1ac3d20e2f43a438d4eb2647131c46ad8e" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T hyperion::utils::Result&lt; T, E &gt;::m_ok</definition>
+        <argsstring></argsstring>
+        <name>m_ok</name>
+        <briefdescription>
+<para>the <computeroutput>Ok</computeroutput> value </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1793" column="3" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1793" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1Result_1a5ea2f08232ba0fdd58fca0247b222322" prot="private" static="no" mutable="no">
+        <type>E</type>
+        <definition>E hyperion::utils::Result&lt; T, E &gt;::m_err</definition>
+        <argsstring></argsstring>
+        <name>m_err</name>
+        <briefdescription>
+<para>The <computeroutput>Err</computeroutput> value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1795" column="3" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1795" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1abb3dc2e207d715f394d552221936cbab" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(const ErrorWrapper&lt; E &gt; &amp;error) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1ErrorWrapper" kindref="compound">ErrorWrapper</ref>&lt; E &gt; &amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="760" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="760" bodyend="761"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1abb5ddc7e5547c9490b62fdb6eb05deaa" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(ErrorWrapper&lt; E &gt; &amp;&amp;error) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1ErrorWrapper" kindref="compound">ErrorWrapper</ref>&lt; E &gt; &amp;&amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="762" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="762" bodyend="763"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a21370ee7d64d11bf815e89e59289712c" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(const OkWrapper&lt; T &gt; &amp;ok) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref>&lt; T &gt; &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="764" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="764" bodyend="765"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aba4847d14dc7c9333da4ed78c62f9627" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(OkWrapper&lt; T &gt; &amp;&amp;ok) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref>&lt; T &gt; &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="766" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="766" bodyend="768"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a710a5c6571a5f5e949a2e30c7d65ec1a" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>() noexcept=delete</argsstring>
+        <name>Result</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="769" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a6021278bc6be7176e5661d592d33f12c" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(Result &amp;result)=delete</argsstring>
+        <name>Result</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref> &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="770" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a5d374d82b731d46f02379981ca08987b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(const Result &amp;result)=delete</argsstring>
+        <name>Result</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref> &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="771" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a9b3a119c31e034f6ed0c361b7463951f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" refqual="rvalue" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(Result &amp;&amp;result) noexcept requires Movable&lt; T &gt; &amp;&amp;Movable&lt; E &gt;</argsstring>
+        <name>Result</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref> &amp;&amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="772" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="772" bodyend="792"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a6fbf57799d8b5640e39f209cb8bbd0fb" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::Result&lt; T, E &gt;::~Result</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>~Result</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="794" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="794" bodyend="814"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ae9a694b323155e10209525a49c303f26" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::is_ok</definition>
+        <argsstring>() const noexcept -&gt; bool</argsstring>
+        <name>is_ok</name>
+        <briefdescription>
+<para>Returns <computeroutput>true</computeroutput> if this is <computeroutput>Ok</computeroutput>, <computeroutput>false</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether this is <computeroutput>Ok</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="894" column="17" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="894" bodyend="897"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aaad4507806e90dfcfd605d067f4ff53f" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::is_err</definition>
+        <argsstring>() const noexcept -&gt; bool</argsstring>
+        <name>is_err</name>
+        <briefdescription>
+<para>Returns <computeroutput>true</computeroutput> if this is <computeroutput>Err</computeroutput>, <computeroutput>false</computeroutput> if this is <computeroutput>Ok</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether this is <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="902" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="902" bodyend="905"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a13e8b5156ac0d38f7b78229bd562b5f9" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::get_mut</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>get_mut</name>
+        <briefdescription>
+<para>Similar to <computeroutput>unwrap</computeroutput>, except doesn&apos;t consume this <computeroutput>Result()</computeroutput>. Returns a pointer to the mutable <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, otherwise calls <computeroutput>std::terminate</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A pointer (or reference if <computeroutput>T</computeroutput> is a reference) to <computeroutput>T</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="912" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="912" bodyend="926"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a961b309041c8877d41c1afe7050b5f62" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::get_const</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>get_const</name>
+        <briefdescription>
+<para>Similar to <computeroutput>unwrap</computeroutput>, except doesn&apos;t consume this <computeroutput>Result()</computeroutput>. Returns a pointer to the const <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, otherwise calls <computeroutput>std::terminate</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A pointer (or reference if <computeroutput>T</computeroutput> is a reference) to const <computeroutput>T</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="933" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="933" bodyend="947"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a61ce855d64f5777b107e3b0d1337f3b6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap</definition>
+        <argsstring>() noexcept -&gt; T requires Movable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt;</argsstring>
+        <name>unwrap</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Ok</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="954" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="954" bodyend="965"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a7ef5d6589fd1adb34cbadca837a814fb" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap</definition>
+        <argsstring>() noexcept -&gt; T requires Pointer&lt; T &gt;</argsstring>
+        <name>unwrap</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Ok</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="971" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="971" bodyend="983"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aa863223d5e26d0e51b06a06cc2c63134" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap</definition>
+        <argsstring>() noexcept -&gt; T requires NotMovable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt;</argsstring>
+        <name>unwrap</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Ok</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="990" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="990" bodyend="1001"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a6c65e6a95fa8518f6387063ccb0223e6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap_or</definition>
+        <argsstring>(const T &amp;default_value) noexcept -&gt; T</argsstring>
+        <name>unwrap_or</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, consuming this <computeroutput>Result()</computeroutput> If this is not <computeroutput>Ok</computeroutput>, then returns <computeroutput>default_value</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The value to return if this is <computeroutput>Err</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1009" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1009" bodyend="1017"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a177d7c0a45fad9e7eb2dd2efc8c82df1" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap_or</definition>
+        <argsstring>(T &amp;&amp;default_value) noexcept -&gt; T</argsstring>
+        <name>unwrap_or</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, consuming this <computeroutput>Result()</computeroutput> If this is not <computeroutput>Ok</computeroutput>, then returns <computeroutput>default_value</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The value to return if this is <computeroutput>Err</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1025" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1025" bodyend="1033"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a5726bbc52b63c3520fd107ca2d29af0b" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::unwrap_or_else</definition>
+        <argsstring>(std::function&lt; T()&gt; default_generator) noexcept -&gt; T</argsstring>
+        <name>unwrap_or_else</name>
+        <param>
+          <type>std::function&lt; T()&gt;</type>
+          <declname>default_generator</declname>
+        </param>
+        <briefdescription>
+<para>Returns the contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Ok</computeroutput>, then returns the value generated by <computeroutput>default_generator</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>default_generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to generate the value returned if this is <computeroutput>Err</computeroutput></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The contained <computeroutput>T</computeroutput> if this is <computeroutput>Ok</computeroutput>, or the value generated by <computeroutput>default_generator</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1044" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1044" bodyend="1052"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aefb6b2c246cff98bd3bee60003467f62" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap_err</definition>
+        <argsstring>() noexcept -&gt; E requires Movable&lt; E &gt; &amp;&amp;NotPointer&lt; E &gt;</argsstring>
+        <name>unwrap_err</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>E</computeroutput> if this is <computeroutput>Err</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Err</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>E</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1059" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1059" bodyend="1069"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a808c733d72c879a254bb2f97d09f503b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap_err</definition>
+        <argsstring>() noexcept -&gt; E requires Pointer&lt; E &gt;</argsstring>
+        <name>unwrap_err</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>E</computeroutput> if this is <computeroutput>Err</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Err</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>E</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1075" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1075" bodyend="1086"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a89d549c6bdef0c93df554845d56abada" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::unwrap_err</definition>
+        <argsstring>() noexcept -&gt; E requires NotMovable&lt; E &gt; &amp;&amp;NotPointer&lt; E &gt;</argsstring>
+        <name>unwrap_err</name>
+        <briefdescription>
+<para>Returns the contained <computeroutput>E</computeroutput> if this is <computeroutput>Err</computeroutput>, consuming this <computeroutput>Result()</computeroutput>. If this is not <computeroutput>Err</computeroutput>, then <computeroutput>std::terminate</computeroutput> is called. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The contained <computeroutput>E</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1093" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1093" bodyend="1103"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a545b67faf8aa91f8113f3a6c16511289" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::ok</definition>
+        <argsstring>() noexcept -&gt; Option&lt; T &gt; requires Movable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt;</argsstring>
+        <name>ok</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the error, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1109" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1109" bodyend="1120"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aa9ae56daae3b5eac2ea3236dc9899edf" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::ok</definition>
+        <argsstring>() noexcept -&gt; Option&lt; T &gt; requires Pointer&lt; T &gt;</argsstring>
+        <name>ok</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the error, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1126" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1126" bodyend="1138"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a3b132b2faf3052e48ac03eab256fb98b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::ok</definition>
+        <argsstring>() noexcept -&gt; Option&lt; T &gt; requires NotMovable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt;</argsstring>
+        <name>ok</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the error, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;T&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1144" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1144" bodyend="1155"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a2e90ad7595806082a447f2c995bff3f7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::err</definition>
+        <argsstring>() noexcept -&gt; Option&lt; E &gt; requires Movable&lt; E &gt; &amp;&amp;NotPointer&lt; E &gt;</argsstring>
+        <name>err</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the success value, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1161" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1161" bodyend="1172"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a6b2872ec65251443dab7f1b786dddc39" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::err</definition>
+        <argsstring>() noexcept -&gt; Option&lt; E &gt; requires Pointer&lt; E &gt;</argsstring>
+        <name>err</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the success value, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1178" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1178" bodyend="1190"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a73b1a031602f4688d7f4834a0918b911" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::err</definition>
+        <argsstring>() noexcept -&gt; Option&lt; E &gt; requires NotMovable&lt; E &gt; &amp;&amp;NotPointer&lt; E &gt;</argsstring>
+        <name>err</name>
+        <briefdescription>
+<para>Converts this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to an <computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput>, consuming this <computeroutput>Result()</computeroutput> and discarding the success value, if any. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">Option</ref>&lt;E&gt;</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1196" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1196" bodyend="1207"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a89c071ee5b31d15944cc28fc3fa3bdd2" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; U(const T &amp;)&gt; map_func) const noexcept -&gt; Result&lt; U, E &gt; requires NotPointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; U(const T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1220" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1220" bodyend="1229"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a105c549909210ec132bd2d1c9fa7f7c7" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; U(T &amp;)&gt; map_func) noexcept -&gt; Result&lt; U, E &gt; requires NotPointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; U(T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1241" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1241" bodyend="1250"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a0e9392e2128c1e8a6737159404dfdaa4" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; U(const T)&gt; map_func) const noexcept -&gt; Result&lt; U, E &gt; requires Pointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; U(const T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1263" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1263" bodyend="1272"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a9fc6ea18f1df24317d9c290cccdc6d78" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; U(T)&gt; map_func) noexcept -&gt; Result&lt; U, E &gt; requires Pointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; U(T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1284" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1284" bodyend="1293"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a4257e58f910e016750025ed9fcde01f9" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; Result&lt; U, E &gt;(const T &amp;)&gt; map_func) const noexcept -&gt; Result&lt; U, E &gt; requires NotPointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref>&lt; U, E &gt;(const T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1306" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1306" bodyend="1315"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ac6dc9691de9be89bc56472bbc31bd9e1" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; Result&lt; U, E &gt;(T &amp;)&gt; map_func) noexcept -&gt; Result&lt; U, E &gt; requires NotPointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref>&lt; U, E &gt;(T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1328" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1328" bodyend="1337"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ac4a851b1e47f967c8ef4783020ece4f8" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; Result&lt; U, E &gt;(const T)&gt; map_func) const noexcept -&gt; Result&lt; U, E &gt; requires Pointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref>&lt; U, E &gt;(const T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1350" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1350" bodyend="1359"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a040f730af111ca97024e41fac0fdd4a2" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; U &gt; auto</type>
+        <definition>requires NotReference&lt;U&gt; auto hyperion::utils::Result&lt; T, E &gt;::map</definition>
+        <argsstring>(std::function&lt; Result&lt; U, E &gt;(T)&gt; map_func) noexcept -&gt; Result&lt; U, E &gt; requires Pointer&lt; T &gt;</argsstring>
+        <name>map</name>
+        <param>
+          <type>std::function&lt; <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref>&lt; U, E &gt;(T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;U, E&gt;</computeroutput>, returning <computeroutput>Ok(U)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is an <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok(U)</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1372" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1372" bodyend="1381"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a7054138fb0b222e7335d36b3a8e6a260" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(const T &amp;)&gt; map_func, const U &amp;default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(const T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>const U &amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1394" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1394" bodyend="1403"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ab4bce86c71dcb23efce372ef9fdc663d" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(const T)&gt; map_func, const U &amp;default_value) const noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(const T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>const U &amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1416" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1416" bodyend="1425"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ae9367f01174da440d19e472564709465" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(const T &amp;)&gt; map_func, U &amp;&amp;default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(const T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>U &amp;&amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1438" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1438" bodyend="1447"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a50a28166500219fa787497dc007e47fb" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(const T)&gt; map_func, U &amp;&amp;default_value) const noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(const T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>U &amp;&amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1460" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1460" bodyend="1469"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a019db553916cc96bec64c89e20186cba" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(T &amp;)&gt; map_func, const U &amp;default_value) noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>const U &amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1482" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1482" bodyend="1491"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a9c95943c71c04aada751cc4c6fc661a5" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(T)&gt; map_func, const U &amp;default_value) noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>const U &amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1504" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1504" bodyend="1513"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1aba8a232b6bfd20a80d263de52e2cd258" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(T &amp;)&gt; map_func, U &amp;&amp;default_value) noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>U &amp;&amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1525" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1525" bodyend="1534"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a71aad84943ac680d3d7d25ce9c479668" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or</definition>
+        <argsstring>(std::function&lt; U(T)&gt; map_func, U &amp;&amp;default_value) noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or</name>
+        <param>
+          <type>std::function&lt; U(T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>U &amp;&amp;</type>
+          <declname>default_value</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or <computeroutput>default_value</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1547" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1547" bodyend="1555"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a18638e9dde203a59d66d29af6af4f7ea" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or_else</definition>
+        <argsstring>(std::function&lt; U(const T &amp;)&gt; map_func, std::function&lt; U()&gt; default_generator) const noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or_else</name>
+        <param>
+          <type>std::function&lt; U(const T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>std::function&lt; U()&gt;</type>
+          <declname>default_generator</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to generate the default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1568" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1568" bodyend="1578"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a351b3c5ab5cd6c0ab8a9430ff6625538" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or_else</definition>
+        <argsstring>(std::function&lt; U(const T)&gt; map_func, std::function&lt; U()&gt; default_generator) const noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or_else</name>
+        <param>
+          <type>std::function&lt; U(const T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>std::function&lt; U()&gt;</type>
+          <declname>default_generator</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to generate the default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1592" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1592" bodyend="1601"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ab7d9edeb7a0ee7ed114d6c4ed4e1669b" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or_else</definition>
+        <argsstring>(std::function&lt; U(T &amp;)&gt; map_func, std::function&lt; U()&gt; default_generator) noexcept -&gt; U requires NotPointer&lt; T &gt;</argsstring>
+        <name>map_or_else</name>
+        <param>
+          <type>std::function&lt; U(T &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>std::function&lt; U()&gt;</type>
+          <declname>default_generator</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to generate the default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1615" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1615" bodyend="1624"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a1c1cb0ce1f7f0d59e6d392f536bb5b2c" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Passable</type>
+            <declname>U</declname>
+            <defname>U</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::map_or_else</definition>
+        <argsstring>(std::function&lt; U(T)&gt; map_func, std::function&lt; U()&gt; default_generator) noexcept -&gt; U requires Pointer&lt; T &gt;</argsstring>
+        <name>map_or_else</name>
+        <param>
+          <type>std::function&lt; U(T)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <param>
+          <type>std::function&lt; U()&gt;</type>
+          <declname>default_generator</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()</computeroutput> to a <computeroutput>U</computeroutput>, returning <computeroutput>U</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>default_generator</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to generate the default value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of the mapping if this is <computeroutput>Ok</computeroutput>, or the value returned by <computeroutput>default_generator</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1638" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1638" bodyend="1647"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a8947d710feca414b8753eb79dffdfafa" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ErrorType</type>
+            <declname>F</declname>
+            <defname>F</defname>
+            <defval><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></defval>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; F &gt; auto</type>
+        <definition>requires NotReference&lt;F&gt; auto hyperion::utils::Result&lt; T, E &gt;::map_err</definition>
+        <argsstring>(std::function&lt; F(const E &amp;)&gt; map_func) const noexcept -&gt; Result&lt; T, F &gt; requires NotPointer&lt; E &gt;</argsstring>
+        <name>map_err</name>
+        <param>
+          <type>std::function&lt; F(const E &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;T, F&gt;</computeroutput>, returning <computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to Must be an <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type (<computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">hyperion::utils::Error</ref></computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1661" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1661" bodyend="1670"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ac630825b4830c7b3967e353d3398a94b" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ErrorType</type>
+            <declname>F</declname>
+            <defname>F</defname>
+            <defval><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></defval>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; F &gt; auto</type>
+        <definition>requires NotReference&lt;F&gt; auto hyperion::utils::Result&lt; T, E &gt;::map_err</definition>
+        <argsstring>(std::function&lt; F(const E)&gt; map_func) const noexcept -&gt; Result&lt; T, F &gt; requires Pointer&lt; E &gt;</argsstring>
+        <name>map_err</name>
+        <param>
+          <type>std::function&lt; F(const E)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;T, F&gt;</computeroutput>, returning <computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to Must be an <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type (<computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">hyperion::utils::Error</ref></computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1684" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1684" bodyend="1693"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a97c7338f534d6d3b8d8f86adefd866ec" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ErrorType</type>
+            <declname>F</declname>
+            <defname>F</defname>
+            <defval><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></defval>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; F &gt; auto</type>
+        <definition>requires NotReference&lt;F&gt; auto hyperion::utils::Result&lt; T, E &gt;::map_err</definition>
+        <argsstring>(std::function&lt; F(E &amp;)&gt; map_func) noexcept -&gt; Result&lt; T, F &gt; requires NotPointer&lt; E &gt;</argsstring>
+        <name>map_err</name>
+        <param>
+          <type>std::function&lt; F(E &amp;)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;T, F&gt;</computeroutput>, returning <computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to Must be an <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type (<computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">hyperion::utils::Error</ref></computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1706" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1706" bodyend="1715"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a4f5488625ebd3525dc8df22bb51b8fae" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ErrorType</type>
+            <declname>F</declname>
+            <defname>F</defname>
+            <defval><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></defval>
+          </param>
+        </templateparamlist>
+        <type>requires NotReference&lt; F &gt; auto</type>
+        <definition>requires NotReference&lt;F&gt; auto hyperion::utils::Result&lt; T, E &gt;::map_err</definition>
+        <argsstring>(std::function&lt; F(E)&gt; map_func) noexcept -&gt; Result&lt; T, F &gt; requires Pointer&lt; E &gt;</argsstring>
+        <name>map_err</name>
+        <param>
+          <type>std::function&lt; F(E)&gt;</type>
+          <declname>map_func</declname>
+        </param>
+        <briefdescription>
+<para>Maps this <computeroutput>Result()&lt;T, E&gt;</computeroutput> to a <computeroutput>Result()&lt;T, F&gt;</computeroutput>, returning <computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> (mapped by <computeroutput>map_func</computeroutput>) if this is <computeroutput>Err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to map to Must be an <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type (<computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">hyperion::utils::Error</ref></computeroutput>) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The function to perform the mapping</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> if this is <computeroutput>Ok</computeroutput>, or <computeroutput>Err(F)</computeroutput> if this is <computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1728" column="14" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1728" bodyend="1737"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a76d57b78eef3cc5f5a11711b2c8daa12" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::operator bool</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator bool</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1739" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1739" bodyend="1742"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1af429af398237bd0ae8908b43d6aaaa2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::Result&lt; T, E &gt;::operator=</definition>
+        <argsstring>(const Result &amp;result) -&gt; Result &amp;=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref> &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1744" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a7bf4ae5b83f3210b75c155e702c5dff7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::Result&lt; T, E &gt;::operator=</definition>
+        <argsstring>(Result &amp;&amp;result) noexcept -&gt; Result &amp;requires Movable&lt; T &gt; &amp;&amp;Movable&lt; E &gt;</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1Result" kindref="compound">Result</ref> &amp;&amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1746" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1746" bodyend="1768"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a407a258a044c76a63e24030713026e3b" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Ok</definition>
+        <argsstring>(const T &amp;ok) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Ok</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Ok</computeroutput> variant, containing <computeroutput>ok</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ok</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the success value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="821" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="821" bodyend="823"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a493fc632409bb508da1abe1e52e001ab" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Ok</definition>
+        <argsstring>(T &amp;&amp;ok) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Ok</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Ok</computeroutput> variant, containing <computeroutput>ok</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ok</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the success value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="830" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="830" bodyend="832"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1abd9a81183533ff3076b9536b7ee88300" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Ok</definition>
+        <argsstring>(OkWrapper&lt; T &gt; &amp;&amp;ok) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Ok</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref>&lt; T &gt; &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Ok</computeroutput> variant, containing <computeroutput>ok</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ok</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the success value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="839" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="839" bodyend="841"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1adbd31885711572aebdebb63f7fa21927" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Ok</definition>
+        <argsstring>(const OkWrapper&lt; T &gt; &amp;ok) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Ok</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref>&lt; T &gt; &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Ok</computeroutput> variant, containing <computeroutput>ok</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ok</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the success value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Ok</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="849" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="849" bodyend="851"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a1669e80006d940b4a7e5f91436d92678" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Err</definition>
+        <argsstring>(const E &amp;err) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Err</name>
+        <param>
+          <type>const E &amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Err</computeroutput> variant, containing <computeroutput>err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the failure value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="858" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="858" bodyend="860"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a481d9386af604392eaebebcd2617878c" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Err</definition>
+        <argsstring>(E &amp;&amp;err) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Err</name>
+        <param>
+          <type>E &amp;&amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Err</computeroutput> variant, containing <computeroutput>err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the failure value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="867" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="867" bodyend="869"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a8e1a480db3330d3617eac7111d4fe97d" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Err</definition>
+        <argsstring>(const ErrorWrapper&lt; E &gt; &amp;err) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Err</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1ErrorWrapper" kindref="compound">ErrorWrapper</ref>&lt; E &gt; &amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Err</computeroutput> variant, containing <computeroutput>err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the failure value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="877" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="877" bodyend="879"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1af406c5308fb21405ddf91859666def07" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr static auto</type>
+        <definition>constexpr static auto hyperion::utils::Result&lt; T, E &gt;::Err</definition>
+        <argsstring>(ErrorWrapper&lt; E &gt; &amp;&amp;err) noexcept -&gt; Result&lt; T, E &gt;</argsstring>
+        <name>Err</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1ErrorWrapper" kindref="compound">ErrorWrapper</ref>&lt; E &gt; &amp;&amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <computeroutput>Result()</computeroutput> as the <computeroutput>Err</computeroutput> variant, containing <computeroutput>err</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the failure value</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Err</computeroutput> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="887" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="887" bodyend="889"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a13a56a86c868101b6982587f6fd7f2a8" prot="private" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(const T &amp;ok) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>value type constructor </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1772" column="22" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1772" bodyend="1774"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1a1db2fc1b7ac00e92e9cc94a6c3e70fc7" prot="private" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(T &amp;&amp;ok) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+<para>rvalue contructor </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1777" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1777" bodyend="1778"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ad3642211a60e28c7eccaf4ac096089b2" prot="private" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(const E &amp;err) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>const E &amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>value type constructor </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1781" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1781" bodyend="1782"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Result_1ac017e05c2253bd45dfaf9097b36ebba9" prot="private" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::Result&lt; T, E &gt;::Result</definition>
+        <argsstring>(E &amp;&amp;err) noexcept</argsstring>
+        <name>Result</name>
+        <param>
+          <type>E &amp;&amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+<para>rvalue contructor </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="1785" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="1785" bodyend="1786"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Represents the result of an operation that can fail. Every <computeroutput>Result()</computeroutput> is either <computeroutput>Ok</computeroutput>, indicating success and containing a value or <computeroutput>Err</computeroutput>, indicating failure and containing an <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the type contained in the case of success </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the <computeroutput><ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref></computeroutput> type contained in the case of failure </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="30" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="30" bodyend="-1"/>
+    <listofallmembers>
+      <member refid="classhyperion_1_1utils_1_1Result_1a1669e80006d940b4a7e5f91436d92678" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a481d9386af604392eaebebcd2617878c" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a8e1a480db3330d3617eac7111d4fe97d" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1af406c5308fb21405ddf91859666def07" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a2e90ad7595806082a447f2c995bff3f7" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a6b2872ec65251443dab7f1b786dddc39" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a73b1a031602f4688d7f4834a0918b911" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a961b309041c8877d41c1afe7050b5f62" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>get_const</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a13e8b5156ac0d38f7b78229bd562b5f9" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>get_mut</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aaad4507806e90dfcfd605d067f4ff53f" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>is_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ae9a694b323155e10209525a49c303f26" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>is_ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a5ea2f08232ba0fdd58fca0247b222322" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>m_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a1d2044fae567ae8ab93e2e58542def24" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>m_handled</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a22546db91c13e47f5a85ce31c438c9dd" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>m_is_ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ac3d20e2f43a438d4eb2647131c46ad8e" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>m_ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a89c071ee5b31d15944cc28fc3fa3bdd2" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a105c549909210ec132bd2d1c9fa7f7c7" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a0e9392e2128c1e8a6737159404dfdaa4" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a9fc6ea18f1df24317d9c290cccdc6d78" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a4257e58f910e016750025ed9fcde01f9" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ac6dc9691de9be89bc56472bbc31bd9e1" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ac4a851b1e47f967c8ef4783020ece4f8" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a040f730af111ca97024e41fac0fdd4a2" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a8947d710feca414b8753eb79dffdfafa" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ac630825b4830c7b3967e353d3398a94b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a97c7338f534d6d3b8d8f86adefd866ec" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a4f5488625ebd3525dc8df22bb51b8fae" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a7054138fb0b222e7335d36b3a8e6a260" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ab4bce86c71dcb23efce372ef9fdc663d" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ae9367f01174da440d19e472564709465" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a50a28166500219fa787497dc007e47fb" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a019db553916cc96bec64c89e20186cba" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a9c95943c71c04aada751cc4c6fc661a5" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aba8a232b6bfd20a80d263de52e2cd258" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a71aad84943ac680d3d7d25ce9c479668" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a18638e9dde203a59d66d29af6af4f7ea" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or_else</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a351b3c5ab5cd6c0ab8a9430ff6625538" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or_else</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ab7d9edeb7a0ee7ed114d6c4ed4e1669b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or_else</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a1c1cb0ce1f7f0d59e6d392f536bb5b2c" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>map_or_else</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a545b67faf8aa91f8113f3a6c16511289" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aa9ae56daae3b5eac2ea3236dc9899edf" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a3b132b2faf3052e48ac03eab256fb98b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a407a258a044c76a63e24030713026e3b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a493fc632409bb508da1abe1e52e001ab" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1abd9a81183533ff3076b9536b7ee88300" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1adbd31885711572aebdebb63f7fa21927" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Ok</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a76d57b78eef3cc5f5a11711b2c8daa12" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>operator bool</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1af429af398237bd0ae8908b43d6aaaa2a" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a7bf4ae5b83f3210b75c155e702c5dff7" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1abb3dc2e207d715f394d552221936cbab" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1abb5ddc7e5547c9490b62fdb6eb05deaa" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a21370ee7d64d11bf815e89e59289712c" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aba4847d14dc7c9333da4ed78c62f9627" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a710a5c6571a5f5e949a2e30c7d65ec1a" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a6021278bc6be7176e5661d592d33f12c" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a5d374d82b731d46f02379981ca08987b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a9b3a119c31e034f6ed0c361b7463951f" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a13a56a86c868101b6982587f6fd7f2a8" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a1db2fc1b7ac00e92e9cc94a6c3e70fc7" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ad3642211a60e28c7eccaf4ac096089b2" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1ac017e05c2253bd45dfaf9097b36ebba9" prot="private" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>Result</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a61ce855d64f5777b107e3b0d1337f3b6" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a7ef5d6589fd1adb34cbadca837a814fb" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aa863223d5e26d0e51b06a06cc2c63134" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1aefb6b2c246cff98bd3bee60003467f62" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a808c733d72c879a254bb2f97d09f503b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a89d549c6bdef0c93df554845d56abada" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_err</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a6c65e6a95fa8518f6387063ccb0223e6" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a177d7c0a45fad9e7eb2dd2efc8c82df1" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_or</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a5726bbc52b63c3520fd107ca2d29af0b" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>unwrap_or_else</name></member>
+      <member refid="classhyperion_1_1utils_1_1Result_1a6fbf57799d8b5640e39f209cb8bbd0fb" prot="public" virt="non-virtual"><scope>hyperion::utils::Result</scope><name>~Result</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::utils::Option class | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <div class="m-doc-template">template&lt;Passable T&gt;</div>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehyperion_1_1utils.html">utils</a>::<wbr/></span>Option <span class="m-thin">class</span>
+        </h1>
+        <p>Represents an optional value. Every <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code> is either <code>Some</code> and contains a value, or <code>None</code>, and does not. Useful for things such as:</p>
+        <table class="m-table m-fullwidth m-flat">
+          <thead>
+            <tr><th colspan="2">Template parameters</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 1%">T</td>
+              <td>- The type of the potentially-contained value</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#pub-static-methods">Public static functions</a></li>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<ul><li>* Optional members/fields</li><li>* Members/fields that can be loaned or &quot;taken&quot;</li><li>* Optional function arguments</li><li>* Nullable types/pointers</li><li>* Return values for functions not defined over their entire input range</li></ul>
+        <section id="pub-static-methods">
+          <h2><a href="#pub-static-methods">Public static functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#abe85f4e95805830cff7726191c99bbba" class="m-doc">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> containing <code>some</code>, aka a <code>Some</code> variant containing <code>some</code> aka <code>Some(some)</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#a72ef6028e8f0447a359806a6463d27dc" class="m-doc">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> containing <code>some</code>, aka a <code>Some</code> variant containing <code>some</code> aka <code>Some(some)</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#ae43444cc63daa5ad6aa3f2fb2cd68f8a" class="m-doc">None</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1utils_1_1NoneType.html" class="m-doc">NoneType</a> none) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an empty <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>, aka a <code>None</code></dd>
+          </dl>
+        </section>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5d7022c6108b2236eb076e28f51de1ec" class="m-doc">is_some</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns <code>true</code> if this is <code>Some</code>, <code>false</code> if this is <code>None</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7600cdffac19e50db81c6df72e38da14" class="m-doc">is_none</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns <code>true</code> if this is <code>None</code>, <code>false</code> if this is <code>Some</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac5f993a8b77adb1aade9aa5796f29c8d" class="m-doc">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func) const noexcept -&gt; Option&lt; U &gt; requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5a72d53a98236b4fdd018008b26acd8e" class="m-doc">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func) const noexcept -&gt; Option&lt; U &gt; requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#afb037d4cb8c7eafa5a08c498ebad575a" class="m-doc">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func) noexcept -&gt; Option&lt; U &gt; requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7176eba544b26237b4d2bb798f5bf6cf" class="m-doc">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func) noexcept -&gt; Option&lt; U &gt; requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a1435d40724461c4f55831b9ad8325deb" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              const U&amp; default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#af6565ecc6477bfcc18546029e6075a3a" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              const U&amp; default_value) const noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#aeecbf3e09f9abcbc73082fdcb66f6f95" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a14b3b4e0567852da6214260e8155a394" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac318c44d9a549c883c97e7f5869956f5" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              const U&amp; default_value) noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a11d1e668d546f5513866d308a44dcecb" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              const U&amp; default_value) noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#aa3f0c9101793f10dec3bf5e6f0e2100a" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              U&amp;&amp; default_value) noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a825b7cacb3ab884c7b3713e2658d5edc" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              U&amp;&amp; default_value) noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a1cbb0b83a15f45ddb6c5a0a31e12e27d" class="m-doc">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) const noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ade4e38a3fab6307978c44761b2854901" class="m-doc">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) const noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#afef9a853ff7726c0152cb3d381a12631" class="m-doc">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) noexcept -&gt; U requires NotPointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#aded464a18aa455f49fb1ecc000ddd359" class="m-doc">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) noexcept -&gt; U requires Pointer&lt; T &gt; -&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ab3984b5aa618bebb80b2717b8e60d6fd" class="m-doc">ok_or</a>(</span><span class="m-doc-wrap">const ErrorType auto&amp; error) &gt;&gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code> or <code>Err(error)</code> if this is <code>None</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7143c01c612dc55a1ab6d958d6dc9ee5" class="m-doc">ok_or</a>(</span><span class="m-doc-wrap">ErrorType auto&amp;&amp; error) &gt;&gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code> or <code>Err(error)</code> if this is <code>None</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;ErrorType E = <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a>&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a6f5a2fc155f9e00fa536c4a10b07e475" class="m-doc">ok_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;E()&gt; error_generator) noexcept -&gt; Result&lt; T, E &gt; -&gt; requires NotReference&lt;E&gt; auto</span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()&lt;T, E&gt;</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code>, or <code>Err(E)</code> (where E is generated by <code>error_generator</code>) if this is <code>None</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a61b04ab6b17f4fd2483d123cc73b13ce" class="m-doc">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Movable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a2fdacb103fb631083c2b1dda6205d02a" class="m-doc">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Pointer&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a82a3c5e348c004e1cae580dda37ae461" class="m-doc">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires NotMovable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aaec935992dd09195d28751289b80bd69" class="m-doc">unwrap_or</a>(</span><span class="m-doc-wrap">const T&amp; default_value) noexcept -&gt; T -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then returns <code>default_value</code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a909d94716b23a9a14600d01832ea255e" class="m-doc">unwrap_or</a>(</span><span class="m-doc-wrap">T&amp;&amp; default_value) noexcept -&gt; T -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then returns <code>default_value</code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a62498580976bc955afda70ece82b68e1" class="m-doc">unwrap_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;T()&gt; default_generator) noexcept -&gt; T -&gt; auto</span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. If this is not <code>Some</code>, then returns the value generated by <code>default_generator</code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ab3c745a8d3c9f24fbe538eae324412e9" class="m-doc">get_mut</a>(</span><span class="m-doc-wrap">) -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the mutable <code>T</code> if this is <code>Some</code>, otherwise calls <code>std::terminate</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a24246c2da075f10ee5fa49699796e108" class="m-doc">get_const</a>(</span><span class="m-doc-wrap">) const -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>T</code> if this is <code>Some</code>, otherwise calls <code>std::terminate</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;ErrorType E&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a201f9ef41a5675b40694aeba23ea74bc" class="m-doc">ok_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;E()&gt; error_generator) noexcept -&gt; Result&lt; T, E &gt; -&gt; requires NotReference&lt;T&gt; requires NotReference&lt;E&gt; auto</span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()&lt;T, E&gt;</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code>, or <code>Err(E)</code> (where E is generated by <code>error_generator</code>) if this is <code>None</code></dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="abe85f4e95805830cff7726191c99bbba"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abe85f4e95805830cff7726191c99bbba" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> containing <code>some</code>, aka a <code>Some</code> variant containing <code>some</code> aka <code>Some(some)</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(some)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a72ef6028e8f0447a359806a6463d27dc"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a72ef6028e8f0447a359806a6463d27dc" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> containing <code>some</code>, aka a <code>Some</code> variant containing <code>some</code> aka <code>Some(some)</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(some)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ae43444cc63daa5ad6aa3f2fb2cd68f8a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ae43444cc63daa5ad6aa3f2fb2cd68f8a" class="m-doc-self">None</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1utils_1_1NoneType.html" class="m-doc">NoneType</a> none) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an empty <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>, aka a <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td><code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a5d7022c6108b2236eb076e28f51de1ec"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5d7022c6108b2236eb076e28f51de1ec" class="m-doc-self">is_some</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns <code>true</code> if this is <code>Some</code>, <code>false</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Whether this is <code>Some</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7600cdffac19e50db81c6df72e38da14"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7600cdffac19e50db81c6df72e38da14" class="m-doc-self">is_none</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns <code>true</code> if this is <code>None</code>, <code>false</code> if this is <code>Some</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>Whether this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac5f993a8b77adb1aade9aa5796f29c8d"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac5f993a8b77adb1aade9aa5796f29c8d" class="m-doc-self">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func) const noexcept -&gt; Option&lt; U &gt; requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a5a72d53a98236b4fdd018008b26acd8e"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5a72d53a98236b4fdd018008b26acd8e" class="m-doc-self">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func) const noexcept -&gt; Option&lt; U &gt; requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="afb037d4cb8c7eafa5a08c498ebad575a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afb037d4cb8c7eafa5a08c498ebad575a" class="m-doc-self">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func) noexcept -&gt; Option&lt; U &gt; requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7176eba544b26237b4d2bb798f5bf6cf"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7176eba544b26237b4d2bb798f5bf6cf" class="m-doc-self">map</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func) noexcept -&gt; Option&lt; U &gt; requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to an <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;</code>, returning <code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(U)</code> if this is Some, or <code>None</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a1435d40724461c4f55831b9ad8325deb"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1435d40724461c4f55831b9ad8325deb" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              const U&amp; default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="af6565ecc6477bfcc18546029e6075a3a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#af6565ecc6477bfcc18546029e6075a3a" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              const U&amp; default_value) const noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aeecbf3e09f9abcbc73082fdcb66f6f95"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aeecbf3e09f9abcbc73082fdcb66f6f95" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a14b3b4e0567852da6214260e8155a394"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a14b3b4e0567852da6214260e8155a394" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac318c44d9a549c883c97e7f5869956f5"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac318c44d9a549c883c97e7f5869956f5" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              const U&amp; default_value) noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a11d1e668d546f5513866d308a44dcecb"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a11d1e668d546f5513866d308a44dcecb" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              const U&amp; default_value) noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aa3f0c9101793f10dec3bf5e6f0e2100a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa3f0c9101793f10dec3bf5e6f0e2100a" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              U&amp;&amp; default_value) noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a825b7cacb3ab884c7b3713e2658d5edc"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a825b7cacb3ab884c7b3713e2658d5edc" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              U&amp;&amp; default_value) noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>default_value</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a1cbb0b83a15f45ddb6c5a0a31e12e27d"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1cbb0b83a15f45ddb6c5a0a31e12e27d" class="m-doc-self">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T&amp;)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) const noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_generator</td>
+                  <td>- The function to generate the default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or the value returned by <code>default_generator</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ade4e38a3fab6307978c44761b2854901"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ade4e38a3fab6307978c44761b2854901" class="m-doc-self">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(const T)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) const noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_generator</td>
+                  <td>- The function to generate the default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or the value returned by <code>default_generator</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="afef9a853ff7726c0152cb3d381a12631"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afef9a853ff7726c0152cb3d381a12631" class="m-doc-self">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(T&amp;)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) noexcept -&gt; U requires NotPointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_generator</td>
+                  <td>- The function to generate the default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or the value returned by <code>default_generator</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aded464a18aa455f49fb1ecc000ddd359"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;Passable U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aded464a18aa455f49fb1ecc000ddd359" class="m-doc-self">map_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;U(T)&gt; map_func,
+              std::function&lt;U()&gt; default_generator) noexcept -&gt; U requires Pointer&lt; T &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>U</code>, returning <code>U</code> (mapped by <code>map_func</code>) if this is <code>Some</code>, or <code>U</code> (the default value returned by <code>default_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type to map to</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_generator</td>
+                  <td>- The function to generate the default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or the value returned by <code>default_generator</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ab3984b5aa618bebb80b2717b8e60d6fd"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab3984b5aa618bebb80b2717b8e60d6fd" class="m-doc-self">ok_or</a>(</span><span class="m-doc-wrap">const ErrorType auto&amp; error) &gt;&gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code> or <code>Err(error)</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">error</td>
+                  <td>- The <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> to return if this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> is <code>None</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Ok(T)</code> if this is <code>Some</code>, <code>Err(error)</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7143c01c612dc55a1ab6d958d6dc9ee5"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7143c01c612dc55a1ab6d958d6dc9ee5" class="m-doc-self">ok_or</a>(</span><span class="m-doc-wrap">ErrorType auto&amp;&amp; error) &gt;&gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code> or <code>Err(error)</code> if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">error</td>
+                  <td>- The <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> to return if this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> is <code>None</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Ok(T)</code> if this is <code>Some</code>, <code>Err(error)</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a6f5a2fc155f9e00fa536c4a10b07e475"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;ErrorType E = <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a>&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires NotReference&lt;E&gt; auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a6f5a2fc155f9e00fa536c4a10b07e475" class="m-doc-self">ok_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;E()&gt; error_generator) noexcept -&gt; Result&lt; T, E &gt;</span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()&lt;T, E&gt;</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code>, or <code>Err(E)</code> (where E is generated by <code>error_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">E</td>
+                  <td>- The type to return if this is <code>None</code>. Must be an <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> type (<code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">hyperion::<wbr />utils::<wbr />Error</a></code>)</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>error_generator</td>
+                  <td>- The function to generate the <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Ok(T)</code> if this is <code>Some</code>, <code>Err(E)</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a61b04ab6b17f4fd2483d123cc73b13ce"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a61b04ab6b17f4fd2483d123cc73b13ce" class="m-doc-self">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Movable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The contained <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a2fdacb103fb631083c2b1dda6205d02a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a2fdacb103fb631083c2b1dda6205d02a" class="m-doc-self">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Pointer&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The contained <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a82a3c5e348c004e1cae580dda37ae461"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a82a3c5e348c004e1cae580dda37ae461" class="m-doc-self">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires NotMovable&lt; T &gt; &amp;&amp;NotPointer&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then <code>std::terminate</code> is called.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The contained <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aaec935992dd09195d28751289b80bd69"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aaec935992dd09195d28751289b80bd69" class="m-doc-self">unwrap_or</a>(</span><span class="m-doc-wrap">const T&amp; default_value) noexcept -&gt; T <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then returns <code>default_value</code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_value</td>
+                  <td>- The value to return if this is <code>None</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a909d94716b23a9a14600d01832ea255e"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a909d94716b23a9a14600d01832ea255e" class="m-doc-self">unwrap_or</a>(</span><span class="m-doc-wrap">T&amp;&amp; default_value) noexcept -&gt; T <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. If this is not <code>Some</code>, then returns <code>default_value</code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_value</td>
+                  <td>- The value to return if this is <code>None</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a62498580976bc955afda70ece82b68e1"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a62498580976bc955afda70ece82b68e1" class="m-doc-self">unwrap_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;T()&gt; default_generator) noexcept -&gt; T</span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. If this is not <code>Some</code>, then returns the value generated by <code>default_generator</code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_generator</td>
+                  <td>- The function to generate the value returned if this is <code>None</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or the value generated by <code>default_generator</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ab3c745a8d3c9f24fbe538eae324412e9"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab3c745a8d3c9f24fbe538eae324412e9" class="m-doc-self">get_mut</a>(</span><span class="m-doc-wrap">) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the mutable <code>T</code> if this is <code>Some</code>, otherwise calls <code>std::terminate</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer (or reference if <code>T</code> is a reference) to <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a24246c2da075f10ee5fa49699796e108"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a24246c2da075f10ee5fa49699796e108" class="m-doc-self">get_const</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>T</code> if this is <code>Some</code>, otherwise calls <code>std::terminate</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer (or reference if <code>T</code> is a reference) to const <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a201f9ef41a5675b40694aeba23ea74bc"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+                template&lt;ErrorType E&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires NotReference&lt;T&gt; requires NotReference&lt;E&gt; auto hyperion::<wbr />utils::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a201f9ef41a5675b40694aeba23ea74bc" class="m-doc-self">ok_or_else</a>(</span><span class="m-doc-wrap">std::function&lt;E()&gt; error_generator) noexcept -&gt; Result&lt; T, E &gt;</span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> to a <code>Result()&lt;T, E&gt;</code>, consuming this <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code>. Returns <code>Ok(T)</code> if this is <code>Some</code>, or <code>Err(E)</code> (where E is generated by <code>error_generator</code>) if this is <code>None</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">E</td>
+                  <td>- The type to return if this is <code>None</code>. Must be an <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> type (<code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">hyperion::<wbr />utils::<wbr />Error</a></code>)</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>error_generator</td>
+                  <td>- The function to generate the <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Ok(T)</code> if this is <code>Some</code>, <code>Err(E)</code> if this is <code>None</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

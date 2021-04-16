@@ -1,3 +1,5 @@
+/// @brief Meta-programming functions to determine if a given meta-condition holds for a list of
+/// types
 #pragma once
 
 #include "../BasicTypes.h"
@@ -55,8 +57,9 @@ namespace hyperion::utils::mpl {
 		// clang-format on
 	} // namespace detail
 
-	/// @brief Type Trait to determine that every type "Type" in the `mpl::list`, `List`, satisfies
-	/// that the value of `ConditionType<Type>` equals the value of `RequirementType`
+	/// @brief Meta-programming function to determine that every type "Type" in the `mpl::list`,
+	/// `List`, satisfies that the value of `ConditionType<Type>` equals the value of
+	/// `RequirementType`
 	///
 	/// @tparam ConditionType - The condition to check
 	/// @tparam RequirementType - The required value of the condition
@@ -65,9 +68,9 @@ namespace hyperion::utils::mpl {
 	struct for_all_types : detail::for_all_types_list_impl<ConditionType, RequirementType, List> {
 	};
 
-	/// @brief Value of Type Trait `for_all`. Used to determine that every type "Type" in the
-	/// `mpl::list`, `List`, satisfies that the value of `ConditionType<Type>` equals the value of
-	/// `RequirementType`
+	/// @brief Value of Meta-programming function `for_all`. Used to determine that every type
+	/// "Type" in the `mpl::list`, `List`, satisfies that the value of `ConditionType<Type>` equals
+	/// the value of `RequirementType`
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	inline static constexpr bool for_all_types_v
 		= for_all_types<ConditionType, RequirementType, List>::value;
@@ -128,9 +131,10 @@ namespace hyperion::utils::mpl {
 		// clang-format on
 	} // namespace detail
 
-	/// @brief Type Trait to determine that every type "Type" in the `mpl::list`, `List`, satisfies
-	/// that the value of `ConditionType<Evaluatee, Type>` equals the value of `RequirementType`,
-	/// where `Evaluatee` is a type that can perform some operation on "Type" For example:
+	/// @brief Meta-programming function to determine that every type "Type" in the `mpl::list`,
+	/// `List`, satisfies that the value of `ConditionType<Evaluatee, Type>` equals the value of
+	/// `RequirementType`, where `Evaluatee` is a type that can perform some operation on "Type" For
+	/// example:
 	//
 	/// 	for_all_params<std::is_constructible, std::true_type, umax, mpl::list<u8, u32, u64>>
 	///
@@ -149,10 +153,10 @@ namespace hyperion::utils::mpl {
 	struct for_all_params
 		: detail::for_all_params_list_impl<ConditionType, RequirementType, Evaluatee, List> { };
 
-	/// @brief Value of Type Trait `for_all_params`. Used to determine that every type "Type" in
-	/// the `mpl::list`, `List`, satisfies that the value of `ConditionType<Evaluatee, Type>` equals
-	/// the value of `RequirementType`, where `Evaluatee` is a type that can perform some operation
-	/// on "Type". For example:
+	/// @brief Value of Meta-programming function `for_all_params`. Used to determine that every
+	/// type "Type" in the `mpl::list`, `List`, satisfies that the value of
+	/// `ConditionType<Evaluatee, Type>` equals the value of `RequirementType`, where `Evaluatee` is
+	/// a type that can perform some operation on "Type". For example:
 	//
 	/// 	for_all_params_v<std::is_constructible, std::true_type, umax, mpl::list<u8, u32, u64>>
 	///

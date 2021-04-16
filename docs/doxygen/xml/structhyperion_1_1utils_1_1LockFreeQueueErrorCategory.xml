@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" kind="struct" language="C++" prot="public" final="yes">
+    <compoundname>hyperion::utils::LockFreeQueueErrorCategory</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">error_category</basecompoundref>
+    <includes refid="LockFreeQueue_8h" local="no">LockFreeQueue.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1ae38f876365ff074c468fdf966ea34c4d" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LockFreeQueueErrorCategory::LockFreeQueueErrorCategory</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>LockFreeQueueErrorCategory</name>
+        <briefdescription>
+<para>Default Constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="30" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1ac2ee1c3a4c83d42c4cc3d2e6618dcc4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LockFreeQueueErrorCategory::LockFreeQueueErrorCategory</definition>
+        <argsstring>(const LockFreeQueueErrorCategory &amp;)=delete</argsstring>
+        <name>LockFreeQueueErrorCategory</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" kindref="compound">LockFreeQueueErrorCategory</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy Constructor. Deleted. <ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref> Category types are singletons. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="32" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a60dc5575c92cb8e433a7ba4a4d12eb20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LockFreeQueueErrorCategory::LockFreeQueueErrorCategory</definition>
+        <argsstring>(LockFreeQueueErrorCategory &amp;&amp;)=delete</argsstring>
+        <name>LockFreeQueueErrorCategory</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" kindref="compound">LockFreeQueueErrorCategory</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+<para>Move Constructor. Deleted. <ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref> Category types are singletons. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="34" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a4cc72dabc5c2eb241047238d726e0641" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LockFreeQueueErrorCategory::~LockFreeQueueErrorCategory</definition>
+        <argsstring>() noexcept final=default</argsstring>
+        <name>~LockFreeQueueErrorCategory</name>
+        <briefdescription>
+<para>Destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="36" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a145399ae17cd13c62de807405503e435" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" final="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::LockFreeQueueErrorCategory::name</definition>
+        <argsstring>() const noexcept -&gt; const char *final</argsstring>
+        <name>name</name>
+        <briefdescription>
+<para>Returns the name of this error category. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>const char * - The name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="41" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" bodystart="41" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a29b7b0fd7daf4061d8bc69f39e5c87cd" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" noexcept="yes" virt="non-virtual">
+        <type>HYPERION_CONSTEXPR_STRINGS auto</type>
+        <definition>HYPERION_CONSTEXPR_STRINGS auto hyperion::utils::LockFreeQueueErrorCategory::message</definition>
+        <argsstring>(int condition) const noexcept -&gt; std::string final</argsstring>
+        <name>message</name>
+        <param>
+          <type>int</type>
+          <declname>condition</declname>
+        </param>
+        <briefdescription>
+<para>Returns the message associated with the given error condition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>condition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The condition to get the message for</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The associated message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="51" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" bodystart="51" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a5d791ddc94e1e2ba728e0e84c521ffba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::LockFreeQueueErrorCategory::operator=</definition>
+        <argsstring>(const LockFreeQueueErrorCategory &amp;) -&gt; LockFreeQueueErrorCategory &amp;=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" kindref="compound">LockFreeQueueErrorCategory</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Copy assignment operator. Deleted. <ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref> Category types are singletons. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="68" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a1f291ce953d5c859fcd3b23a64b66dbc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::LockFreeQueueErrorCategory::operator=</definition>
+        <argsstring>(LockFreeQueueErrorCategory &amp;&amp;) -&gt; LockFreeQueueErrorCategory &amp;=delete</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" kindref="compound">LockFreeQueueErrorCategory</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+<para>Move assignment operator. Deleted. <ref refid="classhyperion_1_1utils_1_1Error" kindref="compound">Error</ref> Category types are singletons. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="70" column="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para><computeroutput>std::error_category</computeroutput> type for <computeroutput>LockFreeQueueErrorType</computeroutput>s. Provides error catgory functionality for <computeroutput>LockFreeQueueErrorType</computeroutput>s </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>error_category</label>
+      </node>
+      <node id="1">
+        <label>hyperion::utils::LockFreeQueueErrorCategory</label>
+        <link refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>error_category</label>
+      </node>
+      <node id="1">
+        <label>hyperion::utils::LockFreeQueueErrorCategory</label>
+        <link refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="27" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" bodystart="27" bodyend="71"/>
+    <listofallmembers>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1ae38f876365ff074c468fdf966ea34c4d" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>LockFreeQueueErrorCategory</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1ac2ee1c3a4c83d42c4cc3d2e6618dcc4b" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>LockFreeQueueErrorCategory</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a60dc5575c92cb8e433a7ba4a4d12eb20" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>LockFreeQueueErrorCategory</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a29b7b0fd7daf4061d8bc69f39e5c87cd" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>message</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a145399ae17cd13c62de807405503e435" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>name</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a5d791ddc94e1e2ba728e0e84c521ffba" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a1f291ce953d5c859fcd3b23a64b66dbc" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory_1a4cc72dabc5c2eb241047238d726e0641" prot="public" virt="non-virtual"><scope>hyperion::utils::LockFreeQueueErrorCategory</scope><name>~LockFreeQueueErrorCategory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

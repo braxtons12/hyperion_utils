@@ -1,3 +1,7 @@
+/// @brief This is a simple change-of-value detector.
+///
+/// This is useful for when you need to store a value and track whether writes to the value are
+/// actually changes
 #pragma once
 
 #include <utility>

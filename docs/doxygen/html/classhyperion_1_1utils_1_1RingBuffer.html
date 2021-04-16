@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::utils::RingBuffer class | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <div class="m-doc-template">template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety = RingBufferType::NotThreadSafe, template&lt;typename ElementType&gt; typename Allocator = std::allocator&gt;</div>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehyperion_1_1utils.html">utils</a>::<wbr/></span>RingBuffer <span class="m-thin">class</span>
+        </h1>
+        <p>A simple Ring Buffer implementation. Supports resizing, writing, reading, erasing, and provides mutable and immutable random access iterators.</p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#autotoc_md7">Iterator Invalidation</a></li>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#pub-types">Public types</a></li>
+                <li><a href="#pub-static-attribs">Public static variables</a></li>
+                <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<section id="autotoc_md7"><h2><a href="#autotoc_md7">Iterator Invalidation</a></h2><ul><li>Iterators are lazily evaluated, so will only ever be invalidated at their current state. Performing any mutating operation (mutating the iterator, not the underlying data) on them will re-sync them with their associated <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>. The following operations will invalidate an iterator&#x27;s current state:</li><li>Read-only operations: never</li><li>clear: always</li><li>reserve: only if the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> changed capacity</li><li>erase: Erased elements and all following elements</li><li>push_back, emplace_back: only <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a1e16e34dbad26f08347338b55cda254a" class="m-doc">end()</a></code> until <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> is reached, then <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#afc705634849bcfc17d690d79f0a6d67f" class="m-doc">begin()</a></code> and <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a1e16e34dbad26f08347338b55cda254a" class="m-doc">end()</a></code></li><li>insert, emplace: only the element at the position inserted/emplaced</li><li>pop_back: the element removed and <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a1e16e34dbad26f08347338b55cda254a" class="m-doc">end()</a></code></li><li>pop_front: the element removed and <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#afc705634849bcfc17d690d79f0a6d67f" class="m-doc">begin()</a></code></li></ul></section>
+        <section id="pub-types">
+          <h2><a href="#pub-types">Public types</a></h2>
+          <dl class="m-doc">
+            <dt>
+              class <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>
+            </dt>
+            <dd>Read-only Random-Access Bidirectional iterator for <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              class <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>
+            </dt>
+            <dd>Random-Access Bidirectional iterator for <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+          </dl>
+        </section>
+        <section id="pub-static-attribs">
+          <h2><a href="#pub-static-attribs">Public static variables</a></h2>
+          <dl class="m-doc">
+            <dt id="a35516f4535f8928ccbc0843e2c1b28f5">
+              static const usize <a href="#a35516f4535f8928ccbc0843e2c1b28f5" class="m-doc-self">DEFAULT_CAPACITY</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Default capacity of <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+          </dl>
+        </section>
+        <section id="typeless-methods">
+          <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
+          <dl class="m-doc">
+            <dt id="a8e73273a589e8f9bf9cf1bad3de32d91">
+              <span class="m-doc-wrap-bumper"><a href="#a8e73273a589e8f9bf9cf1bad3de32d91" class="m-doc-self">RingBuffer</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Creates a <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with default capacity.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a4bc4be8c55ba25415dc51d8d5ceca5ab" class="m-doc">RingBuffer</a>(</span><span class="m-doc-wrap">usize intitial_capacity) <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Creates a <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with (at least) the given initial capacity.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#a68e675965f9665739088efbf99e1b525" class="m-doc">RingBuffer</a>(</span><span class="m-doc-wrap">usize intitial_capacity,
+              const T&amp; default_value) noexcept requires Copyable&lt; T &gt; <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs a new <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with the given initial capacity and fills it with <code>default_value</code></dd>
+          </dl>
+        </section>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad71d64188ee03762324281b7cdf53479" class="m-doc">at</a>(</span><span class="m-doc-wrap">Integral auto index) noexcept -&gt; T &amp; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the element at the given index.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a516a5fdc004dfba8e7f061334d952257" class="m-doc">front</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T &amp; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the first element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a8d0178b773ad8c7e86f29c05abb38a07" class="m-doc">back</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T &amp; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the last element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a35c14f35c955131f80be11f491da35b2" class="m-doc">data</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T * -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns a pointer to the underlying data in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a3e3a291f345f069718216bdcd77da0eb" class="m-doc">empty</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns whether the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is empty.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad3d7f9cff7f483bc60375d13eaa524f4" class="m-doc">full</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns whether the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is full.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the current number of elements in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a0ee83a219c411bf8620ad8a02705b06e" class="m-doc">max_size</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the maximum possible number of elements this <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> could store if grown to maximum possible capacity.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the current capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>; the number of elements it can currently store.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a8ab29e09e70d671d8152269eb579907e" class="m-doc">reserve</a>(</span><span class="m-doc-wrap">usize new_capacity) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Reserves more storage for the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>. If <code>new_capacity</code> is &gt; capacity, then the capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> will be extended until at least <code>new_capacity</code> elements can be stored.</dd>
+            <dt id="ab4c1b33e8dc7dd3c277b52263dc12ba8">
+              <span class="m-doc-wrap-bumper">auto <a href="#ab4c1b33e8dc7dd3c277b52263dc12ba8" class="m-doc-self">clear</a>(</span><span class="m-doc-wrap">) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Erases all elements from the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5a5c7f5747493b7fe309b13179af676f" class="m-doc">push_back</a>(</span><span class="m-doc-wrap">const T&amp; value) noexcept -&gt; void requires Copyable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Inserts the given element at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a69a4852fd8ee7e2dff747450750b0970" class="m-doc">push_back</a>(</span><span class="m-doc-wrap">T&amp;&amp; value) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Inserts the given element at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7d9b545813a3db368f3a81ed395ad81b" class="m-doc">emplace_back</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; T &amp; -&gt; requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto</span>
+            </dt>
+            <dd>Constructs the given element in place at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac0d35f01696149fe04d4a7efff065cf9" class="m-doc">emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp; -&gt; requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto</span>
+            </dt>
+            <dd>Constructs the given element in place at the location indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a3224c979ea66ccdd9afd600cb0c42e13" class="m-doc">emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs the given element in place at the location indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a37567a98f558c0a9fc94c10e0ea4cd98" class="m-doc">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              const T&amp; element) noexcept -&gt; void requires Copyable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a0f738f72d4f2b4f2a11af9a7bbb6693b" class="m-doc">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              T&amp;&amp; element) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a15c738063a5e758691206375567e7918" class="m-doc">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              const T&amp; element) noexcept -&gt; void requires Copyable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a174b57d0dbc1fba8503dc595ce5c5857" class="m-doc">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              T&amp;&amp; element) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a897e82176029ff4ddb06ae2cbcb612e2" class="m-doc">insert_emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp; -&gt; requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto</span>
+            </dt>
+            <dd>Constructs the given element at the insertion position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#abb24c94637974a594eff5b4d8067772c" class="m-doc">insert_emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp; -&gt; requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto</span>
+            </dt>
+            <dd>Constructs the given element at the insertion position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5cf498eaa79cd97d04b7fba6ee5f156c" class="m-doc">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position) noexcept -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Erases the element at the given <code>position</code>, moving other elements backward in the buffer to maintain contiguity.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a9acd7eade2fb0013f204129dd06205fb" class="m-doc">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position) noexcept -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Erases the element at the given <code>position</code>, moving other elements backward in the buffer to maintain contiguity.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a3c19d9b2c48e88d40b3e33312acef83c" class="m-doc">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; first,
+              const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; last) noexcept -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Erases the range of elements in [<code>first</code>, <code>last</code>) Returns an <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> to the element after the last one erased.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a212265a5cfb3920a2c3e9fddb4b9363a" class="m-doc">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; first,
+              const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; last) noexcept -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Erases the range of elements in [<code>first</code>, <code>last</code>) Returns an <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> to the element after the last one erased.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#afb7a191fc8b2e4694d43990d8a03a69f" class="m-doc">pop_back</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Copyable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Removes the last element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> and returns it.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a0a8eee7210b7dec7203744bd8f2d8a0f" class="m-doc">pop_front</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Copyable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Removes the first element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> and returns it.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#afc705634849bcfc17d690d79f0a6d67f" class="m-doc">begin</a>(</span><span class="m-doc-wrap">) -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns a Random Access Bidirectional iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the beginning.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a1e16e34dbad26f08347338b55cda254a" class="m-doc">end</a>(</span><span class="m-doc-wrap">) -&gt; Iterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns a Random Access Bidirectional iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the end.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4ca5cc24862c27ec998f3f804a2f7c33" class="m-doc">cbegin</a>(</span><span class="m-doc-wrap">) -&gt; ConstIterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns a Random Access Bidirectional read-only iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the beginning.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4fb19b10b1ae6ae9ab92b8dbb06964e6" class="m-doc">cend</a>(</span><span class="m-doc-wrap">) -&gt; ConstIterator -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns a Random Access Bidirectional read-only iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the end.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a78a9096b4d3cac0a629b89b7f9459a72" class="m-doc">operator[]</a>(</span><span class="m-doc-wrap">Integral auto index) noexcept -&gt; T &amp; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Unchecked access-by-index operator.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a4bc4be8c55ba25415dc51d8d5ceca5ab"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper"> hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4bc4be8c55ba25415dc51d8d5ceca5ab" class="m-doc-self">RingBuffer</a>(</span><span class="m-doc-wrap">usize intitial_capacity) <span class="m-label m-info">explicit</span>  <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Creates a <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with (at least) the given initial capacity.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">intitial_capacity</td>
+                  <td>- The initial capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a68e675965f9665739088efbf99e1b525"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper"> hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a68e675965f9665739088efbf99e1b525" class="m-doc-self">RingBuffer</a>(</span><span class="m-doc-wrap">usize intitial_capacity,
+              const T&amp; default_value) noexcept requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs a new <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with the given initial capacity and fills it with <code>default_value</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">intitial_capacity</td>
+                  <td>- The initial capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The value to fill the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> with</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ad71d64188ee03762324281b7cdf53479"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad71d64188ee03762324281b7cdf53479" class="m-doc-self">at</a>(</span><span class="m-doc-wrap">Integral auto index) noexcept -&gt; T &amp; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the element at the given index.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">index</td>
+                  <td>- The index of the desired element</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The element at the given index, or at capacity - 1 if index &gt;= capacity</td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>This is not checked in the same manner as STL containers: if index &gt;= capacity, the element at capacity - 1 is returned.</p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a516a5fdc004dfba8e7f061334d952257"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a516a5fdc004dfba8e7f061334d952257" class="m-doc-self">front</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T &amp; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the first element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The first element</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a8d0178b773ad8c7e86f29c05abb38a07"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a8d0178b773ad8c7e86f29c05abb38a07" class="m-doc-self">back</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T &amp; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the last element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The last element</td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>If &lt;= 1 elements are in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, this will be the same as <code>front</code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a35c14f35c955131f80be11f491da35b2"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a35c14f35c955131f80be11f491da35b2" class="m-doc-self">data</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T * <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns a pointer to the underlying data in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer to the underlying data</td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>This is not sorted in any way to match the representation used by the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a3e3a291f345f069718216bdcd77da0eb"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3e3a291f345f069718216bdcd77da0eb" class="m-doc-self">empty</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns whether the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is empty.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td><code>true</code> if the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is empty, <code>false</code> otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ad3d7f9cff7f483bc60375d13eaa524f4"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad3d7f9cff7f483bc60375d13eaa524f4" class="m-doc-self">full</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns whether the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is full.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td><code>true</code> if the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> is full, <code>false</code> otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aa94961cd191f3d00ca618ef01af9d7b5"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc-self">size</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the current number of elements in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The current number of elements</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a0ee83a219c411bf8620ad8a02705b06e"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a0ee83a219c411bf8620ad8a02705b06e" class="m-doc-self">max_size</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the maximum possible number of elements this <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> could store if grown to maximum possible capacity.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The maximum possible number of storable elements</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a573926bc8d421ce6430d0667febe0ff0"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a573926bc8d421ce6430d0667febe0ff0" class="m-doc-self">capacity</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; usize <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the current capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>; the number of elements it can currently store.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The current capacity</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a8ab29e09e70d671d8152269eb579907e"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a8ab29e09e70d671d8152269eb579907e" class="m-doc-self">reserve</a>(</span><span class="m-doc-wrap">usize new_capacity) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Reserves more storage for the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>. If <code>new_capacity</code> is &gt; capacity, then the capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> will be extended until at least <code>new_capacity</code> elements can be stored.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">new_capacity</td>
+                  <td>- The new capacity of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>Memory contiguity is maintained, so no <strong>elements</strong> will be lost or invalidated. However, all iterators and references to elements will be invalidated.</p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a5a5c7f5747493b7fe309b13179af676f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5a5c7f5747493b7fe309b13179af676f" class="m-doc-self">push_back</a>(</span><span class="m-doc-wrap">const T&amp; value) noexcept -&gt; void requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Inserts the given element at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">value</td>
+                  <td>- the element to insert</td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> then this loops and overwrites <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a516a5fdc004dfba8e7f061334d952257" class="m-doc">front()</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a69a4852fd8ee7e2dff747450750b0970"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a69a4852fd8ee7e2dff747450750b0970" class="m-doc-self">push_back</a>(</span><span class="m-doc-wrap">T&amp;&amp; value) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Inserts the given element at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">value</td>
+                  <td>- the element to insert</td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> then this loops and overwrites <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a516a5fdc004dfba8e7f061334d952257" class="m-doc">front()</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a7d9b545813a3db368f3a81ed395ad81b"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7d9b545813a3db368f3a81ed395ad81b" class="m-doc-self">emplace_back</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; T &amp;</span></span>
+            </h3>
+            <p>Constructs the given element in place at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Args</td>
+                  <td>- The types of the element&#x27;s constructor arguments</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>args</td>
+                  <td>- The constructor arguments for the element</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>A reference to the element constructed at the end of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> then this loops and overwrites <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#a516a5fdc004dfba8e7f061334d952257" class="m-doc">front()</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="ac0d35f01696149fe04d4a7efff065cf9"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac0d35f01696149fe04d4a7efff065cf9" class="m-doc-self">emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp;</span></span>
+            </h3>
+            <p>Constructs the given element in place at the location indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Args</td>
+                  <td>- The types of the element&#x27;s constructor arguments</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to construct the element</td>
+                </tr>
+                <tr>
+                  <td>args</td>
+                  <td>- The constructor arguments for the element</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>A reference to the element constructed at the location indicated by <code>position</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3224c979ea66ccdd9afd600cb0c42e13"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3224c979ea66ccdd9afd600cb0c42e13" class="m-doc-self">emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs the given element in place at the location indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Args</td>
+                  <td>- The types of the element&#x27;s constructor arguments</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to construct the element</td>
+                </tr>
+                <tr>
+                  <td>args</td>
+                  <td>- The constructor arguments for the element</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>A reference to the element constructed at the location indicated by <code>position</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a37567a98f558c0a9fc94c10e0ea4cd98"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a37567a98f558c0a9fc94c10e0ea4cd98" class="m-doc-self">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              const T&amp; element) noexcept -&gt; void requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>element</td>
+                  <td>- The element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a0f738f72d4f2b4f2a11af9a7bbb6693b"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a0f738f72d4f2b4f2a11af9a7bbb6693b" class="m-doc-self">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              T&amp;&amp; element) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>element</td>
+                  <td>- The element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a15c738063a5e758691206375567e7918"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a15c738063a5e758691206375567e7918" class="m-doc-self">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              const T&amp; element) noexcept -&gt; void requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>element</td>
+                  <td>- The element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a174b57d0dbc1fba8503dc595ce5c5857"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a174b57d0dbc1fba8503dc595ce5c5857" class="m-doc-self">insert</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              T&amp;&amp; element) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Assigns the given element to the position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>element</td>
+                  <td>- The element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a897e82176029ff4ddb06ae2cbcb612e2"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a897e82176029ff4ddb06ae2cbcb612e2" class="m-doc-self">insert_emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp;</span></span>
+            </h3>
+            <p>Constructs the given element at the insertion position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>args</td>
+                  <td>- The arguments to the constructor for the element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="abb24c94637974a594eff5b4d8067772c"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires constexpr ConstructibleFrom&lt;T, Args...&gt; auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abb24c94637974a594eff5b4d8067772c" class="m-doc-self">insert_emplace</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position,
+              Args &amp;&amp; ... args) noexcept -&gt; T &amp;</span></span>
+            </h3>
+            <p>Constructs the given element at the insertion position indicated by the <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> <code>position</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a></code> indicating where in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> to place the element</td>
+                </tr>
+                <tr>
+                  <td>args</td>
+                  <td>- The arguments to the constructor for the element to store in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>if <code><a href="classhyperion_1_1utils_1_1RingBuffer.html#aa94961cd191f3d00ca618ef01af9d7b5" class="m-doc">size()</a> == <a href="classhyperion_1_1utils_1_1RingBuffer.html#a573926bc8d421ce6430d0667febe0ff0" class="m-doc">capacity()</a></code> this drops the last element out of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a5cf498eaa79cd97d04b7fba6ee5f156c"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5cf498eaa79cd97d04b7fba6ee5f156c" class="m-doc-self">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; position) noexcept -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Erases the element at the given <code>position</code>, moving other elements backward in the buffer to maintain contiguity.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- The element to erase</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> pointing to the element after the one erased</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a9acd7eade2fb0013f204129dd06205fb"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a9acd7eade2fb0013f204129dd06205fb" class="m-doc-self">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; position) noexcept -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Erases the element at the given <code>position</code>, moving other elements backward in the buffer to maintain contiguity.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">position</td>
+                  <td>- The element to erase</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> pointing to the element after the one erased</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3c19d9b2c48e88d40b3e33312acef83c"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3c19d9b2c48e88d40b3e33312acef83c" class="m-doc-self">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; first,
+              const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a>&amp; last) noexcept -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Erases the range of elements in [<code>first</code>, <code>last</code>) Returns an <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> to the element after the last one erased.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">first</td>
+                  <td>- The first element in the range to erase</td>
+                </tr>
+                <tr>
+                  <td>last</td>
+                  <td>- The last element in the range</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> pointing to the element after the last one erased</td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>In the case <code>first</code> &gt;= <code>last</code>, no elements are erased and <code>last</code> is returned;</p></aside>
+          </div></section>
+          <section class="m-doc-details" id="a212265a5cfb3920a2c3e9fddb4b9363a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a212265a5cfb3920a2c3e9fddb4b9363a" class="m-doc-self">erase</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; first,
+              const <a href="classhyperion_1_1utils_1_1RingBuffer_1_1ConstIterator.html" class="m-doc">ConstIterator</a>&amp; last) noexcept -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Erases the range of elements in [<code>first</code>, <code>last</code>) Returns an <code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> to the element after the last one erased.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">first</td>
+                  <td>- The first element in the range to erase</td>
+                </tr>
+                <tr>
+                  <td>last</td>
+                  <td>- The last element in the range</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="classhyperion_1_1utils_1_1RingBuffer_1_1Iterator.html" class="m-doc">Iterator</a></code> pointing to the element after the last one erased</td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>In the case <code>first</code> &gt;= <code>last</code>, no elements are erased and <code>last</code> is returned;</p></aside>
+          </div></section>
+          <section class="m-doc-details" id="afb7a191fc8b2e4694d43990d8a03a69f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afb7a191fc8b2e4694d43990d8a03a69f" class="m-doc-self">pop_back</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Removes the last element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> and returns it.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The last element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a0a8eee7210b7dec7203744bd8f2d8a0f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a0a8eee7210b7dec7203744bd8f2d8a0f" class="m-doc-self">pop_front</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T requires Copyable&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Removes the first element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> and returns it.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The first element in the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="afc705634849bcfc17d690d79f0a6d67f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#afc705634849bcfc17d690d79f0a6d67f" class="m-doc-self">begin</a>(</span><span class="m-doc-wrap">) -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns a Random Access Bidirectional iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the beginning.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The iterator, at the beginning</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a1e16e34dbad26f08347338b55cda254a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a1e16e34dbad26f08347338b55cda254a" class="m-doc-self">end</a>(</span><span class="m-doc-wrap">) -&gt; Iterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns a Random Access Bidirectional iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the end.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The iterator, at the end</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a4ca5cc24862c27ec998f3f804a2f7c33"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4ca5cc24862c27ec998f3f804a2f7c33" class="m-doc-self">cbegin</a>(</span><span class="m-doc-wrap">) -&gt; ConstIterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns a Random Access Bidirectional read-only iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the beginning.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The iterator, at the beginning</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a4fb19b10b1ae6ae9ab92b8dbb06964e6"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4fb19b10b1ae6ae9ab92b8dbb06964e6" class="m-doc-self">cend</a>(</span><span class="m-doc-wrap">) -&gt; ConstIterator <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns a Random Access Bidirectional read-only iterator over the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code>, at the end.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The iterator, at the end</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a78a9096b4d3cac0a629b89b7f9459a72"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety, template&lt;typename ElementType&gt; typename Allocator&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr />RingBuffer&lt;T, ThreadSafety, Allocator&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a78a9096b4d3cac0a629b89b7f9459a72" class="m-doc-self">operator[]</a>(</span><span class="m-doc-wrap">Integral auto index) noexcept -&gt; T &amp; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Unchecked access-by-index operator.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">index</td>
+                  <td>- The index to get the corresponding element for</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>- The element at index</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

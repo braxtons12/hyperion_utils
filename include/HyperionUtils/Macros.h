@@ -1,3 +1,4 @@
+/// @brief Collection of macros used throughout Hyperion for configuration
 #pragma once
 
 #include <version>

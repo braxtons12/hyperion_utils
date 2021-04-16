@@ -1,3 +1,7 @@
+/// @brief Error is the base type for communicating recoverable errors inside Hyperion
+///
+/// Error speaks `std::error_code` as well as custom error messages, and combined with `Result`
+/// is easily composable and propogated
 #pragma once
 
 #include <cstring>

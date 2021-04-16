@@ -1,3 +1,8 @@
+/// @brief Hyperion logging facilities.
+///
+/// Hyperion's logging facilities are robust and composable.
+/// Behavioral (Policy) configuration is configurable at compile time with via template parameters,
+/// and output configuration is configurable by supplying the desired `Sink`s on creation
 #pragma once
 
 #include <atomic>
@@ -6,10 +11,12 @@
 #include <gsl/gsl>
 #include <iostream>
 #include <memory>
+#include <system_error>
 #include <thread>
 
 #include "BasicTypes.h"
 #include "LockFreeQueue.h"
+#include "Logger.h"
 #include "logging/Config.h"
 #include "logging/Entry.h"
 #include "logging/Sink.h"
@@ -18,19 +25,90 @@
 namespace hyperion::utils {
 
 	/// @brief Possible Error categories that can occur when using the logger
-	enum class LogErrorCategory : u8
+	enum class LogErrorType : u8
 	{
+		/// @brief No Error occurred
+		Success = 0,
 		/// @brief failed to queue the entry for logging
-		QueueingError = 0,
+		QueueingError = 1,
 		/// @brief the requested log level for the entry is
 		/// lower than the minium level for the logger
-		LogLevelError = 1,
+		LogLevelError = 2,
 	};
 
 	/// @brief Alias for the Error type we might recieve from the internal queue
-	using QueueError = LockFreeQueueError<LockFreeQueueErrorCategory::QueueIsFull>;
+	using QueueError = LockFreeQueueError;
 
 	IGNORE_PADDING_START
+	IGNORE_WEAK_VTABLES_START
+	/// @brief `std::error_category` type for `LogErrorType`s. Provides error catgory functionality
+	/// for `LogErrorType`s
+	struct LoggerErrorCategory final : public std::error_category {
+	  public:
+		/// @brief Default Constructor
+		LoggerErrorCategory() noexcept = default;
+		/// @brief Copy Constructor. Deleted. Error Category types are singletons
+		LoggerErrorCategory(const LoggerErrorCategory&) = delete;
+		/// @brief Move Constructor. Deleted. Error Category types are singletons
+		LoggerErrorCategory(LoggerErrorCategory&&) = delete;
+		/// @brief Destructor
+		~LoggerErrorCategory() noexcept final = default;
+
+		/// @brief Returns the name of this error category
+		///
+		/// @return const char * - The name
+		[[nodiscard]] inline constexpr auto name() const noexcept -> const char* final {
+			return "Logger Error";
+		}
+
+		/// @brief Returns the message associated with the given error condition
+		///
+		/// @param condition - The condition to get the message for
+		///
+		/// @return The associated message
+		[[nodiscard]] inline HYPERION_CONSTEXPR_STRINGS auto
+		message(int condition) const noexcept -> std::string final {
+			const auto category = static_cast<LogErrorType>(condition);
+			if(category == LogErrorType::Success) {
+				return "Success"s;
+			}
+			else if(category == LogErrorType::QueueingError) {
+				return "Queueing entry failed"s;
+			}
+			else if(category == LogErrorType::QueueingError) {
+				return "Configured logging level is higher than the given entry"s;
+			}
+			else {
+				return "Unknown Error"s;
+			}
+		}
+
+		/// @brief Copy assignment operator. Deleted. Error Category types are singletons
+		auto operator=(const LoggerErrorCategory&) -> LoggerErrorCategory& = delete;
+		/// @brief Move assignment operator. Deleted. Error Category types are singletons
+		auto operator=(LoggerErrorCategory&&) -> LoggerErrorCategory& = delete;
+	};
+	IGNORE_WEAK_VTABLES_STOP
+
+	static inline auto logger_category() noexcept -> const LoggerErrorCategory& {
+		HYPERION_NO_DESTROY static const LoggerErrorCategory category{};
+		return category;
+	}
+
+} // namespace hyperion::utils
+
+namespace std {
+	template<>
+	struct is_error_code_enum<hyperion::utils::LogErrorType> : std::true_type { };
+
+} // namespace std
+
+inline auto make_error_code(hyperion::utils::LogErrorType code) noexcept -> std::error_code {
+	return {static_cast<int>(code), hyperion::utils::logger_category()};
+}
+
+namespace hyperion::utils {
+
 	IGNORE_WEAK_VTABLES_START
 
 	/// @brief Error type for communicating logger errors
@@ -38,32 +116,43 @@ namespace hyperion::utils {
 	/// or an entry is passed in at an invalid logging level
 	class LoggerError final : public Error {
 	  public:
+		/// @brief Default constructs a `LoggerError`
 		LoggerError() noexcept {
 			Error::m_message = "Error writing to logging queue"s;
 		}
-		LoggerError(LogErrorCategory type) noexcept { // NOLINT
-			if(type == LogErrorCategory::QueueingError) {
+		/// @brief Constructs a `LoggerError` as a `std::error_code` from the given `LogErrorType`
+		///
+		/// @param type - The error type
+		LoggerError(LogErrorType type) noexcept : Error(make_error_code(type)) { // NOLINT
+			if(type == LogErrorType::QueueingError) {
 				Error::m_message = "Error writing to logging queue"s;
 			}
 			else {
 				Error::m_message = "Logging Level of this Logger is higher than the given entry"s;
 			}
 		}
-		LoggerError(const QueueError& error) noexcept { // NOLINT
-			Error::m_message = "Error writing to logging queue"s;
-			Error::m_source = std::make_shared<Error>(error);
-			Error::m_has_source = true;
+		/// @brief Converts the given `QueueError` into a `LoggerError`
+		///
+		/// @param error - The error to convert
+		LoggerError(const QueueError& error) noexcept // NOLINT
+			: Error("Error writing to logging queue", error) {
 		}
-		LoggerError(QueueError&& error) noexcept { // NOLINT
-			Error::m_message = "Error writing to logging queue"s;
-			Error::m_source = std::make_shared<Error>(error);
-			Error::m_has_source = true;
+		/// @brief Converts the given `QueueError` into a `LoggerError`
+		///
+		/// @param error - The error to convert
+		LoggerError(QueueError&& error) noexcept // NOLINT
+			: Error("Error writing to logging queue", error) {
 		}
+		/// @brief Copy constructor
 		LoggerError(const LoggerError& error) noexcept = default;
+		/// @brief Move constructor
 		LoggerError(LoggerError&& error) noexcept = default;
+		/// @brief Destructor
 		~LoggerError() noexcept final = default;
 
+		/// @brief Copy assignment operator
 		auto operator=(const LoggerError& error) noexcept -> LoggerError& = default;
+		/// @brief Move assignment operator
 		auto operator=(LoggerError&& error) noexcept -> LoggerError& = default;
 	};
 	IGNORE_WEAK_VTABLES_STOP
@@ -78,6 +167,7 @@ namespace hyperion::utils {
 		static constexpr LogPolicy POLICY = LogParameters::policy;
 		static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
 
+		/// @brief Default Constructor
 		Logger()
 			// clang-format off
 			: m_message_thread([messages = m_messages, log_file_path = m_log_file_path]
@@ -237,7 +327,7 @@ namespace hyperion::utils {
 			}
 			else {
 				ignore(format_string, args...);
-				return Err(LoggerError(LogErrorCategory::LogLevelError));
+				return Err(LoggerError(LogErrorType::LogLevelError));
 			}
 		}
 

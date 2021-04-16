@@ -1,3 +1,9 @@
+/// @brief HyperionUtils is a Hyperion Engine library consisting of various basic functionalities,
+/// types, and utilities.
+///
+/// HyperionUtils contains Hyperion's logging, error handling, and meta-programming facilities,
+/// as well as various datastructures and replacements or wrappers for `std` types such as `Variant`
+/// to replace `std::variant` or `Span` to wrap `gsl::span`
 #pragma once
 
 #include "BasicTypes.h"
@@ -6,7 +12,9 @@
 #include "Error.h"
 #include "Ignore.h"
 #include "LockFreeQueue.h"
-#include "Logger.h"
+#ifdef HYPERION_INCLUDE_LOGGING_BY_DEFAULT
+	#include "Logger.h"
+#endif
 #include "Macros.h"
 #include "OptionAndResult.h"
 #include "RingBuffer.h"

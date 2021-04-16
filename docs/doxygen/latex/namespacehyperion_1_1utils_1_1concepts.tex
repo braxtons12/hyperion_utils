@@ -1,0 +1,277 @@
+\hypertarget{namespacehyperion_1_1utils_1_1concepts}{}\doxysection{hyperion\+::utils\+::concepts Namespace Reference}
+\label{namespacehyperion_1_1utils_1_1concepts}\index{hyperion::utils::concepts@{hyperion::utils::concepts}}
+
+
+This is a small collection of simple Concepts useful for requiring basic attributes of a type.  
+
+
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ae483ba9141f247d4a9075408b93ef19a}\label{namespacehyperion_1_1utils_1_1concepts_ae483ba9141f247d4a9075408b93ef19a}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae483ba9141f247d4a9075408b93ef19a}{Floating\+Point}} = std\+::floating\+\_\+point$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::floating\+\_\+point$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a69370affcc93280870f33f2290d67ded}\label{namespacehyperion_1_1utils_1_1concepts_a69370affcc93280870f33f2290d67ded}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a69370affcc93280870f33f2290d67ded}{Integral}} = std\+::integral$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::integral$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a43ff7f0cda2cb9621cb93a204c502559}\label{namespacehyperion_1_1utils_1_1concepts_a43ff7f0cda2cb9621cb93a204c502559}} 
+{\footnotesize template$<$typename T $>$ }\\concept {\bfseries Unsigned\+Integral} = std\+::unsigned\+\_\+integral$<$T$>$
+\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a374d5756b8e1f9f8f5308bf0521e235f}\label{namespacehyperion_1_1utils_1_1concepts_a374d5756b8e1f9f8f5308bf0521e235f}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a374d5756b8e1f9f8f5308bf0521e235f}{Signed\+Integral}} = std\+::signed\+\_\+integral$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::signed\+\_\+integral$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aa9ece778cf76997978ab73cc4b25a5f2}\label{namespacehyperion_1_1utils_1_1concepts_aa9ece778cf76997978ab73cc4b25a5f2}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aa9ece778cf76997978ab73cc4b25a5f2}{Numeric}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae483ba9141f247d4a9075408b93ef19a}{Floating\+Point}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a69370affcc93280870f33f2290d67ded}{Integral}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires the type to be a numeric type ie\+: Floating\+Point$<$\+T$>$ or Integral$<$\+T$>$ is true. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a207fb425b6c3f323944d695af9ff35c0}\label{namespacehyperion_1_1utils_1_1concepts_a207fb425b6c3f323944d695af9ff35c0}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a207fb425b6c3f323944d695af9ff35c0}{Signed\+Numeric}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae483ba9141f247d4a9075408b93ef19a}{Floating\+Point}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a374d5756b8e1f9f8f5308bf0521e235f}{Signed\+Integral}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires the type to be a numeric type ie\+: Floating\+Point$<$\+T$>$ or Integral$<$\+T$>$ is true. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}\label{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}{Pointer}} = std\+::is\+\_\+pointer\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept for {\ttfamily std\+::is\+\_\+pointer\+\_\+v$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a0b58ee3ba92ac2f3f9257bfd000f1df5}\label{namespacehyperion_1_1utils_1_1concepts_a0b58ee3ba92ac2f3f9257bfd000f1df5}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a0b58ee3ba92ac2f3f9257bfd000f1df5}{Not\+Pointer}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}{Pointer}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept for {\ttfamily ! std\+::is\+\_\+pointer\+\_\+v$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}\label{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}{Reference}} = std\+::is\+\_\+reference\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept for {\ttfamily std\+::is\+\_\+reference\+\_\+v$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aa301d8cb42bc46687d17fe61a84e4823}\label{namespacehyperion_1_1utils_1_1concepts_aa301d8cb42bc46687d17fe61a84e4823}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aa301d8cb42bc46687d17fe61a84e4823}{Not\+Reference}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}{Reference}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept for {\ttfamily ! std\+::is\+\_\+reference\+\_\+v$<$T$>$} \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Der , typename Base $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af19c1e730de492d28bde31139a313368}{Derived}}
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::derived\+\_\+from$<$T, U$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a99418ce0c8fefce2d9dea2913b1dbd2c}\label{namespacehyperion_1_1utils_1_1concepts_a99418ce0c8fefce2d9dea2913b1dbd2c}} 
+{\footnotesize template$<$typename From , typename To $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a99418ce0c8fefce2d9dea2913b1dbd2c}{Convertible}} = std\+::is\+\_\+convertible\+\_\+v$<$From, To$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily From} is convertible to {\ttfamily To} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ad8e6e34397be94651679443cbd658217}\label{namespacehyperion_1_1utils_1_1concepts_ad8e6e34397be94651679443cbd658217}} 
+{\footnotesize template$<$typename From , typename To $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ad8e6e34397be94651679443cbd658217}{Not\+Convertible}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a99418ce0c8fefce2d9dea2913b1dbd2c}{Convertible}}$<$From, To$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily From} is {\bfseries{not}} convertible to {\ttfamily To} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a5a0aa19e329314526a12ff2f6d85bac8}\label{namespacehyperion_1_1utils_1_1concepts_a5a0aa19e329314526a12ff2f6d85bac8}} 
+{\footnotesize template$<$typename E $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5a0aa19e329314526a12ff2f6d85bac8}{Error\+Type}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af19c1e730de492d28bde31139a313368}{Derived}}$<$E, \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily E} to be an {\ttfamily Error\+Type} (aka derived from {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_abbc59135999b7d76700a4ca0f5a01c0d}\label{namespacehyperion_1_1utils_1_1concepts_abbc59135999b7d76700a4ca0f5a01c0d}} 
+{\footnotesize template$<$typename E $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_abbc59135999b7d76700a4ca0f5a01c0d}{Not\+Error\+Type}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5a0aa19e329314526a12ff2f6d85bac8}{Error\+Type}}$<$E$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily E} is not an {\ttfamily Error\+Type} (aka {\bfseries{N\+OT}} derived from {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T , typename... Args$>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aa78da334588bec43ce764721aefc8403}{Constructible\+From}}
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily T} to be constructible from the parameter pack {\ttfamily Args} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aed747cb79e608bc2c0b772061fd7e35b}\label{namespacehyperion_1_1utils_1_1concepts_aed747cb79e608bc2c0b772061fd7e35b}} 
+{\footnotesize template$<$typename T , typename U $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aed747cb79e608bc2c0b772061fd7e35b}{Same}} = std\+::same\+\_\+as$<$T, U$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily T} and {\ttfamily U} to be the same type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_abe28941082caafa3cd9cf9b4c2579ab7}\label{namespacehyperion_1_1utils_1_1concepts_abe28941082caafa3cd9cf9b4c2579ab7}} 
+{\footnotesize template$<$typename T , typename U $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_abe28941082caafa3cd9cf9b4c2579ab7}{Not\+Same}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aed747cb79e608bc2c0b772061fd7e35b}{Same}}$<$T, U$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires {\ttfamily T} and {\ttfamily U} to be the same type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a7c1b3fa0eb1062e85a6067fb54ce322c}\label{namespacehyperion_1_1utils_1_1concepts_a7c1b3fa0eb1062e85a6067fb54ce322c}} 
+{\footnotesize template$<$typename T , typename U  = T$>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a7c1b3fa0eb1062e85a6067fb54ce322c}{Inequality\+Comparable}} = type\+\_\+traits\+::has\+\_\+not\+\_\+equal\+\_\+v$<$T, U$>$
+\begin{DoxyCompactList}\small\item\em Concept requiring {\ttfamily T} to be inequality comparable to {\ttfamily U} ({\ttfamily T} has {\ttfamily operator!=} for {\ttfamily U}) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a6e16f74c73737fa6b31d96a123304182}\label{namespacehyperion_1_1utils_1_1concepts_a6e16f74c73737fa6b31d96a123304182}} 
+{\footnotesize template$<$typename T , typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a6e16f74c73737fa6b31d96a123304182}{Contains}} = mpl\+::contains\+\_\+v$<$T, List$>$
+\begin{DoxyCompactList}\small\item\em Concept requiring that the {\ttfamily mpl\+::list}, {\ttfamily List}, contains the type {\ttfamily T} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ad412cd7254b59025a0461c3a2c8a597f}\label{namespacehyperion_1_1utils_1_1concepts_ad412cd7254b59025a0461c3a2c8a597f}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ad412cd7254b59025a0461c3a2c8a597f}{Copy\+Constructible}} = std\+::is\+\_\+copy\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_af1b6243ddd74ddc44d52fabbb9ba64a5}\label{namespacehyperion_1_1utils_1_1concepts_af1b6243ddd74ddc44d52fabbb9ba64a5}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af1b6243ddd74ddc44d52fabbb9ba64a5}{Trivially\+Copy\+Constructible}} = std\+::is\+\_\+trivially\+\_\+copy\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is trivially copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aa616517a72d828c21f8d1364ec74dbc9}\label{namespacehyperion_1_1utils_1_1concepts_aa616517a72d828c21f8d1364ec74dbc9}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aa616517a72d828c21f8d1364ec74dbc9}{All\+Copy\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+copy\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a3f71a0db49d75bf5c169072087f1a82a}\label{namespacehyperion_1_1utils_1_1concepts_a3f71a0db49d75bf5c169072087f1a82a}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a3f71a0db49d75bf5c169072087f1a82a}{All\+Trivially\+Copy\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+copy\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ab46771039d8fe5bf6f4a513ed8ac5402}\label{namespacehyperion_1_1utils_1_1concepts_ab46771039d8fe5bf6f4a513ed8ac5402}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ab46771039d8fe5bf6f4a513ed8ac5402}{Copy\+Assignable}} = std\+::is\+\_\+copy\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_afa962e6bc18918d2e13e8fd18a3c65ec}\label{namespacehyperion_1_1utils_1_1concepts_afa962e6bc18918d2e13e8fd18a3c65ec}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_afa962e6bc18918d2e13e8fd18a3c65ec}{Trivially\+Copy\+Assignable}} = std\+::is\+\_\+trivially\+\_\+copy\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_afdc9150ef111a092eddcb56b9ceaa06c}\label{namespacehyperion_1_1utils_1_1concepts_afdc9150ef111a092eddcb56b9ceaa06c}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_afdc9150ef111a092eddcb56b9ceaa06c}{All\+Copy\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+copy\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aac2e7de0c8d503467fb88683cd6df8a9}\label{namespacehyperion_1_1utils_1_1concepts_aac2e7de0c8d503467fb88683cd6df8a9}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aac2e7de0c8d503467fb88683cd6df8a9}{All\+Trivially\+Copy\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+copy\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a45826bc38722e7c06be57f99ef8955fe}\label{namespacehyperion_1_1utils_1_1concepts_a45826bc38722e7c06be57f99ef8955fe}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a45826bc38722e7c06be57f99ef8955fe}{Noexcept\+Copy\+Constructible}} = std\+::is\+\_\+nothrow\+\_\+copy\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a2a83f71915980d6a4ab942fbc80c11ab}\label{namespacehyperion_1_1utils_1_1concepts_a2a83f71915980d6a4ab942fbc80c11ab}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a2a83f71915980d6a4ab942fbc80c11ab}{All\+Noexcept\+Copy\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+copy\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow copy constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a8a6aa302ecd7dce5513e9864d1c8439e}\label{namespacehyperion_1_1utils_1_1concepts_a8a6aa302ecd7dce5513e9864d1c8439e}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a8a6aa302ecd7dce5513e9864d1c8439e}{Noexcept\+Copy\+Assignable}} = std\+::is\+\_\+nothrow\+\_\+copy\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ac6f720d5b61deddf2e9fe22cb72eb73c}\label{namespacehyperion_1_1utils_1_1concepts_ac6f720d5b61deddf2e9fe22cb72eb73c}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac6f720d5b61deddf2e9fe22cb72eb73c}{All\+Noexcept\+Copy\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+copy\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow copy assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a7a88cbce9b1de2396bb717ea4655d3a2}\label{namespacehyperion_1_1utils_1_1concepts_a7a88cbce9b1de2396bb717ea4655d3a2}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a7a88cbce9b1de2396bb717ea4655d3a2}{Move\+Constructible}} = std\+::is\+\_\+move\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ad577291fb5fac51a358ed9a9e154fd9e}\label{namespacehyperion_1_1utils_1_1concepts_ad577291fb5fac51a358ed9a9e154fd9e}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ad577291fb5fac51a358ed9a9e154fd9e}{Trivially\+Move\+Constructible}} = std\+::is\+\_\+trivially\+\_\+move\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aba599a06f3adb2683d865d4b8c9f31b9}\label{namespacehyperion_1_1utils_1_1concepts_aba599a06f3adb2683d865d4b8c9f31b9}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aba599a06f3adb2683d865d4b8c9f31b9}{All\+Move\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+move\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a919b3b39a61de7edaae3ad74c8e88d48}\label{namespacehyperion_1_1utils_1_1concepts_a919b3b39a61de7edaae3ad74c8e88d48}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a919b3b39a61de7edaae3ad74c8e88d48}{All\+Trivially\+Move\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+move\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_af948fd5f70b36a854fc17a2e90b7ecdb}\label{namespacehyperion_1_1utils_1_1concepts_af948fd5f70b36a854fc17a2e90b7ecdb}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af948fd5f70b36a854fc17a2e90b7ecdb}{Move\+Assignable}} = std\+::is\+\_\+move\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a074a521ea3f6b2b681c4441c81793d5d}\label{namespacehyperion_1_1utils_1_1concepts_a074a521ea3f6b2b681c4441c81793d5d}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a074a521ea3f6b2b681c4441c81793d5d}{Trivially\+Move\+Assignable}} = std\+::is\+\_\+trivially\+\_\+move\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a0b24b5597602a90b4e59aa571144b4f3}\label{namespacehyperion_1_1utils_1_1concepts_a0b24b5597602a90b4e59aa571144b4f3}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a0b24b5597602a90b4e59aa571144b4f3}{All\+Move\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+move\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a00222c50ca1d48dcef0a447a9f58f448}\label{namespacehyperion_1_1utils_1_1concepts_a00222c50ca1d48dcef0a447a9f58f448}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a00222c50ca1d48dcef0a447a9f58f448}{All\+Trivially\+Move\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+move\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ae4b965e81ac9275a29731573626cd49d}\label{namespacehyperion_1_1utils_1_1concepts_ae4b965e81ac9275a29731573626cd49d}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae4b965e81ac9275a29731573626cd49d}{Noexcept\+Move\+Constructible}} = std\+::is\+\_\+nothrow\+\_\+move\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a75f11360a095a51b39492a79160e81a8}\label{namespacehyperion_1_1utils_1_1concepts_a75f11360a095a51b39492a79160e81a8}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a75f11360a095a51b39492a79160e81a8}{All\+Noexcept\+Move\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+move\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow move constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aee9747af22f0461c9c253d2582984e73}\label{namespacehyperion_1_1utils_1_1concepts_aee9747af22f0461c9c253d2582984e73}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aee9747af22f0461c9c253d2582984e73}{Noexcept\+Move\+Assignable}} = std\+::is\+\_\+nothrow\+\_\+move\+\_\+assignable\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a8575f9b311104e0e4b5eb06290739782}\label{namespacehyperion_1_1utils_1_1concepts_a8575f9b311104e0e4b5eb06290739782}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a8575f9b311104e0e4b5eb06290739782}{All\+Noexcept\+Move\+Assignable}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+move\+\_\+assignable, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow move assignable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ae9b1f248b21752c8848ac124d2465026}\label{namespacehyperion_1_1utils_1_1concepts_ae9b1f248b21752c8848ac124d2465026}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae9b1f248b21752c8848ac124d2465026}{Trivially\+Destructible}} = std\+::is\+\_\+trivially\+\_\+destructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept destructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a5ad1afa29b96b6baf32731494337181f}\label{namespacehyperion_1_1utils_1_1concepts_a5ad1afa29b96b6baf32731494337181f}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5ad1afa29b96b6baf32731494337181f}{Noexcept\+Destructible}} = std\+::is\+\_\+nothrow\+\_\+destructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that T is noexcept destructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a1b543e2646d0ca9359d5b8b99525caca}\label{namespacehyperion_1_1utils_1_1concepts_a1b543e2646d0ca9359d5b8b99525caca}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a1b543e2646d0ca9359d5b8b99525caca}{All\+Trivially\+Destructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+destructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow destructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_af4425cd807b1b7933f96f09f9b0c1000}\label{namespacehyperion_1_1utils_1_1concepts_af4425cd807b1b7933f96f09f9b0c1000}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af4425cd807b1b7933f96f09f9b0c1000}{All\+Noexcept\+Destructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+destructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List}, is nothrow destructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a5ec8c4508c34f91de1565b2d2828aec5}\label{namespacehyperion_1_1utils_1_1concepts_a5ec8c4508c34f91de1565b2d2828aec5}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5ec8c4508c34f91de1565b2d2828aec5}{Movable}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a7a88cbce9b1de2396bb717ea4655d3a2}{Move\+Constructible}}$<$T$>$ \&\& \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_af948fd5f70b36a854fc17a2e90b7ecdb}{Move\+Assignable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::movable$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_afe0b54d74b26a747ff1eb1b476ccb12f}\label{namespacehyperion_1_1utils_1_1concepts_afe0b54d74b26a747ff1eb1b476ccb12f}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_afe0b54d74b26a747ff1eb1b476ccb12f}{Not\+Movable}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5ec8c4508c34f91de1565b2d2828aec5}{Movable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily ! std\+::movable$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a684eec2ccacc515c034372def542b5ff}\label{namespacehyperion_1_1utils_1_1concepts_a684eec2ccacc515c034372def542b5ff}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a684eec2ccacc515c034372def542b5ff}{Copyable}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ad412cd7254b59025a0461c3a2c8a597f}{Copy\+Constructible}}$<$T$>$ \&\& \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ab46771039d8fe5bf6f4a513ed8ac5402}{Copy\+Assignable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::copyable$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aa7b5719e332f69abe79e1bfe5a74d47e}\label{namespacehyperion_1_1utils_1_1concepts_aa7b5719e332f69abe79e1bfe5a74d47e}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_aa7b5719e332f69abe79e1bfe5a74d47e}{Not\+Copyable}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a684eec2ccacc515c034372def542b5ff}{Copyable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily ! std\+::copyable$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_abcf5d3d25ee9443b8daa24b7447c6e51}\label{namespacehyperion_1_1utils_1_1concepts_abcf5d3d25ee9443b8daa24b7447c6e51}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_abcf5d3d25ee9443b8daa24b7447c6e51}{Default\+Constructible}} = std\+::is\+\_\+default\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that {\ttfamily T} is default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a0c0d5dc7388030005d75fe1c9ada41ca}\label{namespacehyperion_1_1utils_1_1concepts_a0c0d5dc7388030005d75fe1c9ada41ca}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a0c0d5dc7388030005d75fe1c9ada41ca}{Trivially\+Default\+Constructible}} = std\+::is\+\_\+trivially\+\_\+default\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that {\ttfamily T} is trivally default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a8251dd91ffd04563c52acb0073fad2f4}\label{namespacehyperion_1_1utils_1_1concepts_a8251dd91ffd04563c52acb0073fad2f4}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a8251dd91ffd04563c52acb0073fad2f4}{Noexcept\+Default\+Constructible}} = std\+::is\+\_\+nothrow\+\_\+default\+\_\+constructible\+\_\+v$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that {\ttfamily T} is nothrow default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a94efa676cc3368cdbbad4089f029c21c}\label{namespacehyperion_1_1utils_1_1concepts_a94efa676cc3368cdbbad4089f029c21c}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a94efa676cc3368cdbbad4089f029c21c}{All\+Default\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+default\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List} is default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a4e5285dd205c635972de8105b37ba6f5}\label{namespacehyperion_1_1utils_1_1concepts_a4e5285dd205c635972de8105b37ba6f5}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a4e5285dd205c635972de8105b37ba6f5}{All\+Trivially\+Default\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+trivially\+\_\+default\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List} is trivially default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ab1fec7431651d0f645c4660907edb6a8}\label{namespacehyperion_1_1utils_1_1concepts_ab1fec7431651d0f645c4660907edb6a8}} 
+{\footnotesize template$<$typename List $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ab1fec7431651d0f645c4660907edb6a8}{All\+Noexcept\+Default\+Constructible}} = mpl\+::for\+\_\+all\+\_\+types\+\_\+v$<$std\+::is\+\_\+nothrow\+\_\+default\+\_\+constructible, std\+::true\+\_\+type, List$>$
+\begin{DoxyCompactList}\small\item\em Concept that requires that every type in the {\ttfamily mpl\+::list}, {\ttfamily List} is nothrow default constructible. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a274c7198ec1352bc74c716a348447bbc}\label{namespacehyperion_1_1utils_1_1concepts_a274c7198ec1352bc74c716a348447bbc}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a274c7198ec1352bc74c716a348447bbc}{Not\+Default\+Constructible}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_abcf5d3d25ee9443b8daa24b7447c6e51}{Default\+Constructible}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily ! std\+::default\+\_\+initializable$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}\label{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}{Copy\+Or\+Movable}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a684eec2ccacc515c034372def542b5ff}{Copyable}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a5ec8c4508c34f91de1565b2d2828aec5}{Movable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept requiring T is copyable or movable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ae0c0c9871c059aaad61821a6e2a65bbc}\label{namespacehyperion_1_1utils_1_1concepts_ae0c0c9871c059aaad61821a6e2a65bbc}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ae0c0c9871c059aaad61821a6e2a65bbc}{Not\+Copy\+Or\+Movable}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}{Copy\+Or\+Movable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept requiring T is {\bfseries{N\+OT}} copyable nor movable. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a75fb0989b6ff4faa879cd0666d460dd8}{Passable}} = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}{Copy\+Or\+Movable}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}{Reference}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}{Pointer}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that is the disjunction of most of the requirements for {\ttfamily std\+::semiregular} Requires that that type be at least one of\+: \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac0b81256fd7e3161981bf881791a9ef1}{Not\+Passable}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a75fb0989b6ff4faa879cd0666d460dd8}{Passable}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Concept that is the negation of {\ttfamily Passable$<$T$>$} Requires that the type is {\bfseries{N\+O\+NE}} of\+: \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a8bd90fe7b21c2f45e61c34a3d5030023}\label{namespacehyperion_1_1utils_1_1concepts_a8bd90fe7b21c2f45e61c34a3d5030023}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a8bd90fe7b21c2f45e61c34a3d5030023}{Semi\+Regular}} = std\+::semiregular$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily std\+::semiregular$<$T$>$} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a7301173edb42dcd952c7bd6ac077e1e8}\label{namespacehyperion_1_1utils_1_1concepts_a7301173edb42dcd952c7bd6ac077e1e8}} 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a7301173edb42dcd952c7bd6ac077e1e8}{Not\+Semi\+Regular}} = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a8bd90fe7b21c2f45e61c34a3d5030023}{Semi\+Regular}}$<$T$>$
+\begin{DoxyCompactList}\small\item\em Alias for {\ttfamily ! std\+::semiregular$<$T$>$} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is a small collection of simple Concepts useful for requiring basic attributes of a type. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_aa78da334588bec43ce764721aefc8403}\label{namespacehyperion_1_1utils_1_1concepts_aa78da334588bec43ce764721aefc8403}} 
+\index{hyperion::utils::concepts@{hyperion::utils::concepts}!ConstructibleFrom@{ConstructibleFrom}}
+\index{ConstructibleFrom@{ConstructibleFrom}!hyperion::utils::concepts@{hyperion::utils::concepts}}
+\doxysubsubsection{\texorpdfstring{ConstructibleFrom}{ConstructibleFrom}}
+{\footnotesize\ttfamily template$<$typename T , typename... Args$>$ \\
+concept hyperion\+::utils\+::concepts\+::\+Constructible\+From}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= requires(Args\&\&... args) \{}
+\DoxyCodeLine{        T\{args...\};}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+
+
+Concept that requires {\ttfamily T} to be constructible from the parameter pack {\ttfamily Args} 
+
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_af19c1e730de492d28bde31139a313368}\label{namespacehyperion_1_1utils_1_1concepts_af19c1e730de492d28bde31139a313368}} 
+\index{hyperion::utils::concepts@{hyperion::utils::concepts}!Derived@{Derived}}
+\index{Derived@{Derived}!hyperion::utils::concepts@{hyperion::utils::concepts}}
+\doxysubsubsection{\texorpdfstring{Derived}{Derived}}
+{\footnotesize\ttfamily template$<$typename Der , typename Base $>$ \\
+concept hyperion\+::utils\+::concepts\+::\+Derived}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= std::derived\_from<std::remove\_pointer\_t<std::decay\_t<Der>>,}
+\DoxyCodeLine{                                        std::remove\_pointer\_t<std::decay\_t<Base>>>}
+
+\end{DoxyCode}
+
+
+Alias for {\ttfamily std\+::derived\+\_\+from$<$T, U$>$} 
+
+\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_ac0b81256fd7e3161981bf881791a9ef1}\label{namespacehyperion_1_1utils_1_1concepts_ac0b81256fd7e3161981bf881791a9ef1}} 
+\index{hyperion::utils::concepts@{hyperion::utils::concepts}!NotPassable@{NotPassable}}
+\index{NotPassable@{NotPassable}!hyperion::utils::concepts@{hyperion::utils::concepts}}
+\doxysubsubsection{\texorpdfstring{NotPassable}{NotPassable}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+concept hyperion\+::utils\+::concepts\+::\+Not\+Passable = !\mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a75fb0989b6ff4faa879cd0666d460dd8}{Passable}}$<$T$>$}
+
+
+
+Concept that is the negation of {\ttfamily Passable$<$T$>$} Requires that the type is {\bfseries{N\+O\+NE}} of\+: 
+
+
+\begin{DoxyItemize}
+\item copyable
+\item movable
+\item a reference
+\item a pointer 
+\end{DoxyItemize}\mbox{\Hypertarget{namespacehyperion_1_1utils_1_1concepts_a75fb0989b6ff4faa879cd0666d460dd8}\label{namespacehyperion_1_1utils_1_1concepts_a75fb0989b6ff4faa879cd0666d460dd8}} 
+\index{hyperion::utils::concepts@{hyperion::utils::concepts}!Passable@{Passable}}
+\index{Passable@{Passable}!hyperion::utils::concepts@{hyperion::utils::concepts}}
+\doxysubsubsection{\texorpdfstring{Passable}{Passable}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+concept hyperion\+::utils\+::concepts\+::\+Passable = \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9bc47a198adefd57407e1371015f5136}{Copy\+Or\+Movable}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_a9cfdd2078fb05f507be09d79aac2b8e7}{Reference}}$<$T$>$ $\vert$$\vert$ \mbox{\hyperlink{namespacehyperion_1_1utils_1_1concepts_ac2ff757814ba72f2415c575a26b42b40}{Pointer}}$<$T$>$}
+
+
+
+Concept that is the disjunction of most of the requirements for {\ttfamily std\+::semiregular} Requires that that type be at least one of\+: 
+
+
+\begin{DoxyItemize}
+\item copyable
+\item movable
+\item a reference
+\item a pointer 
+\end{DoxyItemize}

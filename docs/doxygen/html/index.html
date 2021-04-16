@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          HyperionUtils
+        </h1>
+<p><a name="md__home_braxton_git_Hyperion_utils_README"></a> HyperionUtils is a header-only C++20 library of utilities, data-structures, and monads used in the Hyperion game engine.<br />It is currently under active development and has not yet hit a release point.</p><p>HyperionUtils is not dependent on the engine and can be used freely separately from any other Hyperion projects.</p><p>Some of the features of HyperionUtils include:</p><ul><li>Robust, Compile-time configurable logging (in progress)</li><li>Datastructures, such as queues supporting lock-free concurrency (initial implementation complete; API unlikely to change, implementation subject to change)</li><li>Error handling facilities similar to Rust and boost::outcome (initial implementation complete; API unlikely to change, implementation subject to change)</li><li>Option monad based on Rust&#x27;s Option (complete)</li><li>Concepts, Type Traits, and meta-programming functions (in progress; Those already implemented unlikely to change)</li><li>Rust-style owning synchronization types (in progress)</li></ul><section id="autotoc_md1"><h2><a href="#autotoc_md1">Getting Started</a></h2><p>HyperionUtils uses CMake, and incorporating it into your project is easy!</p><p>There are several ways to use HyperionUtils, and the necessary additions to your <code>CMakeLists.txt</code> will change depending on your choice. This is because HyperionUtils depends on <a href="https://github.com/fmtlib/fmt">fmt</a> in the logging code</p><p>In any case, you&#x27;ll first need to add HyperionUtils to your CMake project. In <code>CMakeLists.txt</code>:</p><pre class="m-code"><span class="nb">FetchContent_Declare</span><span class="p">(</span><span class="s">HyperionUtils</span>
+    <span class="s">GIT_REPOSITORY</span> <span class="s2">&quot;https://github.com/braxtons12/Hyperion-Utils&quot;</span>
+    <span class="s">GIT_TAG</span> <span class="s">origin/master</span>
+    <span class="p">)</span>
+
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">HyperionUtils</span><span class="p">)</span></pre><ol><li>If you wish to only include indiviual headers and aren&#x27;t using the logging facilities<ol><li>Include whatever headers you wish to use in your code</li><li>In <code>CMakeLists.txt</code>:</li></ol></li></ol><pre class="m-code"><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">your_target</span> <span class="s">HyperionUtils</span><span class="p">)</span></pre><ol><li>If you wish to only include individual headers and <em>are</em> using the logging facilities<ol><li>Include whatever headers you wish to use in your code</li><li>In <code>CMakeLists.txt</code>:</li></ol></li></ol><pre class="m-code"><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">your_target</span> <span class="s">fmt::fmt</span> <span class="s">HyperionUtils</span><span class="p">)</span></pre><ol><li>If you want to just include the main header, <code><a href="HyperionUtils_8h_source.html" class="m-doc">HyperionUtils/<wbr />HyperionUtils.h</a></code><ol><li>If you don&#x27;t want to use the logging facilities, configure your <code>CMakeLists.txt</code> like 1-i above and include <code><a href="HyperionUtils_8h_source.html" class="m-doc">HyperionUtils/<wbr />HyperionUtils.h</a></code></li></ol><ol><li>If you want to use the logging facilities, configure your <code>CMakeLists.txt</code> like in 2-i above, then define <code>HYPERION_INCLUDE_LOGGING_BY_DEFAULT</code> in your compiler flags or prior to including <code><a href="HyperionUtils_8h_source.html" class="m-doc">HyperionUtils/<wbr />HyperionUtils.h</a></code>, eg:</li></ol></li></ol><pre class="m-code"><span class="cp">#define HYPERION_INCLUDE_LOGGING_BY_DEFAULT</span></pre><section id="autotoc_md2"><h3><a href="#autotoc_md2">Example</a></h3><p>In <code>CMakeLists.txt</code></p><pre class="m-code"><span class="nb">FetchContent_Declare</span><span class="p">(</span><span class="s">HyperionUtils</span>
+    <span class="s">GIT_REPOSITORY</span> <span class="s2">&quot;https://github.com/braxtons12/Hyperion-Utils&quot;</span>
+    <span class="s">GIT_TAG</span> <span class="s">origin/master</span>
+    <span class="p">)</span>
+
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">HyperionUtils</span><span class="p">)</span>
+
+<span class="c">### Add your target, etc...</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">your_target</span> <span class="s">fmt::fmt</span> <span class="s">HyperionUtils</span><span class="p">)</span></pre><p>In your code:</p><pre class="m-code"><span class="cp">#include</span> <span class="cpf">&quot;HyperionUtils/HyperionUtils.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="n">hyperion</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Option</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">hyperion</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">MESSAGE</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="n">LogParams</span> <span class="o">=</span> <span class="n">hyperion</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">DefaultLogParameters</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">Thing</span><span class="p">{</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;,</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="kt">bool</span> <span class="n">condition</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="kr">inline</span> <span class="k">auto</span> <span class="nf">get_thing</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Option</span><span class="o">&lt;</span><span class="n">Thing</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Some</span><span class="p">(</span><span class="n">Thing</span><span class="p">{.</span><span class="n">x</span><span class="o">=</span><span class="mi">42</span><span class="p">});</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">None</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">auto</span> <span class="nf">log_thing</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">auto</span> <span class="n">thing</span> <span class="o">=</span> <span class="n">get_thing</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// The default logging policy will bail if the queue is full instead of blocking, and thus</span>
+        <span class="c1">// returns a Result indicating whether it succeded. We&#39;ll just ignore it</span>
+        <span class="n">ignore</span><span class="p">(</span><span class="n">MESSAGE</span><span class="o">&lt;</span><span class="n">LogParams</span><span class="o">&gt;</span><span class="p">(</span>
+                <span class="n">None</span><span class="p">(),</span> <span class="c1">// Optional thread identifier</span>
+                <span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="c1">// format string, see fmt</span>
+                <span class="n">thing</span><span class="p">.</span><span class="n">unwrap</span><span class="p">().</span><span class="n">x</span><span class="p">);</span> <span class="c1">//the stuff we want to log</span>
+    <span class="p">}</span>
+<span class="p">}</span></pre></section><section id="autotoc_md3"><h3><a href="#autotoc_md3">Testing</a></h3><p>Tests are currently setup as an isolated project in the &quot;test&quot; subdirectory.<br />This prevents collisions between other googletest builds in Hyperion&#x27;s other sublibraries.<br />To run the tests, simply configure and build the test project, then run the resulting &quot;Test&quot; executable:<br /></p><pre class="m-code">cmake -B build -G <span class="s2">&quot;Ninja&quot;</span>
+cmake --build build
+./build/Test</pre></section><section id="autotoc_md4"><h3><a href="#autotoc_md4">Contributing</a></h3><p>Feel free to submit issues, pull requests, etc!<br />When contributing code, please following the project <code>.clang-format</code> (except in judicious cases of templates ruining things), use trailing returns types, use assign-init over direct-init (parenthesis or braced init), and prefer simplicity and correctness over performance by default</p></section><section id="autotoc_md5"><h3><a href="#autotoc_md5">License</a></h3><p>HyperionUtils uses the MIT license.</p><section id="autotoc_md6"><h4><a href="#autotoc_md6">What are these toolchain files?</a></h4><p>HyperionUtils includes an assortment of CMake toolchain files. These are simply a quick and easy (and lazy) way for us to use an associated platform + compiler combination with our preferred optimization flags, without hard coding them in the project <code>CMakeLists.txt</code>. They&#x27;re <strong>NOT</strong> necessary to use HyperionUtils and they won&#x27;t affect your project unless you pass them as a toolchain file argument to CMake</p></section></section></section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

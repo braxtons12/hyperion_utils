@@ -1,3 +1,4 @@
+/// @brief Ignore is used to ignore an arbitrary number of unused parameters
 #pragma once
 
 #include <tuple>

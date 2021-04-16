@@ -1,3 +1,4 @@
+/// @brief Collection of basic meta-programming functions for querying a list of types
 #pragma once
 
 #include "../BasicTypes.h"

@@ -164,3 +164,5 @@ target_link_libraries(HyperionUtils.headers PUBLIC
 	fmt::fmt
 	GSL
 	)
+
+add_subdirectory("docs")

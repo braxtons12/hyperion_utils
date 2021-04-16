@@ -1,0 +1,49 @@
+\hypertarget{classhyperion_1_1utils_1_1LockFreeQueue}{}\doxysection{hyperion\+::utils\+::Lock\+Free\+Queue$<$ T, Policy, Capacity $>$ Class Template Reference}
+\label{classhyperion_1_1utils_1_1LockFreeQueue}\index{hyperion::utils::LockFreeQueue$<$ T, Policy, Capacity $>$@{hyperion::utils::LockFreeQueue$<$ T, Policy, Capacity $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a1090dcad602df23c063857e060194b56}\label{classhyperion_1_1utils_1_1LockFreeQueue_a1090dcad602df23c063857e060194b56}} 
+constexpr {\bfseries Lock\+Free\+Queue} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&queue) noexcept=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a5c2bab07f8e97eb31cb7a4dacfa68565}\label{classhyperion_1_1utils_1_1LockFreeQueue_a5c2bab07f8e97eb31cb7a4dacfa68565}} 
+constexpr {\bfseries Lock\+Free\+Queue} (\mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&\&queue) noexcept=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a9410646e223eb1825183e409bad4ef1b}\label{classhyperion_1_1utils_1_1LockFreeQueue_a9410646e223eb1825183e409bad4ef1b}} 
+auto {\bfseries push} (const T \&entry) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ bool, \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueueError}{Lock\+Free\+Queue\+Error}} $>$ requires Copyable$<$ T $>$ \&\&(Policy==Queue\+Policy\+::\+Err\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_ad1498e05fdd9eaef833535e1c723e2b7}\label{classhyperion_1_1utils_1_1LockFreeQueue_ad1498e05fdd9eaef833535e1c723e2b7}} 
+auto {\bfseries push} (T \&\&entry) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ bool, \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueueError}{Lock\+Free\+Queue\+Error}} $>$ requires(Policy==Queue\+Policy\+::\+Err\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_aa0520823383cfd5e2c9b0f316a0621c5}\label{classhyperion_1_1utils_1_1LockFreeQueue_aa0520823383cfd5e2c9b0f316a0621c5}} 
+{\footnotesize template$<$typename... Args$>$ }\\requires Constructible\+From$<$ T, Args... $>$ auto {\bfseries push} (Args \&\&... args) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ bool, \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueueError}{Lock\+Free\+Queue\+Error}} $>$ requires(Policy==Queue\+Policy\+::\+Err\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_ab7587a5c0ed1dcc4ca2fa87b6c0301fd}\label{classhyperion_1_1utils_1_1LockFreeQueue_ab7587a5c0ed1dcc4ca2fa87b6c0301fd}} 
+auto {\bfseries push} (const T \&entry) noexcept -\/$>$ void requires Copyable$<$ T $>$ \&\&(Policy==Queue\+Policy\+::\+Overwrite\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a9effabd33c9491213d4f55646a8c4c3a}\label{classhyperion_1_1utils_1_1LockFreeQueue_a9effabd33c9491213d4f55646a8c4c3a}} 
+auto {\bfseries push} (T \&\&entry) noexcept -\/$>$ void requires(Policy==Queue\+Policy\+::\+Overwrite\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_af784d45a6a2521d55df029f5560cd80f}\label{classhyperion_1_1utils_1_1LockFreeQueue_af784d45a6a2521d55df029f5560cd80f}} 
+{\footnotesize template$<$typename... Args$>$ }\\requires Constructible\+From$<$ T, Args... $>$ auto {\bfseries push} (Args \&\&... args) noexcept -\/$>$ void requires(Policy==Queue\+Policy\+::\+Overwrite\+When\+Full)
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a0aceaea29a292718ddb913c1e819e6c6}\label{classhyperion_1_1utils_1_1LockFreeQueue_a0aceaea29a292718ddb913c1e819e6c6}} 
+auto {\bfseries read} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueueError}{Lock\+Free\+Queue\+Error}} $>$
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a5e3b6a326cbecc4cc34e2f8484b5c2ff}\label{classhyperion_1_1utils_1_1LockFreeQueue_a5e3b6a326cbecc4cc34e2f8484b5c2ff}} 
+auto {\bfseries empty} () const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a98d85ea7ec64e55e6ebac9d29a222e8a}\label{classhyperion_1_1utils_1_1LockFreeQueue_a98d85ea7ec64e55e6ebac9d29a222e8a}} 
+auto {\bfseries full} () const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a06c207487e2b0131bcf39cb0c3a5f6e9}\label{classhyperion_1_1utils_1_1LockFreeQueue_a06c207487e2b0131bcf39cb0c3a5f6e9}} 
+constexpr auto {\bfseries operator=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&queue) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1LockFreeQueue_a0c5e89c04d7b6aa442cc43f35f55b2cd}\label{classhyperion_1_1utils_1_1LockFreeQueue_a0c5e89c04d7b6aa442cc43f35f55b2cd}} 
+constexpr auto {\bfseries operator=} (\mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&\&queue) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1LockFreeQueue}{Lock\+Free\+Queue}} \&=default
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Lock\+Free\+Queue.\+h\end{DoxyCompactItemize}

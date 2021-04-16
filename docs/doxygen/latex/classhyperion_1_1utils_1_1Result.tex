@@ -1,0 +1,1247 @@
+\hypertarget{classhyperion_1_1utils_1_1Result}{}\doxysection{hyperion\+::utils\+::Result$<$ T, E $>$ Class Template Reference}
+\label{classhyperion_1_1utils_1_1Result}\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+
+
+Represents the result of an operation that can fail. Every {\ttfamily Result()} is either {\ttfamily Ok}, indicating success and containing a value or {\ttfamily Err}, indicating failure and containing an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type.  
+
+
+
+
+{\ttfamily \#include $<$Option\+And\+Result.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_abb3dc2e207d715f394d552221936cbab}\label{classhyperion_1_1utils_1_1Result_abb3dc2e207d715f394d552221936cbab}} 
+{\bfseries Result} (const \mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&error) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_abb5ddc7e5547c9490b62fdb6eb05deaa}\label{classhyperion_1_1utils_1_1Result_abb5ddc7e5547c9490b62fdb6eb05deaa}} 
+{\bfseries Result} (\mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&\&error) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a21370ee7d64d11bf815e89e59289712c}\label{classhyperion_1_1utils_1_1Result_a21370ee7d64d11bf815e89e59289712c}} 
+constexpr {\bfseries Result} (const \mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aba4847d14dc7c9333da4ed78c62f9627}\label{classhyperion_1_1utils_1_1Result_aba4847d14dc7c9333da4ed78c62f9627}} 
+constexpr {\bfseries Result} (\mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&\&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a6021278bc6be7176e5661d592d33f12c}\label{classhyperion_1_1utils_1_1Result_a6021278bc6be7176e5661d592d33f12c}} 
+constexpr {\bfseries Result} (\mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&result)=delete
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a5d374d82b731d46f02379981ca08987b}\label{classhyperion_1_1utils_1_1Result_a5d374d82b731d46f02379981ca08987b}} 
+constexpr {\bfseries Result} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&result)=delete
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a9b3a119c31e034f6ed0c361b7463951f}\label{classhyperion_1_1utils_1_1Result_a9b3a119c31e034f6ed0c361b7463951f}} 
+constexpr {\bfseries Result} (\mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&\&result) noexcept requires Movable$<$ T $>$ \&\&Movable$<$ E $>$
+\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ae9a694b323155e10209525a49c303f26}{is\+\_\+ok}} () const noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} if this is {\ttfamily Ok}, {\ttfamily false} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_aaad4507806e90dfcfd605d067f4ff53f}{is\+\_\+err}} () const noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Returns {\ttfamily true} if this is {\ttfamily Err}, {\ttfamily false} if this is {\ttfamily Ok} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a13e8b5156ac0d38f7b78229bd562b5f9}{get\+\_\+mut}} () noexcept
+\begin{DoxyCompactList}\small\item\em Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily Result()}. Returns a pointer to the mutable {\ttfamily T} if this is {\ttfamily Ok}, otherwise calls {\ttfamily std\+::terminate} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a961b309041c8877d41c1afe7050b5f62}{get\+\_\+const}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily Result()}. Returns a pointer to the const {\ttfamily T} if this is {\ttfamily Ok}, otherwise calls {\ttfamily std\+::terminate} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a61ce855d64f5777b107e3b0d1337f3b6}{unwrap}} () noexcept -\/$>$ T requires Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a7ef5d6589fd1adb34cbadca837a814fb}{unwrap}} () noexcept -\/$>$ T requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_aa863223d5e26d0e51b06a06cc2c63134}{unwrap}} () noexcept -\/$>$ T requires Not\+Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a6c65e6a95fa8518f6387063ccb0223e6}{unwrap\+\_\+or}} (const T \&default\+\_\+value) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()} If this is not {\ttfamily Ok}, then returns {\ttfamily default\+\_\+value} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a177d7c0a45fad9e7eb2dd2efc8c82df1}{unwrap\+\_\+or}} (T \&\&default\+\_\+value) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()} If this is not {\ttfamily Ok}, then returns {\ttfamily default\+\_\+value} \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a5726bbc52b63c3520fd107ca2d29af0b}{unwrap\+\_\+or\+\_\+else}} (std\+::function$<$ T()$>$ default\+\_\+generator) noexcept -\/$>$ T
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then returns the value generated by {\ttfamily default\+\_\+generator} \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_aefb6b2c246cff98bd3bee60003467f62}{unwrap\+\_\+err}} () noexcept -\/$>$ E requires Movable$<$ E $>$ \&\&Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a808c733d72c879a254bb2f97d09f503b}{unwrap\+\_\+err}} () noexcept -\/$>$ E requires Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a89d549c6bdef0c93df554845d56abada}{unwrap\+\_\+err}} () noexcept -\/$>$ E requires Not\+Movable$<$ E $>$ \&\&Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ T $>$ requires Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_aa9ae56daae3b5eac2ea3236dc9899edf}{ok}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ T $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a3b132b2faf3052e48ac03eab256fb98b}{ok}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ T $>$ requires Not\+Movable$<$ T $>$ \&\&Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}{err}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ E $>$ requires Movable$<$ E $>$ \&\&Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a6b2872ec65251443dab7f1b786dddc39}{err}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ E $>$ requires Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. \end{DoxyCompactList}\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a73b1a031602f4688d7f4834a0918b911}{err}} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$ E $>$ requires Not\+Movable$<$ E $>$ \&\&Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a89c071ee5b31d15944cc28fc3fa3bdd2}{map}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a105c549909210ec132bd2d1c9fa7f7c7}{map}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a0e9392e2128c1e8a6737159404dfdaa4}{map}} (std\+::function$<$ U(const T)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a9fc6ea18f1df24317d9c290cccdc6d78}{map}} (std\+::function$<$ U(T)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a4257e58f910e016750025ed9fcde01f9}{map}} (std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(const T \&)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ac6dc9691de9be89bc56472bbc31bd9e1}{map}} (std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(T \&)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ac4a851b1e47f967c8ef4783020ece4f8}{map}} (std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(const T)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\requires Not\+Reference$<$ U $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a040f730af111ca97024e41fac0fdd4a2}{map}} (std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(T)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$ requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a7054138fb0b222e7335d36b3a8e6a260}{map\+\_\+or}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, const U \&default\+\_\+value) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ab4bce86c71dcb23efce372ef9fdc663d}{map\+\_\+or}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, const U \&default\+\_\+value) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ae9367f01174da440d19e472564709465}{map\+\_\+or}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, U \&\&default\+\_\+value) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a50a28166500219fa787497dc007e47fb}{map\+\_\+or}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, U \&\&default\+\_\+value) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a019db553916cc96bec64c89e20186cba}{map\+\_\+or}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, const U \&default\+\_\+value) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a9c95943c71c04aada751cc4c6fc661a5}{map\+\_\+or}} (std\+::function$<$ U(T)$>$ map\+\_\+func, const U \&default\+\_\+value) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_aba8a232b6bfd20a80d263de52e2cd258}{map\+\_\+or}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, U \&\&default\+\_\+value) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a71aad84943ac680d3d7d25ce9c479668}{map\+\_\+or}} (std\+::function$<$ U(T)$>$ map\+\_\+func, U \&\&default\+\_\+value) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a18638e9dde203a59d66d29af6af4f7ea}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(const T \&)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) const noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a351b3c5ab5cd6c0ab8a9430ff6625538}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(const T)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) const noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ab7d9edeb7a0ee7ed114d6c4ed4e1669b}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(T \&)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) noexcept -\/$>$ U requires Not\+Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Passable U$>$ }\\auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a1c1cb0ce1f7f0d59e6d392f536bb5b2c}{map\+\_\+or\+\_\+else}} (std\+::function$<$ U(T)$>$ map\+\_\+func, std\+::function$<$ U()$>$ default\+\_\+generator) noexcept -\/$>$ U requires Pointer$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Error\+Type F = Error$>$ }\\requires Not\+Reference$<$ F $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a8947d710feca414b8753eb79dffdfafa}{map\+\_\+err}} (std\+::function$<$ F(const E \&)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, F $>$ requires Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Error\+Type F = Error$>$ }\\requires Not\+Reference$<$ F $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_ac630825b4830c7b3967e353d3398a94b}{map\+\_\+err}} (std\+::function$<$ F(const E)$>$ map\+\_\+func) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, F $>$ requires Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Error\+Type F = Error$>$ }\\requires Not\+Reference$<$ F $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a97c7338f534d6d3b8d8f86adefd866ec}{map\+\_\+err}} (std\+::function$<$ F(E \&)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, F $>$ requires Not\+Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+{\footnotesize template$<$Error\+Type F = Error$>$ }\\requires Not\+Reference$<$ F $>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a4f5488625ebd3525dc8df22bb51b8fae}{map\+\_\+err}} (std\+::function$<$ F(E)$>$ map\+\_\+func) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, F $>$ requires Pointer$<$ E $>$
+\begin{DoxyCompactList}\small\item\em Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a76d57b78eef3cc5f5a11711b2c8daa12}\label{classhyperion_1_1utils_1_1Result_a76d57b78eef3cc5f5a11711b2c8daa12}} 
+constexpr {\bfseries operator bool} () const noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_af429af398237bd0ae8908b43d6aaaa2a}\label{classhyperion_1_1utils_1_1Result_af429af398237bd0ae8908b43d6aaaa2a}} 
+auto {\bfseries operator=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&result) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&=delete
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a7bf4ae5b83f3210b75c155e702c5dff7}\label{classhyperion_1_1utils_1_1Result_a7bf4ae5b83f3210b75c155e702c5dff7}} 
+constexpr auto {\bfseries operator=} (\mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&\&result) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}} \&requires Movable$<$ T $>$ \&\&Movable$<$ E $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a407a258a044c76a63e24030713026e3b}{Ok}} (const T \&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a493fc632409bb508da1abe1e52e001ab}{Ok}} (T \&\&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_abd9a81183533ff3076b9536b7ee88300}{Ok}} (\mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&\&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_adbd31885711572aebdebb63f7fa21927}{Ok}} (const \mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}{ok}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a1669e80006d940b4a7e5f91436d92678}{Err}} (const E \&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}{err}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a481d9386af604392eaebebcd2617878c}{Err}} (E \&\&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}{err}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a8e1a480db3330d3617eac7111d4fe97d}{Err}} (const \mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}{err}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} \end{DoxyCompactList}\item 
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result_af406c5308fb21405ddf91859666def07}{Err}} (\mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&\&\mbox{\hyperlink{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}{err}}) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ T, E $>$
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Passable T, Error\+Type E$>$\newline
+class hyperion\+::utils\+::\+Result$<$ T, E $>$}
+
+Represents the result of an operation that can fail. Every {\ttfamily Result()} is either {\ttfamily Ok}, indicating success and containing a value or {\ttfamily Err}, indicating failure and containing an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & -\/ the type contained in the case of success \\
+\hline
+{\em E} & -\/ the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type contained in the case of failure \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}\label{classhyperion_1_1utils_1_1Result_a2e90ad7595806082a447f2c995bff3f7}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!err@{err}}
+\index{err@{err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{err()}{err()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$
+		requires Movable$<$E$>$ \&\& Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a73b1a031602f4688d7f4834a0918b911}\label{classhyperion_1_1utils_1_1Result_a73b1a031602f4688d7f4834a0918b911}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!err@{err}}
+\index{err@{err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{err()}{err()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$
+		requires Not\+Movable$<$E$>$ \&\& Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a6b2872ec65251443dab7f1b786dddc39}\label{classhyperion_1_1utils_1_1Result_a6b2872ec65251443dab7f1b786dddc39}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!err@{err}}
+\index{err@{err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{err()}{err()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$
+		requires Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$}, consuming this {\ttfamily Result()} and discarding the success value, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$E$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a1669e80006d940b4a7e5f91436d92678}\label{classhyperion_1_1utils_1_1Result_a1669e80006d940b4a7e5f91436d92678}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Err@{Err}}
+\index{Err@{Err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Err()}{Err()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Err (\begin{DoxyParamCaption}\item[{const E \&}]{err }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em err} & -\/ the failure value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a8e1a480db3330d3617eac7111d4fe97d}\label{classhyperion_1_1utils_1_1Result_a8e1a480db3330d3617eac7111d4fe97d}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Err@{Err}}
+\index{Err@{Err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Err()}{Err()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Err (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&}]{err }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em err} & -\/ the failure value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a481d9386af604392eaebebcd2617878c}\label{classhyperion_1_1utils_1_1Result_a481d9386af604392eaebebcd2617878c}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Err@{Err}}
+\index{Err@{Err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Err()}{Err()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Err (\begin{DoxyParamCaption}\item[{E \&\&}]{err }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em err} & -\/ the failure value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_af406c5308fb21405ddf91859666def07}\label{classhyperion_1_1utils_1_1Result_af406c5308fb21405ddf91859666def07}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Err@{Err}}
+\index{Err@{Err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Err()}{Err()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Err (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperion_1_1utils_1_1ErrorWrapper}{Error\+Wrapper}}$<$ E $>$ \&\&}]{err }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Err} variant, containing {\ttfamily err} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em err} & -\/ the failure value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a961b309041c8877d41c1afe7050b5f62}\label{classhyperion_1_1utils_1_1Result_a961b309041c8877d41c1afe7050b5f62}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!get\_const@{get\_const}}
+\index{get\_const@{get\_const}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{get\_const()}{get\_const()}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::get\+\_\+const (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily Result()}. Returns a pointer to the const {\ttfamily T} if this is {\ttfamily Ok}, otherwise calls {\ttfamily std\+::terminate} 
+
+\begin{DoxyReturn}{Returns}
+A pointer (or reference if {\ttfamily T} is a reference) to const {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a13e8b5156ac0d38f7b78229bd562b5f9}\label{classhyperion_1_1utils_1_1Result_a13e8b5156ac0d38f7b78229bd562b5f9}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!get\_mut@{get\_mut}}
+\index{get\_mut@{get\_mut}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{get\_mut()}{get\_mut()}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::get\+\_\+mut (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Similar to {\ttfamily unwrap}, except doesn\textquotesingle{}t consume this {\ttfamily Result()}. Returns a pointer to the mutable {\ttfamily T} if this is {\ttfamily Ok}, otherwise calls {\ttfamily std\+::terminate} 
+
+\begin{DoxyReturn}{Returns}
+A pointer (or reference if {\ttfamily T} is a reference) to {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aaad4507806e90dfcfd605d067f4ff53f}\label{classhyperion_1_1utils_1_1Result_aaad4507806e90dfcfd605d067f4ff53f}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!is\_err@{is\_err}}
+\index{is\_err@{is\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{is\_err()}{is\_err()}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::is\+\_\+err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns {\ttfamily true} if this is {\ttfamily Err}, {\ttfamily false} if this is {\ttfamily Ok} 
+
+\begin{DoxyReturn}{Returns}
+Whether this is {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ae9a694b323155e10209525a49c303f26}\label{classhyperion_1_1utils_1_1Result_ae9a694b323155e10209525a49c303f26}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!is\_ok@{is\_ok}}
+\index{is\_ok@{is\_ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{is\_ok()}{is\_ok()}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::is\+\_\+ok (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns {\ttfamily true} if this is {\ttfamily Ok}, {\ttfamily false} if this is {\ttfamily Err} 
+
+\begin{DoxyReturn}{Returns}
+Whether this is {\ttfamily Ok} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a4257e58f910e016750025ed9fcde01f9}\label{classhyperion_1_1utils_1_1Result_a4257e58f910e016750025ed9fcde01f9}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(const T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ac4a851b1e47f967c8ef4783020ece4f8}\label{classhyperion_1_1utils_1_1Result_ac4a851b1e47f967c8ef4783020ece4f8}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(const T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ac6dc9691de9be89bc56472bbc31bd9e1}\label{classhyperion_1_1utils_1_1Result_ac6dc9691de9be89bc56472bbc31bd9e1}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a040f730af111ca97024e41fac0fdd4a2}\label{classhyperion_1_1utils_1_1Result_a040f730af111ca97024e41fac0fdd4a2}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$ U, E $>$(T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a89c071ee5b31d15944cc28fc3fa3bdd2}\label{classhyperion_1_1utils_1_1Result_a89c071ee5b31d15944cc28fc3fa3bdd2}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a0e9392e2128c1e8a6737159404dfdaa4}\label{classhyperion_1_1utils_1_1Result_a0e9392e2128c1e8a6737159404dfdaa4}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a105c549909210ec132bd2d1c9fa7f7c7}\label{classhyperion_1_1utils_1_1Result_a105c549909210ec132bd2d1c9fa7f7c7}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a9fc6ea18f1df24317d9c290cccdc6d78}\label{classhyperion_1_1utils_1_1Result_a9fc6ea18f1df24317d9c290cccdc6d78}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map@{map}}
+\index{map@{map}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+requires Not\+Reference$<$U$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$U, E$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$U, E$>$}, returning {\ttfamily Ok(\+U)} (mapped by {\ttfamily map\+\_\+func}) if this is an {\ttfamily Ok}, or {\ttfamily Err} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok(\+U)} if this is {\ttfamily Ok}, or {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a8947d710feca414b8753eb79dffdfafa}\label{classhyperion_1_1utils_1_1Result_a8947d710feca414b8753eb79dffdfafa}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_err@{map\_err}}
+\index{map\_err@{map\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_err()}{map\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Error\+Type F = Error$>$ \\
+requires Not\+Reference$<$F$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+err (\begin{DoxyParamCaption}\item[{std\+::function$<$ F(const E \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, F$>$
+		requires Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & -\/ The type to map to Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} if this is {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ac630825b4830c7b3967e353d3398a94b}\label{classhyperion_1_1utils_1_1Result_ac630825b4830c7b3967e353d3398a94b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_err@{map\_err}}
+\index{map\_err@{map\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_err()}{map\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Error\+Type F = Error$>$ \\
+requires Not\+Reference$<$F$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+err (\begin{DoxyParamCaption}\item[{std\+::function$<$ F(const E)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, F$>$
+		requires Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & -\/ The type to map to Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} if this is {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a97c7338f534d6d3b8d8f86adefd866ec}\label{classhyperion_1_1utils_1_1Result_a97c7338f534d6d3b8d8f86adefd866ec}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_err@{map\_err}}
+\index{map\_err@{map\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_err()}{map\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Error\+Type F = Error$>$ \\
+requires Not\+Reference$<$F$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+err (\begin{DoxyParamCaption}\item[{std\+::function$<$ F(E \&)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, F$>$
+		requires Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & -\/ The type to map to Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} if this is {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a4f5488625ebd3525dc8df22bb51b8fae}\label{classhyperion_1_1utils_1_1Result_a4f5488625ebd3525dc8df22bb51b8fae}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_err@{map\_err}}
+\index{map\_err@{map\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_err()}{map\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Error\+Type F = Error$>$ \\
+requires Not\+Reference$<$F$>$ auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+err (\begin{DoxyParamCaption}\item[{std\+::function$<$ F(E)$>$}]{map\+\_\+func }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, F$>$
+		requires Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()$<$T, E$>$} to a {\ttfamily Result()$<$T, F$>$}, returning {\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & -\/ The type to map to Must be an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{Error}}} type ({\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Error}{hyperion\+::utils\+::\+Error}}}) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} if this is {\ttfamily Ok}, or {\ttfamily Err(\+F)} if this is {\ttfamily Err} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a7054138fb0b222e7335d36b3a8e6a260}\label{classhyperion_1_1utils_1_1Result_a7054138fb0b222e7335d36b3a8e6a260}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [1/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ae9367f01174da440d19e472564709465}\label{classhyperion_1_1utils_1_1Result_ae9367f01174da440d19e472564709465}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [2/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ab4bce86c71dcb23efce372ef9fdc663d}\label{classhyperion_1_1utils_1_1Result_ab4bce86c71dcb23efce372ef9fdc663d}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [3/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a50a28166500219fa787497dc007e47fb}\label{classhyperion_1_1utils_1_1Result_a50a28166500219fa787497dc007e47fb}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [4/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a019db553916cc96bec64c89e20186cba}\label{classhyperion_1_1utils_1_1Result_a019db553916cc96bec64c89e20186cba}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [5/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aba8a232b6bfd20a80d263de52e2cd258}\label{classhyperion_1_1utils_1_1Result_aba8a232b6bfd20a80d263de52e2cd258}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [6/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a9c95943c71c04aada751cc4c6fc661a5}\label{classhyperion_1_1utils_1_1Result_a9c95943c71c04aada751cc4c6fc661a5}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [7/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{const U \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a71aad84943ac680d3d7d25ce9c479668}\label{classhyperion_1_1utils_1_1Result_a71aad84943ac680d3d7d25ce9c479668}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or@{map\_or}}
+\index{map\_or@{map\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or()}{map\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [8/8]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{U \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+value} & -\/ The default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a18638e9dde203a59d66d29af6af4f7ea}\label{classhyperion_1_1utils_1_1Result_a18638e9dde203a59d66d29af6af4f7ea}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T \&)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) const -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a351b3c5ab5cd6c0ab8a9430ff6625538}\label{classhyperion_1_1utils_1_1Result_a351b3c5ab5cd6c0ab8a9430ff6625538}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(const T)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) const -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_ab7d9edeb7a0ee7ed114d6c4ed4e1669b}\label{classhyperion_1_1utils_1_1Result_ab7d9edeb7a0ee7ed114d6c4ed4e1669b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T \&)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ U requires Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a1c1cb0ce1f7f0d59e6d392f536bb5b2c}\label{classhyperion_1_1utils_1_1Result_a1c1cb0ce1f7f0d59e6d392f536bb5b2c}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!map\_or\_else@{map\_or\_else}}
+\index{map\_or\_else@{map\_or\_else}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{map\_or\_else()}{map\_or\_else()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+template$<$Passable U$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::map\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ U(T)$>$}]{map\+\_\+func,  }\item[{std\+::function$<$ U()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ U requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Maps this {\ttfamily Result()} to a {\ttfamily U}, returning {\ttfamily U} (mapped by {\ttfamily map\+\_\+func}) if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} if this is {\ttfamily Err} 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em U} & -\/ The type to map to \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em map\+\_\+func} & -\/ The function to perform the mapping \\
+\hline
+{\em default\+\_\+generator} & -\/ The function to generate the default value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result of the mapping if this is {\ttfamily Ok}, or the value returned by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}\label{classhyperion_1_1utils_1_1Result_a545b67faf8aa91f8113f3a6c16511289}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!ok@{ok}}
+\index{ok@{ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{ok()}{ok()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::ok (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$
+		requires Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a3b132b2faf3052e48ac03eab256fb98b}\label{classhyperion_1_1utils_1_1Result_a3b132b2faf3052e48ac03eab256fb98b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!ok@{ok}}
+\index{ok@{ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{ok()}{ok()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::ok (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$
+		requires Not\+Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aa9ae56daae3b5eac2ea3236dc9899edf}\label{classhyperion_1_1utils_1_1Result_aa9ae56daae3b5eac2ea3236dc9899edf}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!ok@{ok}}
+\index{ok@{ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{ok()}{ok()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::ok (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$
+		requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Converts this {\ttfamily Result()$<$T, E$>$} to an {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$}, consuming this {\ttfamily Result()} and discarding the error, if any. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{Option}}$<$T$>$} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_adbd31885711572aebdebb63f7fa21927}\label{classhyperion_1_1utils_1_1Result_adbd31885711572aebdebb63f7fa21927}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Ok@{Ok}}
+\index{Ok@{Ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Ok()}{Ok()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Ok (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&}]{ok }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ok} & -\/ the success value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a407a258a044c76a63e24030713026e3b}\label{classhyperion_1_1utils_1_1Result_a407a258a044c76a63e24030713026e3b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Ok@{Ok}}
+\index{Ok@{Ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Ok()}{Ok()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Ok (\begin{DoxyParamCaption}\item[{const T \&}]{ok }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ok} & -\/ the success value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_abd9a81183533ff3076b9536b7ee88300}\label{classhyperion_1_1utils_1_1Result_abd9a81183533ff3076b9536b7ee88300}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Ok@{Ok}}
+\index{Ok@{Ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Ok()}{Ok()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Ok (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structhyperion_1_1utils_1_1OkWrapper}{Ok\+Wrapper}}$<$ T $>$ \&\&}]{ok }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ok} & -\/ the success value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a493fc632409bb508da1abe1e52e001ab}\label{classhyperion_1_1utils_1_1Result_a493fc632409bb508da1abe1e52e001ab}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!Ok@{Ok}}
+\index{Ok@{Ok}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{Ok()}{Ok()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr static auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::Ok (\begin{DoxyParamCaption}\item[{T \&\&}]{ok }\end{DoxyParamCaption}) -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{Result}}$<$T, E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Constructs a {\ttfamily Result()} as the {\ttfamily Ok} variant, containing {\ttfamily ok} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ok} & -\/ the success value\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily Ok} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a61ce855d64f5777b107e3b0d1337f3b6}\label{classhyperion_1_1utils_1_1Result_a61ce855d64f5777b107e3b0d1337f3b6}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aa863223d5e26d0e51b06a06cc2c63134}\label{classhyperion_1_1utils_1_1Result_aa863223d5e26d0e51b06a06cc2c63134}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Not\+Movable$<$T$>$ \&\& Not\+Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a7ef5d6589fd1adb34cbadca837a814fb}\label{classhyperion_1_1utils_1_1Result_a7ef5d6589fd1adb34cbadca837a814fb}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap@{unwrap}}
+\index{unwrap@{unwrap}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap()}{unwrap()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ T requires Pointer$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_aefb6b2c246cff98bd3bee60003467f62}\label{classhyperion_1_1utils_1_1Result_aefb6b2c246cff98bd3bee60003467f62}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_err@{unwrap\_err}}
+\index{unwrap\_err@{unwrap\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_err()}{unwrap\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ E requires Movable$<$E$>$ \&\& Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily E} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a89d549c6bdef0c93df554845d56abada}\label{classhyperion_1_1utils_1_1Result_a89d549c6bdef0c93df554845d56abada}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_err@{unwrap\_err}}
+\index{unwrap\_err@{unwrap\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_err()}{unwrap\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ E requires Not\+Movable$<$E$>$ \&\& Not\+Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily E} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a808c733d72c879a254bb2f97d09f503b}\label{classhyperion_1_1utils_1_1Result_a808c733d72c879a254bb2f97d09f503b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_err@{unwrap\_err}}
+\index{unwrap\_err@{unwrap\_err}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_err()}{unwrap\_err()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) -\/$>$ E requires Pointer$<$E$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily E} if this is {\ttfamily Err}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Err}, then {\ttfamily std\+::terminate} is called. 
+
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily E} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a6c65e6a95fa8518f6387063ccb0223e6}\label{classhyperion_1_1utils_1_1Result_a6c65e6a95fa8518f6387063ccb0223e6}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_or@{unwrap\_or}}
+\index{unwrap\_or@{unwrap\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or()}{unwrap\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+or (\begin{DoxyParamCaption}\item[{const T \&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()} If this is not {\ttfamily Ok}, then returns {\ttfamily default\+\_\+value} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+value} & -\/ The value to return if this is {\ttfamily Err}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a177d7c0a45fad9e7eb2dd2efc8c82df1}\label{classhyperion_1_1utils_1_1Result_a177d7c0a45fad9e7eb2dd2efc8c82df1}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_or@{unwrap\_or}}
+\index{unwrap\_or@{unwrap\_or}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or()}{unwrap\_or()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+or (\begin{DoxyParamCaption}\item[{T \&\&}]{default\+\_\+value }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()} If this is not {\ttfamily Ok}, then returns {\ttfamily default\+\_\+value} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+value} & -\/ The value to return if this is {\ttfamily Err}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Ok}, or {\ttfamily default\+\_\+value} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1Result_a5726bbc52b63c3520fd107ca2d29af0b}\label{classhyperion_1_1utils_1_1Result_a5726bbc52b63c3520fd107ca2d29af0b}} 
+\index{hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}!unwrap\_or\_else@{unwrap\_or\_else}}
+\index{unwrap\_or\_else@{unwrap\_or\_else}!hyperion::utils::Result$<$ T, E $>$@{hyperion::utils::Result$<$ T, E $>$}}
+\doxysubsubsection{\texorpdfstring{unwrap\_or\_else()}{unwrap\_or\_else()}}
+{\footnotesize\ttfamily template$<$Passable T, Error\+Type E$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1Result}{hyperion\+::utils\+::\+Result}}$<$ T, E $>$\+::unwrap\+\_\+or\+\_\+else (\begin{DoxyParamCaption}\item[{std\+::function$<$ T()$>$}]{default\+\_\+generator }\end{DoxyParamCaption}) -\/$>$ T \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the contained {\ttfamily T} if this is {\ttfamily Ok}, consuming this {\ttfamily Result()}. If this is not {\ttfamily Ok}, then returns the value generated by {\ttfamily default\+\_\+generator} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em default\+\_\+generator} & -\/ The function to generate the value returned if this is {\ttfamily Err}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The contained {\ttfamily T} if this is {\ttfamily Ok}, or the value generated by {\ttfamily default\+\_\+generator} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Option\+And\+Result.\+h\end{DoxyCompactItemize}

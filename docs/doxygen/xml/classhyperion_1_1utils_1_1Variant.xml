@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classhyperion_1_1utils_1_1Variant" kind="class" language="C++" prot="public">
+    <compoundname>hyperion::utils::Variant</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Types</declname>
+        <defname>Types</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1Variant_1a16a3ed15d424170310ddf89356cbc675" prot="public" static="no" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>requires <ref refid="namespacehyperion_1_1utils_1_1concepts_1a6e16f74c73737fa6b31d96a123304182" kindref="member">concepts::Contains</ref>&lt; T, mpl::list&lt; Types... &gt; &gt;</type>
+        <definition>requires concepts::Contains&lt;T, mpl::list&lt;Types...&gt; &gt; hyperion::utils::Variant&lt; Types &gt;::Variant</definition>
+        <argsstring>(std::in_place_type_t&lt; T &gt; tag, Args &amp;&amp;... args) noexcept</argsstring>
+        <name>Variant</name>
+        <param>
+          <type>std::in_place_type_t&lt; T &gt;</type>
+          <declname>tag</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h" line="14" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h" bodystart="14" bodyend="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h" line="10" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h" bodystart="10" bodyend="19"/>
+    <listofallmembers>
+      <member refid="classhyperion_1_1utils_1_1Variant_1a16a3ed15d424170310ddf89356cbc675" prot="public" virt="non-virtual"><scope>hyperion::utils::Variant</scope><name>Variant</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

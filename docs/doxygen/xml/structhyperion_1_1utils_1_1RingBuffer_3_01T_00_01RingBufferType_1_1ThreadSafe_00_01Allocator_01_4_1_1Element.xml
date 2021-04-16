@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element" kind="struct" language="C++" prot="public">
+    <compoundname>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a780332d8cbe1224c7df939c79dc99782" prot="public" static="no" mutable="no">
+        <type>std::shared_ptr&lt; T &gt;</type>
+        <definition>std::shared_ptr&lt;T&gt; hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::m_element</definition>
+        <argsstring></argsstring>
+        <name>m_element</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1214" column="17" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1214" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1aa606e891738d91f40c603213bd4a2f86" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>Element</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1216" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a44a653ef25b9258832e584334c713ab3" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(const std::shared_ptr&lt; T &gt; &amp;element) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>const std::shared_ptr&lt; T &gt; &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1217" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1217" bodyend="1219"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5635776b39265e800a05588351cca30c" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(std::shared_ptr&lt; T &gt; &amp;&amp;element) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>std::shared_ptr&lt; T &gt; &amp;&amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1220" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1220" bodyend="1222"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a1f680f709e92dda63cdb001546cb0be6" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(T *element) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>T *</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1223" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1223" bodyend="1224"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a949b9bc870dfd03aebb68c8ad9bcba74" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(Allocator&lt; Element &gt; &amp;alloc, const T &amp;element) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>Allocator&lt; Element &gt; &amp;</type>
+          <declname>alloc</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1225" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1225" bodyend="1227"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1acc61f7d49364cdff52d0b5d0c63b7b7d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(Allocator&lt; Element &gt; &amp;alloc, T &amp;&amp;element) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>Allocator&lt; Element &gt; &amp;</type>
+          <declname>alloc</declname>
+        </param>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1228" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1228" bodyend="1230"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a26f60153f495ed040201ddc798ff6df0" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>requires constexpr ConstructibleFrom&lt; T, Args... &gt;</type>
+        <definition>requires constexpr ConstructibleFrom&lt;T, Args...&gt; hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(Allocator&lt; Element &gt; &amp;alloc, Args &amp;&amp;... args) noexcept</argsstring>
+        <name>Element</name>
+        <param>
+          <type>Allocator&lt; Element &gt; &amp;</type>
+          <declname>alloc</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1233" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1233" bodyend="1237"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a6552eb61b025f646eddbc91cd03fde8e" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(const Element &amp;element) noexcept=default</argsstring>
+        <name>Element</name>
+        <param>
+          <type>const Element &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1238" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a97ff39c6cedf244380f60018fa6c57f1" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::Element</definition>
+        <argsstring>(Element &amp;&amp;element) noexcept=default</argsstring>
+        <name>Element</name>
+        <param>
+          <type>Element &amp;&amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1239" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a47e573656b1757a0fddc63e6aa080e03" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::~Element</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>~Element</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1240" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5fe597f05723fad7a299dcff24ea3ad9" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator=</definition>
+        <argsstring>(const Element &amp;element) noexcept -&gt; Element &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const Element &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1242" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1ac063a382c0d6f2af67850623dd7950a3" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator=</definition>
+        <argsstring>(Element &amp;&amp;element) noexcept -&gt; Element &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>Element &amp;&amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1243" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a11b7a82b23dffae45688fb44365ae7e8" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator=</definition>
+        <argsstring>(const std::shared_ptr&lt; T &gt; &amp;element) noexcept -&gt; Element &amp;</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const std::shared_ptr&lt; T &gt; &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1245" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1245" bodyend="1248"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a69cebd9f9139b78c971ea8486f4b3507" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator=</definition>
+        <argsstring>(std::shared_ptr&lt; T &gt; &amp;&amp;element) noexcept -&gt; Element &amp;</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>std::shared_ptr&lt; T &gt; &amp;&amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1249" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1249" bodyend="1252"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a4f0f4bce6220759995c72faa2a177bea" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator==</definition>
+        <argsstring>(const Element &amp;element) const noexcept -&gt; bool</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const Element &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1262" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1262" bodyend="1264"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a93a2f4dafb7c39fba05d20a40e91ae09" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator!=</definition>
+        <argsstring>(const Element &amp;element) const noexcept -&gt; bool</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const Element &amp;</type>
+          <declname>element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1266" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1266" bodyend="1268"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1aafc5bf160d86804fbabcb3c4e805401e" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator T&amp;</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>operator T&amp;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1280" column="18" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1280" bodyend="1282"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5e33184441b645f8ed352ca24638658a" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator const T &amp;</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator const T &amp;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1283" column="18" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1283" bodyend="1285"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a55abeec2ba56493bb2aaf43870519459" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator*</definition>
+        <argsstring>() noexcept -&gt; T &amp;</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1286" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1286" bodyend="1288"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5d8d177be4d304f918124f42e69fb9ba" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator*</definition>
+        <argsstring>() const noexcept -&gt; const T &amp;</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1289" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1289" bodyend="1291"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a51ebcfe7c95956ff0b785d264fc68058" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator-&gt;</definition>
+        <argsstring>() noexcept -&gt; T *</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1292" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1292" bodyend="1294"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a7f21c348785b449ada7e1c0a2984b08d" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element::operator-&gt;</definition>
+        <argsstring>() const noexcept -&gt; const T *</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1295" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1295" bodyend="1297"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1213" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1213" bodyend="1298"/>
+    <listofallmembers>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1aa606e891738d91f40c603213bd4a2f86" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a44a653ef25b9258832e584334c713ab3" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5635776b39265e800a05588351cca30c" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a1f680f709e92dda63cdb001546cb0be6" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a949b9bc870dfd03aebb68c8ad9bcba74" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1acc61f7d49364cdff52d0b5d0c63b7b7d" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a26f60153f495ed040201ddc798ff6df0" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a6552eb61b025f646eddbc91cd03fde8e" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a97ff39c6cedf244380f60018fa6c57f1" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>Element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a780332d8cbe1224c7df939c79dc99782" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>m_element</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5e33184441b645f8ed352ca24638658a" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator const T &amp;</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1aafc5bf160d86804fbabcb3c4e805401e" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator T&amp;</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a93a2f4dafb7c39fba05d20a40e91ae09" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator!=</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a55abeec2ba56493bb2aaf43870519459" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator*</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5d8d177be4d304f918124f42e69fb9ba" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator*</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a51ebcfe7c95956ff0b785d264fc68058" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator-&gt;</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a7f21c348785b449ada7e1c0a2984b08d" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator-&gt;</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a5fe597f05723fad7a299dcff24ea3ad9" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1ac063a382c0d6f2af67850623dd7950a3" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a11b7a82b23dffae45688fb44365ae7e8" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a69cebd9f9139b78c971ea8486f4b3507" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a4f0f4bce6220759995c72faa2a177bea" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>operator==</name></member>
+      <member refid="structhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Element_1a47e573656b1757a0fddc63e6aa080e03" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Element</scope><name>~Element</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,3 +1,4 @@
+/// @brief Logging configuration types
 #pragma once
 
 #include <cstddef>

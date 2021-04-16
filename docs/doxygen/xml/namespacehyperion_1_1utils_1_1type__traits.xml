@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="namespacehyperion_1_1utils_1_1type__traits" kind="namespace" language="C++">
+    <compoundname>hyperion::utils::type_traits</compoundname>
+    <innerclass refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal" prot="public">hyperion::utils::type_traits::has_not_equal</innerclass>
+    <innerclass refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal_3_01T_00_01U_00_01std_1_1void__t_3_01e94a99caaeb976a8479ad9fc45e7a904" prot="public">hyperion::utils::type_traits::has_not_equal&lt; T, U, std::void_t&lt; decltype(std::declval&lt; T &gt;() !=std::declval&lt; U &gt;())&gt; &gt;</innerclass>
+    <innerclass refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__move__or__pointer" prot="public">hyperion::utils::type_traits::is_copy_move_or_pointer</innerclass>
+    <innerclass refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move" prot="public">hyperion::utils::type_traits::is_copy_or_move</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacehyperion_1_1utils_1_1type__traits_1ac49c43d66da5cc33a9661abd8afeedba" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::type_traits::is_copy_or_move_v</definition>
+        <argsstring></argsstring>
+        <name>is_copy_or_move_v</name>
+        <initializer>= <ref refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move" kindref="compound">is_copy_or_move</ref>&lt;T&gt;::value</initializer>
+        <briefdescription>
+<para>value of Type Trait <computeroutput><ref refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move" kindref="compound">is_copy_or_move</ref></computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="20" column="16" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacehyperion_1_1utils_1_1type__traits_1a8f01d3131b9e2a04f4fc5938d655ab5f" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::type_traits::is_copy_move_or_pointer_v</definition>
+        <argsstring></argsstring>
+        <name>is_copy_move_or_pointer_v</name>
+        <initializer>= <ref refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__move__or__pointer" kindref="compound">is_copy_move_or_pointer</ref>&lt;T&gt;::value</initializer>
+        <briefdescription>
+<para>value of Type Trait <computeroutput><ref refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__move__or__pointer" kindref="compound">is_copy_move_or_pointer</ref></computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="31" column="16" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacehyperion_1_1utils_1_1type__traits_1af18615d93fafd4f9c10156cad228b77a" prot="public" static="yes" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename U</type>
+            <defval>T</defval>
+          </param>
+        </templateparamlist>
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::type_traits::has_not_equal_v</definition>
+        <argsstring></argsstring>
+        <name>has_not_equal_v</name>
+        <initializer>= <ref refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal" kindref="compound">has_not_equal</ref>&lt;T, U&gt;::value</initializer>
+        <briefdescription>
+<para>Value of Type Trait <computeroutput><ref refid="structhyperion_1_1utils_1_1type__traits_1_1has__not__equal" kindref="compound">has_not_equal</ref></computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="52" column="30" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>This is a small collection of basic type traits. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="9" column="1"/>
+  </compounddef>
+</doxygen>

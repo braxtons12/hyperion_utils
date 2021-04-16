@@ -1,3 +1,5 @@
+/// @brief A thin wrapper around `gsl::span`, removing the need to call free functions for `at` when
+/// the size is not statically known
 #pragma once
 
 #include <array>

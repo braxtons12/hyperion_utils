@@ -1,3 +1,7 @@
+/// @brief Collection of aliases and literal suffixes for builtin integral and floating point types
+///
+/// This is uses Rust's notation for builtin types, thus `uint8_t` maps to `u8`,
+/// `size_t` to `usize`, etc. Literal suffixes use the full name of the alias
 #pragma once
 
 #include <cstddef>

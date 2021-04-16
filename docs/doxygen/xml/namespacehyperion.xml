@@ -1,0 +1,505 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="namespacehyperion" kind="namespace" language="C++">
+    <compoundname>hyperion</compoundname>
+    <innernamespace refid="namespacehyperion_1_1detail">hyperion::detail</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils">hyperion::utils</innernamespace>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespacehyperion_1acfdac4fe7c3fe87fab1c63b0e3619533" prot="public" static="no">
+        <type>uint8_t</type>
+        <definition>using hyperion::u8 = typedef uint8_t</definition>
+        <argsstring></argsstring>
+        <name>u8</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="15" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1abca5bd94eed8ca14c805b15a96afd03c" prot="public" static="no">
+        <type>uint16_t</type>
+        <definition>using hyperion::u16 = typedef uint16_t</definition>
+        <argsstring></argsstring>
+        <name>u16</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="16" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a9e19687329b8177b3f8b87b8d32de5bf" prot="public" static="no">
+        <type>uint32_t</type>
+        <definition>using hyperion::u32 = typedef uint32_t</definition>
+        <argsstring></argsstring>
+        <name>u32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="17" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1ae38a778e4c86ed1e3063ecac9cd97337" prot="public" static="no">
+        <type>uint64_t</type>
+        <definition>using hyperion::u64 = typedef uint64_t</definition>
+        <argsstring></argsstring>
+        <name>u64</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="18" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a65719729b06f3c94e80c8bdbf5759160" prot="public" static="no">
+        <type>size_t</type>
+        <definition>using hyperion::usize = typedef size_t</definition>
+        <argsstring></argsstring>
+        <name>usize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="19" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a4dda096376a4f280272e5892b21949dd" prot="public" static="no">
+        <type>uintmax_t</type>
+        <definition>using hyperion::umax = typedef uintmax_t</definition>
+        <argsstring></argsstring>
+        <name>umax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="20" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a72704b8c7b5886b91731ac169803e032" prot="public" static="no">
+        <type>int8_t</type>
+        <definition>using hyperion::i8 = typedef int8_t</definition>
+        <argsstring></argsstring>
+        <name>i8</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="22" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1ad7683ef7ff3bb29e807ab4c61f4908e3" prot="public" static="no">
+        <type>int16_t</type>
+        <definition>using hyperion::i16 = typedef int16_t</definition>
+        <argsstring></argsstring>
+        <name>i16</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="23" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a609a406ea98e25ec6bffe1609df3455d" prot="public" static="no">
+        <type>int32_t</type>
+        <definition>using hyperion::i32 = typedef int32_t</definition>
+        <argsstring></argsstring>
+        <name>i32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="24" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a98018c1f4b2e3b8ccaed3c397fcf6374" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using hyperion::i64 = typedef int64_t</definition>
+        <argsstring></argsstring>
+        <name>i64</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="25" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a3bf6109a188e18b60cb16d9430364703" prot="public" static="no">
+        <type>intmax_t</type>
+        <definition>using hyperion::imax = typedef intmax_t</definition>
+        <argsstring></argsstring>
+        <name>imax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="26" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a6a0d331e5f3daacaa7b6c0a903ceffc7" prot="public" static="no">
+        <type>u8</type>
+        <definition>using hyperion::byte = typedef u8</definition>
+        <argsstring></argsstring>
+        <name>byte</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="28" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1a450bf333cff6124d0123de53bd9317a0" prot="public" static="no">
+        <type>float</type>
+        <definition>using hyperion::f32 = typedef float</definition>
+        <argsstring></argsstring>
+        <name>f32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="30" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1adb0702548547ee284c2fd8aca5687083" prot="public" static="no">
+        <type>double</type>
+        <definition>using hyperion::f64 = typedef double</definition>
+        <argsstring></argsstring>
+        <name>f64</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="31" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespacehyperion_1aed9293d053f182baf0d1db83a0f82a76" prot="public" static="no">
+        <type>long double</type>
+        <definition>using hyperion::fmax = typedef long double</definition>
+        <argsstring></argsstring>
+        <name>fmax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="32" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacehyperion_1af3597ce7f03c890d88ca745ef2f42b6d" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, byte &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, byte&gt; auto hyperion::operator&quot;&quot;_byte</definition>
+        <argsstring>() noexcept -&gt; byte</argsstring>
+        <name>operator&quot;&quot;_byte</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="61" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="61" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1ad63dc136af53549522781352b6af8281" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, u8 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, u8&gt; auto hyperion::operator&quot;&quot;_u8</definition>
+        <argsstring>() noexcept -&gt; u8</argsstring>
+        <name>operator&quot;&quot;_u8</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="67" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="67" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1aaede3c48906f9b97b748225ffba8c850" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, u16 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, u16&gt; auto hyperion::operator&quot;&quot;_u16</definition>
+        <argsstring>() noexcept -&gt; u16</argsstring>
+        <name>operator&quot;&quot;_u16</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="73" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1aca43beffe24a40a7f5d2733e7c3886ee" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, u32 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, u32&gt; auto hyperion::operator&quot;&quot;_u32</definition>
+        <argsstring>() noexcept -&gt; u32</argsstring>
+        <name>operator&quot;&quot;_u32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="79" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a0a167580791494b25d2b79f85b734817" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, u64 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, u64&gt; auto hyperion::operator&quot;&quot;_u64</definition>
+        <argsstring>() noexcept -&gt; u64</argsstring>
+        <name>operator&quot;&quot;_u64</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="85" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="85" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1aceed49afeb224f66f36d36c2995c42f8" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, usize &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, usize&gt; auto hyperion::operator&quot;&quot;_usize</definition>
+        <argsstring>() noexcept -&gt; usize</argsstring>
+        <name>operator&quot;&quot;_usize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="91" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="91" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a35b704e406037217c08b3c9fa06ffe51" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, umax &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, umax&gt; auto hyperion::operator&quot;&quot;_umax</definition>
+        <argsstring>() noexcept -&gt; umax</argsstring>
+        <name>operator&quot;&quot;_umax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="97" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="97" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a4368eaac6ca6c408924e502b4a39fb77" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, i8 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, i8&gt; auto hyperion::operator&quot;&quot;_i8</definition>
+        <argsstring>() noexcept -&gt; i8</argsstring>
+        <name>operator&quot;&quot;_i8</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="103" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="103" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a406c5de279d351e49ecf6c28545182a3" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, i16 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, i16&gt; auto hyperion::operator&quot;&quot;_i16</definition>
+        <argsstring>() noexcept -&gt; i16</argsstring>
+        <name>operator&quot;&quot;_i16</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="109" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a5d55cd81780a47dabe712a7d80172490" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, i32 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, i32&gt; auto hyperion::operator&quot;&quot;_i32</definition>
+        <argsstring>() noexcept -&gt; i32</argsstring>
+        <name>operator&quot;&quot;_i32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="115" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="115" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a56b0ae40959b6f120353bae864b620c7" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, i64 &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, i64&gt; auto hyperion::operator&quot;&quot;_i64</definition>
+        <argsstring>() noexcept -&gt; i64</argsstring>
+        <name>operator&quot;&quot;_i64</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="121" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="121" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1ad7b97ab0c937b3e829587b96e320c895" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>char...</type>
+            <declname>Chars</declname>
+            <defname>Chars</defname>
+          </param>
+        </templateparamlist>
+        <type>requires static constexpr detail::ValidLiteral&lt; detail::literal_parser_v&lt; 0, Chars... &gt;, imax &gt; auto</type>
+        <definition>requires static constexpr detail::ValidLiteral&lt;detail::literal_parser_v&lt;0, Chars...&gt;, imax&gt; auto hyperion::operator&quot;&quot;_imax</definition>
+        <argsstring>() noexcept -&gt; imax</argsstring>
+        <name>operator&quot;&quot;_imax</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="127" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="127" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1aa5260c4c161686f38dd5364bdc7bf48c" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>static constexpr auto hyperion::operator&quot;&quot;_f32</definition>
+        <argsstring>(long double val) noexcept -&gt; f32</argsstring>
+        <name>operator&quot;&quot;_f32</name>
+        <param>
+          <type>long double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="133" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="133" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1a0b9370d7ce003ebdf514b855370fd465" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>static constexpr auto hyperion::operator&quot;&quot;_f64</definition>
+        <argsstring>(long double val) noexcept -&gt; f64</argsstring>
+        <name>operator&quot;&quot;_f64</name>
+        <param>
+          <type>long double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="137" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="137" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacehyperion_1ac9084e8deb2b87fac1b951afc3d8a657" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>static constexpr auto hyperion::operator&quot;&quot;_fmax</definition>
+        <argsstring>(long double val) noexcept -&gt; fmax</argsstring>
+        <name>operator&quot;&quot;_fmax</name>
+        <param>
+          <type>long double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="141" column="31" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" bodystart="141" bodyend="143"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Collection of aliases and literal suffixes for builtin integral and floating point types. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This is uses Rust&apos;s notation for builtin types, thus <computeroutput>uint8_t</computeroutput> maps to <computeroutput>u8</computeroutput>, <computeroutput>size_t</computeroutput> to <computeroutput>usize</computeroutput>, etc. Literal suffixes use the full name of the alias </para>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/BasicTypes.h" line="13" column="1"/>
+  </compounddef>
+</doxygen>

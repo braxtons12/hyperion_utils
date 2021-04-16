@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="dir_212f3df84bf62e601147ef67911dd1ef" kind="dir">
+    <compoundname>/home/braxton/git/Hyperion/utils/include/HyperionUtils</compoundname>
+    <innerfile refid="BasicTypes_8h">BasicTypes.h</innerfile>
+    <innerfile refid="ChangeDetector_8h">ChangeDetector.h</innerfile>
+    <innerfile refid="Concepts_8h">Concepts.h</innerfile>
+    <innerfile refid="Error_8h">Error.h</innerfile>
+    <innerfile refid="HyperionUtils_8h">HyperionUtils.h</innerfile>
+    <innerfile refid="Ignore_8h">Ignore.h</innerfile>
+    <innerfile refid="LockFreeQueue_8h">LockFreeQueue.h</innerfile>
+    <innerfile refid="Logger_8h">Logger.h</innerfile>
+    <innerfile refid="Macros_8h">Macros.h</innerfile>
+    <innerfile refid="MPL_8h">MPL.h</innerfile>
+    <innerfile refid="OptionAndResult_8h">OptionAndResult.h</innerfile>
+    <innerfile refid="RingBuffer_8h">RingBuffer.h</innerfile>
+    <innerfile refid="Span_8h">Span.h</innerfile>
+    <innerfile refid="TypeTraits_8h">TypeTraits.h</innerfile>
+    <innerfile refid="Variant_8h">Variant.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/"/>
+  </compounddef>
+</doxygen>

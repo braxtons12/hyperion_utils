@@ -1,3 +1,4 @@
+/// @brief Index type to use in meta-programming functions
 #pragma once
 
 #include "../BasicTypes.h"

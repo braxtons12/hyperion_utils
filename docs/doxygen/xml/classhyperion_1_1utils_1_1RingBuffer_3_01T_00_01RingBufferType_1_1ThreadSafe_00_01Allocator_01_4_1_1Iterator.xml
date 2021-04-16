@@ -1,0 +1,574 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator" kind="class" language="C++" prot="public">
+    <compoundname>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</compoundname>
+    <includes refid="RingBuffer_8h" local="no">RingBuffer.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4ca7768a759b31f7f7f0deb15896f748" prot="public" static="no">
+        <type>std::random_access_iterator_tag</type>
+        <definition>using hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::iterator_category =  std::random_access_iterator_tag</definition>
+        <argsstring></argsstring>
+        <name>iterator_category</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1309" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aa271525153aa56723270e6709386ba14" prot="public" static="no">
+        <type>std::ptrdiff_t</type>
+        <definition>using hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::difference_type =  std::ptrdiff_t</definition>
+        <argsstring></argsstring>
+        <name>difference_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1310" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1310" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a458e7aab9f9d7cc56fff5fd0350d6631" prot="public" static="no">
+        <type>Element</type>
+        <definition>using hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::value_type =  Element</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1311" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1311" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a84b2483f3306bc65f86792338c7486b3" prot="public" static="no">
+        <type>Element</type>
+        <definition>using hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::pointer =  Element</definition>
+        <argsstring></argsstring>
+        <name>pointer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1312" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1312" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aff9a47aa5dcf08b954abec64df4aacbc" prot="public" static="no">
+        <type>Element &amp;</type>
+        <definition>using hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::reference =  Element&amp;</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1313" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1313" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a5ee5aca91d2eee310231a0d64dd2c26c" prot="private" static="no" mutable="no">
+        <type>pointer</type>
+        <definition>pointer hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::m_ptr</definition>
+        <argsstring></argsstring>
+        <name>m_ptr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1458" column="9" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1458" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6ac4f58fc09175fedffdeeb406d722b9" prot="private" static="no" mutable="no">
+        <type><ref refid="classhyperion_1_1utils_1_1RingBuffer" kindref="compound">RingBuffer</ref> *</type>
+        <definition>RingBuffer* hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::m_container_ptr</definition>
+        <argsstring></argsstring>
+        <name>m_container_ptr</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1459" column="12" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1459" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ae42fdee58dc38a3589f3d1493dbbba9e" prot="private" static="no" mutable="no">
+        <type>index_type</type>
+        <definition>index_type hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::m_current_index</definition>
+        <argsstring></argsstring>
+        <name>m_current_index</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1460" column="12" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1460" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a9ed005a7b9562cfaa634b4c29538d1b5" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::Iterator</definition>
+        <argsstring>(pointer ptr, RingBuffer *containerPtr, index_type currentIndex) noexcept</argsstring>
+        <name>Iterator</name>
+        <param>
+          <type>pointer</type>
+          <declname>ptr</declname>
+        </param>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1RingBuffer" kindref="compound">RingBuffer</ref> *</type>
+          <declname>containerPtr</declname>
+        </param>
+        <param>
+          <type>index_type</type>
+          <declname>currentIndex</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1315" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1315" bodyend="1319"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a5df381776258d8a0711363777f3d8f7d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::Iterator</definition>
+        <argsstring>(const Iterator &amp;iter) noexcept=default</argsstring>
+        <name>Iterator</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>iter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1320" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a0da8ed3cb2eb8c48c6e79a2872944aa9" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::Iterator</definition>
+        <argsstring>(Iterator &amp;&amp;iter) noexcept=default</argsstring>
+        <name>Iterator</name>
+        <param>
+          <type>Iterator &amp;&amp;</type>
+          <declname>iter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1321" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6dec24b421ba49fd9ec9304b83f36278" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::~Iterator</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>~Iterator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1322" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ab078ebcb6b793607602547972a0171d4" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::get_index</definition>
+        <argsstring>() const noexcept -&gt; index_type</argsstring>
+        <name>get_index</name>
+        <briefdescription>
+<para>Returns the index in the <computeroutput><ref refid="classhyperion_1_1utils_1_1RingBuffer" kindref="compound">RingBuffer</ref></computeroutput> that corresponds to the element this iterator points to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The index corresponding with the element this points to </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1328" column="24" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1328" bodyend="1330"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a9a674515b676ff4ace86a79eb0d97afe" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator=</definition>
+        <argsstring>(const Iterator &amp;iter) noexcept -&gt; Iterator &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>iter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1332" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4d30a59170a76ffe95261ffe0b178aa1" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator=</definition>
+        <argsstring>(Iterator &amp;&amp;iter) noexcept -&gt; Iterator &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>Iterator &amp;&amp;</type>
+          <declname>iter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1333" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a1d700919caba92793d64ee59b0c27153" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator==</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1335" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1335" bodyend="1337"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ad8dc31f7679f1e2b98f8494922888e69" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator!=</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1339" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1339" bodyend="1341"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1af253e328ec82a7758531b5272743bd43" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator*</definition>
+        <argsstring>() noexcept -&gt; reference</argsstring>
+        <name>operator*</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1343" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1343" bodyend="1345"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a40d08058ad1ebaf7bfa3bc639ad7adde" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator-&gt;</definition>
+        <argsstring>() noexcept -&gt; pointer</argsstring>
+        <name>operator-&gt;</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1347" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1347" bodyend="1349"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4475cba5d64fb4ccc90c07e96762570f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator++</definition>
+        <argsstring>() noexcept -&gt; Iterator &amp;</argsstring>
+        <name>operator++</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1351" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1351" bodyend="1361"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1afa026069e557132933a01d6184821798" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator++</definition>
+        <argsstring>(int) noexcept -&gt; Iterator</argsstring>
+        <name>operator++</name>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1363" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1363" bodyend="1367"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1acc0d2e1d65c9d7a8a28e491db2fa1cdb" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator--</definition>
+        <argsstring>() noexcept -&gt; Iterator &amp;</argsstring>
+        <name>operator--</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1369" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1369" bodyend="1378"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6e74ba4cb52925fd05bea7ea7f976ff7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator--</definition>
+        <argsstring>(int) noexcept -&gt; Iterator</argsstring>
+        <name>operator--</name>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1380" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1380" bodyend="1384"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a0b96b6960fffa0b2ed3d2a97071014e4" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator+</definition>
+        <argsstring>(Integral auto rhs) const noexcept -&gt; Iterator</argsstring>
+        <name>operator+</name>
+        <param>
+          <type>Integral auto</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1386" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1386" bodyend="1402"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a2e14a250a841dbd75865167b25d29a1f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator+=</definition>
+        <argsstring>(Integral auto rhs) noexcept -&gt; Iterator &amp;</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>Integral auto</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1404" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1404" bodyend="1407"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ac7cb80be5fb6aca4310e4a02745bf6a6" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator-</definition>
+        <argsstring>(Integral auto rhs) const noexcept -&gt; Iterator</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>Integral auto</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1409" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1409" bodyend="1425"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aa5012bac8b1a113bccbfe63720164df9" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator-=</definition>
+        <argsstring>(Integral auto rhs) noexcept -&gt; Iterator &amp;</argsstring>
+        <name>operator-=</name>
+        <param>
+          <type>Integral auto</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1427" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1427" bodyend="1430"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3daabc9c704c4b25c8d46eab2dc84ab4" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator-</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; difference_type</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1432" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1432" bodyend="1435"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3df5abbea60d570a273c28279fa50c9f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator[]</definition>
+        <argsstring>(Integral auto index) noexcept -&gt; Iterator</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>Integral auto</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1437" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1437" bodyend="1439"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3f47eb0107583c8eccc3e64ffb0b7273" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator&gt;</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator&gt;</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1441" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1441" bodyend="1443"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3b37655dc987da89f3e5dab56b6170d4" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator&lt;</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator&lt;</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1445" column="18" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1445" bodyend="1447"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a967ba91fa285892cc51e12ea7a261873" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator&gt;=</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator&gt;=</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1449" column="23" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1449" bodyend="1451"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a21a0e0e0f563b85aba188356b4e3bdbc" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator::operator&lt;=</definition>
+        <argsstring>(const Iterator &amp;rhs) const noexcept -&gt; bool</argsstring>
+        <name>operator&lt;=</name>
+        <param>
+          <type>const Iterator &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1453" column="18" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1453" bodyend="1455"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Random-Access Bidirectional iterator for <computeroutput><ref refid="classhyperion_1_1utils_1_1RingBuffer" kindref="compound">RingBuffer</ref></computeroutput> </para>
+    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="note"><para>All navigation operators are checked such that any movement past <computeroutput><ref refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1a149b48da57e072f8e4dc5710637c9d70" kindref="member">begin()</ref></computeroutput> or <computeroutput><ref refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1ae94ac0c9e57c971a96ee45a48d1c929b" kindref="member">end()</ref></computeroutput> is ignored. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" line="1307" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h" bodystart="1307" bodyend="1461"/>
+    <listofallmembers>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aa271525153aa56723270e6709386ba14" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>difference_type</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ab078ebcb6b793607602547972a0171d4" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>get_index</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a9ed005a7b9562cfaa634b4c29538d1b5" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>Iterator</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a5df381776258d8a0711363777f3d8f7d" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>Iterator</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a0da8ed3cb2eb8c48c6e79a2872944aa9" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>Iterator</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4ca7768a759b31f7f7f0deb15896f748" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>iterator_category</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6ac4f58fc09175fedffdeeb406d722b9" prot="private" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>m_container_ptr</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ae42fdee58dc38a3589f3d1493dbbba9e" prot="private" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>m_current_index</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a5ee5aca91d2eee310231a0d64dd2c26c" prot="private" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>m_ptr</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ad8dc31f7679f1e2b98f8494922888e69" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator!=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1af253e328ec82a7758531b5272743bd43" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator*</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a0b96b6960fffa0b2ed3d2a97071014e4" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator+</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4475cba5d64fb4ccc90c07e96762570f" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator++</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1afa026069e557132933a01d6184821798" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator++</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a2e14a250a841dbd75865167b25d29a1f" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator+=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1ac7cb80be5fb6aca4310e4a02745bf6a6" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator-</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3daabc9c704c4b25c8d46eab2dc84ab4" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator-</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1acc0d2e1d65c9d7a8a28e491db2fa1cdb" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator--</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6e74ba4cb52925fd05bea7ea7f976ff7" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator--</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aa5012bac8b1a113bccbfe63720164df9" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator-=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a40d08058ad1ebaf7bfa3bc639ad7adde" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator-&gt;</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3b37655dc987da89f3e5dab56b6170d4" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator&lt;</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a21a0e0e0f563b85aba188356b4e3bdbc" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator&lt;=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a9a674515b676ff4ace86a79eb0d97afe" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a4d30a59170a76ffe95261ffe0b178aa1" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a1d700919caba92793d64ee59b0c27153" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator==</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3f47eb0107583c8eccc3e64ffb0b7273" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator&gt;</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a967ba91fa285892cc51e12ea7a261873" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator&gt;=</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a3df5abbea60d570a273c28279fa50c9f" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>operator[]</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a84b2483f3306bc65f86792338c7486b3" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>pointer</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1aff9a47aa5dcf08b954abec64df4aacbc" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>reference</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a458e7aab9f9d7cc56fff5fd0350d6631" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>value_type</name></member>
+      <member refid="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1Iterator_1a6dec24b421ba49fd9ec9304b83f36278" prot="public" virt="non-virtual"><scope>hyperion::utils::RingBuffer&lt; T, RingBufferType::ThreadSafe, Allocator &gt;::Iterator</scope><name>~Iterator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

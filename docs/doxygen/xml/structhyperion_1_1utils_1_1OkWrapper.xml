@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structhyperion_1_1utils_1_1OkWrapper" kind="struct" language="C++" prot="public">
+    <compoundname>hyperion::utils::OkWrapper</compoundname>
+    <templateparamlist>
+      <param>
+        <type>Passable</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structhyperion_1_1utils_1_1OkWrapper_1a0faced717b8ab393ac2bde964dac9915" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T hyperion::utils::OkWrapper&lt; T &gt;::m_ok</definition>
+        <argsstring></argsstring>
+        <name>m_ok</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="746" column="3" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="746" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1a2e0eb9c156442ad13bcd92e36d39a587" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::OkWrapper&lt; T &gt;::OkWrapper</definition>
+        <argsstring>(const T &amp;ok)</argsstring>
+        <name>OkWrapper</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="732" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="732" bodyend="733"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1a937aac9b731764179c827776c5aca731" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::OkWrapper&lt; T &gt;::OkWrapper</definition>
+        <argsstring>(T &amp;&amp;ok)</argsstring>
+        <name>OkWrapper</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="734" column="20" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="734" bodyend="735"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1a3d8021d9397e005f88132f2a296f67fa" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::OkWrapper&lt; T &gt;::OkWrapper</definition>
+        <argsstring>(const OkWrapper &amp;ok) noexcept requires Copyable&lt; T &gt;=default</argsstring>
+        <name>OkWrapper</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref> &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="736" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1a1f600e322171dad81011e7f1f58ff409" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::OkWrapper&lt; T &gt;::OkWrapper</definition>
+        <argsstring>(OkWrapper &amp;&amp;ok) noexcept requires Movable&lt; T &gt;=default</argsstring>
+        <name>OkWrapper</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref> &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="738" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1afe30b6c6b5c54c33f6907d953973f0b7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>constexpr hyperion::utils::OkWrapper&lt; T &gt;::~OkWrapper</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>~OkWrapper</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="740" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1ae43926557e068c28ac56101ff8fc3978" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::OkWrapper&lt; T &gt;::operator=</definition>
+        <argsstring>(const OkWrapper &amp;ok) noexcept -&gt; OkWrapper &amp;requires Copyable&lt; T &gt;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref> &amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="741" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="structhyperion_1_1utils_1_1OkWrapper_1a955f686b54e45ff350680a6f48f63137" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>constexpr auto</type>
+        <definition>constexpr auto hyperion::utils::OkWrapper&lt; T &gt;::operator=</definition>
+        <argsstring>(OkWrapper &amp;&amp;ok) noexcept -&gt; OkWrapper &amp;requires Movable&lt; T &gt;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="structhyperion_1_1utils_1_1OkWrapper" kindref="compound">OkWrapper</ref> &amp;&amp;</type>
+          <declname>ok</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="743" column="16"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>T</label>
+      </node>
+      <node id="1">
+        <label>hyperion::utils::OkWrapper&lt; T &gt;</label>
+        <link refid="structhyperion_1_1utils_1_1OkWrapper"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>m_ok</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" line="731" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h" bodystart="731" bodyend="747"/>
+    <listofallmembers>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a0faced717b8ab393ac2bde964dac9915" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>m_ok</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a2e0eb9c156442ad13bcd92e36d39a587" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>OkWrapper</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a937aac9b731764179c827776c5aca731" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>OkWrapper</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a3d8021d9397e005f88132f2a296f67fa" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>OkWrapper</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a1f600e322171dad81011e7f1f58ff409" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>OkWrapper</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1ae43926557e068c28ac56101ff8fc3978" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1a955f686b54e45ff350680a6f48f63137" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>operator=</name></member>
+      <member refid="structhyperion_1_1utils_1_1OkWrapper_1afe30b6c6b5c54c33f6907d953973f0b7" prot="public" virt="non-virtual"><scope>hyperion::utils::OkWrapper</scope><name>~OkWrapper</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

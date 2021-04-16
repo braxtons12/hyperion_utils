@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classhyperion_1_1utils_1_1ChangeDetector" kind="class" language="C++" prot="public">
+    <compoundname>hyperion::utils::ChangeDetector</compoundname>
+    <includes refid="ChangeDetector_8h" local="no">ChangeDetector.h</includes>
+    <templateparamlist>
+      <param>
+        <type>Passable</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classhyperion_1_1utils_1_1ChangeDetector_1a608e43d8110f67b339bb8ebd0445b9ec" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T hyperion::utils::ChangeDetector&lt; T &gt;::mPreviousValue</definition>
+        <argsstring></argsstring>
+        <name>mPreviousValue</name>
+        <initializer>= T()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="120" column="3" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a79351d57215dd23349c3797634ee05f5" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::ChangeDetector</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>ChangeDetector</name>
+        <briefdescription>
+<para>Create a default <computeroutput><ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref></computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="23" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1ac5dbb7989e06703834336e676ba4fa47" prot="public" static="no" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::ChangeDetector</definition>
+        <argsstring>(const T &amp;initialValue) noexcept</argsstring>
+        <name>ChangeDetector</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>initialValue</declname>
+        </param>
+        <briefdescription>
+<para>Create a <computeroutput><ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref></computeroutput> with the given initial value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The initial value to store in the detector </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="28" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="28" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a3306040536d5242e21d38ec364a88517" prot="public" static="no" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::ChangeDetector</definition>
+        <argsstring>(T &amp;&amp;initialValue) noexcept</argsstring>
+        <name>ChangeDetector</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>initialValue</declname>
+        </param>
+        <briefdescription>
+<para>Create a <computeroutput><ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref></computeroutput> with the given initial value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The initial value to store in the detector </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="34" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="34" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a5475adda97c2232cee30b43e7f0ac08c" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::ChangeDetector</definition>
+        <argsstring>(const ChangeDetector &amp;detector) noexcept requires Copyable&lt; T &gt;=default</argsstring>
+        <name>ChangeDetector</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref> &amp;</type>
+          <declname>detector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="38" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1af0667513695a98855db15dee1a707222" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::ChangeDetector</definition>
+        <argsstring>(ChangeDetector &amp;&amp;detector) noexcept requires Movable&lt; T &gt;=default</argsstring>
+        <name>ChangeDetector</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref> &amp;&amp;</type>
+          <declname>detector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="40" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a9a356ecd791b21cd90d9cf2008e4a82b" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::ChangeDetector&lt; T &gt;::~ChangeDetector</definition>
+        <argsstring>() noexcept=default</argsstring>
+        <name>~ChangeDetector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="42" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1ab8088510a8a2ea6469356114a42399db" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::ChangeDetector&lt; T &gt;::changed</definition>
+        <argsstring>(const T &amp;newValue) noexcept -&gt; bool</argsstring>
+        <name>changed</name>
+        <param>
+          <type>const T &amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <briefdescription>
+<para>Updates the stored value and returns if the new value is different than the previous one. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>In the case that T is a pointer, the values located AT the pointers will be compared, NOT the pointers themselves. If <computeroutput>newValue</computeroutput> is not <computeroutput>nullptr</computeroutput>, the stored pointer will be replaced with <computeroutput>newValue</computeroutput>. If <computeroutput>newValue</computeroutput> is <computeroutput>nullptr</computeroutput>, false will always be returned.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The new value to store and check for equality</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the new value was different than the old one </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="55" column="13" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="55" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1adc6ad2a6113877dfba18121b10dfbe08" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::ChangeDetector&lt; T &gt;::changed</definition>
+        <argsstring>(T &amp;&amp;newValue) noexcept -&gt; bool</argsstring>
+        <name>changed</name>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>newValue</declname>
+        </param>
+        <briefdescription>
+<para>Updates the stored value and returns if the new value is different than the previous one. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>In the case that T is a pointer, the values located AT the pointers will be compared, NOT the pointers themselves. If <computeroutput>newValue</computeroutput> is not <computeroutput>nullptr</computeroutput>, the stored pointer will be replaced with <computeroutput>newValue</computeroutput>. If <computeroutput>newValue</computeroutput> is <computeroutput>nullptr</computeroutput>, false will always be returned.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The new value to store and check for equality</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the new value was different than the old one </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="86" column="13" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="86" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a8312119e1175eda1f9527af83e9d78b6" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::ChangeDetector&lt; T &gt;::value</definition>
+        <argsstring>() const noexcept -&gt; T requires Copyable&lt; T &gt;</argsstring>
+        <name>value</name>
+        <briefdescription>
+<para>Returns the currently contained value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the current value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="109" column="13" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a8fe91d7fe019651754d7db5045204408" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::ChangeDetector&lt; T &gt;::operator=</definition>
+        <argsstring>(const ChangeDetector &amp;detector) noexcept -&gt; ChangeDetector &amp;requires Copyable&lt; T &gt;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref> &amp;</type>
+          <declname>detector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="114" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1ChangeDetector_1a67a05e4a9745c5903296adc04081960a" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::ChangeDetector&lt; T &gt;::operator=</definition>
+        <argsstring>(ChangeDetector &amp;&amp;detector) noexcept -&gt; ChangeDetector &amp;requires Movable&lt; T &gt;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1ChangeDetector" kindref="compound">ChangeDetector</ref> &amp;&amp;</type>
+          <declname>detector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="116" column="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>Stores a value and detects if an updated value is different than the previous one. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to store and check for equality. T must be default constructible and have an inequality operator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" line="20" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h" bodystart="20" bodyend="121"/>
+    <listofallmembers>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1ab8088510a8a2ea6469356114a42399db" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>changed</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1adc6ad2a6113877dfba18121b10dfbe08" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>changed</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a79351d57215dd23349c3797634ee05f5" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>ChangeDetector</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1ac5dbb7989e06703834336e676ba4fa47" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>ChangeDetector</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a3306040536d5242e21d38ec364a88517" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>ChangeDetector</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a5475adda97c2232cee30b43e7f0ac08c" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>ChangeDetector</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1af0667513695a98855db15dee1a707222" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>ChangeDetector</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a608e43d8110f67b339bb8ebd0445b9ec" prot="private" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>mPreviousValue</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a8fe91d7fe019651754d7db5045204408" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a67a05e4a9745c5903296adc04081960a" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a8312119e1175eda1f9527af83e9d78b6" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>value</name></member>
+      <member refid="classhyperion_1_1utils_1_1ChangeDetector_1a9a356ecd791b21cd90d9cf2008e4a82b" prot="public" virt="non-virtual"><scope>hyperion::utils::ChangeDetector</scope><name>~ChangeDetector</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

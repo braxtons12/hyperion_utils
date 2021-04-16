@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="Concepts_8h" kind="file" language="C++">
+    <compoundname>Concepts.h</compoundname>
+    <includes local="no">cmath</includes>
+    <includes local="no">concepts</includes>
+    <includes local="no">type_traits</includes>
+    <includes refid="Error_8h" local="yes">Error.h</includes>
+    <includes refid="TypeTraits_8h" local="yes">TypeTraits.h</includes>
+    <includes local="yes">mpl/ForAll.h</includes>
+    <includes local="yes">mpl/List.h</includes>
+    <includedby refid="ChangeDetector_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h</includedby>
+    <includedby refid="HyperionUtils_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</includedby>
+    <includedby refid="OptionAndResult_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</includedby>
+    <includedby refid="RingBuffer_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h</includedby>
+    <includedby refid="MPL_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/MPL.h</includedby>
+    <includedby refid="Variant_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h</includedby>
+    <incdepgraph>
+      <node id="10">
+        <label>system_error</label>
+      </node>
+      <node id="14">
+        <label>limits</label>
+      </node>
+      <node id="13">
+        <label>cstdint</label>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Concepts.h</label>
+        <link refid="Concepts_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cmath</label>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+      <node id="7">
+        <label>gsl/gsl</label>
+      </node>
+      <node id="19">
+        <label>mpl/ForAll.h</label>
+      </node>
+      <node id="17">
+        <label>TypeTraits.h</label>
+        <link refid="TypeTraits_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Macros.h</label>
+        <link refid="Macros_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>tuple</label>
+      </node>
+      <node id="16">
+        <label>version</label>
+      </node>
+      <node id="12">
+        <label>cstddef</label>
+      </node>
+      <node id="3">
+        <label>concepts</label>
+      </node>
+      <node id="20">
+        <label>mpl/List.h</label>
+      </node>
+      <node id="4">
+        <label>type_traits</label>
+      </node>
+      <node id="11">
+        <label>BasicTypes.h</label>
+        <link refid="BasicTypes_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>cstring</label>
+      </node>
+      <node id="8">
+        <label>memory</label>
+      </node>
+      <node id="5">
+        <label>Error.h</label>
+        <link refid="Error_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h</label>
+        <link refid="ChangeDetector_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Concepts.h</label>
+        <link refid="Concepts_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h</label>
+        <link refid="Variant_8h_source"/>
+      </node>
+      <node id="5">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</label>
+        <link refid="LockFreeQueue_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h</label>
+        <link refid="RingBuffer_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</label>
+        <link refid="OptionAndResult_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h</label>
+        <link refid="Logger_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</label>
+        <link refid="HyperionUtils_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/MPL.h</label>
+        <link refid="MPL_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacehyperion">hyperion</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils">hyperion::utils</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils_1_1concepts">hyperion::utils::concepts</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Concepts.h"/>
+  </compounddef>
+</doxygen>

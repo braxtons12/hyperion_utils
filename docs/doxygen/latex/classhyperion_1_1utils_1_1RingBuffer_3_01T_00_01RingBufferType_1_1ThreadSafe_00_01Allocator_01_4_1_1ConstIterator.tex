@@ -1,0 +1,136 @@
+\hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator}{}\doxysection{hyperion\+::utils\+::Ring\+Buffer$<$ T, Ring\+Buffer\+Type\+::Thread\+Safe, Allocator $>$\+::Const\+Iterator Class Reference}
+\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator}\index{hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator@{hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator}}
+
+
+Read-\/only Random-\/\+Access Bidirectional iterator for {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}}  
+
+
+
+
+{\ttfamily \#include $<$Ring\+Buffer.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_acd4d89ff4b06755c1d0f6144e969d26c}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_acd4d89ff4b06755c1d0f6144e969d26c}} 
+using {\bfseries iterator\+\_\+category} = std\+::random\+\_\+access\+\_\+iterator\+\_\+tag
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ad0a9e8f1e5be2d7a514f69c7aabfda13}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ad0a9e8f1e5be2d7a514f69c7aabfda13}} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ad517f402600d2199879db2cc2ff1cdb8}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ad517f402600d2199879db2cc2ff1cdb8}} 
+using {\bfseries value\+\_\+type} = Element
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a44923032d2aea0247bbb40b79c1a6abf}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a44923032d2aea0247bbb40b79c1a6abf}} 
+using {\bfseries pointer} = const Element
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a7f38c7819dfe46c710a8f0f65468cd71}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a7f38c7819dfe46c710a8f0f65468cd71}} 
+using {\bfseries reference} = const Element \&
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a840dc8db2ebd10e06a5c6b7d4e86608e}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a840dc8db2ebd10e06a5c6b7d4e86608e}} 
+constexpr {\bfseries Const\+Iterator} (pointer ptr, \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}} $\ast$container\+Ptr, index\+\_\+type current\+Index) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a50051b1bf5dec8dd445fa0640c9361ab}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a50051b1bf5dec8dd445fa0640c9361ab}} 
+constexpr {\bfseries Const\+Iterator} (const Const\+Iterator \&iter) noexcept=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3a3000a422289aa8b9538cba2192a8dd}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3a3000a422289aa8b9538cba2192a8dd}} 
+constexpr {\bfseries Const\+Iterator} (Const\+Iterator \&\&iter) noexcept=default
+\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a4498122aad6fc90d8cb1ea4e9510f33c}{get\+\_\+index}} () const noexcept -\/$>$ index\+\_\+type
+\begin{DoxyCompactList}\small\item\em Returns the index in the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} that corresponds to the element this iterator points to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3fbbb6ee47a940a5ab92320b21386256}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3fbbb6ee47a940a5ab92320b21386256}} 
+constexpr auto {\bfseries operator=} (const Const\+Iterator \&iter) noexcept -\/$>$ Const\+Iterator \&=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a0bcd0a46335584e42ce732d30a6d54e4}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a0bcd0a46335584e42ce732d30a6d54e4}} 
+constexpr auto {\bfseries operator=} (Const\+Iterator \&\&iter) noexcept -\/$>$ Const\+Iterator \&=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_aff15013c198183af86a15fd6083799aa}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_aff15013c198183af86a15fd6083799aa}} 
+constexpr auto {\bfseries operator==} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a0b58257ae9c3c77143ee24aeb7ed4cb5}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a0b58257ae9c3c77143ee24aeb7ed4cb5}} 
+constexpr auto {\bfseries operator!=} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a8b428ea4528c3c11dd2d240a0c6868d5}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a8b428ea4528c3c11dd2d240a0c6868d5}} 
+constexpr auto {\bfseries operator$\ast$} () const noexcept -\/$>$ reference
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a754011106949133fcf102b39bf313b73}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a754011106949133fcf102b39bf313b73}} 
+constexpr auto {\bfseries operator-\/$>$} () const noexcept -\/$>$ pointer
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ac5f6b9aa5f3fee9bc58be5af3b60174c}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ac5f6b9aa5f3fee9bc58be5af3b60174c}} 
+constexpr auto {\bfseries operator++} () noexcept -\/$>$ Const\+Iterator \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a088d666647e4ce9dff0c5125d47926d7}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a088d666647e4ce9dff0c5125d47926d7}} 
+constexpr auto {\bfseries operator++} (int) noexcept -\/$>$ Const\+Iterator
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a73b19a2413585f1936e605b1047ce5f7}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a73b19a2413585f1936e605b1047ce5f7}} 
+constexpr auto {\bfseries operator-\/-\/} () noexcept -\/$>$ Const\+Iterator \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ada5915fee9085e8c84851255b75b69b2}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ada5915fee9085e8c84851255b75b69b2}} 
+constexpr auto {\bfseries operator-\/-\/} (int) noexcept -\/$>$ Const\+Iterator
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a39003fb0379ea5b842896119cb47a415}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a39003fb0379ea5b842896119cb47a415}} 
+constexpr auto {\bfseries operator+} (Integral auto rhs) const noexcept -\/$>$ Const\+Iterator
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ac6158191fa39d25190c30acee1eb2af5}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ac6158191fa39d25190c30acee1eb2af5}} 
+constexpr auto {\bfseries operator+=} (Integral auto rhs) noexcept -\/$>$ Const\+Iterator \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ab5e5477645c4eb2390da72acaf8b669f}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_ab5e5477645c4eb2390da72acaf8b669f}} 
+constexpr auto {\bfseries operator-\/} (Integral auto rhs) const noexcept -\/$>$ Const\+Iterator
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a5cade0cb06900bb0675cab4a8a3ebc87}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a5cade0cb06900bb0675cab4a8a3ebc87}} 
+constexpr auto {\bfseries operator-\/=} (Integral auto rhs) noexcept -\/$>$ Const\+Iterator \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_aa4e260e0abc5c440f9d20b6ff98c7093}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_aa4e260e0abc5c440f9d20b6ff98c7093}} 
+constexpr auto {\bfseries operator-\/} (const Const\+Iterator \&rhs) const noexcept -\/$>$ difference\+\_\+type
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a285c91f868b7d8769e5148b8cdb04148}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a285c91f868b7d8769e5148b8cdb04148}} 
+constexpr auto {\bfseries operator\mbox{[}$\,$\mbox{]}} (Integral auto index) const noexcept -\/$>$ Const\+Iterator
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3a617e8cb4ed2c7bc1a601cc335b47e7}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a3a617e8cb4ed2c7bc1a601cc335b47e7}} 
+constexpr auto {\bfseries operator$>$} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a63b23823e335d5da5d4a9d2ed1be8a10}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a63b23823e335d5da5d4a9d2ed1be8a10}} 
+constexpr auto {\bfseries operator$<$} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a6e6341779ee337ac1eb18aa80f2a1fdb}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a6e6341779ee337ac1eb18aa80f2a1fdb}} 
+constexpr auto {\bfseries operator$>$=} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a7522e6c85e35db230e8b8eef4d52d6ca}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a7522e6c85e35db230e8b8eef4d52d6ca}} 
+constexpr auto {\bfseries operator$<$=} (const Const\+Iterator \&rhs) const noexcept -\/$>$ bool
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Default\+Constructible T, template$<$ typename Element\+Type $>$ typename Allocator$>$\newline
+class hyperion\+::utils\+::\+Ring\+Buffer$<$ T, Ring\+Buffer\+Type\+::\+Thread\+Safe, Allocator $>$\+::\+Const\+Iterator}
+
+Read-\/only Random-\/\+Access Bidirectional iterator for {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} 
+
+\begin{DoxyNote}{Note}
+All navigation operators are checked such that any movement past {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_a149b48da57e072f8e4dc5710637c9d70}{begin()}}} or {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_ae94ac0c9e57c971a96ee45a48d1c929b}{end()}}} is ignored. 
+\end{DoxyNote}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a4498122aad6fc90d8cb1ea4e9510f33c}\label{classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4_1_1ConstIterator_a4498122aad6fc90d8cb1ea4e9510f33c}} 
+\index{hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator@{hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator}!get\_index@{get\_index}}
+\index{get\_index@{get\_index}!hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator@{hyperion::utils::RingBuffer$<$ T, RingBufferType::ThreadSafe, Allocator $>$::ConstIterator}}
+\doxysubsubsection{\texorpdfstring{get\_index()}{get\_index()}}
+{\footnotesize\ttfamily template$<$Default\+Constructible T, template$<$ typename Element\+Type $>$ typename Allocator$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{hyperion\+::utils\+::\+Ring\+Buffer}}$<$ T, Ring\+Buffer\+Type\+::\+Thread\+Safe, Allocator $>$\+::Const\+Iterator\+::get\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ index\+\_\+type \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the index in the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} that corresponds to the element this iterator points to. 
+
+\begin{DoxyReturn}{Returns}
+The index corresponding with the element this points to 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Ring\+Buffer.\+h\end{DoxyCompactItemize}

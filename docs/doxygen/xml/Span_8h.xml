@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="Span_8h" kind="file" language="C++">
+    <compoundname>Span.h</compoundname>
+    <includes local="no">array</includes>
+    <includes local="no">gsl/gsl</includes>
+    <includes local="no">gsl/span</includes>
+    <includes refid="BasicTypes_8h" local="yes">BasicTypes.h</includes>
+    <includedby refid="HyperionUtils_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</includedby>
+    <incdepgraph>
+      <node id="8">
+        <label>limits</label>
+      </node>
+      <node id="7">
+        <label>cstdint</label>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Span.h</label>
+        <link refid="Span_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+      <node id="3">
+        <label>gsl/gsl</label>
+      </node>
+      <node id="2">
+        <label>array</label>
+      </node>
+      <node id="6">
+        <label>cstddef</label>
+      </node>
+      <node id="10">
+        <label>type_traits</label>
+      </node>
+      <node id="5">
+        <label>BasicTypes.h</label>
+        <link refid="BasicTypes_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>gsl/span</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Span.h</label>
+        <link refid="Span_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</label>
+        <link refid="HyperionUtils_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classhyperion_1_1utils_1_1Span" prot="public">hyperion::utils::Span</innerclass>
+    <innernamespace refid="namespacehyperion">hyperion</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils">hyperion::utils</innernamespace>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="Span_8h_1af0209414e72d4c1d688addadf6f8cd07" prot="public" static="no">
+        <name>HYPERION_SPAN</name>
+        <briefdescription>
+<para>A thin wrapper around <computeroutput>gsl::span</computeroutput>, removing the need to call free functions for <computeroutput>at</computeroutput> when the size is not statically known. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Span.h" line="12" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Span.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Span.h"/>
+  </compounddef>
+</doxygen>

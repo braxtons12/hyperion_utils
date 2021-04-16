@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move" kind="struct" language="C++" prot="public">
+    <compoundname>hyperion::utils::type_traits::is_copy_or_move</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::bool_constant&lt; std::is_copy_constructible_v&lt; T &gt;||std::is_move_constructible_v&lt; T &gt; &gt;</basecompoundref>
+    <includes refid="TypeTraits_8h" local="no">TypeTraits.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>Type Trait to determine if <computeroutput>T</computeroutput> is copyable or movable. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The type to verify satisfies this Type Trait </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>hyperion::utils::type_traits::is_copy_or_move&lt; T &gt;</label>
+        <link refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::bool_constant&lt; std::is_copy_constructible_v&lt; T &gt;||std::is_move_constructible_v&lt; T &gt; &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>hyperion::utils::type_traits::is_copy_or_move&lt; T &gt;</label>
+        <link refid="structhyperion_1_1utils_1_1type__traits_1_1is__copy__or__move"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::bool_constant&lt; std::is_copy_constructible_v&lt; T &gt;||std::is_move_constructible_v&lt; T &gt; &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" line="14" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/TypeTraits.h" bodystart="15" bodyend="16"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

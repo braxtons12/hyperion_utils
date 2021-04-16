@@ -1,3 +1,9 @@
+/// @brief Hyperion Option and Hyperion Result
+///
+/// - `Option` is a port of Rust's `Option` type to C++, and as such as a replacement to
+/// `std::optional` with various monadic operations and an improved interface and API
+/// - 'Result' is a port of Rust's `Result` type to C++, and as such is an alternative to the
+/// proposed `std::expected` or `boost::outcome`
 #pragma once
 
 #include <cstdlib>

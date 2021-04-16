@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="indexpage" kind="page">
+    <compoundname>index</compoundname>
+    <title>HyperionUtils</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><anchor id="index_1md__home_braxton_git_Hyperion_utils_README"/> HyperionUtils is a header-only C++20 library of utilities, data-structures, and monads used in the Hyperion game engine.<linebreak/>
+ It is currently under active development and has not yet hit a release point.</para>
+<para>HyperionUtils is not dependent on the engine and can be used freely separately from any other Hyperion projects.</para>
+<para>Some of the features of HyperionUtils include:</para>
+<para><itemizedlist>
+<listitem><para>Robust, Compile-time configurable logging (in progress)</para>
+</listitem><listitem><para>Datastructures, such as queues supporting lock-free concurrency (initial implementation complete; API unlikely to change, implementation subject to change)</para>
+</listitem><listitem><para>Error handling facilities similar to Rust and boost::outcome (initial implementation complete; API unlikely to change, implementation subject to change)</para>
+</listitem><listitem><para>Option monad based on Rust&apos;s Option (complete)</para>
+</listitem><listitem><para>Concepts, Type Traits, and meta-programming functions (in progress; Those already implemented unlikely to change)</para>
+</listitem><listitem><para>Rust-style owning synchronization types (in progress)</para>
+</listitem></itemizedlist>
+</para>
+<sect1 id="index_1autotoc_md1">
+<title>Getting Started</title>
+<para>HyperionUtils uses CMake, and incorporating it into your project is easy!</para>
+<para>There are several ways to use HyperionUtils, and the necessary additions to your <computeroutput>CMakeLists.txt</computeroutput> will change depending on your choice. This is because HyperionUtils depends on <ulink url="https://github.com/fmtlib/fmt">fmt</ulink> in the logging code</para>
+<para>In any case, you&apos;ll first need to add HyperionUtils to your CMake project. In <computeroutput>CMakeLists.txt</computeroutput>:</para>
+<para><programlisting filename=".cmake"><codeline><highlight class="normal">FetchContent_Declare(HyperionUtils</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GIT_REPOSITORY<sp/>&quot;https://github.com/braxtons12/Hyperion-Utils&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GIT_TAG<sp/>origin/master</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">FetchContent_MakeAvailable(HyperionUtils)</highlight></codeline>
+</programlisting></para>
+<para><orderedlist>
+<listitem><para>If you wish to only include indiviual headers and aren&apos;t using the logging facilities<orderedlist>
+<listitem><para>Include whatever headers you wish to use in your code</para>
+</listitem><listitem><para>In <computeroutput>CMakeLists.txt</computeroutput>:</para>
+</listitem></orderedlist>
+</para>
+</listitem></orderedlist>
+</para>
+<para><programlisting filename=".cmake"><codeline><highlight class="normal">target_link_libraries(your_target<sp/>HyperionUtils)</highlight></codeline>
+</programlisting></para>
+<para><orderedlist>
+<listitem><para>If you wish to only include individual headers and <emphasis>are</emphasis> using the logging facilities<orderedlist>
+<listitem><para>Include whatever headers you wish to use in your code</para>
+</listitem><listitem><para>In <computeroutput>CMakeLists.txt</computeroutput>:</para>
+</listitem></orderedlist>
+</para>
+</listitem></orderedlist>
+</para>
+<para><programlisting filename=".cmake"><codeline><highlight class="normal">target_link_libraries(your_target<sp/>fmt::fmt<sp/>HyperionUtils)</highlight></codeline>
+</programlisting></para>
+<para><orderedlist>
+<listitem><para>If you want to just include the main header, <computeroutput><ref refid="HyperionUtils_8h_source" kindref="compound">HyperionUtils/HyperionUtils.h</ref></computeroutput><orderedlist>
+<listitem><para>If you don&apos;t want to use the logging facilities, configure your <computeroutput>CMakeLists.txt</computeroutput> like 1-i above and include <computeroutput><ref refid="HyperionUtils_8h_source" kindref="compound">HyperionUtils/HyperionUtils.h</ref></computeroutput></para>
+</listitem></orderedlist>
+<orderedlist>
+<listitem><para>If you want to use the logging facilities, configure your <computeroutput>CMakeLists.txt</computeroutput> like in 2-i above, then define <computeroutput>HYPERION_INCLUDE_LOGGING_BY_DEFAULT</computeroutput> in your compiler flags or prior to including <computeroutput><ref refid="HyperionUtils_8h_source" kindref="compound">HyperionUtils/HyperionUtils.h</ref></computeroutput>, eg:</para>
+</listitem></orderedlist>
+</para>
+</listitem></orderedlist>
+</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#define<sp/>HYPERION_INCLUDE_LOGGING_BY_DEFAULT</highlight></codeline>
+</programlisting></para>
+<sect2 id="index_1autotoc_md2">
+<title>Example</title>
+<para>In <computeroutput>CMakeLists.txt</computeroutput></para>
+<para><programlisting filename=".cmake"><codeline><highlight class="normal">FetchContent_Declare(HyperionUtils</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GIT_REPOSITORY<sp/>&quot;https://github.com/braxtons12/Hyperion-Utils&quot;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>GIT_TAG<sp/>origin/master</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">FetchContent_MakeAvailable(HyperionUtils)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Add<sp/>your<sp/>target,<sp/>etc...</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">target_link_libraries(your_target<sp/>fmt::fmt<sp/>HyperionUtils)</highlight></codeline>
+</programlisting></para>
+<para>In your code:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&quot;HyperionUtils/HyperionUtils.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="classhyperion_1_1utils_1_1Option" kindref="compound">hyperion::utils::Option</ref>;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>hyperion::utils::MESSAGE;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>LogParams<sp/>=<sp/>hyperion::utils::DefaultLogParameters;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">Thing{</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x<sp/>=<sp/>0;,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y<sp/>=<sp/>2;<sp/>};</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>condition<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>get_thing()<sp/>-&gt;<sp/>Option&lt;Thing&gt;<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(condition)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacehyperion_1_1utils_1a167203447ead8a67a331178cfe0f59b4" kindref="member">Some</ref>(Thing{.x=42});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespacehyperion_1_1utils_1a5e06cdc7510fc3026479a6c5dac16e88" kindref="member">None</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>log_thing()<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>thing<sp/>=<sp/>get_thing())<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>default<sp/>logging<sp/>policy<sp/>will<sp/>bail<sp/>if<sp/>the<sp/>queue<sp/>is<sp/>full<sp/>instead<sp/>of<sp/>blocking,<sp/>and<sp/>thus</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>returns<sp/>a<sp/>Result<sp/>indicating<sp/>whether<sp/>it<sp/>succeded.<sp/>We&apos;ll<sp/>just<sp/>ignore<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacehyperion_1_1utils_1a72f1d1d0efb62ac74508c8e8b4922da1" kindref="member">ignore</ref>(MESSAGE&lt;LogParams&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacehyperion_1_1utils_1a5e06cdc7510fc3026479a6c5dac16e88" kindref="member">None</ref>(),<sp/></highlight><highlight class="comment">//<sp/>Optional<sp/>thread<sp/>identifier</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;{}&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="comment">//<sp/>format<sp/>string,<sp/>see<sp/>fmt</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>thing.unwrap().x);<sp/></highlight><highlight class="comment">//the<sp/>stuff<sp/>we<sp/>want<sp/>to<sp/>log</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="index_1autotoc_md3">
+<title>Testing</title>
+<para>Tests are currently setup as an isolated project in the &quot;test&quot; subdirectory.<linebreak/>
+ This prevents collisions between other googletest builds in Hyperion&apos;s other sublibraries.<linebreak/>
+ To run the tests, simply configure and build the test project, then run the resulting &quot;Test&quot; executable:<linebreak/>
+</para>
+<para><programlisting filename=".sh"><codeline><highlight class="normal">cmake<sp/>-B<sp/>build<sp/>-G<sp/>&quot;Ninja&quot;</highlight></codeline>
+<codeline><highlight class="normal">cmake<sp/>--build<sp/>build</highlight></codeline>
+<codeline><highlight class="normal">./build/Test</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="index_1autotoc_md4">
+<title>Contributing</title>
+<para>Feel free to submit issues, pull requests, etc!<linebreak/>
+ When contributing code, please following the project <computeroutput>.clang-format</computeroutput> (except in judicious cases of templates ruining things), use trailing returns types, use assign-init over direct-init (parenthesis or braced init), and prefer simplicity and correctness over performance by default</para>
+</sect2>
+<sect2 id="index_1autotoc_md5">
+<title>License</title>
+<para>HyperionUtils uses the MIT license.</para>
+<sect3 id="index_1autotoc_md6">
+<title>What are these toolchain files?</title>
+<para>HyperionUtils includes an assortment of CMake toolchain files. These are simply a quick and easy (and lazy) way for us to use an associated platform + compiler combination with our preferred optimization flags, without hard coding them in the project <computeroutput>CMakeLists.txt</computeroutput>. They&apos;re <bold>NOT</bold> necessary to use HyperionUtils and they won&apos;t affect your project unless you pass them as a toolchain file argument to CMake </para>
+</sect3>
+</sect2>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

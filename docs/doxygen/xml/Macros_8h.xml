@@ -1,0 +1,353 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="Macros_8h" kind="file" language="C++">
+    <compoundname>Macros.h</compoundname>
+    <includes local="no">version</includes>
+    <includedby refid="Error_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/Error.h</includedby>
+    <includedby refid="LockFreeQueue_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</includedby>
+    <includedby refid="OptionAndResult_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</includedby>
+    <includedby refid="RingBuffer_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h</includedby>
+    <includedby refid="HyperionUtils_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h</label>
+        <link refid="Macros_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>version</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="4">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/ChangeDetector.h</label>
+        <link refid="ChangeDetector_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Concepts.h</label>
+        <link refid="Concepts_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Variant.h</label>
+        <link refid="Variant_8h_source"/>
+      </node>
+      <node id="7">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</label>
+        <link refid="LockFreeQueue_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/RingBuffer.h</label>
+        <link refid="RingBuffer_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</label>
+        <link refid="OptionAndResult_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h</label>
+        <link refid="Macros_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h</label>
+        <link refid="Logger_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</label>
+        <link refid="HyperionUtils_8h_source"/>
+      </node>
+      <node id="10">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/MPL.h</label>
+        <link refid="MPL_8h_source"/>
+      </node>
+      <node id="2">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Error.h</label>
+        <link refid="Error_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="Macros_8h_1a722463a9fa5f3b660f12e9d4c948e71f" prot="public" static="no">
+        <name>APEX_DECLARE_NON_HEAP_ALLOCATABLE</name>
+        <param></param>
+        <initializer>												  /** NOLINT(cppcoreguidelines-macro-usage): This isn&apos;t \
+												  a function-like macro                      **/     \
+	static auto operator new(std::size_t size) noexcept-&gt;void* = delete;                             \
+	static auto operator new[](std::size_t size) noexcept-&gt;void* = delete;                           \
+	static auto operator delete(void* obj) noexcept-&gt;void = delete;                                  \
+	static auto operator delete[](void* obj) noexcept-&gt;void = delete;</initializer>
+        <briefdescription>
+<para>Collection of macros used throughout Hyperion for configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="6" column="9" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1ad799e1a38e22c32109fc931e422b7ee5" prot="public" static="no">
+        <name>HYPERION_NO_DESTROY</name>
+        <briefdescription>
+<para>Use to mark variable as no_destroy on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="17" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1ab14847d23788558953be2d29d078fa99" prot="public" static="no">
+        <name>HYPERION_CONSTEXPR_STRINGS</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Use to conditionally mark something <computeroutput>constexpr</computeroutput> if <computeroutput>std::string</computeroutput> is <computeroutput>constexpr This will be removable once all stdlibs impl</computeroutput>constexpr std::string` </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="29" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a0b7478a127e3e6da27e61e2e6b673542" prot="public" static="no">
+        <name>HYPERION_UNREACHABLE</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="37" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a9d5faf2aa7d095b86cd3f73f6b92800b" prot="public" static="no">
+        <name>IGNORE_UNUSED_MACROS_START</name>
+        <initializer>		_Pragma(&quot;GCC diagnostic push&quot;)\
+		_Pragma(&quot;GCC diagnostic ignored \&quot;-Wunused-macros\&quot;&quot;)</initializer>
+        <briefdescription>
+<para>Use to temporarily disable unused macros warning on GCC/Clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="50" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a8cb13bb954b5f1b2cd1526485ed725a0" prot="public" static="no">
+        <name>IGNORE_UNUSED_MACROS_STOP</name>
+        <initializer>_Pragma(&quot;GCC diagnostic pop&quot;)</initializer>
+        <briefdescription>
+<para>Use to re-enable unused macros warning on GCC/Clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="61" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a98a5a10874898a102839783159666b1b" prot="public" static="no">
+        <name>IGNORE_PADDING_START</name>
+        <initializer>		_Pragma(&quot;GCC diagnostic push&quot;) \
+		_Pragma(&quot;GCC diagnostic ignored \&quot;-Wpadded\&quot;&quot;)</initializer>
+        <briefdescription>
+<para>Use to temporarily disable padding warning. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="73" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a5aea0cf4d08c5a4033f1c74abbd82f8d" prot="public" static="no">
+        <name>IGNORE_PADDING_STOP</name>
+        <initializer>_Pragma(&quot;GCC diagnostic pop&quot;)</initializer>
+        <briefdescription>
+<para>Use to re-enable padding warning. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="86" column="10" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1ac4a088c0df59bcfed44f9d6c508f8bf0" prot="public" static="no">
+        <name>IGNORE_WEAK_VTABLES_START</name>
+        <briefdescription>
+<para>Use to temporarily disable weak vtable warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="103" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1acba187dd38d0637126ce219f3a3dcd22" prot="public" static="no">
+        <name>IGNORE_WEAK_VTABLES_STOP</name>
+        <briefdescription>
+<para>Use to re-enable weak vtable warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="118" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a40aee9f1fa4b37f2c9b401b944d67632" prot="public" static="no">
+        <name>IGNORE_UNUSED_TEMPLATES_START</name>
+        <briefdescription>
+<para>Use to temporarily disable unused templates warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="134" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1adb5157260d1455f4ee6535521cd284ea" prot="public" static="no">
+        <name>IGNORE_UNUSED_TEMPLATES_STOP</name>
+        <briefdescription>
+<para>Use to re-enable unused templates warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="149" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a689bb32dee5443bdba63a5de0bd72fef" prot="public" static="no">
+        <name>IGNORE_SIGNED_BITFIELD_START</name>
+        <briefdescription>
+<para>Use to temporarily disable signed-enum-bitfield warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="165" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a1bc00468d0ee55449a765dd1abaf800c" prot="public" static="no">
+        <name>IGNORE_SIGNED_BITFIELD_STOP</name>
+        <briefdescription>
+<para>Use to re-enable signed-enum-bitfield warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="180" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a8dff98033ee3e0b2183d2323e236dd62" prot="public" static="no">
+        <name>IGNORE_UNKNOWN_DOC_COMMAND_START</name>
+        <briefdescription>
+<para>Use to temporarily disable documentation-unknown-command warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="196" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="195" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1a1a5883f199a5f703ba8817c536db8b5d" prot="public" static="no">
+        <name>IGNORE_UNKNOWN_DOC_COMMAND_STOP</name>
+        <briefdescription>
+<para>Use to re-enable documentation-unknown-command warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="211" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="210" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1ad11a39b83606810b092365a955990899" prot="public" static="no">
+        <name>IGNORE_CONSTRUCTOR_SHADOW_FIELDS_START</name>
+        <briefdescription>
+<para>Use to temporarily disable shadow-field-in-constructor warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="227" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1abbd73bc7d6066066a83caf457cc9ed51" prot="public" static="no">
+        <name>IGNORE_CONSTRUCTOR_SHADOW_FIELDS_STOP</name>
+        <briefdescription>
+<para>Use to re-enable shadow-field-in-constructor warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="242" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1adbdedee4a4523cf8a8b6699471beb936" prot="public" static="no">
+        <name>IGNORE_COMMA_MISUSE_START</name>
+        <briefdescription>
+<para>Use to temporarily disable comma misuse warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="258" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="257" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="Macros_8h_1acabbd31631eb274c19470f5e90738680" prot="public" static="no">
+        <name>IGNORE_COMMA_MISUSE_STOP</name>
+        <briefdescription>
+<para>Use to re-enable comma misuse warning on clang. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" line="273" column="11" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h" bodystart="272" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Macros.h"/>
+  </compounddef>
+</doxygen>

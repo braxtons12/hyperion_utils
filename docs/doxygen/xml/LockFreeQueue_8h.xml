@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="LockFreeQueue_8h" kind="file" language="C++">
+    <compoundname>LockFreeQueue.h</compoundname>
+    <includes local="no">system_error</includes>
+    <includes refid="BasicTypes_8h" local="yes">BasicTypes.h</includes>
+    <includes refid="Macros_8h" local="yes">Macros.h</includes>
+    <includes refid="OptionAndResult_8h" local="yes">OptionAndResult.h</includes>
+    <includes refid="RingBuffer_8h" local="yes">RingBuffer.h</includes>
+    <includedby refid="HyperionUtils_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</includedby>
+    <includedby refid="Logger_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h</includedby>
+    <incdepgraph>
+      <node id="29">
+        <label>atomic</label>
+      </node>
+      <node id="2">
+        <label>system_error</label>
+      </node>
+      <node id="13">
+        <label>functional</label>
+      </node>
+      <node id="6">
+        <label>limits</label>
+      </node>
+      <node id="31">
+        <label>iterator</label>
+      </node>
+      <node id="5">
+        <label>cstdint</label>
+      </node>
+      <node id="16">
+        <label>Concepts.h</label>
+        <link refid="Concepts_8h_source"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>cmath</label>
+      </node>
+      <node id="32">
+        <label>memory_resource</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="33">
+        <label>detail/AllocateUnique.h</label>
+      </node>
+      <node id="21">
+        <label>gsl/gsl</label>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</label>
+        <link refid="LockFreeQueue_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>RingBuffer.h</label>
+        <link refid="RingBuffer_8h_source"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>mpl/ForAll.h</label>
+      </node>
+      <node id="27">
+        <label>Ignore.h</label>
+        <link refid="Ignore_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>TypeTraits.h</label>
+        <link refid="TypeTraits_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>OptionAndResult.h</label>
+        <link refid="OptionAndResult_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>compare</label>
+      </node>
+      <node id="9">
+        <label>Macros.h</label>
+        <link refid="Macros_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tuple</label>
+      </node>
+      <node id="15">
+        <label>utility</label>
+      </node>
+      <node id="10">
+        <label>version</label>
+      </node>
+      <node id="12">
+        <label>cstdlib</label>
+      </node>
+      <node id="14">
+        <label>iostream</label>
+      </node>
+      <node id="4">
+        <label>cstddef</label>
+      </node>
+      <node id="18">
+        <label>concepts</label>
+      </node>
+      <node id="26">
+        <label>mpl/List.h</label>
+      </node>
+      <node id="8">
+        <label>type_traits</label>
+      </node>
+      <node id="3">
+        <label>BasicTypes.h</label>
+        <link refid="BasicTypes_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>cstring</label>
+      </node>
+      <node id="22">
+        <label>memory</label>
+      </node>
+      <node id="19">
+        <label>Error.h</label>
+        <link refid="Error_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</label>
+        <link refid="LockFreeQueue_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h</label>
+        <link refid="Logger_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</label>
+        <link refid="HyperionUtils_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory" prot="public">hyperion::utils::LockFreeQueueErrorCategory</innerclass>
+    <innerclass refid="structstd_1_1is__error__code__enum_3_01hyperion_1_1utils_1_1LockFreeQueueErrorType_01_4" prot="public">std::is_error_code_enum&lt; hyperion::utils::LockFreeQueueErrorType &gt;</innerclass>
+    <innerclass refid="classhyperion_1_1utils_1_1LockFreeQueueError" prot="public">hyperion::utils::LockFreeQueueError</innerclass>
+    <innerclass refid="classhyperion_1_1utils_1_1LockFreeQueue" prot="public">hyperion::utils::LockFreeQueue</innerclass>
+    <innernamespace refid="namespacehyperion">hyperion</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils">hyperion::utils</innernamespace>
+    <innernamespace refid="namespacestd">std</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="LockFreeQueue_8h_1af3a7af974e207a2172af135488bc4263" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto make_error_code</definition>
+        <argsstring>(hyperion::utils::LockFreeQueueErrorType code) noexcept -&gt; std::error_code</argsstring>
+        <name>make_error_code</name>
+        <param>
+          <type><ref refid="namespacehyperion_1_1utils_1a96f7d6c5a23787dd26427bf71898e0d5" kindref="member">hyperion::utils::LockFreeQueueErrorType</ref></type>
+          <declname>code</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" line="88" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h" bodystart="88" bodyend="90"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h"/>
+  </compounddef>
+</doxygen>

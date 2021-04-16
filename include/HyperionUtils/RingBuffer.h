@@ -1,3 +1,7 @@
+/// @brief Compile-time configurable Policy-based ring buffer
+///
+/// `RingBuffer` has an API matching `std::vector` in its default configuration or can be configured
+/// to provide a subset of that API, but provide lock-free concurrency
 #pragma once
 
 #include <atomic>

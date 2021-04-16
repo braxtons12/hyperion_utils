@@ -1,3 +1,4 @@
+/// @brief Meta-programming functions to call a single meta-function with a runtime-provided index
 #pragma once
 
 #include <cassert>

@@ -1,0 +1,149 @@
+\label{index_md__home_braxton_git_Hyperion_utils_README}%
+\Hypertarget{index_md__home_braxton_git_Hyperion_utils_README}%
+ Hyperion\+Utils is a header-\/only C++20 library of utilities, data-\/structures, and monads used in the Hyperion game engine.~\newline
+ It is currently under active development and has not yet hit a release point.
+
+Hyperion\+Utils is not dependent on the engine and can be used freely separately from any other Hyperion projects.
+
+Some of the features of Hyperion\+Utils include\+:
+
+
+\begin{DoxyItemize}
+\item Robust, Compile-\/time configurable logging (in progress)
+\item Datastructures, such as queues supporting lock-\/free concurrency (initial implementation complete; A\+PI unlikely to change, implementation subject to change)
+\item Error handling facilities similar to Rust and boost\+::outcome (initial implementation complete; A\+PI unlikely to change, implementation subject to change)
+\item Option monad based on Rust\textquotesingle{}s Option (complete)
+\item Concepts, Type Traits, and meta-\/programming functions (in progress; Those already implemented unlikely to change)
+\item Rust-\/style owning synchronization types (in progress)
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysection{Getting Started}\label{index_autotoc_md1}
+Hyperion\+Utils uses C\+Make, and incorporating it into your project is easy!
+
+There are several ways to use Hyperion\+Utils, and the necessary additions to your {\ttfamily C\+Make\+Lists.\+txt} will change depending on your choice. This is because Hyperion\+Utils depends on \href{https://github.com/fmtlib/fmt}{\texttt{ fmt}} in the logging code
+
+In any case, you\textquotesingle{}ll first need to add Hyperion\+Utils to your C\+Make project. In {\ttfamily C\+Make\+Lists.\+txt}\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{FetchContent\_Declare(HyperionUtils}
+\DoxyCodeLine{    GIT\_REPOSITORY "https://github.com/braxtons12/Hyperion-\/Utils"}
+\DoxyCodeLine{    GIT\_TAG origin/master}
+\DoxyCodeLine{    )}
+\DoxyCodeLine{}
+\DoxyCodeLine{FetchContent\_MakeAvailable(HyperionUtils)}
+\end{DoxyCode}
+
+
+
+\begin{DoxyEnumerate}
+\item If you wish to only include indiviual headers and aren\textquotesingle{}t using the logging facilities
+\begin{DoxyEnumerate}
+\item Include whatever headers you wish to use in your code
+\item In {\ttfamily C\+Make\+Lists.\+txt}\+:
+\end{DoxyEnumerate}
+\end{DoxyEnumerate}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{target\_link\_libraries(your\_target HyperionUtils)}
+\end{DoxyCode}
+
+
+
+\begin{DoxyEnumerate}
+\item If you wish to only include individual headers and {\itshape are} using the logging facilities
+\begin{DoxyEnumerate}
+\item Include whatever headers you wish to use in your code
+\item In {\ttfamily C\+Make\+Lists.\+txt}\+:
+\end{DoxyEnumerate}
+\end{DoxyEnumerate}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{target\_link\_libraries(your\_target fmt::fmt HyperionUtils)}
+\end{DoxyCode}
+
+
+
+\begin{DoxyEnumerate}
+\item If you want to just include the main header, {\ttfamily \mbox{\hyperlink{HyperionUtils_8h_source}{Hyperion\+Utils/\+Hyperion\+Utils.\+h}}}
+\begin{DoxyEnumerate}
+\item If you don\textquotesingle{}t want to use the logging facilities, configure your {\ttfamily C\+Make\+Lists.\+txt} like 1-\/i above and include {\ttfamily \mbox{\hyperlink{HyperionUtils_8h_source}{Hyperion\+Utils/\+Hyperion\+Utils.\+h}}}
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item If you want to use the logging facilities, configure your {\ttfamily C\+Make\+Lists.\+txt} like in 2-\/i above, then define {\ttfamily H\+Y\+P\+E\+R\+I\+O\+N\+\_\+\+I\+N\+C\+L\+U\+D\+E\+\_\+\+L\+O\+G\+G\+I\+N\+G\+\_\+\+B\+Y\+\_\+\+D\+E\+F\+A\+U\+LT} in your compiler flags or prior to including {\ttfamily \mbox{\hyperlink{HyperionUtils_8h_source}{Hyperion\+Utils/\+Hyperion\+Utils.\+h}}}, eg\+:
+\end{DoxyEnumerate}
+\end{DoxyEnumerate}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#define HYPERION\_INCLUDE\_LOGGING\_BY\_DEFAULT}}
+\end{DoxyCode}
+\hypertarget{index_autotoc_md2}{}\doxysubsection{Example}\label{index_autotoc_md2}
+In {\ttfamily C\+Make\+Lists.\+txt}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{FetchContent\_Declare(HyperionUtils}
+\DoxyCodeLine{    GIT\_REPOSITORY "https://github.com/braxtons12/Hyperion-\/Utils"}
+\DoxyCodeLine{    GIT\_TAG origin/master}
+\DoxyCodeLine{    )}
+\DoxyCodeLine{}
+\DoxyCodeLine{FetchContent\_MakeAvailable(HyperionUtils)}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\#\# Add your target, etc...}
+\DoxyCodeLine{}
+\DoxyCodeLine{target\_link\_libraries(your\_target fmt::fmt HyperionUtils)}
+\end{DoxyCode}
+
+
+In your code\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "HyperionUtils/HyperionUtils.h"}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} \mbox{\hyperlink{classhyperion_1_1utils_1_1Option}{hyperion::utils::Option}};}
+\DoxyCodeLine{\textcolor{keyword}{using} hyperion::utils::MESSAGE;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{using} LogParams = hyperion::utils::DefaultLogParameters;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{struct }Thing\{\textcolor{keywordtype}{int} x = 0;, \textcolor{keywordtype}{int} y = 2; \};}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{bool} condition = \textcolor{keyword}{false};}
+\DoxyCodeLine{\textcolor{keyword}{inline} \textcolor{keyword}{auto} get\_thing() -\/> Option<Thing> \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if}(condition) \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacehyperion_1_1utils_a167203447ead8a67a331178cfe0f59b4}{Some}}(Thing\{.x=42\});}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{    \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{        \textcolor{keywordflow}{return} \mbox{\hyperlink{namespacehyperion_1_1utils_a5e06cdc7510fc3026479a6c5dac16e88}{None}}();}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{inline} \textcolor{keyword}{auto} log\_thing() -\/> \textcolor{keywordtype}{void} \{}
+\DoxyCodeLine{    \textcolor{keywordflow}{if}(\textcolor{keyword}{auto} thing = get\_thing()) \{}
+\DoxyCodeLine{        \textcolor{comment}{// The default logging policy will bail if the queue is full instead of blocking, and thus}}
+\DoxyCodeLine{        \textcolor{comment}{// returns a Result indicating whether it succeded. We'll just ignore it}}
+\DoxyCodeLine{        \mbox{\hyperlink{namespacehyperion_1_1utils_a72f1d1d0efb62ac74508c8e8b4922da1}{ignore}}(MESSAGE<LogParams>(}
+\DoxyCodeLine{                \mbox{\hyperlink{namespacehyperion_1_1utils_a5e06cdc7510fc3026479a6c5dac16e88}{None}}(), \textcolor{comment}{// Optional thread identifier}}
+\DoxyCodeLine{                \textcolor{stringliteral}{"\{\}"}, \textcolor{comment}{// format string, see fmt}}
+\DoxyCodeLine{                thing.unwrap().x); \textcolor{comment}{//the stuff we want to log}}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{index_autotoc_md3}{}\doxysubsection{Testing}\label{index_autotoc_md3}
+Tests are currently setup as an isolated project in the \char`\"{}test\char`\"{} subdirectory.~\newline
+ This prevents collisions between other googletest builds in Hyperion\textquotesingle{}s other sublibraries.~\newline
+ To run the tests, simply configure and build the test project, then run the resulting \char`\"{}\+Test\char`\"{} executable\+:~\newline
+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake -\/B build -\/G "Ninja"}
+\DoxyCodeLine{cmake -\/-\/build build}
+\DoxyCodeLine{./build/Test}
+\end{DoxyCode}
+\hypertarget{index_autotoc_md4}{}\doxysubsection{Contributing}\label{index_autotoc_md4}
+Feel free to submit issues, pull requests, etc!~\newline
+ When contributing code, please following the project {\ttfamily .clang-\/format} (except in judicious cases of templates ruining things), use trailing returns types, use assign-\/init over direct-\/init (parenthesis or braced init), and prefer simplicity and correctness over performance by default\hypertarget{index_autotoc_md5}{}\doxysubsection{License}\label{index_autotoc_md5}
+Hyperion\+Utils uses the M\+IT license.\hypertarget{index_autotoc_md6}{}\doxysubsubsection{What are these toolchain files?}\label{index_autotoc_md6}
+Hyperion\+Utils includes an assortment of C\+Make toolchain files. These are simply a quick and easy (and lazy) way for us to use an associated platform + compiler combination with our preferred optimization flags, without hard coding them in the project {\ttfamily C\+Make\+Lists.\+txt}. They\textquotesingle{}re {\bfseries{N\+OT}} necessary to use Hyperion\+Utils and they won\textquotesingle{}t affect your project unless you pass them as a toolchain file argument to C\+Make 

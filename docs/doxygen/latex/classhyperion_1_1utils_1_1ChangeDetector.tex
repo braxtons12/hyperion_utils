@@ -1,0 +1,153 @@
+\hypertarget{classhyperion_1_1utils_1_1ChangeDetector}{}\doxysection{hyperion\+::utils\+::Change\+Detector$<$ T $>$ Class Template Reference}
+\label{classhyperion_1_1utils_1_1ChangeDetector}\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+
+
+Stores a value and detects if an updated value is different than the previous one.  
+
+
+
+
+{\ttfamily \#include $<$Change\+Detector.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a79351d57215dd23349c3797634ee05f5}\label{classhyperion_1_1utils_1_1ChangeDetector_a79351d57215dd23349c3797634ee05f5}} 
+\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_a79351d57215dd23349c3797634ee05f5}{Change\+Detector}} () noexcept=default
+\begin{DoxyCompactList}\small\item\em Create a default {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_ac5dbb7989e06703834336e676ba4fa47}{Change\+Detector}} (const T \&initial\+Value) noexcept
+\begin{DoxyCompactList}\small\item\em Create a {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}}} with the given initial value. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_a3306040536d5242e21d38ec364a88517}{Change\+Detector}} (T \&\&initial\+Value) noexcept
+\begin{DoxyCompactList}\small\item\em Create a {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}}} with the given initial value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a5475adda97c2232cee30b43e7f0ac08c}\label{classhyperion_1_1utils_1_1ChangeDetector_a5475adda97c2232cee30b43e7f0ac08c}} 
+{\bfseries Change\+Detector} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&detector) noexcept requires Copyable$<$ T $>$=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_af0667513695a98855db15dee1a707222}\label{classhyperion_1_1utils_1_1ChangeDetector_af0667513695a98855db15dee1a707222}} 
+{\bfseries Change\+Detector} (\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&\&detector) noexcept requires Movable$<$ T $>$=default
+\item 
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_ab8088510a8a2ea6469356114a42399db}{changed}} (const T \&new\+Value) noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Updates the stored value and returns if the new value is different than the previous one. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_adc6ad2a6113877dfba18121b10dfbe08}{changed}} (T \&\&new\+Value) noexcept -\/$>$ bool
+\begin{DoxyCompactList}\small\item\em Updates the stored value and returns if the new value is different than the previous one. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector_a8312119e1175eda1f9527af83e9d78b6}{value}} () const noexcept -\/$>$ T requires Copyable$<$ T $>$
+\begin{DoxyCompactList}\small\item\em Returns the currently contained value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a8fe91d7fe019651754d7db5045204408}\label{classhyperion_1_1utils_1_1ChangeDetector_a8fe91d7fe019651754d7db5045204408}} 
+auto {\bfseries operator=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&detector) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&requires Copyable$<$ T $>$=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a67a05e4a9745c5903296adc04081960a}\label{classhyperion_1_1utils_1_1ChangeDetector_a67a05e4a9745c5903296adc04081960a}} 
+auto {\bfseries operator=} (\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&\&detector) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} \&requires Movable$<$ T $>$=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Passable T$>$\newline
+class hyperion\+::utils\+::\+Change\+Detector$<$ T $>$}
+
+Stores a value and detects if an updated value is different than the previous one. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & -\/ The type to store and check for equality. T must be default constructible and have an inequality operator \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_ac5dbb7989e06703834336e676ba4fa47}\label{classhyperion_1_1utils_1_1ChangeDetector_ac5dbb7989e06703834336e676ba4fa47}} 
+\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}!ChangeDetector@{ChangeDetector}}
+\index{ChangeDetector@{ChangeDetector}!hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ChangeDetector()}{ChangeDetector()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{hyperion\+::utils\+::\+Change\+Detector}}$<$ T $>$\+::\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} (\begin{DoxyParamCaption}\item[{const T \&}]{initial\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+
+
+Create a {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}}} with the given initial value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+Value} & -\/ The initial value to store in the detector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a3306040536d5242e21d38ec364a88517}\label{classhyperion_1_1utils_1_1ChangeDetector_a3306040536d5242e21d38ec364a88517}} 
+\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}!ChangeDetector@{ChangeDetector}}
+\index{ChangeDetector@{ChangeDetector}!hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ChangeDetector()}{ChangeDetector()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{hyperion\+::utils\+::\+Change\+Detector}}$<$ T $>$\+::\mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}} (\begin{DoxyParamCaption}\item[{T \&\&}]{initial\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+
+
+Create a {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{Change\+Detector}}} with the given initial value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em initial\+Value} & -\/ The initial value to store in the detector \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_ab8088510a8a2ea6469356114a42399db}\label{classhyperion_1_1utils_1_1ChangeDetector_ab8088510a8a2ea6469356114a42399db}} 
+\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}!changed@{changed}}
+\index{changed@{changed}!hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{changed()}{changed()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{hyperion\+::utils\+::\+Change\+Detector}}$<$ T $>$\+::changed (\begin{DoxyParamCaption}\item[{const T \&}]{new\+Value }\end{DoxyParamCaption}) -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Updates the stored value and returns if the new value is different than the previous one. 
+
+\begin{DoxyNote}{Note}
+In the case that T is a pointer, the values located AT the pointers will be compared, N\+OT the pointers themselves. If {\ttfamily new\+Value} is not {\ttfamily nullptr}, the stored pointer will be replaced with {\ttfamily new\+Value}. If {\ttfamily new\+Value} is {\ttfamily nullptr}, false will always be returned.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Value} & -\/ The new value to store and check for equality\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Whether the new value was different than the old one 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_adc6ad2a6113877dfba18121b10dfbe08}\label{classhyperion_1_1utils_1_1ChangeDetector_adc6ad2a6113877dfba18121b10dfbe08}} 
+\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}!changed@{changed}}
+\index{changed@{changed}!hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{changed()}{changed()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{hyperion\+::utils\+::\+Change\+Detector}}$<$ T $>$\+::changed (\begin{DoxyParamCaption}\item[{T \&\&}]{new\+Value }\end{DoxyParamCaption}) -\/$>$ bool \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Updates the stored value and returns if the new value is different than the previous one. 
+
+\begin{DoxyNote}{Note}
+In the case that T is a pointer, the values located AT the pointers will be compared, N\+OT the pointers themselves. If {\ttfamily new\+Value} is not {\ttfamily nullptr}, the stored pointer will be replaced with {\ttfamily new\+Value}. If {\ttfamily new\+Value} is {\ttfamily nullptr}, false will always be returned.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Value} & -\/ The new value to store and check for equality\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Whether the new value was different than the old one 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1ChangeDetector_a8312119e1175eda1f9527af83e9d78b6}\label{classhyperion_1_1utils_1_1ChangeDetector_a8312119e1175eda1f9527af83e9d78b6}} 
+\index{hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}!value@{value}}
+\index{value@{value}!hyperion::utils::ChangeDetector$<$ T $>$@{hyperion::utils::ChangeDetector$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily template$<$Passable T$>$ \\
+auto \mbox{\hyperlink{classhyperion_1_1utils_1_1ChangeDetector}{hyperion\+::utils\+::\+Change\+Detector}}$<$ T $>$\+::value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ T requires Copyable$<$T$>$ \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the currently contained value. 
+
+\begin{DoxyReturn}{Returns}
+the current value 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Change\+Detector.\+h\end{DoxyCompactItemize}

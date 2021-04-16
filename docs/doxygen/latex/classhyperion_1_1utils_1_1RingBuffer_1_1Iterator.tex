@@ -1,0 +1,136 @@
+\hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{}\doxysection{hyperion\+::utils\+::Ring\+Buffer$<$ T, Thread\+Safety, Allocator $>$\+::Iterator Class Reference}
+\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}\index{hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator@{hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator}}
+
+
+Random-\/\+Access Bidirectional iterator for {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}}  
+
+
+
+
+{\ttfamily \#include $<$Ring\+Buffer.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_aca864c6d14228d0b04c95c76896908d5}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_aca864c6d14228d0b04c95c76896908d5}} 
+using {\bfseries iterator\+\_\+category} = std\+::random\+\_\+access\+\_\+iterator\+\_\+tag
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a7593422feda37fe1157f0478cf7a6b83}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a7593422feda37fe1157f0478cf7a6b83}} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a85a9a057cf16033758e94b4d04f68ebb}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a85a9a057cf16033758e94b4d04f68ebb}} 
+using {\bfseries value\+\_\+type} = T
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1927a9debc019956cb5bcb9487dcbc0a}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1927a9debc019956cb5bcb9487dcbc0a}} 
+using {\bfseries pointer} = value\+\_\+type $\ast$
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a4c0f147bf8fc1fce45e167b3d00a9497}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a4c0f147bf8fc1fce45e167b3d00a9497}} 
+using {\bfseries reference} = value\+\_\+type \&
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_ac882e8a6b6e433f783e9534df62029d2}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_ac882e8a6b6e433f783e9534df62029d2}} 
+constexpr {\bfseries Iterator} (pointer ptr, \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}} $\ast$container\+Ptr, usize current\+Index) noexcept
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a049672369094ad3d76f46f2c37a10bac}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a049672369094ad3d76f46f2c37a10bac}} 
+constexpr {\bfseries Iterator} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&iter) noexcept=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a71024ac83bf681c86c18113e831ed110}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a71024ac83bf681c86c18113e831ed110}} 
+constexpr {\bfseries Iterator} (\mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&\&iter) noexcept=default
+\item 
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a9bf8b6ef41b39ce11957a4a4d7e3a996}{get\+\_\+index}} () const noexcept -\/$>$ usize
+\begin{DoxyCompactList}\small\item\em Returns the index in the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} that corresponds to the element this iterator points to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a81a61236b930e404fc80e9f4acc7c233}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a81a61236b930e404fc80e9f4acc7c233}} 
+constexpr auto {\bfseries operator=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&iter) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a0ae3af28a4b23aab60914a3a690185dc}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a0ae3af28a4b23aab60914a3a690185dc}} 
+constexpr auto {\bfseries operator=} (\mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&\&iter) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&=default
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a470411e7224f6abb5619e0b3f0255e0e}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a470411e7224f6abb5619e0b3f0255e0e}} 
+constexpr auto {\bfseries operator==} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a29ea08385fc4f369d1f677a5b2dfc58c}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a29ea08385fc4f369d1f677a5b2dfc58c}} 
+constexpr auto {\bfseries operator!=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_ab30f0a305a1ec255886e1b52ac9a3a4c}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_ab30f0a305a1ec255886e1b52ac9a3a4c}} 
+constexpr auto {\bfseries operator$\ast$} () const noexcept -\/$>$ reference
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a0ca397fcc08b2bb3559c9adabd92e3f8}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a0ca397fcc08b2bb3559c9adabd92e3f8}} 
+constexpr auto {\bfseries operator-\/$>$} () noexcept -\/$>$ pointer
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1aff65714cfb6e66850d53934e14e5b3}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1aff65714cfb6e66850d53934e14e5b3}} 
+constexpr auto {\bfseries operator++} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a47c5afaaaf0680667dbe33717097f7eb}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a47c5afaaaf0680667dbe33717097f7eb}} 
+constexpr auto {\bfseries operator++} (int) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a758db8333fd5d54468b495e2b8a207c4}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a758db8333fd5d54468b495e2b8a207c4}} 
+constexpr auto {\bfseries operator-\/-\/} () noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a04b1686ad16c539464ade5522bdd7880}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a04b1686ad16c539464ade5522bdd7880}} 
+constexpr auto {\bfseries operator-\/-\/} (int) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6460d91030642bd502b637ec68ae746e}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6460d91030642bd502b637ec68ae746e}} 
+constexpr auto {\bfseries operator+} (Integral auto rhs) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a24d053e686f230ed52fd6a3979b6a08a}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a24d053e686f230ed52fd6a3979b6a08a}} 
+constexpr auto {\bfseries operator+=} (Integral auto rhs) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6040b9e72da50439949f5ee5d1ed8c56}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6040b9e72da50439949f5ee5d1ed8c56}} 
+constexpr auto {\bfseries operator-\/} (Integral auto rhs) const noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a4145bdb7afeb2e7470785cca645f52fb}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a4145bdb7afeb2e7470785cca645f52fb}} 
+constexpr auto {\bfseries operator-\/=} (Integral auto rhs) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a783df6dcb077adf20e8aefcb0feb4b45}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a783df6dcb077adf20e8aefcb0feb4b45}} 
+constexpr auto {\bfseries operator-\/} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ difference\+\_\+type
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1fb7fcdf410c0e94d483629beeb03f8f}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a1fb7fcdf410c0e94d483629beeb03f8f}} 
+constexpr auto {\bfseries operator\mbox{[}$\,$\mbox{]}} (Integral auto index) noexcept -\/$>$ \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}}
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_aeb1b75f3955340d001733242cbb74bc1}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_aeb1b75f3955340d001733242cbb74bc1}} 
+constexpr auto {\bfseries operator$>$} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6b8d9208208709681385341376c2afc7}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a6b8d9208208709681385341376c2afc7}} 
+constexpr auto {\bfseries operator$<$} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_adf6943fa1660ed050cbef0be8343e552}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_adf6943fa1660ed050cbef0be8343e552}} 
+constexpr auto {\bfseries operator$>$=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\item 
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_abcf378b3772c096f8843750eb9b57227}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_abcf378b3772c096f8843750eb9b57227}} 
+constexpr auto {\bfseries operator$<$=} (const \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator}{Iterator}} \&rhs) const noexcept -\/$>$ bool
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Default\+Constructible T, Ring\+Buffer\+Type Thread\+Safety = Ring\+Buffer\+Type\+::\+Not\+Thread\+Safe, template$<$ typename Element\+Type $>$ typename Allocator = std\+::allocator$>$\newline
+class hyperion\+::utils\+::\+Ring\+Buffer$<$ T, Thread\+Safety, Allocator $>$\+::\+Iterator}
+
+Random-\/\+Access Bidirectional iterator for {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} 
+
+\begin{DoxyNote}{Note}
+All navigation operators are checked such that any movement past {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_afc705634849bcfc17d690d79f0a6d67f}{begin()}}} or {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer_a1e16e34dbad26f08347338b55cda254a}{end()}}} is ignored. 
+\end{DoxyNote}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a9bf8b6ef41b39ce11957a4a4d7e3a996}\label{classhyperion_1_1utils_1_1RingBuffer_1_1Iterator_a9bf8b6ef41b39ce11957a4a4d7e3a996}} 
+\index{hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator@{hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator}!get\_index@{get\_index}}
+\index{get\_index@{get\_index}!hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator@{hyperion::utils::RingBuffer$<$ T, ThreadSafety, Allocator $>$::Iterator}}
+\doxysubsubsection{\texorpdfstring{get\_index()}{get\_index()}}
+{\footnotesize\ttfamily template$<$Default\+Constructible T, Ring\+Buffer\+Type Thread\+Safety = Ring\+Buffer\+Type\+::\+Not\+Thread\+Safe, template$<$ typename Element\+Type $>$ typename Allocator = std\+::allocator$>$ \\
+constexpr auto \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{hyperion\+::utils\+::\+Ring\+Buffer}}$<$ T, Thread\+Safety, Allocator $>$\+::Iterator\+::get\+\_\+index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const -\/$>$ usize \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+Returns the index in the {\ttfamily \mbox{\hyperlink{classhyperion_1_1utils_1_1RingBuffer}{Ring\+Buffer}}} that corresponds to the element this iterator points to. 
+
+\begin{DoxyReturn}{Returns}
+The index corresponding with the element this points to 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/braxton/git/\+Hyperion/utils/include/\+Hyperion\+Utils/Ring\+Buffer.\+h\end{DoxyCompactItemize}

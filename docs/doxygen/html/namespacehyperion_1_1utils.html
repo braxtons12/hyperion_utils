@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::utils namespace | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>utils <span class="m-thin">namespace</span>
+        </h1>
+        <p>This is a simple change-of-value detector.</p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#namespaces">Namespaces</a></li>
+                <li><a href="#nested-classes">Classes</a></li>
+                <li><a href="#enum-members">Enums</a></li>
+                <li><a href="#typedef-members">Typedefs</a></li>
+                <li><a href="#func-members">Functions</a></li>
+                <li><a href="#var-members">Variables</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<p>Compile-time configurable Policy-based ring buffer.</p><p>Hyperion <a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a> and Hyperion <a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a>.</p><p>Hyperion logging facilities.</p><p>This is a Lock-Free Single-ended Queue implementation using contiguous memory allocations.</p><p>Ignore is used to ignore an arbitrary number of unused parameters.</p><p><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> is the base type for communicating recoverable errors inside Hyperion.</p><p>This is useful for when you need to store a value and track whether writes to the value are actually changes</p><p><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> speaks <code>std::error_code</code> as well as custom error messages, and combined with <code><a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a></code> is easily composable and propogated</p><p>Hyperion&#x27;s logging facilities are robust and composable. Behavioral (Policy) configuration is configurable at compile time with via template parameters, and output configuration is configurable by supplying the desired <code>Sink</code>s on creation</p><ul><li><code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code> is a port of Rust&#x27;s <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code> type to C++, and as such as a replacement to <code>std::optional</code> with various monadic operations and an improved interface and API</li><li>&#x27;<a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a>&#x27; is a port of Rust&#x27;s <code><a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a></code> type to C++, and as such is an alternative to the proposed <code>std::expected</code> or <code>boost::outcome</code></li></ul><p><code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> has an API matching <code>std::vector</code> in its default configuration or can be configured to provide a subset of that API, but provide lock-free concurrency</p>
+        <section id="namespaces">
+          <h2><a href="#namespaces">Namespaces</a></h2>
+          <dl class="m-doc">
+            <dt>namespace <a href="namespacehyperion_1_1utils_1_1concepts.html" class="m-doc">concepts</a></dt>
+            <dd>This is a small collection of simple Concepts useful for requiring basic attributes of a type.</dd>
+            <dt>namespace <a href="namespacehyperion_1_1utils_1_1type__traits.html" class="m-doc">type_traits</a></dt>
+            <dd>This is a small collection of basic type traits.</dd>
+          </dl>
+        </section>
+        <section id="nested-classes">
+          <h2><a href="#nested-classes">Classes</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1ChangeDetector.html" class="m-doc">ChangeDetector</a>
+            </dt>
+            <dd>Stores a value and detects if an updated value is different than the previous one.</dd>
+            <dt>
+              class <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a>
+            </dt>
+            <dd>Base error interface. Used to implement custom error types used as the <code>E</code> in <code><a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a>&lt;T, E&gt;</code> to represent and communicate failure of a function.</dd>
+            <dt>
+              class <a href="classhyperion_1_1utils_1_1LockFreeQueueError.html" class="m-doc">LockFreeQueueError</a>
+            </dt>
+            <dd><code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> type for communicating queueing errors <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code>s can occur if an entry fails to queue due to queueing policy or an entry can&#x27;t be read because the queue is empty</dd>
+            <dt>
+              struct <a href="structhyperion_1_1utils_1_1LockFreeQueueErrorCategory.html" class="m-doc">LockFreeQueueErrorCategory</a>
+            </dt>
+            <dd><code>std::error_category</code> type for <code>LockFreeQueueErrorType</code>s. Provides error catgory functionality for <code>LockFreeQueueErrorType</code>s</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;LoggerParametersType LogParameters = DefaultLogParameters&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1Logger.html" class="m-doc">Logger</a>
+            </dt>
+            <dd>Hyperion logging type for formatted logging. Uses fmtlib/fmt for entry formatting and stylizing.</dd>
+            <dt>
+              class <a href="classhyperion_1_1utils_1_1LoggerError.html" class="m-doc">LoggerError</a>
+            </dt>
+            <dd><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> type for communicating logger errors Errors can occur when an entry fails to be queued or an entry is passed in at an invalid logging level.</dd>
+            <dt>
+              struct <a href="structhyperion_1_1utils_1_1LoggerErrorCategory.html" class="m-doc">LoggerErrorCategory</a>
+            </dt>
+            <dd><code>std::error_category</code> type for <code>LogErrorType</code>s. Provides error catgory functionality for <code>LogErrorType</code>s</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>
+            </dt>
+            <dd>Represents an optional value. Every <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code> is either <code>Some</code> and contains a value, or <code>None</code>, and does not. Useful for things such as:</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T, ErrorType E&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1Result.html" class="m-doc">Result</a>
+            </dt>
+            <dd>Represents the result of an operation that can fail. Every <code>Result()</code> is either <code>Ok</code>, indicating success and containing a value or <code>Err</code>, indicating failure and containing an <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> type.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;DefaultConstructible T, <a href="namespacehyperion_1_1utils.html#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc">RingBufferType</a> ThreadSafety = RingBufferType::NotThreadSafe, template&lt;typename ElementType&gt; typename Allocator = std::allocator&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a>
+            </dt>
+            <dd>A simple Ring Buffer implementation. Supports resizing, writing, reading, erasing, and provides mutable and immutable random access iterators.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;DefaultConstructible T, template&lt;typename ElementType&gt; typename Allocator&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4.html" class="m-doc">RingBuffer&lt;T, RingBufferType::ThreadSafe, Allocator&gt;</a>
+            </dt>
+            <dd>A simple Ring Buffer implementation. Supports resizing, writing, reading, erasing, and provides mutable and immutable random access iterators.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, usize Size = gsl::dynamic_extent&gt;</div>
+              class <a href="classhyperion_1_1utils_1_1Span.html" class="m-doc">Span</a>
+            </dt>
+            <dd>Thin wrapper around <code>gsl::span</code></dd>
+          </dl>
+        </section>
+        <section id="enum-members">
+          <h2><a href="#enum-members">Enums</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">enum class <a href="#a96f7d6c5a23787dd26427bf71898e0d5" class="m-doc">LockFreeQueueErrorType</a>: u8 { </span><span class="m-doc-wrap"><a href="#a96f7d6c5a23787dd26427bf71898e0d5a505a83f220c02df2f85c3810cd9ceb38" class="m-doc">Success</a> = 0,
+              <a href="#a96f7d6c5a23787dd26427bf71898e0d5a17a116d593ed4d653ef149929f8c2c2a" class="m-doc">QueueIsFull</a> = 1,
+              <a href="#a96f7d6c5a23787dd26427bf71898e0d5aa20ba812cc5b4e83c38e43d1055acaa5" class="m-doc">QueueIsEmpty</a> = 2 }</span>
+            </dt>
+            <dd>Types of <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code>s that can occur with <code><a href="classhyperion_1_1utils_1_1LockFreeQueue.html" class="m-doc">LockFreeQueue</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">enum class <a href="#a61ba7c36a87b6717e636dffcef4545a9" class="m-doc">LogErrorType</a>: u8 { </span><span class="m-doc-wrap"><a href="#a61ba7c36a87b6717e636dffcef4545a9a505a83f220c02df2f85c3810cd9ceb38" class="m-doc">Success</a> = 0,
+              <a href="#a61ba7c36a87b6717e636dffcef4545a9acae23826c82ce041d3eb7a6e1883466c" class="m-doc">QueueingError</a> = 1,
+              <a href="#a61ba7c36a87b6717e636dffcef4545a9a06f597a89c0d4e641d94dbe0685b93ab" class="m-doc">LogLevelError</a> = 2 }</span>
+            </dt>
+            <dd>Possible <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> categories that can occur when using the logger.</dd>
+            <dt id="a508d26e9db0ca87f0be70018e5c240fd">
+              <span class="m-doc-wrap-bumper">enum class <a href="#a508d26e9db0ca87f0be70018e5c240fd" class="m-doc-self">RingBufferType</a>: usize { </span><span class="m-doc-wrap"><a href="#a508d26e9db0ca87f0be70018e5c240fda407989de8916f5bbe0ba9ed3a373bc50" class="m-doc">NotThreadSafe</a> = 0,
+              <a href="#a508d26e9db0ca87f0be70018e5c240fda592812e50bc2ed9840a75e1694650c34" class="m-doc">ThreadSafe</a> = 1 }</span>
+            </dt>
+            <dd>The thread-safety type of the <code><a href="classhyperion_1_1utils_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></dd>
+          </dl>
+        </section>
+        <section id="typedef-members">
+          <h2><a href="#typedef-members">Typedefs</a></h2>
+          <dl class="m-doc">
+            <dt id="abb449b55250ed0526e8a3c35bf1255d6">
+              using <a href="#abb449b55250ed0526e8a3c35bf1255d6" class="m-doc-self">QueueError</a> = <a href="classhyperion_1_1utils_1_1LockFreeQueueError.html" class="m-doc">LockFreeQueueError</a>
+            </dt>
+            <dd>Alias for the <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> type we might recieve from the internal queue.</dd>
+          </dl>
+        </section>
+        <section id="func-members">
+          <h2><a href="#func-members">Functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a72f1d1d0efb62ac74508c8e8b4922da1" class="m-doc">ignore</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Utility function to ignore the given parameters.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a167203447ead8a67a331178cfe0f59b4" class="m-doc">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option&lt; T &gt; -&gt; requires DefaultConstructible&lt;T&gt; &amp;&amp; constexpr NotReference&lt;T&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;<a href="namespacehyperion_1_1utils.html#a167203447ead8a67a331178cfe0f59b4" class="m-doc">Some</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad458e5e1495ab2e73cca8549d57ba083" class="m-doc">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option&lt; T &gt; -&gt; requires DefaultConstructible&lt;T&gt; &amp;&amp; constexpr NotReference&lt;T&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;<a href="namespacehyperion_1_1utils.html#a167203447ead8a67a331178cfe0f59b4" class="m-doc">Some</a></code></dd>
+            <dt id="a5e06cdc7510fc3026479a6c5dac16e88">
+              <span class="m-doc-wrap-bumper">auto <a href="#a5e06cdc7510fc3026479a6c5dac16e88" class="m-doc-self">None</a>(</span><span class="m-doc-wrap">) noexcept -&gt; NoneType -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Convenience shorthand for <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;<a href="namespacehyperion_1_1utils.html#a5e06cdc7510fc3026479a6c5dac16e88" class="m-doc">None</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              <span class="m-doc-wrap-bumper">static auto <a href="#aac885c2d1cb0fd6d65e0864a7c3d5437" class="m-doc">Ok</a>(</span><span class="m-doc-wrap">const T&amp; ok) noexcept -&gt; OkWrapper&lt; T &gt; -&gt; requires NotReference&lt;T&gt; &amp;&amp; static constexpr DefaultConstructible&lt;T&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code>Result()&lt;T, E&gt;::Ok</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;Passable T&gt;</div>
+              <span class="m-doc-wrap-bumper">static auto <a href="#abed36cb3c11afb3ded590b0d14c6e073" class="m-doc">Ok</a>(</span><span class="m-doc-wrap">T&amp;&amp; ok) noexcept -&gt; OkWrapper&lt; T &gt; -&gt; requires NotReference&lt;T&gt; &amp;&amp; static constexpr DefaultConstructible&lt;T&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code>Result()&lt;T, E&gt;::Ok</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;ErrorType E = Error&gt;</div>
+              <span class="m-doc-wrap-bumper">static auto <a href="#ac1f3affa75832108b1c2af1b36514e07" class="m-doc">Err</a>(</span><span class="m-doc-wrap">const E&amp; err) noexcept -&gt; ErrorWrapper&lt; E &gt; -&gt; requires NotReference&lt;E&gt; &amp;&amp; static constexpr DefaultConstructible&lt;E&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code>Result()&lt;T, E&gt;::Err</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;ErrorType E = Error&gt;</div>
+              <span class="m-doc-wrap-bumper">static auto <a href="#adbc7aca5151649edd3a90df0ec0a37b2" class="m-doc">Err</a>(</span><span class="m-doc-wrap">E&amp;&amp; err) noexcept -&gt; ErrorWrapper&lt; E &gt; -&gt; requires NotReference&lt;E&gt; &amp;&amp; static constexpr DefaultConstructible&lt;E&gt; auto</span>
+            </dt>
+            <dd>Convenience shorthand for <code>Result()&lt;T, E&gt;::Err</code></dd>
+          </dl>
+        </section>
+        <section id="var-members">
+          <h2><a href="#var-members">Variables</a></h2>
+          <dl class="m-doc">
+            <dt id="a35cbdd7c3a2b22bfc8e664326f25b717">
+              static usize <a href="#a35cbdd7c3a2b22bfc8e664326f25b717" class="m-doc-self">DEFAULT_QUEUE_CAPACITY</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>The default capacityfor <code><a href="classhyperion_1_1utils_1_1LockFreeQueue.html" class="m-doc">LockFreeQueue</a></code></dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Enum documentation</h2>
+          <section class="m-doc-details" id="a96f7d6c5a23787dd26427bf71898e0d5"><div>
+            <h3>
+              enum class hyperion::<wbr />utils::<wbr /><a href="#a96f7d6c5a23787dd26427bf71898e0d5" class="m-doc-self">LockFreeQueueErrorType</a>: u8
+            </h3>
+            <p>Types of <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code>s that can occur with <code><a href="classhyperion_1_1utils_1_1LockFreeQueue.html" class="m-doc">LockFreeQueue</a></code></p>
+            <table class="m-table m-fullwidth m-flat m-doc">
+              <thead><tr><th style="width: 1%">Enumerators</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a href="#a96f7d6c5a23787dd26427bf71898e0d5a505a83f220c02df2f85c3810cd9ceb38" class="m-doc-self" id="a96f7d6c5a23787dd26427bf71898e0d5a505a83f220c02df2f85c3810cd9ceb38">Success</a></td>
+                  <td>
+                  <p>No <code><a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a></code> occurred.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><a href="#a96f7d6c5a23787dd26427bf71898e0d5a17a116d593ed4d653ef149929f8c2c2a" class="m-doc-self" id="a96f7d6c5a23787dd26427bf71898e0d5a17a116d593ed4d653ef149929f8c2c2a">QueueIsFull</a></td>
+                  <td>
+                  <p>The queue was full and policy is <code>QueuePolicy::ErrWhenFull</code></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><a href="#a96f7d6c5a23787dd26427bf71898e0d5aa20ba812cc5b4e83c38e43d1055acaa5" class="m-doc-self" id="a96f7d6c5a23787dd26427bf71898e0d5aa20ba812cc5b4e83c38e43d1055acaa5">QueueIsEmpty</a></td>
+                  <td>
+                  <p>The queue was empty when a read was attempted.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a61ba7c36a87b6717e636dffcef4545a9"><div>
+            <h3>
+              enum class hyperion::<wbr />utils::<wbr /><a href="#a61ba7c36a87b6717e636dffcef4545a9" class="m-doc-self">LogErrorType</a>: u8
+            </h3>
+            <p>Possible <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> categories that can occur when using the logger.</p>
+            <table class="m-table m-fullwidth m-flat m-doc">
+              <thead><tr><th style="width: 1%">Enumerators</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><a href="#a61ba7c36a87b6717e636dffcef4545a9a505a83f220c02df2f85c3810cd9ceb38" class="m-doc-self" id="a61ba7c36a87b6717e636dffcef4545a9a505a83f220c02df2f85c3810cd9ceb38">Success</a></td>
+                  <td>
+                  <p>No <a href="classhyperion_1_1utils_1_1Error.html" class="m-doc">Error</a> occurred.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><a href="#a61ba7c36a87b6717e636dffcef4545a9acae23826c82ce041d3eb7a6e1883466c" class="m-doc-self" id="a61ba7c36a87b6717e636dffcef4545a9acae23826c82ce041d3eb7a6e1883466c">QueueingError</a></td>
+                  <td>
+                  <p>failed to queue the entry for logging</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><a href="#a61ba7c36a87b6717e636dffcef4545a9a06f597a89c0d4e641d94dbe0685b93ab" class="m-doc-self" id="a61ba7c36a87b6717e636dffcef4545a9a06f597a89c0d4e641d94dbe0685b93ab">LogLevelError</a></td>
+                  <td>
+                  <p>the requested log level for the entry is lower than the minium level for the logger</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a72f1d1d0efb62ac74508c8e8b4922da1"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a72f1d1d0efb62ac74508c8e8b4922da1" class="m-doc-self">ignore</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Utility function to ignore the given parameters.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Args</td>
+                  <td>- The Types of the things to ignore</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>args</td>
+                  <td>- The things to ignore</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a167203447ead8a67a331178cfe0f59b4"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires DefaultConstructible&lt;T&gt; &amp;&amp; constexpr NotReference&lt;T&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a167203447ead8a67a331178cfe0f59b4" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option&lt; T &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;<a href="namespacehyperion_1_1utils.html#a167203447ead8a67a331178cfe0f59b4" class="m-doc">Some</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in the <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ad458e5e1495ab2e73cca8549d57ba083"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires DefaultConstructible&lt;T&gt; &amp;&amp; constexpr NotReference&lt;T&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad458e5e1495ab2e73cca8549d57ba083" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option&lt; T &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;<a href="namespacehyperion_1_1utils.html#a167203447ead8a67a331178cfe0f59b4" class="m-doc">Some</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in the <code><a href="classhyperion_1_1utils_1_1Option.html" class="m-doc">Option</a></code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aac885c2d1cb0fd6d65e0864a7c3d5437"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static requires NotReference&lt;T&gt; &amp;&amp; static constexpr DefaultConstructible&lt;T&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aac885c2d1cb0fd6d65e0864a7c3d5437" class="m-doc-self">Ok</a>(</span><span class="m-doc-wrap">const T&amp; ok) noexcept -&gt; OkWrapper&lt; T &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code>Result()&lt;T, E&gt;::Ok</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">ok</td>
+                  <td>- The value to store in the <code>Result()</code> representing success</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="abed36cb3c11afb3ded590b0d14c6e073"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;Passable T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static requires NotReference&lt;T&gt; &amp;&amp; static constexpr DefaultConstructible&lt;T&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#abed36cb3c11afb3ded590b0d14c6e073" class="m-doc-self">Ok</a>(</span><span class="m-doc-wrap">T&amp;&amp; ok) noexcept -&gt; OkWrapper&lt; T &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code>Result()&lt;T, E&gt;::Ok</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">ok</td>
+                  <td>- The value to store in the <code>Result()</code> representing success</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac1f3affa75832108b1c2af1b36514e07"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;ErrorType E = Error&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static requires NotReference&lt;E&gt; &amp;&amp; static constexpr DefaultConstructible&lt;E&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac1f3affa75832108b1c2af1b36514e07" class="m-doc-self">Err</a>(</span><span class="m-doc-wrap">const E&amp; err) noexcept -&gt; ErrorWrapper&lt; E &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code>Result()&lt;T, E&gt;::Err</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">err</td>
+                  <td>- The value to store in the <code>Result()</code> representing failure</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="adbc7aca5151649edd3a90df0ec0a37b2"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;ErrorType E = Error&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static requires NotReference&lt;E&gt; &amp;&amp; static constexpr DefaultConstructible&lt;E&gt; auto hyperion::<wbr />utils::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#adbc7aca5151649edd3a90df0ec0a37b2" class="m-doc-self">Err</a>(</span><span class="m-doc-wrap">E&amp;&amp; err) noexcept -&gt; ErrorWrapper&lt; E &gt;</span></span>
+            </h3>
+            <p>Convenience shorthand for <code>Result()&lt;T, E&gt;::Err</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">err</td>
+                  <td>- The value to store in the <code>Result()</code> representing failure</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

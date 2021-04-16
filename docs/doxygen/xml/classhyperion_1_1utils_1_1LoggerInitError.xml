@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="classhyperion_1_1utils_1_1LoggerInitError" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>hyperion::utils::LoggerInitError</compoundname>
+    <basecompoundref refid="classhyperion_1_1utils_1_1Error" prot="public" virt="non-virtual">hyperion::utils::Error</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1a4f1a4c683d1b315597362ffbb53ebfe2" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LoggerInitError::LoggerInitError</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>LoggerInitError</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="532" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" bodystart="532" bodyend="534"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1ad0275164a5ffc63d31dcbdfece4c0109" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LoggerInitError::LoggerInitError</definition>
+        <argsstring>(const LoggerInitError &amp;error) noexcept=default</argsstring>
+        <name>LoggerInitError</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1LoggerInitError" kindref="compound">LoggerInitError</ref> &amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="535" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1a6a3461cf36c8e0dc0c68179057e92eb9" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LoggerInitError::LoggerInitError</definition>
+        <argsstring>(LoggerInitError &amp;&amp;error) noexcept=default</argsstring>
+        <name>LoggerInitError</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1LoggerInitError" kindref="compound">LoggerInitError</ref> &amp;&amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="536" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1a27231702037254fe9716f389b543a180" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>hyperion::utils::LoggerInitError::~LoggerInitError</definition>
+        <argsstring>() noexcept final=default</argsstring>
+        <name>~LoggerInitError</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="537" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1a66b6db45a49e97bed7b12de38b84e4d0" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::LoggerInitError::operator=</definition>
+        <argsstring>(const LoggerInitError &amp;error) noexcept -&gt; LoggerInitError &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type>const <ref refid="classhyperion_1_1utils_1_1LoggerInitError" kindref="compound">LoggerInitError</ref> &amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="539" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="classhyperion_1_1utils_1_1LoggerInitError_1acaaf5293aa939c588a62e58d9e3cb38b" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto hyperion::utils::LoggerInitError::operator=</definition>
+        <argsstring>(LoggerInitError &amp;&amp;error) noexcept -&gt; LoggerInitError &amp;=default</argsstring>
+        <name>operator=</name>
+        <param>
+          <type><ref refid="classhyperion_1_1utils_1_1LoggerInitError" kindref="compound">LoggerInitError</ref> &amp;&amp;</type>
+          <declname>error</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="540" column="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>hyperion::utils::LoggerInitError</label>
+        <link refid="classhyperion_1_1utils_1_1LoggerInitError"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>hyperion::utils::Error</label>
+        <link refid="classhyperion_1_1utils_1_1Error"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>hyperion::utils::LoggerInitError</label>
+        <link refid="classhyperion_1_1utils_1_1LoggerInitError"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>hyperion::utils::Error</label>
+        <link refid="classhyperion_1_1utils_1_1Error"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" line="530" column="1" bodyfile="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h" bodystart="530" bodyend="541"/>
+    <listofallmembers>
+      <member refid="classhyperion_1_1utils_1_1Error_1a0c1928d6a82b1c14bf4aa81147bc85ed" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a6574446f8b411b1037ad136da235f175" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1aa7e71f36d303addc3c29a4ef6816011e" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1aeeb1da8b8c587c116982c54cf3ca7763" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a3c0805a6120d60f5b7e0a902ffcb836e" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a6c55f4e4979d85cf13aceb10a3ca2915" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a9ce78c08691aef5d63deb833063eba52" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a163baab73647962a77d1d01050bdc282" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a98369fa06053ddf8876848f9190389d8" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a5ed93330bfb82ff37db0cb3e993ec032" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1aad49420d32b264f4b1cc0926502f6cad" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a070028253e1de5896b606ed4c62e45e5" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1ab7b26f052e655b907eedeefa6cffa770" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a577add64188d4e98c46cc982fdcfc20d" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1adc8f73ec7c9e8addadf23f7d0a775d42" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a3c3d7f4749a889870fb1f58fbb4118c7" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a25b8c5621ead053b144e267658c806da" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>error_code</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a039580244e361f37378071a48d9b5149" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>has_std_error_code</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1a4f1a4c683d1b315597362ffbb53ebfe2" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>LoggerInitError</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1ad0275164a5ffc63d31dcbdfece4c0109" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>LoggerInitError</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1a6a3461cf36c8e0dc0c68179057e92eb9" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>LoggerInitError</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1ac1d91377bc8920e3f1c5b6b28289ebc7" prot="protected" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>m_error_code</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1ab167d672a5ad56f1f9fd4ba529486982" prot="protected" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>m_has_error_code</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a137a953409f0acb90eb1cddf5d35e191" prot="protected" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>m_has_source</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a293d07198b11b188d576ea22af24ea63" prot="protected" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>m_message</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a577e2b93fd0bcc296fb0222dfd108d08" prot="protected" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>m_source</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1aa8599542852da0e3b118a8e519b2eb71" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>message</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a00ae7cf3f1a43ffa27c86a5d7eebc4ff" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>message_as_cstr</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1a66b6db45a49e97bed7b12de38b84e4d0" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1acaaf5293aa939c588a62e58d9e3cb38b" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a77c96c5c7af0a0e041e73768468a9aac" prot="public" virt="non-virtual" ambiguityscope="hyperion::utils::Error::"><scope>hyperion::utils::LoggerInitError</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1aef1fc8b0fd61d1d9c6dd529021842902" prot="public" virt="non-virtual" ambiguityscope="hyperion::utils::Error::"><scope>hyperion::utils::LoggerInitError</scope><name>operator=</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1a0f18fc60eb9ad36f4715bd6b6b27e044" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>source</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1ac7afb7822c66fb288cfb069114bfe09b" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>to_string</name></member>
+      <member refid="classhyperion_1_1utils_1_1Error_1ac86668974efceb9470591299567bd39b" prot="public" virt="virtual"><scope>hyperion::utils::LoggerInitError</scope><name>~Error</name></member>
+      <member refid="classhyperion_1_1utils_1_1LoggerInitError_1a27231702037254fe9716f389b543a180" prot="public" virt="non-virtual"><scope>hyperion::utils::LoggerInitError</scope><name>~LoggerInitError</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

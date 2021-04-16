@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.18">
+  <compounddef id="Ignore_8h" kind="file" language="C++">
+    <compoundname>Ignore.h</compoundname>
+    <includes local="no">tuple</includes>
+    <includedby refid="HyperionUtils_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</includedby>
+    <includedby refid="OptionAndResult_8h" local="yes">/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Ignore.h</label>
+        <link refid="Ignore_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tuple</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="4">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/LockFreeQueue.h</label>
+        <link refid="LockFreeQueue_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Ignore.h</label>
+        <link refid="Ignore_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/OptionAndResult.h</label>
+        <link refid="OptionAndResult_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/Logger.h</label>
+        <link refid="Logger_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/braxton/git/Hyperion/utils/include/HyperionUtils/HyperionUtils.h</label>
+        <link refid="HyperionUtils_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacehyperion">hyperion</innernamespace>
+    <innernamespace refid="namespacehyperion_1_1utils">hyperion::utils</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/braxton/git/Hyperion/utils/include/HyperionUtils/Ignore.h"/>
+  </compounddef>
+</doxygen>
