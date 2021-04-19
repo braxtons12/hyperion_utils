@@ -3,7 +3,7 @@
 
 #include "../BasicTypes.h"
 
-namespace hyperion::utils::mpl {
+namespace hyperion::mpl {
 
 	template<typename... T>
 	struct list { };
@@ -266,4 +266,4 @@ namespace hyperion::utils::mpl {
 				  "mpl::first implementation failing");
 	static_assert(std::is_same_v<first_t<list<u32, u16, u8>>, u32>,
 				  "mpl::first implementation failing");
-} // namespace hyperion::utils::mpl
+} // namespace hyperion::mpl

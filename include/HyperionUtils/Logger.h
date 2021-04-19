@@ -22,7 +22,7 @@
 #include "logging/Sink.h"
 #include "logging/fmtIncludes.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Possible Error categories that can occur when using the logger
 	enum class LogErrorType : u8
@@ -95,19 +95,19 @@ namespace hyperion::utils {
 		return category;
 	}
 
-} // namespace hyperion::utils
+} // namespace hyperion
 
 namespace std {
 	template<>
-	struct is_error_code_enum<hyperion::utils::LogErrorType> : std::true_type { };
+	struct is_error_code_enum<hyperion::LogErrorType> : std::true_type { };
 
 } // namespace std
 
-inline auto make_error_code(hyperion::utils::LogErrorType code) noexcept -> std::error_code {
-	return {static_cast<int>(code), hyperion::utils::logger_category()};
+inline auto make_error_code(hyperion::LogErrorType code) noexcept -> std::error_code {
+	return {static_cast<int>(code), hyperion::logger_category()};
 }
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	IGNORE_WEAK_VTABLES_START
 
@@ -178,7 +178,7 @@ namespace hyperion::utils {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
 								log_file.print(message.style(), "{}", message.entry());
-								//fmt::print("{}", message);
+								//fmt::print(message.style(), "{}", message.entry());
 						}
 					}
 					log_file.close();
@@ -627,4 +627,4 @@ namespace hyperion::utils {
 
 	IGNORE_UNUSED_TEMPLATES_STOP
 
-} // namespace hyperion::utils
+} // namespace hyperion

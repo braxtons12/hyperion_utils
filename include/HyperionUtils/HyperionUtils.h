@@ -12,19 +12,17 @@
 #include "Error.h"
 #include "Ignore.h"
 #include "LockFreeQueue.h"
-#ifdef HYPERION_INCLUDE_LOGGING_BY_DEFAULT
-	#include "Logger.h"
-#endif
+#include "Logger.h"
 #include "Macros.h"
-#include "OptionAndResult.h"
+#include "Monads.h"
 #include "RingBuffer.h"
 #include "Span.h"
 #include "TypeTraits.h"
 
-using hyperion::utils::Err;	 // NOLINT
-using hyperion::utils::None; // NOLINT
-using hyperion::utils::Ok;	 // NOLINT
-using hyperion::utils::Some; // NOLINT
+using hyperion::Err;  // NOLINT
+using hyperion::None; // NOLINT
+using hyperion::Ok;	  // NOLINT
+using hyperion::Some; // NOLINT
 
 // clang-format off
 using hyperion::u8;	   // NOLINT

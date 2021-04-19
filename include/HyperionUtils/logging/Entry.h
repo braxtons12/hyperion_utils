@@ -7,7 +7,7 @@
 #include "Config.h"
 #include "fmtIncludes.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Base CRTP for logging entry types
 	///
@@ -442,4 +442,4 @@ namespace hyperion::utils {
 	struct entry_level<LogLevel::ERROR> {
 		using type = ErrorEntry;
 	};
-} // namespace hyperion::utils
+} // namespace hyperion

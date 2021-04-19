@@ -10,7 +10,7 @@
 
 #ifndef HYPERION_SPAN
 	#define HYPERION_SPAN
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Thin wrapper around `gsl::span`
 	///
@@ -256,5 +256,5 @@ namespace hyperion::utils {
 	  private:
 		gsl::span<T, Size> m_span_internal = gsl::span<T, Size>();
 	};
-} // namespace hyperion::utils
+} // namespace hyperion
 #endif // HYPERION_SPAN

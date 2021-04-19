@@ -3,7 +3,7 @@
 
 #include <tuple>
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Utility function to ignore the given parameters
 	///
@@ -13,4 +13,4 @@ namespace hyperion::utils {
 	inline constexpr auto ignore(Args&&... args) noexcept -> void {
 		std::ignore = std::make_tuple<Args...>(std::forward<Args>(args)...);
 	}
-} // namespace hyperion::utils
+} // namespace hyperion

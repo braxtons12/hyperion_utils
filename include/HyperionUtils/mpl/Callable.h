@@ -5,7 +5,7 @@
 #include "../BasicTypes.h"
 #include "ForAll.h"
 
-namespace hyperion::utils::mpl {
+namespace hyperion::mpl {
 
 	namespace detail {
 		template<typename T, typename Param, typename = std::void_t<>>
@@ -57,4 +57,4 @@ namespace hyperion::utils::mpl {
 	/// types in the `mpl::list`, `List`
 	template<typename T, typename List>
 	inline static constexpr bool is_callable_with_all_v = is_callable_with_all<T, List>::value;
-} // namespace hyperion::utils::mpl
+} // namespace hyperion::mpl

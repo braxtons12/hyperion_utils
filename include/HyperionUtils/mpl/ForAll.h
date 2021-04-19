@@ -5,7 +5,7 @@
 #include "../BasicTypes.h"
 #include "List.h"
 
-namespace hyperion::utils::mpl {
+namespace hyperion::mpl {
 
 	namespace detail {
 		template<template<typename> typename ConditionType,
@@ -168,4 +168,4 @@ namespace hyperion::utils::mpl {
 			 typename List>
 	inline static constexpr bool for_all_params_v
 		= for_all_params<ConditionType, RequirementType, Evaluatee, List>::value;
-} // namespace hyperion::utils::mpl
+} // namespace hyperion::mpl

@@ -3,7 +3,7 @@
 
 #include "../BasicTypes.h"
 
-namespace hyperion::utils::mpl {
+namespace hyperion::mpl {
 
 	/// @brief Basic meta-programming index wrapper type
 	///
@@ -16,4 +16,4 @@ namespace hyperion::utils::mpl {
 	/// @tparam N - The Index
 	template<usize N>
 	inline static constexpr usize index_t_v = index_type<N>::value;
-} // namespace hyperion::utils::mpl
+} // namespace hyperion::mpl

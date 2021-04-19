@@ -3,9 +3,9 @@
 #include <HyperionUtils/Logger.h>
 #include <gtest/gtest.h>
 
-namespace hyperion::utils::test {
-	using hyperion::utils::LoggerLevel;
-	using hyperion::utils::LoggerPolicy;
+namespace hyperion::test {
+	using hyperion::LoggerLevel;
+	using hyperion::LoggerPolicy;
 
 	TEST(LoggerTest, loggingCase1) {
 		using Parameters = LoggerParameters<LoggerPolicy<LogPolicy::FlushWhenFull>,

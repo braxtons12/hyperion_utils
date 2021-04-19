@@ -9,7 +9,7 @@
 #include "../Concepts.h"
 #include "../Macros.h"
 
-namespace hyperion::utils::detail {
+namespace hyperion::detail {
 
 	/// @brief Concept that determines if `T` is allocatable by `Allocator`
 	template<typename T,
@@ -303,4 +303,4 @@ namespace hyperion::utils::detail {
 	}
 
 	IGNORE_PADDING_STOP
-} // namespace hyperion::utils::detail
+} // namespace hyperion::detail

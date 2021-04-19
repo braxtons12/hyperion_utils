@@ -3,28 +3,28 @@
 #include <tuple>
 
 #include "HyperionUtils/Error.h"
-#include "HyperionUtils/OptionAndResult.h"
+#include "HyperionUtils/Monads.h"
 #include "gtest/gtest.h"
 
-namespace hyperion::utils::test {
+namespace hyperion::test {
 
-	TEST(ResultTest, okGetMutValue) {
+	TEST(ResultTest, okAsMutValue) {
 		Result<bool, Error> ok = Ok(true);
 
 		ASSERT_TRUE(ok.is_ok());
 		ASSERT_TRUE(static_cast<bool>(ok));
 		ASSERT_FALSE(ok.is_err());
 
-		auto* gotten_mut = ok.get_mut();
+		auto* gotten_mut = ok.as_mut();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_TRUE(*gotten_mut);
 		*gotten_mut = false;
-		gotten_mut = ok.get_mut();
+		gotten_mut = ok.as_mut();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_FALSE(*gotten_mut);
 	}
 
-	TEST(ResultTest, okGetMutPointer) {
+	TEST(ResultTest, okAsMutPointer) {
 		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 		auto* value = new bool(true);
 		Result<bool*, Error> ok = Ok(value);
@@ -33,48 +33,48 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(static_cast<bool>(ok));
 		ASSERT_FALSE(ok.is_err());
 
-		auto* gotten_mut = ok.get_mut();
+		auto* gotten_mut = ok.as_mut();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_TRUE(*gotten_mut);
 		*gotten_mut = false;
-		gotten_mut = ok.get_mut();
+		gotten_mut = ok.as_mut();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_FALSE(*gotten_mut);
 	}
 
-	TEST(ResultTest, errGetMutValue) {
+	TEST(ResultTest, errAsMutValue) {
 		auto error = Error("TestErrorMessage");
 		Result<bool, Error> err = Err(std::move(error));
 
 		ASSERT_TRUE(err.is_err());
 		ASSERT_FALSE(err.is_ok());
 		ASSERT_FALSE(static_cast<bool>(err));
-		ASSERT_DEATH(ignore(err.get_mut()), "get_mut called on an Error result, terminating");
+		ASSERT_DEATH(ignore(err.as_mut()), "as_mut called on an Error result, terminating");
 	}
 
-	TEST(ResultTest, errGetMutPointer) {
+	TEST(ResultTest, errAsMutPointer) {
 		auto error = Error("TestErrorMessage");
 		Result<bool*, Error> err = Err(std::move(error));
 
 		ASSERT_TRUE(err.is_err());
 		ASSERT_FALSE(err.is_ok());
 		ASSERT_FALSE(static_cast<bool>(err));
-		ASSERT_DEATH(ignore(err.get_mut()), "get_mut called on an Error result, terminating");
+		ASSERT_DEATH(ignore(err.as_mut()), "as_mut called on an Error result, terminating");
 	}
 
-	TEST(ResultTest, okGetConstValue) {
+	TEST(ResultTest, okAsConstValue) {
 		Result<bool, Error> ok = Ok(true);
 
 		ASSERT_TRUE(ok.is_ok());
 		ASSERT_TRUE(static_cast<bool>(ok));
 		ASSERT_FALSE(ok.is_err());
 
-		auto* gotten_mut = ok.get_const();
+		auto* gotten_mut = ok.as_const();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_TRUE(*gotten_mut);
 	}
 
-	TEST(ResultTest, okGetConstPointer) {
+	TEST(ResultTest, okAsConstPointer) {
 		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 		auto* value = new bool(true);
 		Result<bool*, Error> ok = Ok(value);
@@ -83,29 +83,29 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(static_cast<bool>(ok));
 		ASSERT_FALSE(ok.is_err());
 
-		const auto* gotten_mut = ok.get_const();
+		const auto* gotten_mut = ok.as_const();
 		ASSERT_TRUE(gotten_mut != nullptr);
 		ASSERT_TRUE(*gotten_mut);
 	}
 
-	TEST(ResultTest, errGetConstValue) {
+	TEST(ResultTest, errAsConstValue) {
 		auto error = Error("TestErrorMessage");
 		Result<bool, Error> err = Err(std::move(error));
 
 		ASSERT_TRUE(err.is_err());
 		ASSERT_FALSE(err.is_ok());
 		ASSERT_FALSE(static_cast<bool>(err));
-		ASSERT_DEATH(ignore(err.get_const()), "get_const called on an Error result, terminating");
+		ASSERT_DEATH(ignore(err.as_const()), "as_const called on an Error result, terminating");
 	}
 
-	TEST(ResultTest, errGetConstPointer) {
+	TEST(ResultTest, errAsConstPointer) {
 		auto error = Error("TestErrorMessage");
 		Result<bool*, Error> err = Err(std::move(error));
 
 		ASSERT_TRUE(err.is_err());
 		ASSERT_FALSE(err.is_ok());
 		ASSERT_FALSE(static_cast<bool>(err));
-		ASSERT_DEATH(ignore(err.get_const()), "get_const called on an Error result, terminating");
+		ASSERT_DEATH(ignore(err.as_const()), "as_const called on an Error result, terminating");
 	}
 
 	TEST(ResultTest, okUnwrapValue) {
@@ -337,7 +337,7 @@ namespace hyperion::utils::test {
 		delete value;
 	}
 
-	TEST(ResultTest, errokValue) {
+	TEST(ResultTest, errOkValue) {
 		auto error = Error("TestErrorMessage");
 		Result<bool, Error> err = Err(error);
 
@@ -350,7 +350,7 @@ namespace hyperion::utils::test {
 		ASSERT_DEATH(ignore(maybe_ok.unwrap()), "unwrap called on a None, terminating");
 	}
 
-	TEST(ResultTest, errokPointer) {
+	TEST(ResultTest, errOkPointer) {
 		auto error = Error("TestErrorMessage");
 		Result<bool, Error*> err = Err(&error);
 
@@ -363,7 +363,7 @@ namespace hyperion::utils::test {
 		ASSERT_DEATH(ignore(maybe_ok.unwrap()), "unwrap called on a None, terminating");
 	}
 
-	TEST(ResultTest, okerrValue) {
+	TEST(ResultTest, okErrValue) {
 		auto value = true;
 		Result<bool, Error> ok = Ok(value);
 
@@ -376,7 +376,7 @@ namespace hyperion::utils::test {
 		ASSERT_DEATH(ignore(maybe_ok.unwrap()), "unwrap called on a None, terminating");
 	}
 
-	TEST(ResultTest, okerrPointer) {
+	TEST(ResultTest, okErrPointer) {
 		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 		auto* value = new bool(true);
 		Result<bool*, Error> ok = Ok(value);
@@ -424,7 +424,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map<int>([](const bool _val) noexcept -> int {
+		ASSERT_EQ(ok.map([](const bool _val) noexcept -> int {
 						ignore(_val);
 						return 2;
 					}).unwrap(),
@@ -440,7 +440,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map<int>([](const bool* _val) noexcept -> int {
+		ASSERT_EQ(ok.map([](const bool* _val) noexcept -> int {
 						ignore(_val);
 						return 2;
 					}).unwrap(),
@@ -455,7 +455,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map<int>([](const bool _val) noexcept -> int {
+		ASSERT_EQ(err.map([](const bool _val) noexcept -> int {
 						 ignore(_val);
 						 return 2;
 					 })
@@ -472,7 +472,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map<int>([](const bool _val) noexcept -> int {
+		ASSERT_EQ(err.map([](const bool _val) noexcept -> int {
 						 ignore(_val);
 						 return 2;
 					 })
@@ -489,7 +489,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map_or<int>(
+		ASSERT_EQ(ok.map_or(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -507,7 +507,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map_or<int>(
+		ASSERT_EQ(ok.map_or(
 					  [](const bool* _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -524,7 +524,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map_or<int>(
+		ASSERT_EQ(err.map_or(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -541,7 +541,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map_or<int>(
+		ASSERT_EQ(err.map_or(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -558,7 +558,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map_or_else<int>(
+		ASSERT_EQ(ok.map_or_else(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -576,7 +576,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(ok);
 		ASSERT_FALSE(ok.is_err());
 
-		ASSERT_EQ(ok.map_or_else<int>(
+		ASSERT_EQ(ok.map_or_else(
 					  [](const bool* _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -593,7 +593,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map_or_else<int>(
+		ASSERT_EQ(err.map_or_else(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -610,7 +610,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(err);
 		ASSERT_TRUE(err.is_err());
 
-		ASSERT_EQ(err.map_or_else<int>(
+		ASSERT_EQ(err.map_or_else(
 					  [](const bool _val) noexcept -> int {
 						  ignore(_val);
 						  return 2;
@@ -628,7 +628,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(ok.is_err());
 
 		// NOLINTNEXTLINE(performance-unnecessary-value-param)
-		ASSERT_EQ(ok.map_err<Error>([](const Error _val) noexcept -> Error {
+		ASSERT_EQ(ok.map_err([](const Error _val) noexcept -> Error {
 						ignore(_val);
 						return Error("TestErrorMessage");
 					}).unwrap(),
@@ -645,7 +645,7 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(ok.is_err());
 
 		// NOLINTNEXTLINE(performance-unnecessary-value-param)
-		ASSERT_EQ(*ok.map_err<Error>([](const Error _val) noexcept -> Error {
+		ASSERT_EQ(*ok.map_err([](const Error _val) noexcept -> Error {
 						 ignore(_val);
 						 return Error("TestErrorMessage");
 					 }).unwrap(),
@@ -661,7 +661,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(err.is_err());
 
 		// NOLINTNEXTLINE(performance-unnecessary-value-param)
-		ASSERT_EQ(err.map_err<Error>([](const Error _val) noexcept -> Error {
+		ASSERT_EQ(err.map_err([](const Error _val) noexcept -> Error {
 						 ignore(_val);
 						 return Error("TestErrorMessage2");
 					 })
@@ -679,7 +679,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(err.is_err());
 
 		// NOLINTNEXTLINE(performance-unnecessary-value-param)
-		ASSERT_EQ(err.map_err<Error>([](const Error* _val) noexcept -> Error {
+		ASSERT_EQ(err.map_err([](const Error* _val) noexcept -> Error {
 						 ignore(_val);
 						 return Error("TestErrorMessage2");
 					 })
@@ -723,4 +723,4 @@ namespace hyperion::utils::test {
 			err_move_test(std::move(err));
 		}
 	}
-} // namespace hyperion::utils::test
+} // namespace hyperion::test

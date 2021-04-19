@@ -6,7 +6,7 @@
 
 #include "BasicTypes.h"
 
-namespace hyperion::utils::type_traits {
+namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if `T` is copyable or movable
 	///
 	/// @tparam T - The type to verify satisfies this Type Trait
@@ -50,4 +50,4 @@ namespace hyperion::utils::type_traits {
 	/// @brief Value of Type Trait `has_not_equal`
 	template<typename T, typename U = T>
 	static inline constexpr auto has_not_equal_v = has_not_equal<T, U>::value;
-} // namespace hyperion::utils::type_traits
+} // namespace hyperion::type_traits

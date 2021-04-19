@@ -5,7 +5,7 @@
 
 #include "../Concepts.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Used to indicate the desired logging level of the logger.
 	enum class LogLevel : uint8_t
@@ -104,4 +104,4 @@ namespace hyperion::utils {
 	/// @brief Alias for the default logging configuration parameters
 	using DefaultLogParameters = LoggerParameters<>;
 
-} // namespace hyperion::utils
+} // namespace hyperion

@@ -9,7 +9,7 @@
 #include "Callable.h"
 #include "IndexType.h"
 
-namespace hyperion::utils::mpl {
+namespace hyperion::mpl {
 
 	namespace detail {
 
@@ -238,4 +238,4 @@ namespace hyperion::utils::mpl {
 	}
 
 	// clang-format on
-} // namespace hyperion::utils::mpl
+} // namespace hyperion::mpl

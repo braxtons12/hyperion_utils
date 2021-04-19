@@ -8,7 +8,7 @@
 
 #include "Concepts.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 	using concepts::Passable, concepts::DefaultConstructible, concepts::InequalityComparable,
 		concepts::Copyable, concepts::Movable;
 	/// @brief Stores a value and detects if an updated value is different than the previous one
@@ -120,4 +120,4 @@ namespace hyperion::utils {
 		T mPreviousValue = T();
 	};
 
-} // namespace hyperion::utils
+} // namespace hyperion

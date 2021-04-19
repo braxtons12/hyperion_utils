@@ -11,7 +11,7 @@
 #include "mpl/ForAll.h"
 #include "mpl/List.h"
 
-namespace hyperion::utils::concepts {
+namespace hyperion::concepts {
 
 	/// @brief Alias for `std::floating_point<T>`
 	template<typename T>
@@ -44,7 +44,7 @@ namespace hyperion::utils::concepts {
 
 	/// @brief Concept for `! std::is_pointer_v<T>`
 	template<typename T>
-	concept NotPointer = !Pointer<T>;
+	concept NotPointer = !std::is_pointer_v<T>;
 
 	/// @brief Concept for `std::is_reference_v<T>`
 	template<typename T>
@@ -68,12 +68,12 @@ namespace hyperion::utils::concepts {
 	concept NotConvertible = !Convertible<From, To>;
 
 	/// @brief Concept that requires `E` to be an `ErrorType`
-	/// (aka derived from `hyperion::utils::Error`)
+	/// (aka derived from `hyperion::Error`)
 	template<typename E>
 	concept ErrorType = Derived<E, Error>;
 
 	/// @brief Concept that requires `E` is not an `ErrorType`
-	/// (aka __NOT__ derived from `hyperion::utils::Error`)
+	/// (aka __NOT__ derived from `hyperion::Error`)
 	template<typename E>
 	concept NotErrorType = !ErrorType<E>;
 
@@ -163,6 +163,10 @@ namespace hyperion::utils::concepts {
 	template<typename T>
 	concept MoveConstructible = std::is_move_constructible_v<T>;
 
+	/// @brief Concept that requires that T is __not__ move constructible
+	template<typename T>
+	concept NotMoveConstructible = !std::is_move_constructible_v<T>;
+
 	/// @brief Concept that requires that T is move constructible
 	template<typename T>
 	concept TriviallyMoveConstructible = std::is_trivially_move_constructible_v<T>;
@@ -182,6 +186,10 @@ namespace hyperion::utils::concepts {
 	/// @brief Concept that requires that T is move assignable
 	template<typename T>
 	concept MoveAssignable = std::is_move_assignable_v<T>;
+
+	/// @brief Concept that requires that T is __not__ move assignable
+	template<typename T>
+	concept NotMoveAssignable = !std::is_move_assignable_v<T>;
 
 	/// @brief Concept that requires that T is move assignable
 	template<typename T>
@@ -217,6 +225,10 @@ namespace hyperion::utils::concepts {
 	template<typename List>
 	concept AllNoexceptMoveAssignable
 		= mpl::for_all_types_v<std::is_nothrow_move_assignable, std::true_type, List>;
+
+	/// @brief Concept that requires that T is destructible
+	template<typename T>
+	concept Destructible = std::is_destructible_v<T>;
 
 	/// @brief Concept that requires that T is noexcept destructible
 	template<typename T>
@@ -322,4 +334,24 @@ namespace hyperion::utils::concepts {
 	template<typename T>
 	concept NotSemiRegular = !SemiRegular<T>;
 
-} // namespace hyperion::utils::concepts
+	/// @brief Alias for `std::is_invocable_v<T, Args...>`
+	template<typename T, typename... Args>
+	concept Invocable = std::is_invocable_v<T, Args...>;
+
+	/// @brief Alias for `std::is_invocable_r_v<Return, T, Args...>`
+	template<typename Return, typename T, typename... Args>
+	concept InvocableR = std::is_invocable_r_v<Return, T, Args...>;
+
+	/// @brief Concept that requires that `Func` is invocable for `Arg` or `const Arg&` with the
+	/// given return type `Return`
+	template<typename Return, typename Func, typename Arg>
+	concept InvocableRConst = InvocableR<Return, Func, Arg> || InvocableR<Return, Func, const Arg&>;
+
+	/// @brief Concept that requires that `Func` is invocable for `Arg`, `Arg&`, `const Arg&`, or
+	/// `Arg&&` with the given return type `Return`
+	template<typename Return, typename Func, typename Arg>
+	concept InvocableRMut
+		= InvocableRConst<Return, Func, Arg> || InvocableR<Return, Func, Arg&> || InvocableR<Return,
+																							 Func,
+																							 Arg&&>;
+} // namespace hyperion::concepts

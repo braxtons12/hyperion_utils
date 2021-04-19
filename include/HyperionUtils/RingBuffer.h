@@ -19,7 +19,7 @@
 #include "Macros.h"
 #include "detail/AllocateUnique.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 	using concepts::DefaultConstructible, concepts::Integral, concepts::UnsignedIntegral,
 		concepts::Copyable, concepts::Movable, concepts::NotMovable, concepts::ConstructibleFrom;
 
@@ -2563,4 +2563,4 @@ namespace hyperion::utils {
 	};
 	IGNORE_PADDING_STOP
 
-} // namespace hyperion::utils
+} // namespace hyperion

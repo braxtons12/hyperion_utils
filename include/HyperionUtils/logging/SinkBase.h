@@ -3,7 +3,7 @@
 #include "../Concepts.h"
 #include "Entry.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 	/// @brief Base CRTP for logging sink types
 	///
 	/// @tparam T - The sink type
@@ -66,4 +66,4 @@ namespace hyperion::utils {
 
 		friend T;
 	};
-} // namespace hyperion::utils
+} // namespace hyperion

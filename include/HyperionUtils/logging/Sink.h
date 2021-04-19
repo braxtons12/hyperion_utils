@@ -5,12 +5,12 @@
 #include <type_traits>
 #include <vector>
 
-#include "../OptionAndResult.h"
+#include "../Monads.h"
 #include "Entry.h"
 #include "SinkBase.h"
 #include "fmtIncludes.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Enum indicating whether the sink should style the text when writing it
 	enum class SinkTextStyle : uint8_t
@@ -144,11 +144,13 @@ namespace hyperion::utils {
 					const std::string& subdirectory_name = DEFAULT_FILE_SUBDIRECTORY) noexcept
 			-> Result<OutputFilePointer, FileCreationError> {
 			return get_temp_directory()
-				.map<std::filesystem::path>([&](std::filesystem::path& temp_directory) {
+				.and_then([&](std::filesystem::path& temp_directory)
+							  -> Result<std::filesystem::path, FileCreationError> {
 					temp_directory.append(subdirectory_name);
 					return create_subdirectory(temp_directory);
 				})
-				.template map<OutputFilePointer>([&](std::filesystem::path& temp_directory) {
+				.and_then([&](std::filesystem::path& temp_directory)
+							  -> Result<OutputFilePointer, FileCreationError> {
 					const auto time_string = create_time_stamp();
 					temp_directory.append(time_string + " "s + root_file_name);
 					temp_directory.replace_extension("log"s);
@@ -596,4 +598,4 @@ namespace hyperion::utils {
 	  private:
 		std::vector<Sink> m_sinks = std::vector<Sink>();
 	};
-} // namespace hyperion::utils
+} // namespace hyperion

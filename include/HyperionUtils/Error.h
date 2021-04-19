@@ -14,7 +14,7 @@
 #include "BasicTypes.h"
 #include "Macros.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 	using namespace std::literals::string_literals;
 
 	IGNORE_PADDING_START
@@ -213,4 +213,4 @@ namespace hyperion::utils {
 	IGNORE_PADDING_STOP
 	IGNORE_WEAK_VTABLES_STOP
 
-} // namespace hyperion::utils
+} // namespace hyperion

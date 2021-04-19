@@ -5,10 +5,10 @@
 
 #include "BasicTypes.h"
 #include "Macros.h"
-#include "OptionAndResult.h"
+#include "Monads.h"
 #include "RingBuffer.h"
 
-namespace hyperion::utils {
+namespace hyperion {
 
 	/// @brief Types of `Error`s that can occur with `LockFreeQueue`
 	enum class LockFreeQueueErrorType : u8
@@ -76,20 +76,19 @@ namespace hyperion::utils {
 		return category;
 	}
 
-} // namespace hyperion::utils
+} // namespace hyperion
 
 namespace std {
 	template<>
-	struct is_error_code_enum<hyperion::utils::LockFreeQueueErrorType> : std::true_type { };
+	struct is_error_code_enum<hyperion::LockFreeQueueErrorType> : std::true_type { };
 
 } // namespace std
 
-inline auto
-make_error_code(hyperion::utils::LockFreeQueueErrorType code) noexcept -> std::error_code {
-	return {static_cast<int>(code), hyperion::utils::lock_free_queue_category()};
+inline auto make_error_code(hyperion::LockFreeQueueErrorType code) noexcept -> std::error_code {
+	return {static_cast<int>(code), hyperion::lock_free_queue_category()};
 }
 
-namespace hyperion::utils {
+namespace hyperion {
 	IGNORE_PADDING_START
 	IGNORE_WEAK_VTABLES_START
 	/// @brief `Error` type for communicating queueing errors
@@ -236,4 +235,4 @@ namespace hyperion::utils {
 			= RingBuffer<T, RingBufferType::ThreadSafe>(Capacity);
 	};
 	IGNORE_PADDING_STOP
-} // namespace hyperion::utils
+} // namespace hyperion

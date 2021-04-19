@@ -11,8 +11,8 @@ Some of the features of HyperionUtils include:
 
 - Robust, Compile-time configurable logging (in progress)
 - Datastructures, such as queues supporting lock-free concurrency (initial implementation complete; API unlikely to change, implementation subject to change)
-- Error handling facilities similar to Rust and boost::outcome (initial implementation complete; API unlikely to change, implementation subject to change)
-- Option monad based on Rust's Option (complete)
+- Error handling facilities similar to Rust and boost::outcome with equivalent semantics and API to Rust (complete)
+- Option monad based on Rust's Option with equivalent semantics and API to Rust (complete)
 - Concepts, Type Traits, and meta-programming functions (in progress; Those already implemented unlikely to change)
 - Rust-style owning synchronization types (in progress)
 
@@ -24,11 +24,10 @@ You can view the documentation [here](https://braxtons12.github.io/Hyperion-Util
 
 HyperionUtils uses CMake, and incorporating it into your project is easy!
 
-There are several ways to use HyperionUtils, and the necessary additions to your `CMakeLists.txt`
-will change depending on your choice. This is because HyperionUtils depends on
-[fmt](https://github.com/fmtlib/fmt) in the logging code
+HyperionUtils depends on [fmt](https://github.com/fmtlib/fmt), so you will have to link to fmt in
+your target.
 
-In any case, you'll first need to add HyperionUtils to your CMake project.
+1. First, setup your CMake project
 In `CMakeLists.txt`:
 
 ```cmake
@@ -38,34 +37,14 @@ FetchContent_Declare(HyperionUtils
 	)
 
 FetchContent_MakeAvailable(HyperionUtils)
-```
 
-1. If you wish to only include indiviual headers and aren't using the logging facilities
-	1. Include whatever headers you wish to use in your code
-	2. In `CMakeLists.txt`:
+# Setup your target......
 
-```cmake
-target_link_libraries(your_target HyperionUtils)
-```
-
-2. If you wish to only include individual headers and _are_ using the logging facilities
-	1. Include whatever headers you wish to use in your code
-	2. In `CMakeLists.txt`:
-
-```cmake
 target_link_libraries(your_target fmt::fmt HyperionUtils)
 ```
 
-3. If you want to just include the main header, `HyperionUtils/HyperionUtils.h`
-	2. If you don't want to use the logging facilities, configure your `CMakeLists.txt` like 1-i above
-	and include `HyperionUtils/HyperionUtils.h`
-	1. If you want to use the logging facilities, configure your `CMakeLists.txt` like in 2-i above,
-	then define `HYPERION_INCLUDE_LOGGING_BY_DEFAULT` in your compiler flags or prior to including
-	`HyperionUtils/HyperionUtils.h`, eg:
-
-```cpp
-#define HYPERION_INCLUDE_LOGGING_BY_DEFAULT
-```
+2. Include your desired headers. If you want to use `Option` or `Result`, please include them through
+`Monads.h` instead of individually, as the API surface in each is dependent on the other
 
 ### Example
 
@@ -91,14 +70,16 @@ In your code:
 
 #include "HyperionUtils/HyperionUtils.h"
 
-using hyperion::utils::Option;
-using hyperion::utils::MESSAGE;
+using hyperion::Option;
+using hyperion::Some;
+using hyperion::None;
+using hyperion::MESSAGE;
 
-using LogParams = hyperion::utils::DefaultLogParameters;
+using LogParams = hyperion::DefaultLogParameters;
 
 struct Thing{int x = 0;, int y = 2; };
 
-bool condition = false;
+bool condition = true;
 inline auto get_thing() -> Option<Thing> {
 	if(condition) {
 		return Some(Thing{.x=42});
@@ -115,7 +96,8 @@ inline auto log_thing() -> void {
         ignore(MESSAGE<LogParams>(
                 None(), // Optional thread identifier
                 "{}", // format string, see fmt
-                thing.unwrap().x); //the stuff we want to log
+                thing.unwrap().x); //the stuff we want to log, if thing were `None`, this would call
+				// `std::terminate`
     }
 }
 

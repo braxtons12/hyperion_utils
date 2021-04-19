@@ -3,10 +3,10 @@
 #include <tuple>
 
 #include "HyperionUtils/Error.h"
-#include "HyperionUtils/OptionAndResult.h"
+#include "HyperionUtils/Monads.h"
 #include "gtest/gtest.h"
 
-namespace hyperion::utils::test {
+namespace hyperion::test {
 
 	TEST(OptionTest, someMapping) {
 		auto some = Some(true);
@@ -14,17 +14,14 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
 		ASSERT_TRUE(
-			some.map<bool>([](const bool some_value) noexcept -> bool { return some_value; })
-				.is_some());
+			some.map([](const bool some_value) noexcept -> bool { return some_value; }).is_some());
 		ASSERT_FALSE(
-			some.map<bool>([](const bool some_value) noexcept -> bool { return some_value; })
-				.is_none());
+			some.map([](const bool some_value) noexcept -> bool { return some_value; }).is_none());
 		ASSERT_TRUE(
-			some.map_or<bool>([](const bool some_value) noexcept -> bool { return some_value; },
-							  false));
-		ASSERT_TRUE(some.map_or_else<bool>(
-			[](const bool some_value) noexcept -> bool { return some_value; },
-			[]() noexcept -> bool { return false; }));
+			some.map_or([](const bool some_value) noexcept -> bool { return some_value; }, false));
+		ASSERT_TRUE(
+			some.map_or_else([](const bool some_value) noexcept -> bool { return some_value; },
+							 []() noexcept -> bool { return false; }));
 	}
 
 	TEST(OptionTest, noneMapping) {
@@ -33,17 +30,14 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
 		ASSERT_TRUE(
-			none.map<bool>([](const bool some_value) noexcept -> bool { return some_value; })
-				.is_none());
+			none.map([](const bool some_value) noexcept -> bool { return some_value; }).is_none());
 		ASSERT_FALSE(
-			none.map<bool>([](const bool some_value) noexcept -> bool { return some_value; })
-				.is_some());
+			none.map([](const bool some_value) noexcept -> bool { return some_value; }).is_some());
 		ASSERT_FALSE(
-			none.map_or<bool>([](const bool some_value) noexcept -> bool { return some_value; },
-							  false));
-		ASSERT_FALSE(none.map_or_else<bool>(
-			[](const bool some_value) noexcept -> bool { return some_value; },
-			[]() noexcept -> bool { return false; }));
+			none.map_or([](const bool some_value) noexcept -> bool { return some_value; }, false));
+		ASSERT_FALSE(
+			none.map_or_else([](const bool some_value) noexcept -> bool { return some_value; },
+							 []() noexcept -> bool { return false; }));
 	}
 
 	TEST(OptionTest, someOkOrValue) {
@@ -94,7 +88,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
 
-		auto res = some.ok_or_else<Error>([]() { return Error("TestErrorMessage"); });
+		auto res = some.ok_or_else([]() { return Error("TestErrorMessage"); });
 		ASSERT_TRUE(res.is_ok());
 		ASSERT_TRUE(res.unwrap());
 	}
@@ -107,7 +101,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
 
-		auto res = some.ok_or_else<Error>([]() { return Error("TestErrorMessage"); });
+		auto res = some.ok_or_else([]() { return Error("TestErrorMessage"); });
 		ASSERT_TRUE(res.is_ok());
 		auto* unwrapped = res.unwrap();
 		ASSERT_TRUE(unwrapped != nullptr);
@@ -120,7 +114,7 @@ namespace hyperion::utils::test {
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
 
-		auto res = none.ok_or_else<Error>([]() { return Error("TestErrorMessage"); });
+		auto res = none.ok_or_else([]() { return Error("TestErrorMessage"); });
 		ASSERT_TRUE(res.is_err());
 		ASSERT_TRUE(res.unwrap_err().message() == std::string("TestErrorMessage"));
 	}
@@ -240,84 +234,84 @@ namespace hyperion::utils::test {
 		ASSERT_FALSE(*unwrapped);
 	}
 
-	TEST(OptionTest, someGetMutValue) {
+	TEST(OptionTest, someAsMutValue) {
 		auto some = Some(true);
 
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
-		auto* gotten_mut = some.get_mut();
+		auto* gotten_mut = some.as_mut();
 		ASSERT_TRUE(*gotten_mut);
 		*gotten_mut = false;
-		gotten_mut = some.get_mut();
+		gotten_mut = some.as_mut();
 		ASSERT_FALSE(*gotten_mut);
 	}
 
-	TEST(OptionTest, someGetMutPointer) {
+	TEST(OptionTest, someAsMutPointer) {
 		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 		auto* some_value = new bool(true);
 		auto some = Some(some_value);
 
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
-		auto* gotten_mut = some.get_mut();
+		auto* gotten_mut = some.as_mut();
 		ASSERT_TRUE(*gotten_mut);
 		*gotten_mut = false;
-		gotten_mut = some.get_mut();
+		gotten_mut = some.as_mut();
 		ASSERT_FALSE(*gotten_mut);
 	}
 
-	TEST(OptionTest, noneGetMutValue) {
+	TEST(OptionTest, noneAsMutValue) {
 		Option<bool> none = None();
 
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
-		ASSERT_DEATH(ignore(none.get_mut()), "get_mut called on a None, terminating");
+		ASSERT_DEATH(ignore(none.as_mut()), "as_mut called on a None, terminating");
 	}
 
-	TEST(OptionTest, noneGetMutPointer) {
+	TEST(OptionTest, noneAsMutPointer) {
 		Option<bool*> none = None();
 
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
-		ASSERT_DEATH(ignore(none.get_mut()), "get_mut called on a None, terminating");
+		ASSERT_DEATH(ignore(none.as_mut()), "as_mut called on a None, terminating");
 	}
 
-	TEST(OptionTest, someGetConstValue) {
+	TEST(OptionTest, someAsConstValue) {
 		auto some = Some(true);
 
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
-		const auto* gotten_const = some.get_const();
+		const auto* gotten_const = some.as_const();
 		ASSERT_TRUE(*gotten_const);
 		//*gotten_const = false; won't compile, as desired
 	}
 
-	TEST(OptionTest, someGetConstPointer) {
+	TEST(OptionTest, someAsConstPointer) {
 		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 		auto* some_value = new bool(true);
 		auto some = Some(some_value);
 
 		ASSERT_TRUE(some.is_some());
 		ASSERT_FALSE(some.is_none());
-		const auto* gotten_const = some.get_const();
+		const auto* gotten_const = some.as_const();
 		ASSERT_TRUE(*gotten_const);
 		//*gotten_const = false; won't compile, as desired
 	}
 
-	TEST(OptionTest, noneGetConstValue) {
+	TEST(OptionTest, noneAsConstValue) {
 		Option<bool> none = None();
 
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
-		ASSERT_DEATH(ignore(none.get_const()), "get_const called on a None, terminating");
+		ASSERT_DEATH(ignore(none.as_const()), "as_const called on a None, terminating");
 	}
 
-	TEST(OptionTest, noneGetConstPointer) {
+	TEST(OptionTest, noneAsConstPointer) {
 		Option<bool*> none = None();
 
 		ASSERT_TRUE(none.is_none());
 		ASSERT_FALSE(none.is_some());
-		ASSERT_DEATH(ignore(none.get_const()), "get_const called on a None, terminating");
+		ASSERT_DEATH(ignore(none.as_const()), "as_const called on a None, terminating");
 	}
 
 	// NOLINTNEXTLINE(misc-definitions-in-headers)
@@ -349,4 +343,4 @@ namespace hyperion::utils::test {
 		Option<bool*> none = None();
 		none_move_test(std::move(none));
 	}
-} // namespace hyperion::utils::test
+} // namespace hyperion::test
