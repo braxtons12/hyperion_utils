@@ -27,9 +27,11 @@ HyperionUtils uses CMake, and incorporating it into your project is easy!
 HyperionUtils depends on [fmt](https://github.com/fmtlib/fmt), so you will have to link to fmt in
 your target.
 
-First, setup your CMake project. In `CMakeLists.txt`:
+First, setup your CMake project.
+In `CMakeLists.txt`:
 
 ```cmake
+
 FetchContent_Declare(HyperionUtils
 	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
 	GIT_TAG origin/master
@@ -40,6 +42,7 @@ FetchContent_MakeAvailable(HyperionUtils)
 ### Setup your target......
 
 target_link_libraries(your_target fmt::fmt HyperionUtils)
+
 ```
 
 Then, include your desired headers, either the main header, `HyperionUtils/HyperionUtils.h`, for everything,
@@ -49,9 +52,11 @@ dependent on the other
 
 ### Example
 
-In `CMakeLists.txt`
+First, import HyperionUtils.
+In `CMakeLists.txt`:
 
 ```cmake
+
 FetchContent_Declare(HyperionUtils
 	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
 	GIT_TAG origin/master
@@ -65,7 +70,7 @@ target_link_libraries(your_target fmt::fmt HyperionUtils)
 
 ```
 
-In your code:
+Then, in your code:
 
 ```cpp
 
@@ -92,13 +97,15 @@ inline auto get_thing() -> Option<Thing> {
 
 inline auto log_thing() -> void {
     if(auto thing = get_thing()) {
-        // The default logging policy will bail if the queue is full instead of blocking, and thus
-        // returns a Result indicating whether it succeded. We'll just ignore it
+        // Logging can return an error depending on the logging policy, or if the
+		// configured log level is higher than the logging entry we tried to queue.
+		// Thus, MESSAGE returns a Result to communicate this. For this simple
+		// example, we'll just ignore it
         ignore(MESSAGE<LogParams>(
                 None(), // Optional thread identifier
                 "{}", // format string, see fmt
-                thing.unwrap().x); //the stuff we want to log, if thing were `None`, this would call
-				// `std::terminate`
+                thing.unwrap().x); //the stuff we want to log.
+				// If thing were None, this would call std::terminate
     }
 }
 
@@ -111,16 +118,18 @@ This prevents collisions between other googletest builds in Hyperion's other sub
 To run the tests, simply configure and build the test project, then run the resulting "Test" executable:<br>
 
 ```sh
+
 cmake -B build -G "Ninja"
 cmake --build build
 ./build/Test
+
 ```
 
 ### Contributing
 
 Feel free to submit issues, pull requests, etc!<br>
 When contributing code, please following the project `.clang-format` (except in judicious cases of
-templates ruining things), use trailing returns types, use assign-init over direct-init
+templates or requires clauses ruining things), use trailing returns types, use assign-init over direct-init
 (parenthesis or braced init), and prefer simplicity and correctness over performance by default
 
 ### License
