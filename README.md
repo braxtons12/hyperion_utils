@@ -27,22 +27,22 @@ HyperionUtils uses CMake, and incorporating it into your project is easy!
 HyperionUtils depends on [fmt](https://github.com/fmtlib/fmt), so you will have to link to fmt in
 your target.
 
-1. First, setup your CMake project. In `CMakeLists.txt`:
+First, setup your CMake project. In `CMakeLists.txt`:
 
-	```cmake
-	FetchContent_Declare(HyperionUtils
-		GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
-		GIT_TAG origin/master
-		)
+```cmake
+FetchContent_Declare(HyperionUtils
+	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
+	GIT_TAG origin/master
+	)
 
-	FetchContent_MakeAvailable(HyperionUtils)
+FetchContent_MakeAvailable(HyperionUtils)
 
-	# Setup your target......
+### Setup your target......
 
-	target_link_libraries(your_target fmt::fmt HyperionUtils)
-	```
+target_link_libraries(your_target fmt::fmt HyperionUtils)
+```
 
-2. Include your desired headers, either the main header, `HyperionUtils/HyperionUtils.h`, for everything,
+Then, include your desired headers, either the main header, `HyperionUtils/HyperionUtils.h`, for everything,
 or individual ones for granular imports. If you want to use `Option` or `Result`, please include them
 through `Monads.h` or the main header instead of individually, as the API surface in each is
 dependent on the other
