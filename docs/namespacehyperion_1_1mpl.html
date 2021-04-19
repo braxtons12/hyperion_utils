@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::mpl namespace | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>mpl <span class="m-thin">namespace</span>
+        </h1>
+        <p>Set of metaprogramming functions to determine if a (normal) function can be called on the with a parameter of the given type.</p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#nested-classes">Classes</a></li>
+                <li><a href="#typedef-members">Typedefs</a></li>
+                <li><a href="#func-members">Functions</a></li>
+                <li><a href="#var-members">Variables</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<p>Collection of basic meta-programming functions for querying a list of types.</p><p>Index type to use in meta-programming functions.</p><p>Meta-programming functions to determine if a given meta-condition holds for a list of types.</p><p>Meta-programming functions to call a single meta-function with a runtime-provided index.</p>
+        <section id="nested-classes">
+          <h2><a href="#nested-classes">Classes</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;usize I, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1at.html" class="m-doc">at</a>
+            </dt>
+            <dd>Used to find the <code>I</code>th type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1contains.html" class="m-doc">contains</a>
+            </dt>
+            <dd>Used to determine if the given <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, contains the type <code>T</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1first.html" class="m-doc">first</a>
+            </dt>
+            <dd>Used to get the first type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;template&lt;typename, typename...&gt; typename ConditionType, typename RequirementType, typename Evaluatee, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1for__all__params.html" class="m-doc">for_all_params</a>
+            </dt>
+            <dd>Meta-programming function to determine that every type &quot;Type&quot; in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, satisfies that the value of <code>ConditionType&lt;Evaluatee, Type&gt;</code> equals the value of <code>RequirementType</code>, where <code>Evaluatee</code> is a type that can perform some operation on &quot;Type&quot; For example:</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;template&lt;typename&gt; typename ConditionType, typename RequirementType, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1for__all__types.html" class="m-doc">for_all_types</a>
+            </dt>
+            <dd>Meta-programming function to determine that every type &quot;Type&quot; in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, satisfies that the value of <code>ConditionType&lt;Type&gt;</code> equals the value of <code>RequirementType</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;usize N&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">index_type</a>
+            </dt>
+            <dd>Basic meta-programming index wrapper type.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1instances__of.html" class="m-doc">instances_of</a>
+            </dt>
+            <dd>Used to determine the number of occurences of <code>T</code> in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename Param&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1is__callable__with.html" class="m-doc">is_callable_with</a>
+            </dt>
+            <dd>Meta-programming function to determine if <code>T</code> is a function or function object callable with a one parameter of the type <code>Param</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1is__callable__with__all.html" class="m-doc">is_callable_with_all</a>
+            </dt>
+            <dd>Meta-programming function to determine if <code>T</code> is a function or function object callable with one parameter taking the form of each of the types in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              struct <a href="structhyperion_1_1mpl_1_1max__size__of.html" class="m-doc">max_size_of</a>
+            </dt>
+            <dd>Used to determine the size of the largest type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+          </dl>
+        </section>
+        <section id="typedef-members">
+          <h2><a href="#typedef-members">Typedefs</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;usize I, typename List&gt;</div>
+              using <a href="#aba6c6427d53a28b49bc2b3d8cdcc3a6d" class="m-doc">at_t</a> = typename <a href="structhyperion_1_1mpl_1_1at.html" class="m-doc">at</a>&lt;I, List&gt;::type
+            </dt>
+            <dd>Alias to <code><a href="structhyperion_1_1mpl_1_1at.html" class="m-doc">mpl::<wbr />at</a>&lt;I, List&gt;::type</code>. Used to get the <code>I</code>th type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt id="ab12a8a440d9610e87198111938a8bc29">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              using <a href="#ab12a8a440d9610e87198111938a8bc29" class="m-doc-self">first_t</a> = typename <a href="structhyperion_1_1mpl_1_1first.html" class="m-doc">first</a>&lt;List&gt;::type
+            </dt>
+            <dd>Alias to <code>mpl::first::type</code>. Used to get the first type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+          </dl>
+        </section>
+        <section id="func-members">
+          <h2><a href="#func-members">Functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;usize Size, typename F&gt;</div>
+              <span class="m-doc-wrap-bumper"><a href="#af4f39657d75679adf923d30daeff6d14" class="m-doc">requires</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1mpl_1_1is__callable__with.html" class="m-doc">is_<wbr />callable_<wbr />with</a>&lt;F, <a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">index_<wbr />type</a>&lt;0&gt;&gt;::value) inline static const expr auto call_with_index(usize i</span>
+            </dt>
+            <dd>Calls the function/fuction object <code>f</code> with <code><a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">mpl::<wbr />index_type</a>&lt;i&gt;</code> <code>i</code> must be strictly less than <code>Size</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a928e5ba4eb47c2befef8a53984b3b81f" class="m-doc">requires</a>(</span><span class="m-doc-wrap">contains_v&lt;T, List&gt;) inline static const expr usize index_of_v -&gt; requires(contains_v&lt;T, List&gt;) struct index_of</span>
+            </dt>
+            <dd>Used to get the index of the type <code>T</code> in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+          </dl>
+        </section>
+        <section id="var-members">
+          <h2><a href="#var-members">Variables</a></h2>
+          <dl class="m-doc">
+            <dt id="a5f486a61644c1d55414bcc7af49d0180">
+              <div class="m-doc-template">template&lt;typename T, typename Param&gt;</div>
+              static bool <a href="#a5f486a61644c1d55414bcc7af49d0180" class="m-doc-self">is_callable_with_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of Meta-programming function <code>is_callable</code>. Used to determine if <code>T</code> is a function or function object callable with one parameter of the type <code>Param</code></dd>
+            <dt id="af33beb9173355212723831733d46acd2">
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              static bool <a href="#af33beb9173355212723831733d46acd2" class="m-doc-self">is_callable_with_all_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of Meta-programming function <code><a href="structhyperion_1_1mpl_1_1is__callable__with__all.html" class="m-doc">is_<wbr />callable_<wbr />with_<wbr />all</a></code>. Used to determine if <code>T</code> is a function or function object callable with one parameter taking the form of each of the types in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt id="a4ca189eb0918c09fc38ceb2a6e6cb491">
+              <div class="m-doc-template">template&lt;template&lt;typename&gt; typename ConditionType, typename RequirementType, typename List&gt;</div>
+              static bool <a href="#a4ca189eb0918c09fc38ceb2a6e6cb491" class="m-doc-self">for_all_types_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of Meta-programming function <code>for_all</code>. Used to determine that every type &quot;Type&quot; in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, satisfies that the value of <code>ConditionType&lt;Type&gt;</code> equals the value of <code>RequirementType</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;template&lt;typename, typename...&gt; typename ConditionType, typename RequirementType, typename Evaluatee, typename List&gt;</div>
+              static bool <a href="#a31c5b8cd0ae1e4c9b3f39e4a2bc2920a" class="m-doc">for_all_params_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of Meta-programming function <code><a href="structhyperion_1_1mpl_1_1for__all__params.html" class="m-doc">for_<wbr />all_<wbr />params</a></code>. Used to determine that every type &quot;Type&quot; in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, satisfies that the value of <code>ConditionType&lt;Evaluatee, Type&gt;</code> equals the value of <code>RequirementType</code>, where <code>Evaluatee</code> is a type that can perform some operation on &quot;Type&quot;. For example:</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;usize N&gt;</div>
+              static usize <a href="#a7e4339f86274eb38216bc514ed10b5d8" class="m-doc">index_t_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of <code><a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">index_<wbr />type</a></code></dd>
+            <dt id="a2042dea305fabc95e968f5d6df192518">
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              static auto <a href="#a2042dea305fabc95e968f5d6df192518" class="m-doc-self">contains_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of <code><a href="structhyperion_1_1mpl_1_1contains.html" class="m-doc">mpl::<wbr />contains</a></code>. Used to determine if the given <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, contains the given type <code>T</code></dd>
+            <dt id="af66de04bd82871e865a8441aa8339498">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              static usize <a href="#af66de04bd82871e865a8441aa8339498" class="m-doc-self">max_size_of_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of <code><a href="structhyperion_1_1mpl_1_1max__size__of.html" class="m-doc">mpl::<wbr />max_size_of</a></code>. Used to determine the size of the largest type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+            <dt id="ac868ea0496436c6fc40f229e98586f54">
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              static usize <a href="#ac868ea0496436c6fc40f229e98586f54" class="m-doc-self">instances_of_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of <code><a href="structhyperion_1_1mpl_1_1instances__of.html" class="m-doc">instances_<wbr />of</a></code>. Used to determine the number of occurences of <code>T</code> in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Typedef documentation</h2>
+          <section class="m-doc-details" id="aba6c6427d53a28b49bc2b3d8cdcc3a6d"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;usize I, typename List&gt;
+              </div>
+              using hyperion::<wbr />mpl::<wbr /><a href="#aba6c6427d53a28b49bc2b3d8cdcc3a6d" class="m-doc-self">at_t</a> = typename <a href="structhyperion_1_1mpl_1_1at.html" class="m-doc">at</a>&lt;I, List&gt;::type
+            </h3>
+            <p>Alias to <code><a href="structhyperion_1_1mpl_1_1at.html" class="m-doc">mpl::<wbr />at</a>&lt;I, List&gt;::type</code>. Used to get the <code>I</code>th type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">I</td>
+                  <td>- The index in the parameter pack to get the type of</td>
+                </tr>
+                <tr>
+                  <td>List</td>
+                  <td>- The <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code> to search in</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="af4f39657d75679adf923d30daeff6d14"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;usize Size, typename F&gt;
+              </div>
+              <span class="m-doc-wrap-bumper"> hyperion::<wbr />mpl::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#af4f39657d75679adf923d30daeff6d14" class="m-doc-self">requires</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1mpl_1_1is__callable__with.html" class="m-doc">is_<wbr />callable_<wbr />with</a>&lt;F, <a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">index_<wbr />type</a>&lt;0&gt;&gt;::value) inline static const expr auto call_with_index(usize i</span></span>
+            </h3>
+            <p>Calls the function/fuction object <code>f</code> with <code><a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">mpl::<wbr />index_type</a>&lt;i&gt;</code> <code>i</code> must be strictly less than <code>Size</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Size</td>
+                  <td>- The number of indices</td>
+                </tr>
+                <tr>
+                  <td>F</td>
+                  <td>- The type of the fuction/function object to call</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a928e5ba4eb47c2befef8a53984b3b81f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename T, typename List&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires(contains_v&lt;T, List&gt;) struct index_of hyperion::<wbr />mpl::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a928e5ba4eb47c2befef8a53984b3b81f" class="m-doc-self">requires</a>(</span><span class="m-doc-wrap">contains_v&lt;T, List&gt;) inline static const expr usize index_of_v</span></span>
+            </h3>
+            <p>Used to get the index of the type <code>T</code> in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">T</td>
+                  <td>- The type to search for</td>
+                </tr>
+                <tr>
+                  <td>List</td>
+                  <td>- The <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code> to search in</td>
+                </tr>
+              </tbody>
+            </table>
+<p>Value of <code>mpl::index_of</code>. Used to determine the index of the type <code>T</code> in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code></p>
+          </div></section>
+        </section>
+        <section>
+          <h2>Variable documentation</h2>
+          <section class="m-doc-details" id="a31c5b8cd0ae1e4c9b3f39e4a2bc2920a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;template&lt;typename, typename...&gt; typename ConditionType, typename RequirementType, typename Evaluatee, typename List&gt;
+              </div>
+              static bool hyperion::<wbr />mpl::<wbr /><a href="#a31c5b8cd0ae1e4c9b3f39e4a2bc2920a" class="m-doc-self">for_all_params_v</a> <span class="m-label m-primary">constexpr</span>
+            </h3>
+            <p>Value of Meta-programming function <code><a href="structhyperion_1_1mpl_1_1for__all__params.html" class="m-doc">for_<wbr />all_<wbr />params</a></code>. Used to determine that every type &quot;Type&quot; in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, satisfies that the value of <code>ConditionType&lt;Evaluatee, Type&gt;</code> equals the value of <code>RequirementType</code>, where <code>Evaluatee</code> is a type that can perform some operation on &quot;Type&quot;. For example:</p>
+<p>for_all_params_v&lt;std::is_constructible, std::true_type, umax, mpl::list&lt;u8, u32, u64&gt;&gt;</p><p>will check that <code>std::is_constructible&lt;umax, Args&gt;::value</code> is true for <code>Args</code> equal to each of <code>u8</code>, <code>u32</code>, <code>u64</code></p>
+          </div></section>
+          <section class="m-doc-details" id="a7e4339f86274eb38216bc514ed10b5d8"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;usize N&gt;
+              </div>
+              static usize hyperion::<wbr />mpl::<wbr /><a href="#a7e4339f86274eb38216bc514ed10b5d8" class="m-doc-self">index_t_v</a> <span class="m-label m-primary">constexpr</span>
+            </h3>
+            <p>Value of <code><a href="structhyperion_1_1mpl_1_1index__type.html" class="m-doc">index_<wbr />type</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">N</td>
+                  <td>- The Index</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

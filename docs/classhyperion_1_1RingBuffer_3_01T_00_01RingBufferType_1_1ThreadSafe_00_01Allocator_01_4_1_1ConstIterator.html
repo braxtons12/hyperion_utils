@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HyperionUtils A
+  <title>hyperion::RingBuffer&lt;T, RingBufferType::ThreadSafe, Allocator&gt;::ConstIterator class | HyperionUtils A
 Hyperion
 Engine
 library</title>
@@ -31,7 +31,7 @@ library</span></a>
         <div class="m-row">
           <ol class="m-col-t-6 m-col-m-none">
             <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html" id="m-navbar-current">Namespaces</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
           </ol>
           <ol class="m-col-t-6 m-col-m-none" start="3">
             <li><a href="annotated.html">Classes</a></li>
@@ -49,34 +49,48 @@ library</span></a>
   <div class="m-container m-container-inflatable">
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
-        <h1>Namespaces</h1>
-        <ul class="m-doc">
-          <li class="m-doc-collapsible">
-            <a href="#" onclick="return toggle(this)">namespace</a> <a href="namespacehyperion.html" class="m-doc">hyperion</a> <span class="m-doc">Collection of aliases and literal suffixes for builtin integral and floating point types.</span>
-            <ul class="m-doc">
-              <li>namespace <a href="namespacehyperion_1_1concepts.html" class="m-doc">concepts</a> <span class="m-doc">This is a small collection of simple Concepts useful for requiring basic attributes of a type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1detail.html" class="m-doc">detail</a> <span class="m-doc">Implementation of <code>allocate_unique</code> for <code>std::unique_ptr</code>. Should be analogous to.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1mpl.html" class="m-doc">mpl</a> <span class="m-doc">Set of metaprogramming functions to determine if a (normal) function can be called on the with a parameter of the given type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1type__traits.html" class="m-doc">type_traits</a> <span class="m-doc">This is a small collection of basic type traits.</span></li>
-            </ul>
-          </li>
-        </ul>
-        <script>
-        function toggle(e) {
-            e.parentElement.className = e.parentElement.className == 'm-doc-collapsible' ?
-                'm-doc-expansible' : 'm-doc-collapsible';
-            return false;
-        }
-        /* Collapse all nodes marked as such. Doing it via JS instead of
-           directly in markup so disabling it doesn't harm usability. The list
-           is somehow regenerated on every iteration and shrinks as I change
-           the classes. It's not documented anywhere and I'm not sure if this
-           is the same across browsers, so I am going backwards in that list to
-           be sure. */
-        var collapsed = document.getElementsByClassName("collapsed");
-        for(var i = collapsed.length - 1; i >= 0; --i)
-            collapsed[i].className = 'm-doc-expansible';
-        </script>
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span><span class="m-breadcrumb"><a href="classhyperion_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4.html">RingBuffer&lt;T, RingBufferType::ThreadSafe, Allocator&gt;</a>::<wbr/></span>ConstIterator <span class="m-thin">class</span>
+        </h1>
+        <p>Read-only Random-Access Bidirectional iterator for <code><a href="classhyperion_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code></p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<aside class="m-note m-info"><h4>Note</h4><p>All navigation operators are checked such that any movement past <code><a href="classhyperion_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4.html#a8dfc9caadf24893073f856edafc97255" class="m-doc">begin()</a></code> or <code><a href="classhyperion_1_1RingBuffer_3_01T_00_01RingBufferType_1_1ThreadSafe_00_01Allocator_01_4.html#a1ccffd1e5b8661c9a0395621b7603b94" class="m-doc">end()</a></code> is ignored.</p></aside>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4ded739ea4608d3a1fb5faf86d88876e" class="m-doc">get_index</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; index_type -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the index in the <code><a href="classhyperion_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> that corresponds to the element this iterator points to.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a4ded739ea4608d3a1fb5faf86d88876e"><div>
+            <h3>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />RingBuffer&lt;T, RingBufferType::<wbr />ThreadSafe, Allocator&gt;::<wbr />ConstIterator::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4ded739ea4608d3a1fb5faf86d88876e" class="m-doc-self">get_index</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; index_type <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the index in the <code><a href="classhyperion_1_1RingBuffer.html" class="m-doc">RingBuffer</a></code> that corresponds to the element this iterator points to.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The index corresponding with the element this points to</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+        </section>
       </div>
     </div>
   </div>

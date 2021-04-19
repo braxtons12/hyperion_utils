@@ -18,23 +18,6 @@ namespace hyperion {
 		concepts::Passable, concepts::Destructible, concepts::Same, concepts::InvocableRConst,
 		concepts::InvocableRMut;
 
-	/// @brief Represents the outcome of an operation that can fail recoverably
-	///
-	/// Every `Result` is either `Ok`, indicating success and containing a value
-	/// or `Err`, indicating failure and containing an `Error` type
-	/// `T` can be any type or pointer
-	/// `E` can be any `ErrorType`, a type deriving from `hyperion::Error`
-	///
-	/// @note While any combination of `T` and `E` can be pointers, `Result` will
-	/// __NOT__ take ownership of any pointer it contains, and as such it is the
-	/// responsibility of the user to call the destructor on a pointer contained in a
-	/// `Result`. To have a `Result` take ownership of a pointer, use `std::unique_ptr` instead of a
-	/// raw pointer.
-	/// @note `T` and `E` cannot be references. To make a `Result` store a reference, use
-	/// `std::reference_wrapper` instead.
-	///
-	/// @tparam T - the type contained in the case of success
-	/// @tparam E - the `Error` type contained in the case of failure
 	template<NotReference T, ErrorType E = Error>
 	requires NotReference<E>
 	class [[nodiscard]] Result;

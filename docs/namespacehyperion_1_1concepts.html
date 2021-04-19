@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::concepts namespace | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>concepts <span class="m-thin">namespace</span>
+        </h1>
+        <p>This is a small collection of simple Concepts useful for requiring basic attributes of a type.</p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#var-members">Variables</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <section id="var-members">
+          <h2><a href="#var-members">Variables</a></h2>
+          <dl class="m-doc">
+            <dt id="ac4a3d1e5526acc4b7a82b8a39459b575">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#ac4a3d1e5526acc4b7a82b8a39459b575" class="m-doc-self">FloatingPoint</a>
+            </dt>
+            <dd>Alias for <code>std::floating_point&lt;T&gt;</code></dd>
+            <dt id="acc98746330004fd866698e94d373c781">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#acc98746330004fd866698e94d373c781" class="m-doc-self">Integral</a>
+            </dt>
+            <dd>Alias for <code>std::integral&lt;T&gt;</code></dd>
+            <dt id="a46ccc90356c13b09371638cf9e91ecb2">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a46ccc90356c13b09371638cf9e91ecb2" class="m-doc-self">SignedIntegral</a>
+            </dt>
+            <dd>Alias for <code>std::signed_integral&lt;T&gt;</code></dd>
+            <dt id="a4500706003a8f6bb82ce115c57b2e640">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a4500706003a8f6bb82ce115c57b2e640" class="m-doc-self">Numeric</a>
+            </dt>
+            <dd>Concept that requires the type to be a numeric type ie: FloatingPoint&lt;T&gt; or Integral&lt;T&gt; is true.</dd>
+            <dt id="af09112b5c2fe3d6f91c7c7a4dcd0c6b9">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#af09112b5c2fe3d6f91c7c7a4dcd0c6b9" class="m-doc-self">SignedNumeric</a>
+            </dt>
+            <dd>Concept that requires the type to be a numeric type ie: FloatingPoint&lt;T&gt; or Integral&lt;T&gt; is true.</dd>
+            <dt id="a898307c643c99f9aa4ea33a365b673c1">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a898307c643c99f9aa4ea33a365b673c1" class="m-doc-self">Pointer</a>
+            </dt>
+            <dd>Concept for <code>std::is_pointer_v&lt;T&gt;</code></dd>
+            <dt id="a41986f623f7ad1954c06259cc7a0110a">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a41986f623f7ad1954c06259cc7a0110a" class="m-doc-self">NotPointer</a>
+            </dt>
+            <dd>Concept for <code>! std::is_pointer_v&lt;T&gt;</code></dd>
+            <dt id="a61a5766a35b50e958207af06a088d711">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a61a5766a35b50e958207af06a088d711" class="m-doc-self">Reference</a>
+            </dt>
+            <dd>Concept for <code>std::is_reference_v&lt;T&gt;</code></dd>
+            <dt id="a22537681f3b1a95788af3e5e98fe3108">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a22537681f3b1a95788af3e5e98fe3108" class="m-doc-self">NotReference</a>
+            </dt>
+            <dd>Concept for <code>! std::is_reference_v&lt;T&gt;</code></dd>
+            <dt id="a78fdbbf9c3af29421ccdaa5a434d34e1">
+              <div class="m-doc-template">template&lt;typename Der, typename Base&gt;</div>
+              concept <a href="#a78fdbbf9c3af29421ccdaa5a434d34e1" class="m-doc-self">Derived</a>
+            </dt>
+            <dd>Alias for <code>std::derived_from&lt;T, U&gt;</code></dd>
+            <dt id="a567b398b35d5e5400ba0dd7f35d11b49">
+              <div class="m-doc-template">template&lt;typename From, typename To&gt;</div>
+              concept <a href="#a567b398b35d5e5400ba0dd7f35d11b49" class="m-doc-self">Convertible</a>
+            </dt>
+            <dd>Concept that requires <code>From</code> is convertible to <code>To</code></dd>
+            <dt id="ad01aaa7c4ddab15230e35ed8f446358b">
+              <div class="m-doc-template">template&lt;typename From, typename To&gt;</div>
+              concept <a href="#ad01aaa7c4ddab15230e35ed8f446358b" class="m-doc-self">NotConvertible</a>
+            </dt>
+            <dd>Concept that requires <code>From</code> is <strong>not</strong> convertible to <code>To</code></dd>
+            <dt id="aad49fbd04e202a2a2232373aa8cb2aa1">
+              <div class="m-doc-template">template&lt;typename E&gt;</div>
+              concept <a href="#aad49fbd04e202a2a2232373aa8cb2aa1" class="m-doc-self">ErrorType</a>
+            </dt>
+            <dd>Concept that requires <code>E</code> to be an <code>ErrorType</code> (aka derived from <code><a href="classhyperion_1_1Error.html" class="m-doc">hyperion::<wbr />Error</a></code>)</dd>
+            <dt id="a79b981ea4fc2f85b4cec6746f9f738e4">
+              <div class="m-doc-template">template&lt;typename E&gt;</div>
+              concept <a href="#a79b981ea4fc2f85b4cec6746f9f738e4" class="m-doc-self">NotErrorType</a>
+            </dt>
+            <dd>Concept that requires <code>E</code> is not an <code>ErrorType</code> (aka <strong>NOT</strong> derived from <code><a href="classhyperion_1_1Error.html" class="m-doc">hyperion::<wbr />Error</a></code>)</dd>
+            <dt id="aae6d18089de19f647a5f7cd1596e7d1c">
+              <div class="m-doc-template">template&lt;typename T, typename... Args&gt;</div>
+              concept <a href="#aae6d18089de19f647a5f7cd1596e7d1c" class="m-doc-self">ConstructibleFrom</a>
+            </dt>
+            <dd>Concept that requires <code>T</code> to be constructible from the parameter pack <code>Args</code></dd>
+            <dt id="a8a2d84e4570bad5a71dbb5469809f5fa">
+              <div class="m-doc-template">template&lt;typename T, typename U&gt;</div>
+              concept <a href="#a8a2d84e4570bad5a71dbb5469809f5fa" class="m-doc-self">Same</a>
+            </dt>
+            <dd>Concept that requires <code>T</code> and <code>U</code> to be the same type.</dd>
+            <dt id="a06a49e4da5d2a778afba2e6a56f9ad84">
+              <div class="m-doc-template">template&lt;typename T, typename U&gt;</div>
+              concept <a href="#a06a49e4da5d2a778afba2e6a56f9ad84" class="m-doc-self">NotSame</a>
+            </dt>
+            <dd>Concept that requires <code>T</code> and <code>U</code> to be the same type.</dd>
+            <dt id="afccc5da62d3e95164d5065a49400822e">
+              <div class="m-doc-template">template&lt;typename T, typename U = T&gt;</div>
+              concept <a href="#afccc5da62d3e95164d5065a49400822e" class="m-doc-self">InequalityComparable</a>
+            </dt>
+            <dd>Concept requiring <code>T</code> to be inequality comparable to <code>U</code> (<code>T</code> has <code>operator!=</code> for <code>U</code>)</dd>
+            <dt id="a97064c1572ca29aca7e73ef8b5086aad">
+              <div class="m-doc-template">template&lt;typename T, typename List&gt;</div>
+              concept <a href="#a97064c1572ca29aca7e73ef8b5086aad" class="m-doc-self">Contains</a>
+            </dt>
+            <dd>Concept requiring that the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, contains the type <code>T</code></dd>
+            <dt id="a198dac1184324eae8ac954b73072b29f">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a198dac1184324eae8ac954b73072b29f" class="m-doc-self">CopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is copy constructible.</dd>
+            <dt id="a11df32e5c04b08c221ca5ea87ee3e73a">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a11df32e5c04b08c221ca5ea87ee3e73a" class="m-doc-self">TriviallyCopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is trivially copy constructible.</dd>
+            <dt id="ab503d021a8e339393c6b4977c65b3200">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#ab503d021a8e339393c6b4977c65b3200" class="m-doc-self">AllCopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is copy constructible.</dd>
+            <dt id="a7bd1f0cdaee25f7e66615d471cc2a7c3">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a7bd1f0cdaee25f7e66615d471cc2a7c3" class="m-doc-self">AllTriviallyCopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is copy constructible.</dd>
+            <dt id="acd62ff1678d7361921815969e120eee8">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#acd62ff1678d7361921815969e120eee8" class="m-doc-self">CopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is copy assignable.</dd>
+            <dt id="a248685cb7e32bb1e7a784ff9bc225bb2">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a248685cb7e32bb1e7a784ff9bc225bb2" class="m-doc-self">TriviallyCopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is copy assignable.</dd>
+            <dt id="aa45f5e1fc5e6d75935353f2d1703aac2">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#aa45f5e1fc5e6d75935353f2d1703aac2" class="m-doc-self">AllCopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is copy assignable.</dd>
+            <dt id="ab6bc39dff6a58c3ff07d841ce9e31ffa">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#ab6bc39dff6a58c3ff07d841ce9e31ffa" class="m-doc-self">AllTriviallyCopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is copy assignable.</dd>
+            <dt id="a37d34b4b4854d8191f611547299764eb">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a37d34b4b4854d8191f611547299764eb" class="m-doc-self">NoexceptCopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept copy constructible.</dd>
+            <dt id="a5855c59ce0743d58718c6ec093dab4d5">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a5855c59ce0743d58718c6ec093dab4d5" class="m-doc-self">AllNoexceptCopyConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow copy constructible.</dd>
+            <dt id="abfec7160828a97bc1b4b3a36cc01e140">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#abfec7160828a97bc1b4b3a36cc01e140" class="m-doc-self">NoexceptCopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept copy assignable.</dd>
+            <dt id="a43bcb39e50ec3e184349de27e5f08d75">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a43bcb39e50ec3e184349de27e5f08d75" class="m-doc-self">AllNoexceptCopyAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow copy assignable.</dd>
+            <dt id="aaeacb730097b8c0d02f72a39d6f836ad">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#aaeacb730097b8c0d02f72a39d6f836ad" class="m-doc-self">MoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is move constructible.</dd>
+            <dt id="ab600c1cf1c3bf57c3db6a4c44d33225c">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#ab600c1cf1c3bf57c3db6a4c44d33225c" class="m-doc-self">NotMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is <strong>not</strong> move constructible.</dd>
+            <dt id="a915e2befa5776ac89f2f054b650ec634">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a915e2befa5776ac89f2f054b650ec634" class="m-doc-self">TriviallyMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is move constructible.</dd>
+            <dt id="adb1fcd49acac914ecfa52a38b3fce387">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#adb1fcd49acac914ecfa52a38b3fce387" class="m-doc-self">AllMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is move constructible.</dd>
+            <dt id="adfd70e7e5f1f4f8fabb0b9e6687d1425">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#adfd70e7e5f1f4f8fabb0b9e6687d1425" class="m-doc-self">AllTriviallyMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is move constructible.</dd>
+            <dt id="a10a972b7b17d768f992a9c5674f594e9">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a10a972b7b17d768f992a9c5674f594e9" class="m-doc-self">MoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is move assignable.</dd>
+            <dt id="a569069d884d55e43e978305413f6b7ac">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a569069d884d55e43e978305413f6b7ac" class="m-doc-self">NotMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is <strong>not</strong> move assignable.</dd>
+            <dt id="a372153dab57ee99d955937513f09fa0a">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a372153dab57ee99d955937513f09fa0a" class="m-doc-self">TriviallyMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is move assignable.</dd>
+            <dt id="a43e4c27c2866606b804f03249490ba79">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a43e4c27c2866606b804f03249490ba79" class="m-doc-self">AllMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is move assignable.</dd>
+            <dt id="a3e18860757b9dd4a6f231b164b092049">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a3e18860757b9dd4a6f231b164b092049" class="m-doc-self">AllTriviallyMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is move assignable.</dd>
+            <dt id="a92f10e59aec0eac2278ca489fb8cfa43">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a92f10e59aec0eac2278ca489fb8cfa43" class="m-doc-self">NoexceptMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept move constructible.</dd>
+            <dt id="a24b1f9758d061b518d7ad67452a58f9b">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a24b1f9758d061b518d7ad67452a58f9b" class="m-doc-self">AllNoexceptMoveConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow move constructible.</dd>
+            <dt id="a860d78bfdac384fc624318b6b8a40ed2">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a860d78bfdac384fc624318b6b8a40ed2" class="m-doc-self">NoexceptMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept move assignable.</dd>
+            <dt id="ae12802603e357380438b7a3f4dcdde57">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#ae12802603e357380438b7a3f4dcdde57" class="m-doc-self">AllNoexceptMoveAssignable</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow move assignable.</dd>
+            <dt id="a35e0ed3409f12182c8028e820b8ccd04">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a35e0ed3409f12182c8028e820b8ccd04" class="m-doc-self">Destructible</a>
+            </dt>
+            <dd>Concept that requires that T is destructible.</dd>
+            <dt id="a8c7d86080e6d0855a5201c50891c78c5">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a8c7d86080e6d0855a5201c50891c78c5" class="m-doc-self">TriviallyDestructible</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept destructible.</dd>
+            <dt id="a15e467ba4bbf786174fb2847a8bdf96e">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a15e467ba4bbf786174fb2847a8bdf96e" class="m-doc-self">NoexceptDestructible</a>
+            </dt>
+            <dd>Concept that requires that T is noexcept destructible.</dd>
+            <dt id="a34e2f6ba551c16fa3d9d077187d41eeb">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a34e2f6ba551c16fa3d9d077187d41eeb" class="m-doc-self">AllTriviallyDestructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow destructible.</dd>
+            <dt id="aa5b8f5da4358cdffdf064a8fe23dbf48">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#aa5b8f5da4358cdffdf064a8fe23dbf48" class="m-doc-self">AllNoexceptDestructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code>, is nothrow destructible.</dd>
+            <dt id="ade28206258c0837bb88934b63dc543c0">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#ade28206258c0837bb88934b63dc543c0" class="m-doc-self">Movable</a>
+            </dt>
+            <dd>Alias for <code>std::movable&lt;T&gt;</code></dd>
+            <dt id="a3f8ceb0492ea5e30610bbab528967583">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a3f8ceb0492ea5e30610bbab528967583" class="m-doc-self">NotMovable</a>
+            </dt>
+            <dd>Alias for <code>! std::movable&lt;T&gt;</code></dd>
+            <dt id="a3090b7e71ccc069e3a76b8c56dfd797b">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a3090b7e71ccc069e3a76b8c56dfd797b" class="m-doc-self">Copyable</a>
+            </dt>
+            <dd>Alias for <code>std::copyable&lt;T&gt;</code></dd>
+            <dt id="a512c9418dc3daea89ae1b9882b4c6854">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a512c9418dc3daea89ae1b9882b4c6854" class="m-doc-self">NotCopyable</a>
+            </dt>
+            <dd>Alias for <code>! std::copyable&lt;T&gt;</code></dd>
+            <dt id="abee9e7934182a3d02309db098c7d9afd">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#abee9e7934182a3d02309db098c7d9afd" class="m-doc-self">DefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that <code>T</code> is default constructible.</dd>
+            <dt id="ad12ee799279eece89eae5921444c4196">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#ad12ee799279eece89eae5921444c4196" class="m-doc-self">TriviallyDefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that <code>T</code> is trivally default constructible.</dd>
+            <dt id="a8823d0b5ca0c725039bc5ffcb444443b">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a8823d0b5ca0c725039bc5ffcb444443b" class="m-doc-self">NoexceptDefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that <code>T</code> is nothrow default constructible.</dd>
+            <dt id="ae2243f9e078e6bed7e713534d0082af8">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#ae2243f9e078e6bed7e713534d0082af8" class="m-doc-self">AllDefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code> is default constructible.</dd>
+            <dt id="aca94a6ef96cbcba5cd4cbdf42015158e">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#aca94a6ef96cbcba5cd4cbdf42015158e" class="m-doc-self">AllTriviallyDefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code> is trivially default constructible.</dd>
+            <dt id="a5d7b5a4737aa71e67cc83258f6c14af2">
+              <div class="m-doc-template">template&lt;typename List&gt;</div>
+              concept <a href="#a5d7b5a4737aa71e67cc83258f6c14af2" class="m-doc-self">AllNoexceptDefaultConstructible</a>
+            </dt>
+            <dd>Concept that requires that every type in the <code><a href="structhyperion_1_1mpl_1_1list.html" class="m-doc">mpl::<wbr />list</a></code>, <code>List</code> is nothrow default constructible.</dd>
+            <dt id="a392a6cad69f2ea3a506ed027bd8b09c8">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a392a6cad69f2ea3a506ed027bd8b09c8" class="m-doc-self">NotDefaultConstructible</a>
+            </dt>
+            <dd>Alias for <code>! std::default_initializable&lt;T&gt;</code></dd>
+            <dt id="a4507d7e2c606f6099b3d0cc45b807a54">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a4507d7e2c606f6099b3d0cc45b807a54" class="m-doc-self">CopyOrMovable</a>
+            </dt>
+            <dd>Concept requiring T is copyable or movable.</dd>
+            <dt id="a7bbcb83ef14891d0ae280897211b68a2">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a7bbcb83ef14891d0ae280897211b68a2" class="m-doc-self">NotCopyOrMovable</a>
+            </dt>
+            <dd>Concept requiring T is <strong>NOT</strong> copyable nor movable.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a5d98094a9f04fb22e082de803b8c89e6" class="m-doc">Passable</a>
+            </dt>
+            <dd>Concept that is the disjunction of most of the requirements for <code>std::semiregular</code> Requires that that type be at least one of:</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a30db0e8b68b9d91aa45230d483da30f8" class="m-doc">NotPassable</a>
+            </dt>
+            <dd>Concept that is the negation of <code>Passable&lt;T&gt;</code> Requires that the type is <strong>NONE</strong> of:</dd>
+            <dt id="a4413f005a7c1fd4359915737a1d7893a">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a4413f005a7c1fd4359915737a1d7893a" class="m-doc-self">SemiRegular</a>
+            </dt>
+            <dd>Alias for <code>std::semiregular&lt;T&gt;</code></dd>
+            <dt id="a2a7adc7eab9f78c2101817307a9f05fa">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              concept <a href="#a2a7adc7eab9f78c2101817307a9f05fa" class="m-doc-self">NotSemiRegular</a>
+            </dt>
+            <dd>Alias for <code>! std::semiregular&lt;T&gt;</code></dd>
+            <dt id="a1a950923353df5d6f91d301961c4983e">
+              <div class="m-doc-template">template&lt;typename T, typename... Args&gt;</div>
+              concept <a href="#a1a950923353df5d6f91d301961c4983e" class="m-doc-self">Invocable</a>
+            </dt>
+            <dd>Alias for <code>std::is_invocable_v&lt;T, Args...&gt;</code></dd>
+            <dt id="a86ec2b403bf68a7fb0356443190ffbec">
+              <div class="m-doc-template">template&lt;typename Return, typename T, typename... Args&gt;</div>
+              concept <a href="#a86ec2b403bf68a7fb0356443190ffbec" class="m-doc-self">InvocableR</a>
+            </dt>
+            <dd>Alias for <code>std::is_invocable_r_v&lt;Return, T, Args...&gt;</code></dd>
+            <dt id="a8dfd780265d3ef6d2096c8b1c97b5fb4">
+              <div class="m-doc-template">template&lt;typename Return, typename Func, typename Arg&gt;</div>
+              concept <a href="#a8dfd780265d3ef6d2096c8b1c97b5fb4" class="m-doc-self">InvocableRConst</a>
+            </dt>
+            <dd>Concept that requires that <code>Func</code> is invocable for <code>Arg</code> or <code>const Arg&amp;</code> with the given return type <code>Return</code></dd>
+            <dt id="acc9f2ebd25534469b7a855ce922bc5e5">
+              <div class="m-doc-template">template&lt;typename Return, typename Func, typename Arg&gt;</div>
+              concept <a href="#acc9f2ebd25534469b7a855ce922bc5e5" class="m-doc-self">InvocableRMut</a>
+            </dt>
+            <dd>Concept that requires that <code>Func</code> is invocable for <code>Arg</code>, <code>Arg&amp;</code>, <code>const Arg&amp;</code>, or <code>Arg&amp;&amp;</code> with the given return type <code>Return</code></dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Variable documentation</h2>
+          <section class="m-doc-details" id="a5d98094a9f04fb22e082de803b8c89e6"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename T&gt;
+              </div>
+              concept hyperion::<wbr />concepts::<wbr /><a href="#a5d98094a9f04fb22e082de803b8c89e6" class="m-doc-self">Passable</a>
+            </h3>
+            <p>Concept that is the disjunction of most of the requirements for <code>std::semiregular</code> Requires that that type be at least one of:</p>
+<ul><li>copyable</li><li>movable</li><li>a reference</li><li>a pointer</li></ul>
+          </div></section>
+          <section class="m-doc-details" id="a30db0e8b68b9d91aa45230d483da30f8"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename T&gt;
+              </div>
+              concept hyperion::<wbr />concepts::<wbr /><a href="#a30db0e8b68b9d91aa45230d483da30f8" class="m-doc-self">NotPassable</a>
+            </h3>
+            <p>Concept that is the negation of <code>Passable&lt;T&gt;</code> Requires that the type is <strong>NONE</strong> of:</p>
+<ul><li>copyable</li><li>movable</li><li>a reference</li><li>a pointer</li></ul>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

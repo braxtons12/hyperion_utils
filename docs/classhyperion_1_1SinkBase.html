@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HyperionUtils A
+  <title>hyperion::SinkBase class | HyperionUtils A
 Hyperion
 Engine
 library</title>
@@ -31,7 +31,7 @@ library</span></a>
         <div class="m-row">
           <ol class="m-col-t-6 m-col-m-none">
             <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html" id="m-navbar-current">Namespaces</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
           </ol>
           <ol class="m-col-t-6 m-col-m-none" start="3">
             <li><a href="annotated.html">Classes</a></li>
@@ -49,34 +49,89 @@ library</span></a>
   <div class="m-container m-container-inflatable">
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
-        <h1>Namespaces</h1>
-        <ul class="m-doc">
-          <li class="m-doc-collapsible">
-            <a href="#" onclick="return toggle(this)">namespace</a> <a href="namespacehyperion.html" class="m-doc">hyperion</a> <span class="m-doc">Collection of aliases and literal suffixes for builtin integral and floating point types.</span>
-            <ul class="m-doc">
-              <li>namespace <a href="namespacehyperion_1_1concepts.html" class="m-doc">concepts</a> <span class="m-doc">This is a small collection of simple Concepts useful for requiring basic attributes of a type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1detail.html" class="m-doc">detail</a> <span class="m-doc">Implementation of <code>allocate_unique</code> for <code>std::unique_ptr</code>. Should be analogous to.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1mpl.html" class="m-doc">mpl</a> <span class="m-doc">Set of metaprogramming functions to determine if a (normal) function can be called on the with a parameter of the given type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1type__traits.html" class="m-doc">type_traits</a> <span class="m-doc">This is a small collection of basic type traits.</span></li>
-            </ul>
-          </li>
-        </ul>
-        <script>
-        function toggle(e) {
-            e.parentElement.className = e.parentElement.className == 'm-doc-collapsible' ?
-                'm-doc-expansible' : 'm-doc-collapsible';
-            return false;
-        }
-        /* Collapse all nodes marked as such. Doing it via JS instead of
-           directly in markup so disabling it doesn't harm usability. The list
-           is somehow regenerated on every iteration and shrinks as I change
-           the classes. It's not documented anywhere and I'm not sure if this
-           is the same across browsers, so I am going backwards in that list to
-           be sure. */
-        var collapsed = document.getElementsByClassName("collapsed");
-        for(var i = collapsed.length - 1; i >= 0; --i)
-            collapsed[i].className = 'm-doc-expansible';
-        </script>
+        <h1>
+          <div class="m-doc-template">template&lt;typename T&gt;</div>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>SinkBase <span class="m-thin">class</span>
+        </h1>
+        <p>Base CRTP for logging sink types.</p>
+        <table class="m-table m-fullwidth m-flat">
+          <thead>
+            <tr><th colspan="2">Template parameters</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 1%">T</td>
+              <td>- The sink type</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a05355e3968a4c5b4e911ca43d330c66f" class="m-doc">sink</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Entry.html" class="m-doc">Entry</a>&amp; entry) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd><a href="classhyperion_1_1Sinks.html" class="m-doc">Sinks</a> the given log entry, writing it to the output location associated with this sink.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a25620f4d7f2df00e83b7c2fdba92351e" class="m-doc">sink</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Entry.html" class="m-doc">Entry</a>&amp;&amp; entry) noexcept -&gt; void -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd><a href="classhyperion_1_1Sinks.html" class="m-doc">Sinks</a> the given log entry, writing it to the output location associated with this sink.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="a05355e3968a4c5b4e911ca43d330c66f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />SinkBase&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a05355e3968a4c5b4e911ca43d330c66f" class="m-doc-self">sink</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Entry.html" class="m-doc">Entry</a>&amp; entry) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p><a href="classhyperion_1_1Sinks.html" class="m-doc">Sinks</a> the given log entry, writing it to the output location associated with this sink.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">entry</td>
+                  <td>- The log entry to sink</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a25620f4d7f2df00e83b7c2fdba92351e"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;typename T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />SinkBase&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a25620f4d7f2df00e83b7c2fdba92351e" class="m-doc-self">sink</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Entry.html" class="m-doc">Entry</a>&amp;&amp; entry) noexcept -&gt; void <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p><a href="classhyperion_1_1Sinks.html" class="m-doc">Sinks</a> the given log entry, writing it to the output location associated with this sink.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">entry</td>
+                  <td>- The log entry to sink</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></section>
+        </section>
       </div>
     </div>
   </div>

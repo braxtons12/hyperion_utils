@@ -19,17 +19,6 @@ namespace hyperion {
 		concepts::ErrorType, concepts::Invocable, concepts::InvocableR, concepts::Passable,
 		concepts::Destructible, concepts::InvocableRConst, concepts::InvocableRMut;
 
-	/// @brief Represents an optional value.
-	///
-	/// Every `Option` is either `Some` and contains a value, or `None`, and does
-	/// not. Useful for things such as:
-	/// * * Optional members/fields
-	/// * * Members/fields that can be loaned or "taken"
-	/// * * Optional function arguments
-	/// * * Nullable types/pointers
-	/// * * Return values for functions not defined over their entire input range
-	///
-	/// @tparam T - The type of the potentially-contained value
 	template<NotReference T>
 	class Option;
 

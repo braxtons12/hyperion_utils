@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HyperionUtils A
+  <title>hyperion::mpl::detail::at_impl&lt;I, Size, Current&gt; struct | HyperionUtils A
 Hyperion
 Engine
 library</title>
@@ -31,7 +31,7 @@ library</span></a>
         <div class="m-row">
           <ol class="m-col-t-6 m-col-m-none">
             <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html" id="m-navbar-current">Namespaces</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
           </ol>
           <ol class="m-col-t-6 m-col-m-none" start="3">
             <li><a href="annotated.html">Classes</a></li>
@@ -49,34 +49,11 @@ library</span></a>
   <div class="m-container m-container-inflatable">
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
-        <h1>Namespaces</h1>
-        <ul class="m-doc">
-          <li class="m-doc-collapsible">
-            <a href="#" onclick="return toggle(this)">namespace</a> <a href="namespacehyperion.html" class="m-doc">hyperion</a> <span class="m-doc">Collection of aliases and literal suffixes for builtin integral and floating point types.</span>
-            <ul class="m-doc">
-              <li>namespace <a href="namespacehyperion_1_1concepts.html" class="m-doc">concepts</a> <span class="m-doc">This is a small collection of simple Concepts useful for requiring basic attributes of a type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1detail.html" class="m-doc">detail</a> <span class="m-doc">Implementation of <code>allocate_unique</code> for <code>std::unique_ptr</code>. Should be analogous to.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1mpl.html" class="m-doc">mpl</a> <span class="m-doc">Set of metaprogramming functions to determine if a (normal) function can be called on the with a parameter of the given type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1type__traits.html" class="m-doc">type_traits</a> <span class="m-doc">This is a small collection of basic type traits.</span></li>
-            </ul>
-          </li>
-        </ul>
-        <script>
-        function toggle(e) {
-            e.parentElement.className = e.parentElement.className == 'm-doc-collapsible' ?
-                'm-doc-expansible' : 'm-doc-collapsible';
-            return false;
-        }
-        /* Collapse all nodes marked as such. Doing it via JS instead of
-           directly in markup so disabling it doesn't harm usability. The list
-           is somehow regenerated on every iteration and shrinks as I change
-           the classes. It's not documented anywhere and I'm not sure if this
-           is the same across browsers, so I am going backwards in that list to
-           be sure. */
-        var collapsed = document.getElementsByClassName("collapsed");
-        for(var i = collapsed.length - 1; i >= 0; --i)
-            collapsed[i].className = 'm-doc-expansible';
-        </script>
+        <h1>
+          <div class="m-doc-template">template&lt;usize I, usize Current, usize Size&gt;</div>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehyperion_1_1mpl.html">mpl</a>::<wbr/></span><span class="m-breadcrumb"><a href="namespacehyperion_1_1mpl_1_1detail.html">detail</a>::<wbr/></span>at_impl&lt;I, Size, Current&gt; <span class="m-thin">struct</span>
+        </h1>
+<p>we should never reach this case, as the static_assert in the other specializations should trigger before hand</p>
       </div>
     </div>
   </div>

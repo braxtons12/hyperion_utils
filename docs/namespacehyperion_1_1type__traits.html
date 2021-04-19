@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HyperionUtils A
+  <title>hyperion::type_traits namespace | HyperionUtils A
 Hyperion
 Engine
 library</title>
@@ -31,7 +31,7 @@ library</span></a>
         <div class="m-row">
           <ol class="m-col-t-6 m-col-m-none">
             <li><a href="pages.html">Pages</a></li>
-            <li><a href="namespaces.html" id="m-navbar-current">Namespaces</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
           </ol>
           <ol class="m-col-t-6 m-col-m-none" start="3">
             <li><a href="annotated.html">Classes</a></li>
@@ -49,34 +49,67 @@ library</span></a>
   <div class="m-container m-container-inflatable">
     <div class="m-row">
       <div class="m-col-l-10 m-push-l-1">
-        <h1>Namespaces</h1>
-        <ul class="m-doc">
-          <li class="m-doc-collapsible">
-            <a href="#" onclick="return toggle(this)">namespace</a> <a href="namespacehyperion.html" class="m-doc">hyperion</a> <span class="m-doc">Collection of aliases and literal suffixes for builtin integral and floating point types.</span>
-            <ul class="m-doc">
-              <li>namespace <a href="namespacehyperion_1_1concepts.html" class="m-doc">concepts</a> <span class="m-doc">This is a small collection of simple Concepts useful for requiring basic attributes of a type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1detail.html" class="m-doc">detail</a> <span class="m-doc">Implementation of <code>allocate_unique</code> for <code>std::unique_ptr</code>. Should be analogous to.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1mpl.html" class="m-doc">mpl</a> <span class="m-doc">Set of metaprogramming functions to determine if a (normal) function can be called on the with a parameter of the given type.</span></li>
-              <li>namespace <a href="namespacehyperion_1_1type__traits.html" class="m-doc">type_traits</a> <span class="m-doc">This is a small collection of basic type traits.</span></li>
-            </ul>
-          </li>
-        </ul>
-        <script>
-        function toggle(e) {
-            e.parentElement.className = e.parentElement.className == 'm-doc-collapsible' ?
-                'm-doc-expansible' : 'm-doc-collapsible';
-            return false;
-        }
-        /* Collapse all nodes marked as such. Doing it via JS instead of
-           directly in markup so disabling it doesn't harm usability. The list
-           is somehow regenerated on every iteration and shrinks as I change
-           the classes. It's not documented anywhere and I'm not sure if this
-           is the same across browsers, so I am going backwards in that list to
-           be sure. */
-        var collapsed = document.getElementsByClassName("collapsed");
-        for(var i = collapsed.length - 1; i >= 0; --i)
-            collapsed[i].className = 'm-doc-expansible';
-        </script>
+        <h1>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>type_traits <span class="m-thin">namespace</span>
+        </h1>
+        <p>This is a small collection of basic type traits.</p>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#nested-classes">Classes</a></li>
+                <li><a href="#var-members">Variables</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <section id="nested-classes">
+          <h2><a href="#nested-classes">Classes</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename U = T, typename = std::void_t&lt;&gt;&gt;</div>
+              struct <a href="structhyperion_1_1type__traits_1_1has__not__equal.html" class="m-doc">has_not_equal</a>
+            </dt>
+            <dd>Type Trait to determine if <code>T</code> has the <code>!=</code> operator comparing to type <code>U</code>, where <code>U</code> defaults to <code>T</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T, typename U&gt;</div>
+              struct <a href="structhyperion_1_1type__traits_1_1has__not__equal_3_01T_00_01U_00_01std_1_1void__t_3_01decltype_b0691ee01be077a9be8bb17924648db6.html" class="m-doc">has_not_equal&lt;T, U, std::void_t&lt;decltype(std::declval&lt;T&gt;() !=std::declval&lt;U&gt;())&gt;&gt;</a>
+            </dt>
+            <dd>Type Trait to determine if <code>T</code> has the <code>!=</code> operator comparing to type <code>U</code>, where <code>U</code> defaults to <code>T</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              struct <a href="structhyperion_1_1type__traits_1_1is__copy__move__or__pointer.html" class="m-doc">is_copy_move_or_pointer</a>
+            </dt>
+            <dd>Type Trait to determine if <code>T</code> is copyable, movable, or a pointer type.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              struct <a href="structhyperion_1_1type__traits_1_1is__copy__or__move.html" class="m-doc">is_copy_or_move</a>
+            </dt>
+            <dd>Type Trait to determine if <code>T</code> is copyable or movable.</dd>
+          </dl>
+        </section>
+        <section id="var-members">
+          <h2><a href="#var-members">Variables</a></h2>
+          <dl class="m-doc">
+            <dt id="ad1ce9f6c37c99e5382efa27f2e7f9a7e">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              auto <a href="#ad1ce9f6c37c99e5382efa27f2e7f9a7e" class="m-doc-self">is_copy_or_move_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>value of Type Trait <code><a href="structhyperion_1_1type__traits_1_1is__copy__or__move.html" class="m-doc">is_<wbr />copy_<wbr />or_<wbr />move</a></code></dd>
+            <dt id="a4df2c354d932b16e7565a8640632c127">
+              <div class="m-doc-template">template&lt;typename T&gt;</div>
+              auto <a href="#a4df2c354d932b16e7565a8640632c127" class="m-doc-self">is_copy_move_or_pointer_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>value of Type Trait <code><a href="structhyperion_1_1type__traits_1_1is__copy__move__or__pointer.html" class="m-doc">is_<wbr />copy_<wbr />move_<wbr />or_<wbr />pointer</a></code></dd>
+            <dt id="a2aacd44f7fafe14f0a6fb99e1a43ac1f">
+              <div class="m-doc-template">template&lt;typename T, typename U = T&gt;</div>
+              static auto <a href="#a2aacd44f7fafe14f0a6fb99e1a43ac1f" class="m-doc-self">has_not_equal_v</a> <span class="m-label m-flat m-primary">constexpr</span>
+            </dt>
+            <dd>Value of Type Trait <code><a href="structhyperion_1_1type__traits_1_1has__not__equal.html" class="m-doc">has_<wbr />not_<wbr />equal</a></code></dd>
+          </dl>
+        </section>
       </div>
     </div>
   </div>

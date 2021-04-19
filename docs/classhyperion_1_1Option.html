@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>hyperion::Option class | HyperionUtils A
+Hyperion
+Engine
+library</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i%7CSource+Code+Pro:400,400i,600" />
+  <link rel="stylesheet" href="m-dark+documentation.compiled.css" />
+  <link rel="icon" href="favicon-dark.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#22272e" />
+</head>
+<body>
+<header><nav id="navigation">
+  <div class="m-container">
+    <div class="m-row">
+      <a href="index.html" id="m-navbar-brand" class="m-col-t-8 m-col-m-none m-left-m">HyperionUtils <span class="m-thin">A
+Hyperion
+Engine
+library</span></a>
+      <div class="m-col-t-4 m-hide-m m-text-right m-nopadr">
+        <a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+          <path id="m-doc-search-icon-path" d="m6 0c-3.31 0-6 2.69-6 6 0 3.31 2.69 6 6 6 1.49 0 2.85-0.541 3.89-1.44-0.0164 0.338 0.147 0.759 0.5 1.15l3.22 3.79c0.552 0.614 1.45 0.665 2 0.115 0.55-0.55 0.499-1.45-0.115-2l-3.79-3.22c-0.392-0.353-0.812-0.515-1.15-0.5 0.895-1.05 1.44-2.41 1.44-3.89 0-3.31-2.69-6-6-6zm0 1.56a4.44 4.44 0 0 1 4.44 4.44 4.44 4.44 0 0 1-4.44 4.44 4.44 4.44 0 0 1-4.44-4.44 4.44 4.44 0 0 1 4.44-4.44z"/>
+        </svg></a>
+        <a id="m-navbar-show" href="#navigation" title="Show navigation"></a>
+        <a id="m-navbar-hide" href="#" title="Hide navigation"></a>
+      </div>
+      <div id="m-navbar-collapse" class="m-col-t-12 m-show-m m-col-m-none m-right-m">
+        <div class="m-row">
+          <ol class="m-col-t-6 m-col-m-none">
+            <li><a href="pages.html">Pages</a></li>
+            <li><a href="namespaces.html">Namespaces</a></li>
+          </ol>
+          <ol class="m-col-t-6 m-col-m-none" start="3">
+            <li><a href="annotated.html">Classes</a></li>
+            <li><a href="files.html">Files</a></li>
+            <li class="m-show-m"><a href="#search" class="m-doc-search-icon" title="Search" onclick="return showSearch()"><svg style="height: 0.9rem;" viewBox="0 0 16 16">
+              <use href="#m-doc-search-icon-path" />
+            </svg></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav></header>
+<main><article>
+  <div class="m-container m-container-inflatable">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <h1>
+          <div class="m-doc-template">template&lt;NotReference T&gt;</div>
+          <span class="m-breadcrumb"><a href="namespacehyperion.html">hyperion</a>::<wbr/></span>Option <span class="m-thin">class</span>
+        </h1>
+        <p>Represents an optional value.</p>
+        <table class="m-table m-fullwidth m-flat">
+          <thead>
+            <tr><th colspan="2">Template parameters</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 1%">T</td>
+              <td>- The type of the potentially-contained value</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="m-block m-default">
+          <h3>Contents</h3>
+          <ul>
+            <li>
+              Reference
+              <ul>
+                <li><a href="#pub-static-methods">Public static functions</a></li>
+                <li><a href="#typeless-methods">Constructors, destructors, conversion operators</a></li>
+                <li><a href="#pub-methods">Public functions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+<p>Every <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> is either <code>Some</code> and contains a value, or <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>, and does not. Useful for things such as:</p><ul><li>* Optional members/fields</li><li>* Members/fields that can be loaned or &quot;taken&quot;</li><li>* Optional function arguments</li><li>* Nullable types/pointers</li><li>* Return values for functions not defined over their entire input range</li></ul><aside class="m-note m-info"><h4>Note</h4><p>While <code>T</code> can be a pointer, <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> will <strong>NOT</strong> take ownership of any pointer it contains, and as such it is the responsibility of the user to call the destructor on a pointer contained in an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. To have an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> take ownership of a pointer, use <code>std::unique_ptr</code> instead of a raw pointer.</p><p><code>T</code> cannot be a reference. To make an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> store a reference, use <code>std::reference_wrapper</code> instead.</p></aside>
+        <section id="pub-static-methods">
+          <h2><a href="#pub-static-methods">Public static functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#acf3ee67b30ecff0d7af9e9d00b87fc62" class="m-doc">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant containing <code>some</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#a99156fa0c432fcac743d4a24537ad0a1" class="m-doc">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant containing <code>some</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">static auto <a href="#a6c46322f09e70c426cc20362f7aec271" class="m-doc">Some</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant. Constructs a <code>T</code> in place in the <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> from the provided arguments, <code>args</code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#a2a10c74f856dffb9ab89d88e96a91239" class="m-doc">None</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1None.html" class="m-doc">None</a> none) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">static auto <a href="#aa0908245e13ead72c6bd36d840c6a0a0" class="m-doc">None</a>(</span><span class="m-doc-wrap">) noexcept -&gt; Option -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</dd>
+          </dl>
+        </section>
+        <section id="typeless-methods">
+          <h2><a href="#typeless-methods">Constructors, destructors, conversion operators</a></h2>
+          <dl class="m-doc">
+            <dt id="ab369798eda7cfaf53253c5b77f1e07e9">
+              <span class="m-doc-wrap-bumper"><a href="#ab369798eda7cfaf53253c5b77f1e07e9" class="m-doc-self">Option</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-info">defaulted</span> <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Default Constructor.</dd>
+            <dt id="a8af4bc92b4280493d57531275fd9a8eb">
+              <span class="m-doc-wrap-bumper"><a href="#a8af4bc92b4280493d57531275fd9a8eb" class="m-doc-self">Option</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1None.html" class="m-doc">None</a> none) <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as a <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></dd>
+            <dt id="a8db5f30af3a8d9b03738cb2e66176569">
+              <span class="m-doc-wrap-bumper"><a href="#a8db5f30af3a8d9b03738cb2e66176569" class="m-doc-self">Option</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp; option) noexcept requires CopyAssignable&lt; T &gt; <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Copy Constructor.</dd>
+            <dt id="a46f3129ebce391b18ba6c359d75e868a">
+              <span class="m-doc-wrap-bumper"><a href="#a46f3129ebce391b18ba6c359d75e868a" class="m-doc-self">Option</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp;&amp; option) noexcept requires MoveAssignable&lt; T &gt; <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Move Constructor.</dd>
+            <dt id="a58edb6a1e0d5f1114ff65f9292a3a5e4">
+              <span class="m-doc-wrap-bumper"><a href="#a58edb6a1e0d5f1114ff65f9292a3a5e4" class="m-doc-self">~Option</a>(</span><span class="m-doc-wrap">) <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Destructor.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper"><a href="#accacdc401dde8c437e864caaf36dea15" class="m-doc">operator bool</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-flat m-info">explicit</span>  <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Boolean conversion operator. Returns true if this is the <code>Some</code> variant.</dd>
+          </dl>
+        </section>
+        <section id="pub-methods">
+          <h2><a href="#pub-methods">Public functions</a></h2>
+          <dl class="m-doc">
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4bbe3553a0024e8f89b681af0d06437c" class="m-doc">is_some</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns whether this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> is the <code>Some</code> variant.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac7c6128cec6ea636dadfc6089d3f312c" class="m-doc">is_none</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns whether this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> is the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F, typename U = decltype(std::declval&lt;F&gt;()(std::declval&lt;const T&amp;&gt;()))&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a3f18bf18fb82125368aa2e9e262d14bd" class="m-doc">map</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func) const noexcept -&gt; Option&lt; U &gt; -&gt; requires InvocableRConst&lt;U, F, T&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to another one, with a potentially different <code>Some</code> type.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F, typename U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a955861cf52596a3ef0f0951382aa1b17" class="m-doc">map_or</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U -&gt; requires InvocableRConst&lt;U, F, T&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code>U</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F, typename G, typename U = decltype(std::declval&lt;F&gt;()(std::declval&lt;const T&amp;&gt;())), typename V = decltype(std::declval&lt;G&gt;()())&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a0956e2bf83a4897ba1f3ad501cddb369" class="m-doc">map_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func,
+              G&amp;&amp; default_generator) const noexcept -&gt; U -&gt; requires Same&lt;U, V&gt; &amp;&amp; InvocableRConst&lt;U, F, T&gt; &amp;&amp; InvocableR&lt;V, G&gt; auto</span>
+            </dt>
+            <dd>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code>U</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;NotReference U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ab15041e4f367bf59721e7e6c37261d76" class="m-doc">and_then</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;&amp; option) const noexcept -&gt; Option&lt; U &gt; -&gt; auto</span>
+            </dt>
+            <dd>Returns <code>option</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;NotReference U&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a6a3565643415996174f99ab3752d3f25" class="m-doc">and_then</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;&amp;&amp; option) const noexcept -&gt; Option&lt; U &gt; -&gt; auto</span>
+            </dt>
+            <dd>Returns <code>option</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F, NotReference U = decltype(std::declval&lt;decltype(std::declval&lt;F&gt;(std::declval&lt;T&amp;&gt;()))&gt;().<a href="classhyperion_1_1Option.html#adfde3d583cf205c5746cde34b8d05a7a" class="m-doc">unwrap</a>())&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a9e599b0b26324c5ac61f31a30743bf0f" class="m-doc">and_then</a>(</span><span class="m-doc-wrap">F&amp;&amp; func) noexcept -&gt; Option&lt; U &gt; -&gt; requires InvocableRMut&lt;<a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;, F, T&gt; auto</span>
+            </dt>
+            <dd>Continues control flow into <code>func</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac6fb50ee1697b3b9267070c3f2ab2aa8" class="m-doc">or_else</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp; option) const noexcept -&gt; Option -&gt; auto</span>
+            </dt>
+            <dd>Returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> if this is the <code>Some</code> variant, otherwise returns <code>option</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a7a3cd8177f8c45dd6748fa8309de6abe" class="m-doc">or_else</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp;&amp; option) const noexcept -&gt; Option -&gt; auto</span>
+            </dt>
+            <dd>Returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> if this is the <code>Some</code> variant, otherwise returns <code>option</code></dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a5fd5f611a9b05a70b7fe3b4d308461b2" class="m-doc">or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; func) const noexcept -&gt; Option -&gt; requires InvocableR&lt;<a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;, F&gt; auto</span>
+            </dt>
+            <dd>Continues control flow into <code>func</code> if this is the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant, otherwise returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a512f551e2d1697fded715bb32d384f77" class="m-doc">ok_or</a>(</span><span class="m-doc-wrap">ErrorType auto&amp;&amp; error) &gt;&gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code> consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;ErrorType E, typename... Args&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#aee696ad41ae49b8617b7c1bfa301c7a0" class="m-doc">ok_or</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; Result&lt; T, E &gt; -&gt; requires constexpr ConstructibleFrom&lt;E, Args...&gt; auto</span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code> consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F, typename E = decltype(std::declval&lt;F&gt;()())&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#ac44df0cee0086123b3774e26f971a54f" class="m-doc">ok_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; error_generator) noexcept -&gt; Result&lt; T, E &gt; -&gt; requires InvocableR&lt;E, F&gt; &amp;&amp; ErrorType&lt;E&gt; auto</span>
+            </dt>
+            <dd>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#adfde3d583cf205c5746cde34b8d05a7a" class="m-doc">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a28effdf46d8c40a82e394bc895341fea" class="m-doc">unwrap_or</a>(</span><span class="m-doc-wrap">const T&amp; default_value) noexcept -&gt; T -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a535a0c06d66f39245077c680c9fba1ba" class="m-doc">unwrap_or</a>(</span><span class="m-doc-wrap">T&amp;&amp; default_value) noexcept -&gt; T -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <div class="m-doc-template">template&lt;typename F&gt;</div>
+              <span class="m-doc-wrap-bumper">auto <a href="#a19695886c485682848d1b65b88bc984f" class="m-doc">unwrap_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; default_generator) noexcept -&gt; T -&gt; requires InvocableR&lt;T, F&gt; auto</span>
+            </dt>
+            <dd>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#a4b826495ec2500920e30b0e4f6803374" class="m-doc">as_mut</a>(</span><span class="m-doc-wrap">) -&gt; auto <span class="m-label m-flat m-primary">constexpr</span> <span class="m-label m-flat m-success">noexcept</span></span>
+            </dt>
+            <dd>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the non-const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#ad61009acdc068ae3c7b59b639e3ffd3a" class="m-doc">as_const</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; const T *requires NotPointer&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></dd>
+            <dt>
+              <span class="m-doc-wrap-bumper">auto <a href="#aee0498383c0db84dc332cac13920d3f6" class="m-doc">as_const</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; T const requires Pointer&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></dd>
+            <dt id="abc9fa8e629a4cb3c60d0a5d6871e62a2">
+              <span class="m-doc-wrap-bumper">auto <a href="#abc9fa8e629a4cb3c60d0a5d6871e62a2" class="m-doc-self">operator=</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp; option) -&gt; Option &amp;requires CopyAssignable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Copy assignment operator.</dd>
+            <dt id="af93f4e1eb67b0671f342ce5a05dfabfb">
+              <span class="m-doc-wrap-bumper">auto <a href="#af93f4e1eb67b0671f342ce5a05dfabfb" class="m-doc-self">operator=</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp;&amp; option) noexcept -&gt; Option &amp;requires MoveAssignable&lt; T &gt; -&gt; auto <span class="m-label m-flat m-primary">constexpr</span></span>
+            </dt>
+            <dd>Move assignment operator.</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Function documentation</h2>
+          <section class="m-doc-details" id="acf3ee67b30ecff0d7af9e9d00b87fc62"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#acf3ee67b30ecff0d7af9e9d00b87fc62" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">const T&amp; some) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant containing <code>some</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(some)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a99156fa0c432fcac743d4a24537ad0a1"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a99156fa0c432fcac743d4a24537ad0a1" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">T&amp;&amp; some) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant containing <code>some</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">some</td>
+                  <td>- The value to store in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(some)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a6c46322f09e70c426cc20362f7aec271"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a6c46322f09e70c426cc20362f7aec271" class="m-doc-self">Some</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code>Some</code> variant. Constructs a <code>T</code> in place in the <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> from the provided arguments, <code>args</code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">Args</td>
+                  <td>- The types of the arguments to pass to the <code>T</code> constructor</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>args</td>
+                  <td>- The arguments to pass to the <code>T</code> constructor</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(T)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a2a10c74f856dffb9ab89d88e96a91239"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a2a10c74f856dffb9ab89d88e96a91239" class="m-doc-self">None</a>(</span><span class="m-doc-wrap"><a href="structhyperion_1_1None.html" class="m-doc">None</a> none) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td><code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="aa0908245e13ead72c6bd36d840c6a0a0"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">static auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aa0908245e13ead72c6bd36d840c6a0a0" class="m-doc-self">None</a>(</span><span class="m-doc-wrap">) noexcept -&gt; Option <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Constructs an <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> as the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td><code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="accacdc401dde8c437e864caaf36dea15"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper"> hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#accacdc401dde8c437e864caaf36dea15" class="m-doc-self">operator bool</a>(</span><span class="m-doc-wrap">) const <span class="m-label m-info">explicit</span>  <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Boolean conversion operator. Returns true if this is the <code>Some</code> variant.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>true if this is <code>Some</code>, false otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a4bbe3553a0024e8f89b681af0d06437c"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4bbe3553a0024e8f89b681af0d06437c" class="m-doc-self">is_some</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns whether this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> is the <code>Some</code> variant.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>true if this is <code>Some</code>, false otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac7c6128cec6ea636dadfc6089d3f312c"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac7c6128cec6ea636dadfc6089d3f312c" class="m-doc-self">is_none</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; bool <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns whether this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> is the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>true if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>, false otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a3f18bf18fb82125368aa2e9e262d14bd"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F, typename U = decltype(std::declval&lt;F&gt;()(std::declval&lt;const T&amp;&gt;()))&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableRConst&lt;U, F, T&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a3f18bf18fb82125368aa2e9e262d14bd" class="m-doc-self">map</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func) const noexcept -&gt; Option&lt; U &gt;</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to another one, with a potentially different <code>Some</code> type.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The type of the invocable mapping <code>T</code></td>
+                </tr>
+                <tr>
+                  <td>U</td>
+                  <td>- The type that <code>F</code> maps <code>T</code> to. This is deduced. Do not explicitly provide this.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The invocable that performs the mapping</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(U)</code> if this is Some, or <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code>Some(map_func(T))</code>. Otherwise, this returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></p>
+          </div></section>
+          <section class="m-doc-details" id="a955861cf52596a3ef0f0951382aa1b17"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F, typename U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableRConst&lt;U, F, T&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a955861cf52596a3ef0f0951382aa1b17" class="m-doc-self">map_or</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func,
+              U&amp;&amp; default_value) const noexcept -&gt; U</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code>U</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The type of the invocable mapping <code>T</code></td>
+                </tr>
+                <tr>
+                  <td>U</td>
+                  <td>- The type that <code>F</code> maps <code>T</code> to. This is deduced. Do not explicitly provide this.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The invocable that performs the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_value</td>
+                  <td>- The default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code>map_func(T)</code>. Otherwise, this returns <code>default_value</code></p>
+          </div></section>
+          <section class="m-doc-details" id="a0956e2bf83a4897ba1f3ad501cddb369"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F, typename G, typename U = decltype(std::declval&lt;F&gt;()(std::declval&lt;const T&amp;&gt;())), typename V = decltype(std::declval&lt;G&gt;()())&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires Same&lt;U, V&gt; &amp;&amp; InvocableRConst&lt;U, F, T&gt; &amp;&amp; InvocableR&lt;V, G&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a0956e2bf83a4897ba1f3ad501cddb369" class="m-doc-self">map_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; map_func,
+              G&amp;&amp; default_generator) const noexcept -&gt; U</span></span>
+            </h3>
+            <p>Maps this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code>U</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The type of the invocable mapping <code>T</code></td>
+                </tr>
+                <tr>
+                  <td>G</td>
+                  <td>- The type of the invocable that generates the default value</td>
+                </tr>
+                <tr>
+                  <td>U</td>
+                  <td>- The type that <code>F</code> maps <code>T</code> to. This is deduced. Do not explicitly provide this.</td>
+                </tr>
+                <tr>
+                  <td>V</td>
+                  <td>- The type that <code>G</code> generates. This is deduced. Do not explicitly provide this.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>map_func</td>
+                  <td>- The function to perform the mapping</td>
+                </tr>
+                <tr>
+                  <td>default_generator</td>
+                  <td>- The function to generate the default value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The result of the mapping if this is <code>Some</code>, or the value returned by <code>default_generator</code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code>map_func(T)</code>. Otherwise, this returns <code>default_generator()</code></p><aside class="m-note m-info"><h4>Note</h4><p><code>map_func</code> and <code>default_generator</code> must return the same type</p></aside>
+          </div></section>
+          <section class="m-doc-details" id="ab15041e4f367bf59721e7e6c37261d76"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;NotReference U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ab15041e4f367bf59721e7e6c37261d76" class="m-doc-self">and_then</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;&amp; option) const noexcept -&gt; Option&lt; U &gt;</span></span>
+            </h3>
+            <p>Returns <code>option</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type of the <code>Some</code> variant of <code>option</code></td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>option</td>
+                  <td>- The next <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to potentially use</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>option</code> if this is <code>Some</code>, <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a6a3565643415996174f99ab3752d3f25"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;NotReference U&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a6a3565643415996174f99ab3752d3f25" class="m-doc-self">and_then</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;&amp;&amp; option) const noexcept -&gt; Option&lt; U &gt;</span></span>
+            </h3>
+            <p>Returns <code>option</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">U</td>
+                  <td>- The type of the <code>Some</code> variant of <code>option</code></td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>option</td>
+                  <td>- The next <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to potentially use</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>option</code> if this is <code>Some</code>, <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> otherwise</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a9e599b0b26324c5ac61f31a30743bf0f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F, NotReference U = decltype(std::declval&lt;decltype(std::declval&lt;F&gt;(std::declval&lt;T&amp;&gt;()))&gt;().<a href="classhyperion_1_1Option.html#adfde3d583cf205c5746cde34b8d05a7a" class="m-doc">unwrap</a>())&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableRMut&lt;<a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;U&gt;, F, T&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a9e599b0b26324c5ac61f31a30743bf0f" class="m-doc-self">and_then</a>(</span><span class="m-doc-wrap">F&amp;&amp; func) noexcept -&gt; Option&lt; U &gt;</span></span>
+            </h3>
+            <p>Continues control flow into <code>func</code> if this is the <code>Some</code> variant, otherwise returns <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The type of invocable to call if this is <code>Some</code></td>
+                </tr>
+                <tr>
+                  <td>U</td>
+                  <td>- The type of the <code>Some</code> variant of the <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> returned by <code>F</code>. This is deduced. Don&#x27;t explicitly provide this.</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>func</td>
+                  <td>- The invocable to call if this is <code>Some</code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>func()</code> if this is <code>Some</code>, otherwise <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="ac6fb50ee1697b3b9267070c3f2ab2aa8"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac6fb50ee1697b3b9267070c3f2ab2aa8" class="m-doc-self">or_else</a>(</span><span class="m-doc-wrap">const <a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp; option) const noexcept -&gt; Option</span></span>
+            </h3>
+            <p>Returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> if this is the <code>Some</code> variant, otherwise returns <code>option</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">option</td>
+                  <td>- The next option to potentially use</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(T)</code> if this is <code>Some</code>, otherwise <code>option</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a7a3cd8177f8c45dd6748fa8309de6abe"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a7a3cd8177f8c45dd6748fa8309de6abe" class="m-doc-self">or_else</a>(</span><span class="m-doc-wrap"><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&amp;&amp; option) const noexcept -&gt; Option</span></span>
+            </h3>
+            <p>Returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> if this is the <code>Some</code> variant, otherwise returns <code>option</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">option</td>
+                  <td>- The next option to potentially use</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>Some(T)</code> if this is <code>Some</code>, otherwise <code>option</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a5fd5f611a9b05a70b7fe3b4d308461b2"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableR&lt;<a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;, F&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a5fd5f611a9b05a70b7fe3b4d308461b2" class="m-doc-self">or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; func) const noexcept -&gt; Option</span></span>
+            </h3>
+            <p>Continues control flow into <code>func</code> if this is the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant, otherwise returns the value contained in this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The type of the invocable to call if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>func</td>
+                  <td>- The invocable to call if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code>func()</code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>, otherwise <code>Some(T)</code></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div></section>
+          <section class="m-doc-details" id="a512f551e2d1697fded715bb32d384f77"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a512f551e2d1697fded715bb32d384f77" class="m-doc-self">ok_or</a>(</span><span class="m-doc-wrap">ErrorType auto&amp;&amp; error) &gt;&gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code> consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">error</td>
+                  <td>- The error to return if this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a>&lt;T&gt;</code> is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code> if this is <code>Some</code>, <code>Err(error)</code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code>. Otherwise, this returns <code>Err(error)</code>.</p>
+          </div></section>
+          <section class="m-doc-details" id="aee696ad41ae49b8617b7c1bfa301c7a0"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;ErrorType E, typename... Args&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires constexpr ConstructibleFrom&lt;E, Args...&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aee696ad41ae49b8617b7c1bfa301c7a0" class="m-doc-self">ok_or</a>(</span><span class="m-doc-wrap">Args &amp;&amp; ... args) noexcept -&gt; Result&lt; T, E &gt;</span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code> consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">E</td>
+                  <td>- The type to return if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code>. Must be an <code>ErrorType</code> (<code><a href="classhyperion_1_1Error.html" class="m-doc">hyperion::<wbr />Error</a></code> or derived from it)</td>
+                </tr>
+                <tr>
+                  <td>Args</td>
+                  <td>- The types of the arguments from which to contruct the <code>E</code></td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>args</td>
+                  <td>- The arguments to construct the <code>E</code> from</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code> if this is <code>Some</code>, <code>Err(E(args))</code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code>. Otherwise, this constructs an <code>E</code> in place as an <code><a href="structhyperion_1_1Err.html" class="m-doc">Err</a></code> from the provided arguments.</p>
+          </div></section>
+          <section class="m-doc-details" id="ac44df0cee0086123b3774e26f971a54f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F, typename E = decltype(std::declval&lt;F&gt;()())&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableR&lt;E, F&gt; &amp;&amp; ErrorType&lt;E&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ac44df0cee0086123b3774e26f971a54f" class="m-doc-self">ok_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; error_generator) noexcept -&gt; Result&lt; T, E &gt;</span></span>
+            </h3>
+            <p>Converts this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code> to a <code><a href="classhyperion_1_1Result.html" class="m-doc">Result</a></code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Template parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">F</td>
+                  <td>- The invocable to generator the error value if this is the <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code> variant</td>
+                </tr>
+                <tr>
+                  <td>E</td>
+                  <td>- The <code>ErrorType</code> returns by <code>F</code>. This is deduced. Don&#x27;t explicitly provide it</td>
+                </tr>
+              </tbody>
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>error_generator</td>
+                  <td>- The function to generate the <code><a href="classhyperion_1_1Error.html" class="m-doc">Error</a></code> value</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td><code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code> if this is <code>Some</code>, <code>Err(error_generator())</code> if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is the <code>Some</code> variant, returns <code><a href="namespacehyperion.html#ae8544d73a4bff3ec4b2146fc65a8e98e" class="m-doc">Ok(T)</a></code>. Otherwise, returns <code>Err(error_generator)</code></p>
+          </div></section>
+          <section class="m-doc-details" id="adfde3d583cf205c5746cde34b8d05a7a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#adfde3d583cf205c5746cde34b8d05a7a" class="m-doc-self">unwrap</a>(</span><span class="m-doc-wrap">) noexcept -&gt; T <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>The contained <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is not <code>Some</code> variant, then <code>std::terminate</code> is called</p>
+          </div></section>
+          <section class="m-doc-details" id="a28effdf46d8c40a82e394bc895341fea"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a28effdf46d8c40a82e394bc895341fea" class="m-doc-self">unwrap_or</a>(</span><span class="m-doc-wrap">const T&amp; default_value) noexcept -&gt; T <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_value</td>
+                  <td>- The value to return if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is not the <code>Some</code> variant, then returns <code>default_value</code>.</p>
+          </div></section>
+          <section class="m-doc-details" id="a535a0c06d66f39245077c680c9fba1ba"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a535a0c06d66f39245077c680c9fba1ba" class="m-doc-self">unwrap_or</a>(</span><span class="m-doc-wrap">T&amp;&amp; default_value) noexcept -&gt; T <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_value</td>
+                  <td>- The value to return if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or <code>default_value</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is not the <code>Some</code> variant, then returns <code>default_value</code>.</p>
+          </div></section>
+          <section class="m-doc-details" id="a19695886c485682848d1b65b88bc984f"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+                template&lt;typename F&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">requires InvocableR&lt;T, F&gt; auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a19695886c485682848d1b65b88bc984f" class="m-doc-self">unwrap_or_else</a>(</span><span class="m-doc-wrap">F&amp;&amp; default_generator) noexcept -&gt; T</span></span>
+            </h3>
+            <p>Returns the contained <code>T</code> if this is <code>Some</code>, consuming this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>.</p>
+            <table class="m-table m-fullwidth m-flat">
+              <thead>
+                <tr><th colspan="2">Parameters</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 1%">default_generator</td>
+                  <td>- The invocable to generate the default value if this is <code><a href="structhyperion_1_1None.html" class="m-doc">None</a></code></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Returns</th>
+                  <td>The contained <code>T</code> if this is <code>Some</code>, or <code>default_generator()</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<p>If this is not the <code>Some</code> variant, then returns <code>default_generator()</code>.</p>
+          </div></section>
+          <section class="m-doc-details" id="a4b826495ec2500920e30b0e4f6803374"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#a4b826495ec2500920e30b0e4f6803374" class="m-doc-self">as_mut</a>(</span><span class="m-doc-wrap">) <span class="m-label m-primary">constexpr</span> <span class="m-label m-success">noexcept</span></span></span>
+            </h3>
+            <p>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the non-const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer to non-const <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>If <code>T</code> is a pointer, then this returns a pointer to the underlying type of <code>T</code>, ie, it just returns <code>T</code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="ad61009acdc068ae3c7b59b639e3ffd3a"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#ad61009acdc068ae3c7b59b639e3ffd3a" class="m-doc-self">as_const</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; const T *requires NotPointer&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer to const <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>If <code>T</code> is a pointer, then this returns a pointer to the underlying type of <code>T</code>, ie, it just returns <code>const T</code></p></aside>
+          </div></section>
+          <section class="m-doc-details" id="aee0498383c0db84dc332cac13920d3f6"><div>
+            <h3>
+              <div class="m-doc-template">
+                template&lt;NotReference T&gt;
+              </div>
+              <span class="m-doc-wrap-bumper">auto hyperion::<wbr />Option&lt;T&gt;::<wbr /></span><span class="m-doc-wrap"><span class="m-doc-wrap-bumper"><a href="#aee0498383c0db84dc332cac13920d3f6" class="m-doc-self">as_const</a>(</span><span class="m-doc-wrap">) const noexcept -&gt; T const requires Pointer&lt; T &gt; <span class="m-label m-primary">constexpr</span></span></span>
+            </h3>
+            <p>Similar to <code>unwrap</code>, except doesn&#x27;t consume this <code><a href="classhyperion_1_1Option.html" class="m-doc">Option</a></code>. Returns a pointer to the const <code>Some</code> value if this is <code>Some</code>, otherwise calls <code>std::terminate</code></p>
+            <table class="m-table m-fullwidth m-flat">
+              <tfoot>
+                <tr>
+                  <th style="width: 1%">Returns</th>
+                  <td>A pointer to const <code>T</code></td>
+                </tr>
+              </tfoot>
+            </table>
+<aside class="m-note m-info"><h4>Note</h4><p>If <code>T</code> is a pointer, then this returns a pointer to the underlying type of <code>T</code>, ie, it just returns <code>const T</code></p></aside>
+          </div></section>
+        </section>
+      </div>
+    </div>
+  </div>
+</article></main>
+<div class="m-doc-search" id="search">
+  <a href="#!" onclick="return hideSearch()"></a>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-m-8 m-push-m-2">
+        <div class="m-doc-search-header m-text m-small">
+          <div><span class="m-label m-default">Tab</span> / <span class="m-label m-default">T</span> to search, <span class="m-label m-default">Esc</span> to close</div>
+          <div id="search-symbolcount">&hellip;</div>
+        </div>
+        <div class="m-doc-search-content">
+          <form>
+            <input type="search" name="q" id="search-input" placeholder="Loading &hellip;" disabled="disabled" autofocus="autofocus" autocomplete="off" spellcheck="false" />
+          </form>
+          <noscript class="m-text m-danger m-text-center">Unlike everything else in the docs, the search functionality <em>requires</em> JavaScript.</noscript>
+          <div id="search-help" class="m-text m-dim m-text-center">
+            <p class="m-noindent">Search for symbols, directories, files, pages or
+            modules. You can omit any prefix from the symbol or file path; adding a
+            <code>:</code> or <code>/</code> suffix lists all members of given symbol or
+            directory.</p>
+            <p class="m-noindent">Use <span class="m-label m-dim">&darr;</span>
+            / <span class="m-label m-dim">&uarr;</span> to navigate through the list,
+            <span class="m-label m-dim">Enter</span> to go.
+            <span class="m-label m-dim">Tab</span> autocompletes common prefix, you can
+            copy a link to the result using <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">L</span> while <span class="m-label m-dim">⌘</span>
+            <span class="m-label m-dim">M</span> produces a Markdown link.</p>
+          </div>
+          <div id="search-notfound" class="m-text m-warning m-text-center">Sorry, nothing was found.</div>
+          <ul id="search-results"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="search-v1.js"></script>
+<script src="searchdata-v1.js" async="async"></script>
+<footer><nav>
+  <div class="m-container">
+    <div class="m-row">
+      <div class="m-col-l-10 m-push-l-1">
+        <p>HyperionUtils A
+Hyperion
+Engine
+library. Created with <a href="https://doxygen.org/">Doxygen</a> 1.8.18 and <a href="https://mcss.mosra.cz/">m.css</a>.</p>
+      </div>
+    </div>
+  </div>
+</nav></footer>
+</body>
+</html>

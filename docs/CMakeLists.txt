@@ -25,7 +25,8 @@ add_custom_command(OUTPUT ${DOXYGEN_HTML}
 	COMMENT "Generating themed docs with m.css"
 	VERBATIM)
 
-add_custom_target(Doxygen EXCLUDE_FROM_ALL DEPENDS ${DOXYGEN_HTML})
+add_custom_target(Doxygen DEPENDS ${DOXYGEN_HTML})
+set_target_properties(Doxygen PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
 include(GNUInstallDirs)
 install(DIRECTORY ${DOXYGEN_OUTPUT_DIR} DESTINATION ${CMAKE_INSTALL_DOCDIR})
