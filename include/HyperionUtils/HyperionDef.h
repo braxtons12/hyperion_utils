@@ -47,9 +47,9 @@
 	#define HYPERION_CONSTEXPR_STRINGS
 #endif
 
-#if defined(HYPERION_PLATFORM_COMPILER_GCC) || defined(HYPERION_PLATFORM_COMPILER_CLANG)
+#if HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
 	#define HYPERION_UNREACHABLE() __builtin_unreachable();
-#elif defined(_MSC_VER)
+#elif HYPERION_PLATFORM_COMPILER_MSVC
 	#define HYPERION_UNREACHABLE() __assume(false);
 #else
 	#define HYPERION_UNREACHABLE()
@@ -63,7 +63,7 @@
 
 /// Use to temporarily disable unused macros warning on GCC/Clang
 // clang-format off
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_UNUSED_MACROS_START \
 		_Pragma("GCC diagnostic push")\
@@ -74,7 +74,7 @@
 #endif
 
 /// Use to re-enable unused macros warning on GCC/Clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_UNUSED_MACROS_STOP \
 		_Pragma("GCC diagnostic pop")
@@ -86,7 +86,7 @@
 IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable missing noreturn warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_MISSING_NORETURN_START \
 		_Pragma("GCC diagnostic push") \
@@ -97,7 +97,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable missing noreturn warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_MISSING_NORETURN_STOP \
 		_Pragma("GCC diagnostic pop")
@@ -107,7 +107,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable reserved identifier warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_RESERVED_IDENTIFIERS_START \
 		_Pragma("GCC diagnostic push") \
@@ -120,7 +120,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable reserved identifier warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_RESERVED_IDENTIFIERS_STOP \
 		_Pragma("GCC diagnostic pop")
@@ -131,7 +131,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable padding warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_PADDING_START \
 		_Pragma("GCC diagnostic push") \
@@ -144,7 +144,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable padding warning
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	// NOLINTNEXTLINE
 	#define IGNORE_PADDING_STOP \
 		_Pragma("GCC diagnostic pop")
@@ -155,7 +155,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable weak vtable warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_WEAK_VTABLES_START \
@@ -171,7 +171,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable weak vtable warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_WEAK_VTABLES_STOP \
@@ -186,7 +186,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable unused templates warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNUSED_TEMPLATES_START \
@@ -202,7 +202,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable unused templates warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNUSED_TEMPLATES_STOP \
@@ -217,7 +217,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable signed-enum-bitfield warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_SIGNED_BITFIELD_START \
@@ -233,7 +233,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable signed-enum-bitfield warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_SIGNED_BITFIELD_STOP \
@@ -248,7 +248,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable documentation-unknown-command warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNKNOWN_DOC_COMMAND_START \
@@ -264,7 +264,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable documentation-unknown-command warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNKNOWN_DOC_COMMAND_STOP \
@@ -279,7 +279,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable shadow-field-in-constructor warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_CONSTRUCTOR_SHADOW_FIELDS_START \
@@ -295,7 +295,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable shadow-field-in-constructor warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_CONSTRUCTOR_SHADOW_FIELDS_STOP \
@@ -310,7 +310,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to temporarily disable comma misuse warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_COMMA_MISUSE_START \
@@ -326,7 +326,7 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 /// Use to re-enable comma misuse warning on clang
-#ifndef _MSC_VER
+#if !HYPERION_PLATFORM_COMPILER_MSVC
 	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_COMMA_MISUSE_STOP \
