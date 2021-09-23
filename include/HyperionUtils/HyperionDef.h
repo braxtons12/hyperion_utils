@@ -3,15 +3,33 @@
 
 #include <version>
 
-#define APEX_DECLARE_NON_HEAP_ALLOCATABLE()	   /** NOLINT(cppcoreguidelines-macro-usage): This isn't \
-												  a function-like macro                      **/     \
-	static auto operator new(std::size_t size) noexcept->void* = delete;                             \
-	static auto operator new[](std::size_t size) noexcept->void* = delete;                           \
-	static auto operator delete(void* obj) noexcept->void = delete;                                  \
+#include "Platform.h"
+
+#ifndef HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+	#define HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION true
+#endif
+
+#if(defined(__cpp_lib_source_location) && __cpp_lib_source_location == 201907)
+	#define HYPERION_HAS_SOURCE_LOCATION true
+#else
+	#define HYPERION_HAS_SOURCE_LOCATION false
+#endif // (defined(__cpp_lib_source_location) && __cpp_lib_source_location == 201907)
+
+#define HYPERION_DECLARE_NON_HEAP_ALLOCATABLE() /** NOLINT(cppcoreguidelines-macro-usage): This \
+											   isn't a function-like macro**/                   \
+	static auto operator new(std::size_t size) noexcept->void* = delete;                        \
+	static auto operator new[](std::size_t size) noexcept->void* = delete;                      \
+	static auto operator delete(void* obj) noexcept->void = delete;                             \
 	static auto operator delete[](void* obj) noexcept->void = delete;
 
+#ifdef HYPERION_PLATFORM_COMPILER_CLANG
+	#define HYPERION_TRIVIAL_ABI [[clang::trivial_abi]]
+#else
+	#define HYPERION_TRIVIAL_ABI
+#endif
+
 /// Use to mark variable as no_destroy on clang
-#ifdef __clang__
+#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 	#define HYPERION_NO_DESTROY [[clang::no_destroy]] // NOLINT
 #else
 	#define HYPERION_NO_DESTROY
@@ -29,7 +47,7 @@
 	#define HYPERION_CONSTEXPR_STRINGS
 #endif
 
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(HYPERION_PLATFORM_COMPILER_GCC) || defined(HYPERION_PLATFORM_COMPILER_CLANG)
 	#define HYPERION_UNREACHABLE() __builtin_unreachable();
 #elif defined(_MSC_VER)
 	#define HYPERION_UNREACHABLE() __assume(false);
@@ -67,6 +85,51 @@
 
 IGNORE_UNUSED_MACROS_START
 
+/// Use to temporarily disable missing noreturn warning
+#ifndef _MSC_VER
+	// NOLINTNEXTLINE
+	#define IGNORE_MISSING_NORETURN_START \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wmissing-noreturn\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_PADDING_START
+#endif
+
+/// Use to re-enable missing noreturn warning
+#ifndef _MSC_VER
+	// NOLINTNEXTLINE
+	#define IGNORE_MISSING_NORETURN_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_PADDING_STOP
+#endif
+
+/// Use to temporarily disable reserved identifier warning
+#ifndef _MSC_VER
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_IDENTIFIERS_START \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wreserved-identifier\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_PADDING_START \
+		_Pragma("warning( push )") \
+		_Pragma("warning( disable : 4405 )")
+#endif
+
+/// Use to re-enable reserved identifier warning
+#ifndef _MSC_VER
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_IDENTIFIERS_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_PADDING_STOP \
+		_Pragma("warning( pop )")
+#endif
+
 /// Use to temporarily disable padding warning
 #ifndef _MSC_VER
 	// NOLINTNEXTLINE
@@ -93,7 +156,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable weak vtable warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_WEAK_VTABLES_START \
 			_Pragma("GCC diagnostic push") \
@@ -109,7 +172,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable weak vtable warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_WEAK_VTABLES_STOP \
 			_Pragma("GCC diagnostic pop")
@@ -124,7 +187,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable unused templates warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNUSED_TEMPLATES_START \
 			_Pragma("GCC diagnostic push")\
@@ -140,7 +203,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable unused templates warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNUSED_TEMPLATES_STOP \
 			_Pragma("GCC diagnostic pop")
@@ -155,7 +218,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable signed-enum-bitfield warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_SIGNED_BITFIELD_START \
 			_Pragma("GCC diagnostic push") \
@@ -171,7 +234,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable signed-enum-bitfield warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_SIGNED_BITFIELD_STOP \
 			_Pragma("GCC diagnostic pop")
@@ -186,7 +249,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable documentation-unknown-command warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNKNOWN_DOC_COMMAND_START \
 			_Pragma("GCC diagnostic push") \
@@ -202,7 +265,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable documentation-unknown-command warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_UNKNOWN_DOC_COMMAND_STOP \
 			_Pragma("GCC diagnostic pop")
@@ -217,7 +280,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable shadow-field-in-constructor warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_CONSTRUCTOR_SHADOW_FIELDS_START \
 			_Pragma("GCC diagnostic push") \
@@ -233,7 +296,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable shadow-field-in-constructor warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_CONSTRUCTOR_SHADOW_FIELDS_STOP \
 			_Pragma("GCC diagnostic pop")
@@ -248,7 +311,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to temporarily disable comma misuse warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_COMMA_MISUSE_START \
 			_Pragma("GCC diagnostic push") \
@@ -264,7 +327,7 @@ IGNORE_UNUSED_MACROS_START
 
 /// Use to re-enable comma misuse warning on clang
 #ifndef _MSC_VER
-	#ifdef __clang__
+	#ifdef HYPERION_PLATFORM_COMPILER_CLANG
 		// NOLINTNEXTLINE
 		#define IGNORE_COMMA_MISUSE_STOP \
 			_Pragma("GCC diagnostic pop")
