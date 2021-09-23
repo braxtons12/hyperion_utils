@@ -1,448 +1,409 @@
 #pragma once
 
-#include <gtest/gtest.h>
-
 #include "HyperionUtils/RingBuffer.h"
-
-namespace hyperion::utils::test {
-
-	TEST(RingBufferTest, defaults) {
-		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto& elem : buffer) {
-			ASSERT_FALSE(elem);
-		}
-	}
-
-	TEST(RingBufferTest, initialCapacity) {
-		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U);
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), 32ULL);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto& elem : buffer) {
-			ASSERT_FALSE(elem);
-		}
-	}
-
-	TEST(RingBufferTest, initialCapacityAndValue) {
-		auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U, true);
-		ASSERT_EQ(buffer.size(), 32ULL);
-		ASSERT_EQ(buffer.capacity(), 32ULL);
-
-		for(auto& elem : buffer) {
-			ASSERT_TRUE(elem);
-		}
-	}
-
-	TEST(RingBufferTest, pushBackAndAt) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.push_back(i);
-		}
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			ASSERT_EQ(buffer.at(i), i);
-		}
-	}
-
-	TEST(RingBufferTest, pushBackAndAtLooping) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.push_back(i);
-		}
-		for(auto i = static_cast<int>(capacity - 1); i >= 0; --i) {
-			buffer.push_back(i);
-		}
-
-		for(auto i = 0, j = static_cast<int>(capacity - 1); i < static_cast<int>(capacity);
-			++i, --j) {
-			ASSERT_EQ(buffer.at(i), j);
-		}
-	}
-
-	TEST(RingBufferTest, emplaceBackAndAt) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.emplace_back(i);
-		}
-
-		for(auto i = 0ULL; i < static_cast<int>(capacity); ++i) {
-			ASSERT_EQ(buffer.at(i), i);
-		}
-	}
-
-	TEST(RingBufferTest, emplaceBackAndAtLooping) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.emplace_back(i);
-		}
-		for(auto i = static_cast<int>(capacity - 1); i >= 0; --i) {
-			buffer.emplace_back(i);
-		}
-
-		for(auto i = 0, j = static_cast<int>(capacity - 1); i < static_cast<int>(capacity);
-			++i, --j) {
-			ASSERT_EQ(buffer.at(i), j);
-		}
-	}
-
-	TEST(RingBufferTest, reserveAndLooping) {
-		uint32_t initialCapacity = 8U;
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>(initialCapacity);
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_TRUE(buffer.empty());
-		ASSERT_EQ(buffer.capacity(), initialCapacity);
-
-		for(auto i = 0ULL; i < initialCapacity; ++i) {
-			buffer.push_back(static_cast<int>(i));
-		}
-		for(auto i = 0ULL; i < initialCapacity; ++i) {
-			ASSERT_EQ(buffer.at(i), i);
-		}
-		auto newCapacity = 16U;
-		buffer.reserve(newCapacity);
-		for(auto i = 0ULL; i < initialCapacity; ++i) {
-			ASSERT_EQ(buffer.at(i), i);
-		}
-		for(auto i = initialCapacity; i < newCapacity + initialCapacity; ++i) {
-			buffer.push_back(static_cast<int>(i));
-		}
-		for(auto i = 0ULL; i < newCapacity; ++i) {
-			ASSERT_EQ(buffer.at(i), i + initialCapacity);
-		}
-		for(auto i = 0ULL; i < newCapacity; ++i) {
-			buffer.push_back(static_cast<int>(i));
-		}
-		for(auto i = 0ULL; i < newCapacity; ++i) {
-			ASSERT_EQ(buffer.at(i), i);
-		}
-	}
-
-	TEST(RingBufferTest, front) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(2);
-		ASSERT_EQ(buffer.front(), 2);
-	}
-
-	TEST(RingBufferTest, back) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(2);
-		buffer.push_back(1);
-		ASSERT_EQ(buffer.back(), 1);
-	}
-
-	TEST(RingBufferTest, insert) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(2);
-		buffer.insert(buffer.begin(), 1);
-		ASSERT_EQ(buffer.front(), 1);
-		ASSERT_EQ(buffer.back(), 2);
-	}
-
-	TEST(RingBufferTest, insertLooped) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0ULL; i < capacity; ++i) {
-			buffer.push_back(static_cast<int>(i));
-		}
-
-		buffer.insert(buffer.begin(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.front(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.at(1), 0);
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity - 2));
-	}
-
-	TEST(RingBufferTest, insertLoopedAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		auto numWrites = static_cast<int>(capacity * 1.5);
-		for(auto i = 0; i < numWrites; ++i) {
-			buffer.push_back(i);
-		}
-
-		buffer.insert(buffer.begin(), numWrites);
-		ASSERT_EQ(buffer.front(), numWrites);
-		ASSERT_EQ(buffer.at(1), numWrites - static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), numWrites - 2);
-	}
-
-	TEST(RingBufferTest, insertEmplace) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(2);
-		buffer.insert_emplace(buffer.begin(), 1);
-		ASSERT_EQ(buffer.front(), 1);
-		ASSERT_EQ(buffer.back(), 2);
-	}
-
-	TEST(RingBufferTest, insertEmplaceLooped) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0ULL; i < capacity; ++i) {
-			buffer.push_back(static_cast<int>(i));
-		}
-
-		buffer.insert_emplace(buffer.begin(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.front(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.at(1), 0);
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity - 2));
-	}
-
-	TEST(RingBufferTest, insertEmplaceLoopedAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		auto numWrites = static_cast<int>(capacity * 1.5);
-		for(auto i = 0; i < numWrites; ++i) {
-			buffer.push_back(i);
-		}
-
-		buffer.insert_emplace(buffer.begin(), numWrites);
-		ASSERT_EQ(buffer.front(), numWrites);
-		ASSERT_EQ(buffer.at(1), numWrites - static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), numWrites - 2);
-	}
-
-	TEST(RingBufferTest, erase) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(3);
-		buffer.push_back(5);
-
-		ASSERT_EQ(buffer.size(), 2);
-		ASSERT_EQ(buffer.back(), 5);
-		auto iter = buffer.erase(buffer.end() - 1);
-		ASSERT_EQ(buffer.size(), 1);
-		ASSERT_EQ(buffer.back(), 3);
-		ASSERT_EQ(iter, buffer.end());
-	}
-
-	TEST(RingBufferTest, eraseFullFromEnd) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 1);
-		const auto size = buffer.size();
-		auto iter = buffer.erase(buffer.end() - 1);
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - 1);
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 2);
-		ASSERT_EQ(iter, buffer.begin() + (size - 1));
-	}
-
-	TEST(RingBufferTest, eraseFullFromMiddle) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 1);
-		const auto size = buffer.size();
-		auto iter = buffer.erase(buffer.end() - 4);
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - 1);
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 1);
-		ASSERT_EQ(iter, buffer.begin() + (size - 4));
-	}
-
-	TEST(RingBufferTest, eraseFullAndAHalfFromEnd) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		auto numWrites = static_cast<int>(capacity * 1.5);
-		for(auto i = 0; i < numWrites; ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), numWrites - 1);
-		const auto size = buffer.size();
-		auto iter = buffer.erase(buffer.end() - 1);
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - 1);
-		ASSERT_EQ(buffer.back(), numWrites - 2);
-		ASSERT_EQ(iter, buffer.begin() + (size - 1));
-	}
-
-	TEST(RingBufferTest, eraseFullAndAHalfFromMiddle) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		auto numWrites = static_cast<int>(capacity * 1.5);
-		for(auto i = 0; i < numWrites; ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), numWrites - 1);
-		const auto size = buffer.size();
-		auto iter = buffer.erase(buffer.end() - 4);
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - 1);
-		ASSERT_EQ(buffer.back(), numWrites - 1);
-		ASSERT_EQ(iter, buffer.begin() + (size - 4));
-	}
-
-	TEST(RingBufferTest, eraseRange) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		buffer.push_back(3);
-		buffer.push_back(5);
-		buffer.push_back(6);
-
-		ASSERT_EQ(buffer.size(), 3);
-		ASSERT_EQ(buffer.back(), 6);
-		auto iter = buffer.erase(buffer.begin() + 1, buffer.end());
-		ASSERT_EQ(buffer.size(), 1);
-		ASSERT_EQ(buffer.back(), 3);
-		ASSERT_EQ(iter, buffer.end());
-	}
-
-	TEST(RingBufferTest, eraseRangeFull) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		for(auto i = 0; i < static_cast<int>(capacity); ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 1);
-		auto iter = buffer.erase(buffer.end() - 2, buffer.end());
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - 2);
-		ASSERT_EQ(buffer.back(), static_cast<int>(capacity) - 3);
-		ASSERT_EQ(iter, buffer.end());
-	}
-
-	TEST(RingBufferTest, eraseRangeFullAndAHalf) {
-		auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-		constexpr auto capacity = RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
-		ASSERT_EQ(buffer.size(), 0ULL);
-		ASSERT_EQ(buffer.capacity(), capacity);
-		ASSERT_TRUE(buffer.empty());
-
-		auto numWrites = static_cast<int>(capacity * 1.5);
-		for(auto i = 0; i < numWrites; ++i) {
-			buffer.push_back(i);
-		}
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity));
-		ASSERT_EQ(buffer.back(), numWrites - 1);
-		const auto startEraseIndex = 5;
-		const auto numToErase = 5;
-		const auto startIter = buffer.begin() + startEraseIndex;
-		const auto endIter = startIter + numToErase;
-		const auto valToCompare = buffer.at(startEraseIndex + numToErase);
-		const auto backVal = buffer.back();
-		const auto frontVal = buffer.front();
-
-		const auto iter = buffer.erase(startIter, endIter);
-
-		ASSERT_EQ(buffer.size(), static_cast<int>(capacity) - numToErase);
-		ASSERT_EQ(buffer.back(), backVal);
-		ASSERT_EQ(buffer.front(), frontVal);
-		ASSERT_EQ(buffer.at(startEraseIndex), valToCompare);
-		ASSERT_EQ(iter, buffer.begin() + startEraseIndex);
-	}
-	//
-	// TEST(RingBufferTest, popBack) {
-	//	auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
-	//	ASSERT_EQ(buffer.size(), 0ULL);
-	//	ASSERT_EQ(buffer.capacity(), RingBuffer<int,
-	// RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY); 	ASSERT_TRUE(buffer.empty());
-	//
-	//	buffer.push_back(1);
-	//	buffer.push_back(2);
-	//	ASSERT_EQ(buffer.size(), 2);
-	//	ASSERT_EQ(buffer.back(), 2);
-	//	ASSERT_EQ(buffer.pop_back(), 2);
-	//	ASSERT_EQ(buffer.size(), 1);
-	//	ASSERT_EQ(buffer.back(), 1);
-	// }
-} // namespace hyperion::utils::test
+#include "microTest.h"
+
+namespace hyperion::test {
+
+	const suite RingBufferTests = [] { // NOLINT
+		"defaults"_test = [] {
+			auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+			expect(buffer.size() == 0_ul);
+			expect(buffer.capacity() == _ul(capacity));
+			expect(buffer.empty() == TRUE);
+
+			for(auto& elem : buffer) {
+				expect(elem == FALSE);
+			}
+		};
+
+		"initialCapacity"_test = [] {
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U);
+			expect(buffer.size() == 0_ul);
+			expect(buffer.capacity() == 32_ul);
+			expect(buffer.empty() == TRUE);
+
+			for(auto& elem : buffer) {
+				expect(elem == FALSE);
+			}
+		};
+
+		"initialCapacityAndValue"_test = [] {
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto buffer = RingBuffer<bool, RingBufferType::NotThreadSafe>(32U, true);
+			expect(buffer.size() == 32_ul);
+			expect(buffer.capacity() == 32_ul);
+
+			for(auto& elem : buffer) {
+				expect(elem == TRUE);
+			}
+		};
+
+		"pushBackAndAt"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.push_back(i);
+			}
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				expect(buffer.at(i) == _i(i));
+			}
+		};
+
+		"pushBackAndAtLooping"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.push_back(i);
+			}
+			for(auto i = static_cast<int>(capacity - 1); i >= 0; --i) {
+				buffer.push_back(i);
+			}
+
+			for(auto i = 0, j = static_cast<int>(capacity - 1); i < static_cast<int>(capacity);
+				++i, --j) {
+				expect(buffer.at(i) == _i(j));
+			}
+		};
+
+		"emplaceBackAndAt"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.emplace_back(i);
+			}
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				expect(buffer.at(i) == _i(i));
+			}
+		};
+
+		"emplaceBackAndAtLooping"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.emplace_back(i);
+			}
+			for(auto i = static_cast<int>(capacity - 1); i >= 0; --i) {
+				buffer.emplace_back(i);
+			}
+
+			for(auto i = 0, j = static_cast<int>(capacity - 1); i < static_cast<int>(capacity);
+				++i, --j) {
+				expect(buffer.at(i) == _i(j));
+			}
+		};
+
+		"reserveAndLooping"_test = [] {
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			uint32_t initialCapacity = 8U;
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>(initialCapacity);
+			expect(buffer.size() == 0_ul);
+			expect(buffer.empty() == TRUE);
+			expect(buffer.capacity() == _ul(initialCapacity));
+
+			for(auto i = 0ULL; i < initialCapacity; ++i) {
+				buffer.push_back(static_cast<int>(i));
+			}
+			for(auto i = 0ULL; i < initialCapacity; ++i) {
+				expect(buffer.at(i) == _i(static_cast<int>(i)));
+			}
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto newCapacity = 16U;
+			buffer.reserve(newCapacity);
+			for(auto i = 0ULL; i < initialCapacity; ++i) {
+				expect(buffer.at(i) == _i(static_cast<int>(i)));
+			}
+			for(auto i = initialCapacity; i < newCapacity + initialCapacity; ++i) {
+				buffer.push_back(static_cast<int>(i));
+			}
+			for(auto i = 0ULL; i < newCapacity; ++i) {
+				expect(buffer.at(i) == _i(static_cast<int>(i + initialCapacity)));
+			}
+			for(auto i = 0ULL; i < newCapacity; ++i) {
+				buffer.push_back(static_cast<int>(i));
+			}
+			for(auto i = 0ULL; i < newCapacity; ++i) {
+				expect(buffer.at(i) == _i(static_cast<int>(i)));
+			}
+		};
+
+		"front"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(2);
+			expect(buffer.front() == 2_i);
+		};
+
+		"back"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(2);
+			buffer.push_back(1);
+			expect(buffer.back() == 1_i);
+		};
+
+		"insert"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(2);
+			buffer.insert(buffer.begin(), 1);
+			expect(buffer.front() == 1_i);
+			expect(buffer.back() == 2_i);
+		};
+
+		"insertLooped"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0ULL; i < capacity; ++i) {
+				buffer.push_back(static_cast<int>(i));
+			}
+
+			buffer.insert(buffer.begin(), static_cast<int>(capacity));
+			expect(buffer.front() == _i(static_cast<int>(capacity)));
+			expect(buffer.at(1) == 0_i);
+			expect(buffer.back() == _i(static_cast<int>(capacity - 2)));
+		};
+
+		"insertLoopedAndAHalf"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto numWrites = static_cast<int>(capacity * 1.5);
+			for(auto i = 0; i < numWrites; ++i) {
+				buffer.push_back(i);
+			}
+
+			buffer.insert(buffer.begin(), numWrites);
+			expect(buffer.front() == _i(numWrites));
+			expect(buffer.at(1) == _i(numWrites - static_cast<int>(capacity)));
+			expect(buffer.back() == _i(numWrites - 2));
+		};
+
+		"insertEmplace"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(2);
+			buffer.insert_emplace(buffer.begin(), 1);
+			expect(buffer.front() == 1_i);
+			expect(buffer.back() == 2_i);
+		};
+
+		"insertEmplaceLooped"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0ULL; i < capacity; ++i) {
+				buffer.push_back(static_cast<int>(i));
+			}
+
+			buffer.insert_emplace(buffer.begin(), static_cast<int>(capacity));
+			expect(buffer.front() == _i(static_cast<int>(capacity)));
+			expect(buffer.at(1) == 0_i);
+			expect(buffer.back() == _i(static_cast<int>(capacity - 2)));
+		};
+
+		"insertEmplaceLoopedAndAHalf"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto numWrites = static_cast<int>(capacity * 1.5);
+			for(auto i = 0; i < numWrites; ++i) {
+				buffer.push_back(i);
+			}
+
+			buffer.insert_emplace(buffer.begin(), numWrites);
+			expect(buffer.front() == _i(numWrites));
+			expect(buffer.at(1) == _i(numWrites - static_cast<int>(capacity)));
+			expect(buffer.back() == _i(numWrites - 2));
+		};
+
+		"erase"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(3);
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			buffer.push_back(5);
+
+			expect(buffer.size() == 2_ul);
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			expect(buffer.back() == 5_i);
+			auto iter = buffer.erase(buffer.end() - 1);
+			expect(buffer.size() == 1_ul);
+			expect(buffer.back() == 3_i);
+			expect((iter == buffer.end()) == TRUE);
+		};
+
+		"eraseFullFromEnd"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 1));
+			const auto size = buffer.size();
+			auto iter = buffer.erase(buffer.end() - 1);
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - 1));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 2));
+			expect((iter == (buffer.begin() + (size - 1))) == TRUE);
+		};
+
+		"eraseFullFromMiddle"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 1));
+			const auto size = buffer.size();
+			auto iter = buffer.erase(buffer.end() - 4);
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - 1));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 1));
+			expect((iter == (buffer.begin() + (size - 4))) == TRUE);
+		};
+
+		"eraseFullAndAHalfFromEnd"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto numWrites = static_cast<int>(capacity * 1.5);
+			for(auto i = 0; i < numWrites; ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(numWrites - 1));
+			const auto size = buffer.size();
+			auto iter = buffer.erase(buffer.end() - 1);
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - 1));
+			expect(buffer.back() == _i(numWrites - 2));
+			expect((iter == (buffer.begin() + (size - 1))) == TRUE);
+		};
+
+		"eraseFullAndAHalfFromMiddle"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto numWrites = static_cast<int>(capacity * 1.5);
+			for(auto i = 0; i < numWrites; ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(numWrites - 1));
+			const auto size = buffer.size();
+			auto iter = buffer.erase(buffer.end() - 4);
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - 1));
+			expect(buffer.back() == _i(numWrites - 1));
+			expect((iter == (buffer.begin() + (size - 4))) == TRUE);
+		};
+
+		"eraseRange"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(3);
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			buffer.push_back(5);
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			buffer.push_back(6);
+
+			expect(buffer.size() == 3_ul);
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			expect(buffer.back() == 6_i);
+			auto iter = buffer.erase(buffer.begin() + 1, buffer.end());
+			expect(buffer.size() == 1_ul);
+			expect(buffer.back() == 3_i);
+			expect((iter == buffer.end()) == TRUE);
+		};
+
+		"eraseRangeFull"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			for(auto i = 0; i < static_cast<int>(capacity); ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 1));
+			auto iter = buffer.erase(buffer.end() - 2, buffer.end());
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - 2));
+			expect(buffer.back() == _i(static_cast<int>(capacity) - 3));
+			expect((iter == buffer.end()) == TRUE);
+		};
+
+		"eraseRangeFullAndAHalf"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+			constexpr auto capacity
+				= RingBuffer<int, RingBufferType::NotThreadSafe>::DEFAULT_CAPACITY;
+
+			// NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+			auto numWrites = static_cast<int>(capacity * 1.5);
+			for(auto i = 0; i < numWrites; ++i) {
+				buffer.push_back(i);
+			}
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity)));
+			expect(buffer.back() == _i(numWrites - 1));
+			const auto startEraseIndex = 5;
+			const auto numToErase = 5;
+			const auto startIter = buffer.begin() + startEraseIndex;
+			const auto endIter = startIter + numToErase;
+			const auto valToCompare = buffer.at(startEraseIndex + numToErase);
+			const auto backVal = buffer.back();
+			const auto frontVal = buffer.front();
+
+			const auto iter = buffer.erase(startIter, endIter);
+
+			expect(buffer.size() == _ul(static_cast<int>(capacity) - numToErase));
+			expect(buffer.back() == _i(backVal));
+			expect(buffer.front() == _i(frontVal));
+			expect(buffer.at(startEraseIndex) == _i(valToCompare));
+			expect((iter == (buffer.begin() + startEraseIndex)) == TRUE);
+		};
+
+		"popBack"_test = [] {
+			auto buffer = RingBuffer<int, RingBufferType::NotThreadSafe>();
+
+			buffer.push_back(1);
+			buffer.push_back(2);
+			expect(buffer.size() == 2_ul);
+			expect(buffer.back() == 2_i);
+			expect(buffer.pop_back() == 2_i);
+			expect(buffer.size() == 1_ul);
+			expect(buffer.back() == 1_i);
+		};
+	};
+} // namespace hyperion::test

@@ -1,13 +1,9 @@
-#include <gtest/gtest.h>
-
 #include "ChangeDetectorTest.h"
+#include "HyperionUtils/BasicTypes.h"
 #include "LoggerTest.h"
 #include "OptionTest.h"
 #include "ResultTest.h"
 #include "RingBufferTest.h"
 
-auto main(int argc, char** argv) noexcept -> int {
-	testing::InitGoogleTest(&argc, argv);
-	testing::FLAGS_gtest_death_test_style = "fast";
-	return RUN_ALL_TESTS();
+auto main([[maybe_unused]] hyperion::i32 argc, [[maybe_unused]] char** argv) -> hyperion::i32 {
 }

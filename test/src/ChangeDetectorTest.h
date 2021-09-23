@@ -1,50 +1,42 @@
 #pragma once
 #include "HyperionUtils/ChangeDetector.h"
-#include "gtest/gtest.h"
+#include "HyperionUtils/Memory.h"
+#include "microTest.h"
 
-namespace hyperion::utils::test {
+namespace hyperion::test {
 
-	TEST(ChangeDetectorTest, constructor) {
-		auto detector = ChangeDetector<bool>();
+	const suite ChangeDetectorTests = [] { // NOLINT
+		"constructor"_test = [] {
+			auto detector = ChangeDetector<bool>();
 
-		ASSERT_FALSE(detector.value());
-	}
+			expect(detector.value() == FALSE);
+		};
 
-	TEST(ChangeDetectorTest, changedLValue) {
-		auto detector = ChangeDetector<bool>();
-		auto newTrue = true;
-		auto newFalse = false;
-		if(detector.value()) {
-			ASSERT_TRUE(detector.changed(newFalse));
-		}
-		else {
-			ASSERT_TRUE(detector.changed(newTrue));
-		}
-	}
+		"changedLValue"_test = [] {
+			auto detector = ChangeDetector<bool>();
+			auto newTrue = true;
+			expect(detector.changed(newTrue) == TRUE);
+		};
 
-	TEST(ChangeDetectorTest, changedRValue) {
-		auto detector = ChangeDetector<bool>();
+		"changedRValue"_test = [] {
+			auto detector = ChangeDetector<bool>();
 
-		if(detector.value()) {
-			ASSERT_TRUE(detector.changed(false));
-		}
-		else {
-			ASSERT_TRUE(detector.changed(true));
-		}
-	}
+			expect(detector.changed(true) == TRUE);
+		};
 
-	TEST(ChangeDetectorTest, changedPointer) {
-		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
-		auto* initialValue = new bool(false);
-		auto detector = ChangeDetector<bool*>(initialValue);
+		"changedPointer"_test = [] {
+			// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+			auto* initialValue = new bool(false);
+			auto detector = ChangeDetector<bool*>(initialValue);
 
-		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
-		auto* newTrue = new bool(true);
-		ASSERT_TRUE(detector.changed(newTrue));
+			// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+			auto* newTrue = new bool(true);
+			expect(detector.changed(newTrue) == TRUE);
 
-		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
-		delete initialValue;
-		// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
-		delete newTrue;
-	}
-} // namespace hyperion::utils::test
+			// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+			delete initialValue;
+			// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+			delete newTrue;
+		};
+	};
+} // namespace hyperion::test
