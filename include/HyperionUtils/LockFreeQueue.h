@@ -4,128 +4,155 @@
 #include <system_error>
 
 #include "BasicTypes.h"
-#include "Macros.h"
-#include "Monads.h"
+#include "HyperionDef.h"
+#include "Result.h"
 #include "RingBuffer.h"
 
 namespace hyperion {
+	using namespace std::literals::string_literals;
 
 	/// @brief Types of `Error`s that can occur with `LockFreeQueue`
-	enum class LockFreeQueueErrorType : u8
+	enum class LockFreeQueueErrorCategory : i8
 	{
 		/// @brief No `Error` occurred
 		Success = 0,
 		/// @brief The queue was full and policy is `QueuePolicy::ErrWhenFull`
 		QueueIsFull = 1,
 		/// @brief The queue was empty when a read was attempted
-		QueueIsEmpty = 2
+		QueueIsEmpty = 2,
+		Unknown = -1
 	};
 
-	IGNORE_WEAK_VTABLES_START
-	/// @brief `std::error_category` type for `LockFreeQueueErrorType`s. Provides error catgory
-	/// functionality for `LockFreeQueueErrorType`s
-	struct LockFreeQueueErrorCategory final : public std::error_category {
+	class LockFreeQueueErrorDomain {
 	  public:
-		/// @brief Default Constructor
-		LockFreeQueueErrorCategory() noexcept = default;
-		/// @brief Copy Constructor. Deleted. Error Category types are singletons
-		LockFreeQueueErrorCategory(const LockFreeQueueErrorCategory&) = delete;
-		/// @brief Move Constructor. Deleted. Error Category types are singletons
-		LockFreeQueueErrorCategory(LockFreeQueueErrorCategory&&) = delete;
-		/// @brief Destructor
-		~LockFreeQueueErrorCategory() noexcept final = default;
+		using value_type = LockFreeQueueErrorCategory;
+		using LockFreeQueueStatusCode = error::StatusCode<LockFreeQueueErrorDomain>;
+		using LockFreeQueueErrorCode = error::ErrorCode<LockFreeQueueErrorDomain>;
 
-		/// @brief Returns the name of this error category
-		///
-		/// @return const char * - The name
-		[[nodiscard]] inline constexpr auto name() const noexcept -> const char* final {
-			return "LockFreeQueue Error";
+		static constexpr const char (&UUID)[error::num_chars_in_uuid] // NOLINT
+			= "045dd371-9552-4ce1-bd4d-8e95b654fbe0";
+
+		static constexpr u64 ID = error::parse_uuid_from_string(UUID);
+
+		constexpr LockFreeQueueErrorDomain() noexcept = default;
+		explicit constexpr LockFreeQueueErrorDomain(u64 uuid) noexcept : m_uuid(uuid) {
+		}
+		explicit constexpr LockFreeQueueErrorDomain(const error::UUIDString auto& uuid) noexcept
+			: m_uuid(error::parse_uuid_from_string(uuid)) {
+		}
+		constexpr LockFreeQueueErrorDomain(const LockFreeQueueErrorDomain&) noexcept = default;
+		constexpr LockFreeQueueErrorDomain(LockFreeQueueErrorDomain&&) noexcept = default;
+		constexpr ~LockFreeQueueErrorDomain() noexcept = default;
+
+		[[nodiscard]] constexpr inline auto id() const noexcept -> u64 {
+			return m_uuid;
 		}
 
-		/// @brief Returns the message associated with the given error condition
-		///
-		/// @param condition - The condition to get the message for
-		///
-		/// @return The associated message
-		[[nodiscard]] inline HYPERION_CONSTEXPR_STRINGS auto
-		message(int condition) const noexcept -> std::string final {
-			const auto category = static_cast<LockFreeQueueErrorType>(condition);
-			if(category == LockFreeQueueErrorType::Success) {
-				return "Success"s;
+		[[nodiscard]] constexpr inline auto name() const noexcept -> std::string_view { // NOLINT
+			return "LockFreeQueueErrorDomain";
+		}
+
+		[[nodiscard]] constexpr inline auto message(value_type code) // NOLINT
+			const noexcept -> std::string_view {
+			if(code == value_type::Success) {
+				return "Success";
 			}
-			else if(category == LockFreeQueueErrorType::QueueIsFull) {
-				return "Queueing entry failed, Queue is full"s;
+			else if(code == value_type::QueueIsFull) {
+				return "LockFreeQueue is full.";
 			}
-			else if(category == LockFreeQueueErrorType::QueueIsEmpty) {
-				return "Reading from Queue failed, Queue is empty"s;
+			else if(code == value_type::QueueIsEmpty) {
+				return "LockFreeQueue is empty.";
 			}
 			else {
-				return "Unknown Error"s;
+				return "Unknown LockFreeQueue error.";
 			}
 		}
 
-		/// @brief Copy assignment operator. Deleted. Error Category types are singletons
-		auto operator=(const LockFreeQueueErrorCategory&) -> LockFreeQueueErrorCategory& = delete;
-		/// @brief Move assignment operator. Deleted. Error Category types are singletons
-		auto operator=(LockFreeQueueErrorCategory&&) -> LockFreeQueueErrorCategory& = delete;
-	};
-	IGNORE_WEAK_VTABLES_STOP
+		[[nodiscard]] constexpr inline auto message(const LockFreeQueueStatusCode& code) // NOLINT
+			const noexcept -> std::string_view {
+			return message(code.code());
+		}
 
-	static inline auto lock_free_queue_category() noexcept -> const LockFreeQueueErrorCategory& {
-		HYPERION_NO_DESTROY static const LockFreeQueueErrorCategory category{};
-		return category;
-	}
+		[[nodiscard]] constexpr inline auto is_error(const LockFreeQueueStatusCode& code) // NOLINT
+			const noexcept -> bool {
+			return code.code() != value_type::Success;
+		}
+
+		[[nodiscard]] constexpr inline auto
+		is_success(const LockFreeQueueStatusCode& code) // NOLINT
+			const noexcept -> bool {
+			return code.code() == value_type::Success;
+		}
+
+		template<typename Domain2>
+		[[nodiscard]] constexpr inline auto
+		are_equivalent(const LockFreeQueueStatusCode& lhs,
+					   const error::StatusCode<Domain2>& rhs) const noexcept -> bool {
+			if constexpr(concepts::Same<LockFreeQueueStatusCode, error::StatusCode<Domain2>>) {
+				return lhs.code() == rhs.code();
+			}
+			else {
+				return false;
+			}
+		}
+
+		[[nodiscard]] constexpr inline auto
+		as_generic_code(const LockFreeQueueStatusCode& code) // NOLINT
+			const noexcept -> error::GenericStatusCode {
+			if(code.code() == value_type::Success || code.code() == value_type::Unknown) {
+				return make_status_code(static_cast<error::Errno>(code.code()));
+			}
+			else {
+				return make_status_code(error::Errno::Unknown);
+			}
+		}
+
+		[[nodiscard]] constexpr inline auto success_value() const noexcept -> value_type { // NOLINT
+			return value_type::Success;
+		}
+
+		template<typename Domain>
+		friend constexpr inline auto
+		operator==(const LockFreeQueueErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
+			return rhs.id() == lhs.id();
+		}
+
+		template<typename Domain>
+		friend constexpr inline auto
+		operator!=(const LockFreeQueueErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
+			return rhs.id() != lhs.id();
+		}
+
+		constexpr auto
+		operator=(const LockFreeQueueErrorDomain&) noexcept -> LockFreeQueueErrorDomain& = default;
+		constexpr auto
+		operator=(LockFreeQueueErrorDomain&&) noexcept -> LockFreeQueueErrorDomain& = default;
+
+	  private:
+		u64 m_uuid = ID;
+	};
+
+	using LockFreeQueueStatusCode = LockFreeQueueErrorDomain::LockFreeQueueStatusCode;
+	using LockFreeQueueErrorCode = LockFreeQueueErrorDomain::LockFreeQueueErrorCode;
+	using LockFreeQueueError = error::Error<LockFreeQueueErrorDomain>;
 
 } // namespace hyperion
 
-namespace std {
-	template<>
-	struct is_error_code_enum<hyperion::LockFreeQueueErrorType> : std::true_type { };
-
-} // namespace std
-
-inline auto make_error_code(hyperion::LockFreeQueueErrorType code) noexcept -> std::error_code {
-	return {static_cast<int>(code), hyperion::lock_free_queue_category()};
+template<>
+constexpr inline auto make_status_code_domain<hyperion::LockFreeQueueErrorDomain>() noexcept
+	-> hyperion::LockFreeQueueErrorDomain {
+	return {};
 }
 
 namespace hyperion {
-	IGNORE_PADDING_START
-	IGNORE_WEAK_VTABLES_START
-	/// @brief `Error` type for communicating queueing errors
-	/// `Error`s can occur if an entry fails to queue due to queueing policy
-	/// or an entry can't be read because the queue is empty
-	class LockFreeQueueError final : public Error {
-	  public:
-		/// @brief Default Constructor
-		LockFreeQueueError() noexcept {
-			this->m_message = "Unknown LockFreeQueueError occurred"s;
-		}
-		/// @brief Constructs ` LockFreeQueueError` as a `std::error_code` from the given
-		/// `LockFreeQueueErrorType`
-		///
-		/// @param type - The error type
-		LockFreeQueueError(LockFreeQueueErrorType type) noexcept // NOLINT
-			: Error(make_error_code(type)) {
-			if(type == LockFreeQueueErrorType::QueueIsFull) {
-				this->m_message = "Failed to push entry into LockFreeQueue: LockFreeQueue Is Full";
-			}
-			else {
-				this->m_message = "Failed to read entry from LockFreeQueue: LockFreeQueue Is Empty";
-			}
-		}
-		/// @brief Copy Constructor
-		LockFreeQueueError(const LockFreeQueueError& error) noexcept = default;
-		/// @brief Move Constructor
-		LockFreeQueueError(LockFreeQueueError&& error) noexcept = default;
-		/// @brief Destructor
-		~LockFreeQueueError() noexcept final = default;
 
-		/// @brief Copy assignment operator
-		auto operator=(const LockFreeQueueError& error) noexcept -> LockFreeQueueError& = default;
-		/// @brief Move assignment operator
-		auto operator=(LockFreeQueueError&& error) noexcept -> LockFreeQueueError& = default;
+	static_assert(error::StatusCodeDomain<LockFreeQueueErrorDomain>);
+
+	template<>
+	struct error::status_code_enum_info<LockFreeQueueErrorCategory> {
+		using domain_type = LockFreeQueueErrorDomain;
+		static constexpr bool value = true;
 	};
-	IGNORE_WEAK_VTABLES_STOP
 
 	enum class QueuePolicy : usize
 	{
@@ -136,6 +163,7 @@ namespace hyperion {
 	/// @brief The default capacityfor `LockFreeQueue`
 	static constexpr usize DEFAULT_QUEUE_CAPACITY = 512_usize;
 
+	IGNORE_PADDING_START
 	template<typename T,
 			 QueuePolicy Policy = QueuePolicy::ErrWhenFull,
 			 usize Capacity = DEFAULT_QUEUE_CAPACITY>
@@ -147,14 +175,15 @@ namespace hyperion {
 		constexpr ~LockFreeQueue() noexcept = default;
 
 		[[nodiscard]] inline auto push(const T& entry) noexcept -> Result<bool, LockFreeQueueError>
-		requires Copyable<T> &&(Policy == QueuePolicy::ErrWhenFull) {
+		requires concepts::CopyAssignable<T> &&(Policy == QueuePolicy::ErrWhenFull) {
 			const auto pusher = [&]() {
 				m_data.push_back(entry);
 				return Ok(true);
 			};
 
 			if(full()) {
-				return Err(LockFreeQueueError(LockFreeQueueErrorType::QueueIsFull));
+				return Err(
+					LockFreeQueueError(make_error_code(LockFreeQueueErrorCategory::QueueIsFull)));
 			}
 			else {
 				return pusher();
@@ -162,14 +191,15 @@ namespace hyperion {
 		}
 
 		[[nodiscard]] inline auto push(T&& entry) noexcept -> Result<bool, LockFreeQueueError>
-		requires(Policy == QueuePolicy::ErrWhenFull) {
+		requires concepts::MoveAssignable<T> &&(Policy == QueuePolicy::ErrWhenFull) {
 			const auto pusher = [&]() {
-				m_data.push_back(std::forward<T>(entry));
+				m_data.push_back(std::move(entry));
 				return Ok(true);
 			};
 
 			if(full()) {
-				return Err(LockFreeQueueError(LockFreeQueueErrorType::QueueIsFull));
+				return Err(
+					LockFreeQueueError(make_error_code(LockFreeQueueErrorCategory::QueueIsFull)));
 			}
 			else {
 				return pusher();
@@ -177,7 +207,7 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		[[nodiscard]] inline auto push(Args&&... args) noexcept -> Result<bool, LockFreeQueueError>
 		requires(Policy == QueuePolicy::ErrWhenFull) {
 			const auto pusher = [&]() {
@@ -186,7 +216,8 @@ namespace hyperion {
 			};
 
 			if(full()) {
-				return Err(LockFreeQueueError(LockFreeQueueErrorType::QueueIsFull));
+				return Err(
+					LockFreeQueueError(make_error_code(LockFreeQueueErrorCategory::QueueIsFull)));
 			}
 			else {
 				return pusher();
@@ -194,7 +225,8 @@ namespace hyperion {
 		}
 
 		inline auto push(const T& entry) noexcept
-			-> void requires Copyable<T> &&(Policy == QueuePolicy::OverwriteWhenFull) {
+			-> void requires concepts::CopyAssignable<T> &&(Policy
+															== QueuePolicy::OverwriteWhenFull) {
 			m_data.push_back(entry);
 		}
 
@@ -204,7 +236,7 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		inline auto
 		push(Args&&... args) noexcept -> void requires(Policy == QueuePolicy::OverwriteWhenFull) {
 			m_data.emplace_back(std::forward<Args>(args)...);
@@ -212,7 +244,8 @@ namespace hyperion {
 
 		[[nodiscard]] inline auto read() noexcept -> Result<T, LockFreeQueueError> {
 			if(empty()) {
-				return Err(LockFreeQueueError(LockFreeQueueErrorType::QueueIsEmpty));
+				return Err(
+					LockFreeQueueError(make_error_code(LockFreeQueueErrorCategory::QueueIsEmpty)));
 			}
 			else {
 				return Ok(*(m_data.pop_back()));
