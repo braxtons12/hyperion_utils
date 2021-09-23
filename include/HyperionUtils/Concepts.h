@@ -6,7 +6,6 @@
 #include <concepts>
 #include <type_traits>
 
-#include "Error.h"
 #include "TypeTraits.h"
 #include "mpl/ForAll.h"
 #include "mpl/List.h"
@@ -54,6 +53,26 @@ namespace hyperion::concepts {
 	template<typename T>
 	concept NotReference = !Reference<T>;
 
+	template<typename T>
+	concept RValueReference = std::is_rvalue_reference_v<T>;
+
+	template<typename T>
+	concept NotRValueReference = !RValueReference<T>;
+
+	template<typename T>
+	concept LValueReference = std::is_lvalue_reference_v<T>;
+
+	template<typename T>
+	concept NotLValueReference = !LValueReference<T>;
+
+	/// @brief Concept for `std::is_function_v<T>`
+	template<typename T>
+	concept Function = std::is_function_v<T>;
+
+	/// @brief Concept for `!std::is_function_v<T>`
+	template<typename T>
+	concept NotFunction = !Function<T>;
+
 	/// @brief Alias for `std::derived_from<T, U>`
 	template<typename Der, typename Base>
 	concept Derived = std::derived_from<std::remove_pointer_t<std::decay_t<Der>>,
@@ -67,21 +86,13 @@ namespace hyperion::concepts {
 	template<typename From, typename To>
 	concept NotConvertible = !Convertible<From, To>;
 
-	/// @brief Concept that requires `E` to be an `ErrorType`
-	/// (aka derived from `hyperion::Error`)
-	template<typename E>
-	concept ErrorType = Derived<E, Error>;
-
-	/// @brief Concept that requires `E` is not an `ErrorType`
-	/// (aka __NOT__ derived from `hyperion::Error`)
-	template<typename E>
-	concept NotErrorType = !ErrorType<E>;
-
 	/// @brief Concept that requires `T` to be constructible from the parameter pack `Args`
 	template<typename T, typename... Args>
-	concept ConstructibleFrom = requires(Args&&... args) {
-		T{args...};
-	};
+	concept ConstructibleFrom = std::is_constructible_v<T, Args...>;
+
+	/// @brief Concept that requires `T` to be noexcept constructible from the parameter pack `Args`
+	template<typename T, typename... Args>
+	concept NoexceptConstructibleFrom = std::is_nothrow_constructible_v<T, Args...>;
 
 	/// @brief Concept that requires `T` and `U` to be the same type
 	template<typename T, typename U>
@@ -100,11 +111,11 @@ namespace hyperion::concepts {
 	template<typename T, typename List>
 	concept Contains = mpl::contains_v<T, List>;
 
-	/// @brief Concept that requires that T is copy constructible
+	/// @brief Concept that requires that `T` is copy constructible
 	template<typename T>
 	concept CopyConstructible = std::is_copy_constructible_v<T>;
 
-	/// @brief Concept that requires that T is trivially copy constructible
+	/// @brief Concept that requires that `T` is trivially copy constructible
 	template<typename T>
 	concept TriviallyCopyConstructible = std::is_trivially_copy_constructible_v<T>;
 
@@ -120,11 +131,11 @@ namespace hyperion::concepts {
 	concept AllTriviallyCopyConstructible
 		= mpl::for_all_types_v<std::is_trivially_copy_constructible, std::true_type, List>;
 
-	/// @brief Concept that requires that T is copy assignable
+	/// @brief Concept that requires that `T` is copy assignable
 	template<typename T>
 	concept CopyAssignable = std::is_copy_assignable_v<T>;
 
-	/// @brief Concept that requires that T is copy assignable
+	/// @brief Concept that requires that `T` is copy assignable
 	template<typename T>
 	concept TriviallyCopyAssignable = std::is_trivially_copy_assignable_v<T>;
 
@@ -139,7 +150,7 @@ namespace hyperion::concepts {
 	concept AllTriviallyCopyAssignable
 		= mpl::for_all_types_v<std::is_trivially_copy_assignable, std::true_type, List>;
 
-	/// @brief Concept that requires that T is noexcept copy constructible
+	/// @brief Concept that requires that `T` is noexcept copy constructible
 	template<typename T>
 	concept NoexceptCopyConstructible = std::is_nothrow_copy_constructible_v<T>;
 
@@ -149,7 +160,7 @@ namespace hyperion::concepts {
 	concept AllNoexceptCopyConstructible
 		= mpl::for_all_types_v<std::is_nothrow_copy_constructible, std::true_type, List>;
 
-	/// @brief Concept that requires that T is noexcept copy assignable
+	/// @brief Concept that requires that `T` is noexcept copy assignable
 	template<typename T>
 	concept NoexceptCopyAssignable = std::is_nothrow_copy_assignable_v<T>;
 
@@ -159,15 +170,15 @@ namespace hyperion::concepts {
 	concept AllNoexceptCopyAssignable
 		= mpl::for_all_types_v<std::is_nothrow_copy_assignable, std::true_type, List>;
 
-	/// @brief Concept that requires that T is move constructible
+	/// @brief Concept that requires that `T` is move constructible
 	template<typename T>
 	concept MoveConstructible = std::is_move_constructible_v<T>;
 
-	/// @brief Concept that requires that T is __not__ move constructible
+	/// @brief Concept that requires that `T` is __not__ move constructible
 	template<typename T>
 	concept NotMoveConstructible = !std::is_move_constructible_v<T>;
 
-	/// @brief Concept that requires that T is move constructible
+	/// @brief Concept that requires that `T` is move constructible
 	template<typename T>
 	concept TriviallyMoveConstructible = std::is_trivially_move_constructible_v<T>;
 
@@ -183,15 +194,15 @@ namespace hyperion::concepts {
 	concept AllTriviallyMoveConstructible
 		= mpl::for_all_types_v<std::is_trivially_move_constructible, std::true_type, List>;
 
-	/// @brief Concept that requires that T is move assignable
+	/// @brief Concept that requires that `T` is move assignable
 	template<typename T>
 	concept MoveAssignable = std::is_move_assignable_v<T>;
 
-	/// @brief Concept that requires that T is __not__ move assignable
+	/// @brief Concept that requires that `T` is __not__ move assignable
 	template<typename T>
 	concept NotMoveAssignable = !std::is_move_assignable_v<T>;
 
-	/// @brief Concept that requires that T is move assignable
+	/// @brief Concept that requires that `T` is move assignable
 	template<typename T>
 	concept TriviallyMoveAssignable = std::is_trivially_move_assignable_v<T>;
 
@@ -206,7 +217,15 @@ namespace hyperion::concepts {
 	concept AllTriviallyMoveAssignable
 		= mpl::for_all_types_v<std::is_trivially_move_assignable, std::true_type, List>;
 
-	/// @brief Concept that requires that T is noexcept move constructible
+	/// @brief Concept that requires that `T` is assignable from `U`
+	template<typename T, typename U>
+	concept Assignable = std::is_assignable_v<T, U>;
+
+	/// @brief Concept that requires that `T` is noexcept assignable from `U`
+	template<typename T, typename U>
+	concept NoexceptAssignable = std::is_nothrow_assignable_v<T, U>;
+
+	/// @brief Concept that requires that `T` is noexcept move constructible
 	template<typename T>
 	concept NoexceptMoveConstructible = std::is_nothrow_move_constructible_v<T>;
 
@@ -216,7 +235,7 @@ namespace hyperion::concepts {
 	concept AllNoexceptMoveConstructible
 		= mpl::for_all_types_v<std::is_nothrow_move_constructible, std::true_type, List>;
 
-	/// @brief Concept that requires that T is noexcept move assignable
+	/// @brief Concept that requires that `T` is noexcept move assignable
 	template<typename T>
 	concept NoexceptMoveAssignable = std::is_nothrow_move_assignable_v<T>;
 
@@ -226,15 +245,15 @@ namespace hyperion::concepts {
 	concept AllNoexceptMoveAssignable
 		= mpl::for_all_types_v<std::is_nothrow_move_assignable, std::true_type, List>;
 
-	/// @brief Concept that requires that T is destructible
+	/// @brief Concept that requires that `T` is destructible
 	template<typename T>
 	concept Destructible = std::is_destructible_v<T>;
 
-	/// @brief Concept that requires that T is noexcept destructible
+	/// @brief Concept that requires that `T` is noexcept destructible
 	template<typename T>
 	concept TriviallyDestructible = std::is_trivially_destructible_v<T>;
 
-	/// @brief Concept that requires that T is noexcept destructible
+	/// @brief Concept that requires that `T` is noexcept destructible
 	template<typename T>
 	concept NoexceptDestructible = std::is_nothrow_destructible_v<T>;
 
@@ -258,6 +277,14 @@ namespace hyperion::concepts {
 	template<typename T>
 	concept NotMovable = !Movable<T>;
 
+	/// @brief Alias for `std::movable<T>`
+	template<typename T>
+	concept NoexceptMovable = NoexceptMoveConstructible<T> && NoexceptMoveAssignable<T>;
+
+	/// @brief Alias for `! std::movable<T>`
+	template<typename T>
+	concept NoexceptNotMovable = !NoexceptMovable<T>;
+
 	/// @brief Alias for `std::copyable<T>`
 	template<typename T>
 	concept Copyable = CopyConstructible<T> && CopyAssignable<T>;
@@ -265,6 +292,12 @@ namespace hyperion::concepts {
 	/// @brief Alias for `! std::copyable<T>`
 	template<typename T>
 	concept NotCopyable = !Copyable<T>;
+
+	template<typename T>
+	concept NoexceptCopyable = NoexceptCopyConstructible<T> && NoexceptCopyAssignable<T>;
+
+	template<typename T>
+	concept NotNoexceptCopyable = !NoexceptCopyable<T>;
 
 	/// @brief Concept that requires that `T` is default constructible
 	template<typename T>
@@ -300,31 +333,64 @@ namespace hyperion::concepts {
 	template<typename T>
 	concept NotDefaultConstructible = !DefaultConstructible<T>;
 
-	/// @brief Concept requiring T is copyable or movable
+	/// @brief Concept requiring `T` is copyable or movable
 	template<typename T>
 	concept CopyOrMovable = Copyable<T> || Movable<T>;
 
-	/// @brief Concept requiring T is **NOT** copyable nor movable
+	/// @brief Concept requiring `T` is **NOT** copyable nor movable
 	template<typename T>
 	concept NotCopyOrMovable = !CopyOrMovable<T>;
 
-	/// @brief Concept that is the disjunction of most of the requirements for `std::semiregular`
-	/// Requires that that type be at least one of:
-	/// * copyable
-	/// * movable
-	/// * a reference
-	/// * a pointer
-	template<typename T>
-	concept Passable = CopyOrMovable<T> || Reference<T> || Pointer<T>;
+	template<typename T, typename U = T>
+	concept Swappable = std::is_swappable_with_v<T, U>;
 
-	/// @brief Concept that is the negation of `Passable<T>`
-	/// Requires that the type is **NONE** of:
-	/// * copyable
-	/// * movable
-	/// * a reference
-	/// * a pointer
+	template<typename T, typename U = T>
+	concept NotSwappable = !Swappable<T, U>;
+
+	template<typename T, typename U = T>
+	concept NoexceptSwappable = std::is_nothrow_swappable_with_v<T, U>;
+
+	template<typename T, typename U = T>
+	concept NotNoexceptSwappable = !NoexceptSwappable<T, U>;
+
+	/// @brief Concept that requires `T` is constructible from `Args` in a constexpr context
+	/// EG: requires that `constexpr T(Args... args);`
+	template<typename T, typename... Args>
+	concept ConstexprConstructibleFrom
+		= concepts::ConstructibleFrom<T, Args...> && std::bool_constant
+		  < type_traits::is_constexpr_constructible<T, Args...>(type_traits::declval<Args>()...)
+	> ::value;
+
+	/// @brief Concept that requires `T` is default constructible in a constexpr context
+	/// EG: requires that `constexpr T();`
 	template<typename T>
-	concept NotPassable = !Passable<T>;
+	concept ConstexprDefaultConstructible = ConstexprConstructibleFrom<T>;
+
+	/// @brief Concept that requires `T` is copy constructible in a constexpr context
+	/// EG: requires that `constexpr T(const T&);`
+	template<typename T>
+	concept ConstexprCopyConstructible = ConstexprConstructibleFrom<T, const T&>;
+
+	/// @brief Concept that requires `T` is move constructible in a constexpr context
+	/// EG: requires that `constexpr T(T&&);`
+	template<typename T>
+	concept ConstexprMoveConstructible = ConstexprConstructibleFrom<T, T&&>;
+
+	template<typename T, typename U>
+	concept ConstexprAssignable
+		= concepts::Assignable<T, U> && std::bool_constant
+		  < type_traits::is_constexpr_assignable<T>(type_traits::declval<U>())
+	> ::value;
+
+	/// @brief Concept that requires `T` is copy assignable in a constexpr context
+	/// EG: requires that `constexpr auto operator=(const T&) -> T&;`
+	template<typename T>
+	concept ConstexprCopyAssignable = ConstexprAssignable<T, const T&>;
+
+	/// @brief Concept that requires `T` is move assignable in a constexpr context
+	/// EG: requires that `constexpr auto operator=(T&&) -> T&;`
+	template<typename T>
+	concept ConstexprMoveAssignable = ConstexprAssignable<T, T&&>;
 
 	/// @brief Alias for `std::semiregular<T>`
 	template<typename T>
@@ -351,7 +417,52 @@ namespace hyperion::concepts {
 	/// `Arg&&` with the given return type `Return`
 	template<typename Return, typename Func, typename Arg>
 	concept InvocableRMut
-		= InvocableRConst<Return, Func, Arg> || InvocableR<Return, Func, Arg&> || InvocableR<Return,
-																							 Func,
-																							 Arg&&>;
+		= InvocableR<Return, Func, Arg> || InvocableR<Return, Func, Arg&> || InvocableR<Return,
+																						Func,
+																						Arg&&>;
+
+	/// @brief Concept that determines if `T` is allocatable by `Allocator`
+	template<typename T,
+			 typename Allocator = std::allocator<T>,
+			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
+	concept Allocatable = requires(Allocator alloc) {
+		// clang-format off
+		concepts::Same<std::decay_t<U>,typename std::allocator_traits<Allocator>::value_type> ||
+			concepts::Derived<typename std::allocator_traits<Allocator>::value_type, U>;
+		// clang-format on
+		std::allocator_traits<Allocator>::allocate(alloc, 1_usize);
+	};
+
+	template<typename T, typename U = std::remove_all_extents_t<T>>
+	concept Deletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
+						&& (std::is_array_v<T> ?
+								requires(U * t) {
+									delete[] t; // NOLINT
+								} :
+								  requires(U * t) {
+									delete t; // NOLINT
+								});
+
+	template<typename T, typename U = std::remove_all_extents_t<T>>
+	concept NoexceptDeletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
+								&& (std::is_array_v<T> ?
+										requires(U * t) {
+											noexcept(delete[] t); // NOLINT
+										} :
+										  requires(U * t) {
+											noexcept(delete t); // NOLINT
+										});
+
+	template<typename T, typename U = T>
+	concept EqualityComparable = requires(T t, U u) {
+		t == u;
+	};
+
+	template<typename T>
+	concept DerefEqualityComparable
+		= (Pointer<T> ? EqualityComparable<T> : EqualityComparable<std::remove_pointer_t<T>>);
+
+	template<typename T>
+	concept DerefInequalityComparable
+		= (Pointer<T> ? InequalityComparable<T> : InequalityComparable<std::remove_pointer_t<T>>);
 } // namespace hyperion::concepts
