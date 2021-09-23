@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "../Macros.h"
+#include "../HyperionDef.h"
 #include "Callable.h"
 #include "IndexType.h"
 

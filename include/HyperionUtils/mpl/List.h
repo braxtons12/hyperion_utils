@@ -266,4 +266,22 @@ namespace hyperion::mpl {
 				  "mpl::first implementation failing");
 	static_assert(std::is_same_v<first_t<list<u32, u16, u8>>, u32>,
 				  "mpl::first implementation failing");
+
+	namespace detail {
+		template<typename... Types>
+		struct size_impl : std::integral_constant<usize, sizeof...(Types)> { };
+
+		template<typename List>
+		struct size_list_impl;
+
+		template<template<typename...> typename List, typename... Types>
+		struct size_list_impl<List<Types...>> : size_impl<Types...> { };
+	} // namespace detail
+
+	template<typename List>
+	struct size : detail::size_list_impl<List> { };
+
+	template<typename List>
+	inline static constexpr usize size_v = size<List>::value;
+
 } // namespace hyperion::mpl
