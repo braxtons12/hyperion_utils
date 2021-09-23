@@ -1,6 +1,3 @@
 [submodule "third-party/m.css"]
 	path = third-party/m.css
 	url = https://github.com/mosra/m.css
-[submodule "third-party/GSL"]
-	path = third-party/GSL
-	url = https://github.com/microsoft/GSL.git
