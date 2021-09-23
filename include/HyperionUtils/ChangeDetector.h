@@ -9,37 +9,41 @@
 #include "Concepts.h"
 
 namespace hyperion {
-	using concepts::Passable, concepts::DefaultConstructible, concepts::InequalityComparable,
-		concepts::Copyable, concepts::Movable;
+
 	/// @brief Stores a value and detects if an updated value is different than the previous one
 	///
 	/// @tparam T - The type to store and check for equality. T must be default constructible and
 	/// have an inequality operator
-	template<Passable T>
-	requires DefaultConstructible<T> && InequalityComparable<T>
+	template<typename T>
+	requires concepts::DefaultConstructible<T> && concepts::DerefInequalityComparable<T>
 	class ChangeDetector {
 	  public:
 		/// @brief Create a default `ChangeDetector`
-		ChangeDetector() noexcept = default;
+		constexpr ChangeDetector() noexcept(concepts::NoexceptDefaultConstructible<T>) = default;
 
 		/// @brief Create a `ChangeDetector` with the given initial value
 		///
 		/// @param initialValue - The initial value to store in the detector
-		explicit ChangeDetector(const T& initialValue) noexcept : mPreviousValue(initialValue) {
+		explicit constexpr ChangeDetector(const T& initialValue) noexcept(
+			concepts::NoexceptCopyConstructible<T>)
+			: mPreviousValue(initialValue) {
 		}
 
 		/// @brief Create a `ChangeDetector` with the given initial value
 		///
 		/// @param initialValue - The initial value to store in the detector
-		explicit ChangeDetector(T&& initialValue) noexcept
-			: mPreviousValue(std::forward<T>(initialValue)) {
+		explicit constexpr ChangeDetector(T&& initialValue) noexcept(
+			concepts::NoexceptMoveConstructible<T>)
+			: mPreviousValue(std::move(initialValue)) {
 		}
 
-		ChangeDetector(const ChangeDetector& detector) noexcept requires Copyable<T>
+		constexpr ChangeDetector(const ChangeDetector& detector) noexcept(
+			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
 		= default;
-		ChangeDetector(ChangeDetector&& detector) noexcept requires Movable<T>
+		constexpr ChangeDetector(ChangeDetector&& detector) noexcept(
+			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
 		= default;
-		~ChangeDetector() noexcept = default;
+		constexpr ~ChangeDetector() noexcept(concepts::NoexceptDestructible<T>) = default;
 
 		/// @brief Updates the stored value and returns if the new value
 		/// is different than the previous one.
@@ -52,7 +56,9 @@ namespace hyperion {
 		/// @param newValue - The new value to store and check for equality
 		///
 		/// @return Whether the new value was different than the old one
-		inline auto changed(const T& newValue) noexcept -> bool {
+		constexpr inline auto
+		changed(const T& newValue) noexcept(concepts::NoexceptCopyAssignable<T>)
+			-> bool requires concepts::CopyAssignable<T> {
 			bool returnVal = false;
 			if constexpr(std::is_pointer_v<T>) {
 				if(newValue != nullptr) {
@@ -83,7 +89,8 @@ namespace hyperion {
 		/// @param newValue - The new value to store and check for equality
 		///
 		/// @return Whether the new value was different than the old one
-		inline auto changed(T&& newValue) noexcept -> bool {
+		constexpr inline auto changed(T&& newValue) noexcept(concepts::NoexceptMoveAssignable<T>)
+			-> bool requires concepts::MoveAssignable<T> {
 			bool returnVal = false;
 			if constexpr(std::is_pointer_v<T>) {
 				if(newValue != nullptr) {
@@ -94,11 +101,11 @@ namespace hyperion {
 						returnVal = *mPreviousValue != *newValue;
 					}
 				}
-				mPreviousValue = std::forward<T>(newValue);
+				mPreviousValue = std::move(newValue);
 			}
 			else {
 				returnVal = mPreviousValue != newValue;
-				mPreviousValue = std::forward<T>(newValue);
+				mPreviousValue = std::move(newValue);
 			}
 			return returnVal;
 		}
@@ -106,14 +113,18 @@ namespace hyperion {
 		/// @brief Returns the currently contained value
 		///
 		/// @return the current value
-		inline auto value() const noexcept -> T requires Copyable<T> {
+		constexpr inline auto
+		value() const noexcept(concepts::NoexceptCopyable<T>) -> T requires concepts::Copyable<T> {
 			return mPreviousValue;
 		}
 
-		auto
-		operator=(const ChangeDetector& detector) noexcept -> ChangeDetector& requires Copyable<T>
+		constexpr auto
+		operator=(const ChangeDetector& detector) noexcept(concepts::NoexceptCopyAssignable<T>)
+			-> ChangeDetector& requires concepts::CopyAssignable<T>
 		= default;
-		auto operator=(ChangeDetector&& detector) noexcept -> ChangeDetector& requires Movable<T>
+		constexpr auto
+		operator=(ChangeDetector&& detector) noexcept(concepts::NoexceptMoveAssignable<T>)
+			-> ChangeDetector& requires concepts::MoveAssignable<T>
 		= default;
 
 	  private:
