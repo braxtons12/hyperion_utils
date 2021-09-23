@@ -10,20 +10,14 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <memory>
-#include <memory_resource>
 #include <tuple>
 
 #include "BasicTypes.h"
 #include "Concepts.h"
-#include "Macros.h"
-#include "detail/AllocateUnique.h"
+#include "HyperionDef.h"
+#include "Memory.h"
 
 namespace hyperion {
-	using concepts::DefaultConstructible, concepts::Integral, concepts::UnsignedIntegral,
-		concepts::Copyable, concepts::Movable, concepts::NotMovable, concepts::ConstructibleFrom;
-
-	using detail::allocate_unique;
 
 	/// @brief The thread-safety type of the `RingBuffer`
 	enum class RingBufferType : usize
@@ -54,7 +48,7 @@ namespace hyperion {
 	///
 	/// @tparam T - The type to store in the `RingBuffer`. Must Be Default Constructible.
 	/// Does not currently support `T` of array types (eg, `T` = `U[]` or `T` = `U[N]`)
-	template<DefaultConstructible T,
+	template<concepts::DefaultConstructible T,
 			 RingBufferType ThreadSafety = RingBufferType::NotThreadSafe,
 			 template<typename ElementType> typename Allocator = std::allocator>
 	class RingBuffer {
@@ -147,7 +141,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+(Integral auto rhs) const noexcept -> Iterator {
+			constexpr inline auto
+			operator+(concepts::Integral auto rhs) const noexcept -> Iterator {
 				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
@@ -165,12 +160,13 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+=(Integral auto rhs) noexcept -> Iterator& {
+			constexpr inline auto operator+=(concepts::Integral auto rhs) noexcept -> Iterator& {
 				*this = std::move(*this + rhs);
 				return *this;
 			}
 
-			constexpr inline auto operator-(Integral auto rhs) const noexcept -> Iterator {
+			constexpr inline auto
+			operator-(concepts::Integral auto rhs) const noexcept -> Iterator {
 				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
@@ -188,7 +184,7 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator-=(Integral auto rhs) noexcept -> Iterator& {
+			constexpr inline auto operator-=(concepts::Integral auto rhs) noexcept -> Iterator& {
 				*this = std::move(*this - rhs);
 				return *this;
 			}
@@ -198,7 +194,7 @@ namespace hyperion {
 					   - static_cast<std::ptrdiff_t>(rhs.m_current_index);
 			}
 
-			constexpr inline auto operator[](Integral auto index) noexcept -> Iterator {
+			constexpr inline auto operator[](concepts::Integral auto index) noexcept -> Iterator {
 				return std::move(*this + index);
 			}
 
@@ -306,7 +302,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+(Integral auto rhs) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator+(concepts::Integral auto rhs) const noexcept -> ConstIterator {
 				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
@@ -324,12 +321,14 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+=(Integral auto rhs) noexcept -> ConstIterator& {
+			constexpr inline auto
+			operator+=(concepts::Integral auto rhs) noexcept -> ConstIterator& {
 				*this = std::move(*this + rhs);
 				return *this;
 			}
 
-			constexpr inline auto operator-(Integral auto rhs) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator-(concepts::Integral auto rhs) const noexcept -> ConstIterator {
 				const auto diff = static_cast<usize>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
@@ -347,7 +346,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator-=(Integral auto rhs) noexcept -> ConstIterator& {
+			constexpr inline auto
+			operator-=(concepts::Integral auto rhs) noexcept -> ConstIterator& {
 				*this = std::move(*this - rhs);
 				return *this;
 			}
@@ -358,7 +358,8 @@ namespace hyperion {
 					   - static_cast<std::ptrdiff_t>(rhs.m_current_index);
 			}
 
-			constexpr inline auto operator[](Integral auto index) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator[](concepts::Integral auto index) const noexcept -> ConstIterator {
 				return std::move(*this + index);
 			}
 
@@ -400,8 +401,9 @@ namespace hyperion {
 		///
 		/// @param intitial_capacity - The initial capacity of the `RingBuffer`
 		/// @param default_value - The value to fill the `RingBuffer` with
-		constexpr RingBuffer(usize intitial_capacity,
-							 const T& default_value) noexcept requires Copyable<T>
+		constexpr RingBuffer(
+			usize intitial_capacity,
+			const T& default_value) noexcept requires concepts::CopyConstructible<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, // NOLINT
 											intitial_capacity + 1,
 											default_value)),
@@ -411,19 +413,19 @@ namespace hyperion {
 			  m_capacity(intitial_capacity + 1) {
 		}
 
-		constexpr RingBuffer(std::initializer_list<T> values) noexcept requires Copyable<T>
+		constexpr RingBuffer(
+			std::initializer_list<T> values) noexcept requires concepts::MoveAssignable<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, // NOLINT
 											values.size() + 1)),
 			  m_loop_index(values.size()),
 			  m_capacity(values.size() + 1) {
 
-			auto end_ = values.end();
-			for(auto iter = values.begin(); iter != end_; ++iter) {
-				push_back(std::move(*iter));
+			for(auto&& val : values) {
+				push_back(std::move(val));
 			}
 		}
 
-		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires Copyable<T>
+		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires concepts::CopyAssignable<T>
 			: m_buffer(allocate_unique<T[]>(m_allocator, buffer.m_capacity)), // NOLINT
 			  m_write_index(0_usize),										  // NOLINT
 			  m_start_index(0_usize),										  // NOLINT
@@ -459,7 +461,7 @@ namespace hyperion {
 		/// @param index - The index of the desired element
 		///
 		/// @return The element at the given index, or at capacity - 1 if index >= capacity
-		[[nodiscard]] constexpr inline auto at(Integral auto index) noexcept -> T& {
+		[[nodiscard]] constexpr inline auto at(concepts::Integral auto index) noexcept -> T& {
 			auto i = get_adjusted_internal_index(index);
 
 			return m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -561,7 +563,8 @@ namespace hyperion {
 		/// @note if `size() == capacity()` then this loops and overwrites `front()`
 		///
 		/// @param value - the element to insert
-		constexpr inline auto push_back(const T& value) noexcept -> void requires Copyable<T> {
+		constexpr inline auto
+		push_back(const T& value) noexcept -> void requires concepts::CopyAssignable<T> {
 			// clang-format off
 			m_buffer[m_write_index] = value; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 			// clang-format on
@@ -589,7 +592,7 @@ namespace hyperion {
 		///
 		/// @return A reference to the element constructed at the end of the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto emplace_back(Args&&... args) noexcept -> T& {
 			allocator_traits::template construct<T>(m_allocator,
 													&m_buffer[m_write_index], // NOLINT
@@ -611,7 +614,7 @@ namespace hyperion {
 		///
 		/// @return A reference to the element constructed at the location indicated by `position`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto emplace(const Iterator& position, Args&&... args) noexcept -> T& {
 			auto index = get_adjusted_internal_index(position.get_index());
 
@@ -649,8 +652,8 @@ namespace hyperion {
 		///
 		/// @param position - `Iterator` indicating where in the `RingBuffer` to place the element
 		/// @param element - The element to store in the `RingBuffer`
-		constexpr inline auto
-		insert(const Iterator& position, const T& element) noexcept -> void requires Copyable<T> {
+		constexpr inline auto insert(const Iterator& position, const T& element) noexcept
+			-> void requires concepts::CopyAssignable<T> {
 			insert_internal(position.get_index(), element);
 		}
 
@@ -672,7 +675,7 @@ namespace hyperion {
 		/// element
 		/// @param element - The element to store in the `RingBuffer`
 		constexpr inline auto insert(const ConstIterator& position, const T& element) noexcept
-			-> void requires Copyable<T> {
+			-> void requires concepts::CopyAssignable<T> {
 			insert_internal(position.get_index(), element);
 		}
 
@@ -696,7 +699,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace(const Iterator& position, Args&&... args) noexcept -> T& {
 			return insert_emplace_internal(position.get_index(), std::forward<Args>(args)...);
@@ -711,7 +714,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace(const ConstIterator& position, Args&&... args) noexcept -> T& {
 			return insert_emplace_internal(position.get_index(), std::forward<Args>(args)...);
@@ -774,7 +777,8 @@ namespace hyperion {
 		/// @brief Removes the last element in the `RingBuffer` and returns it
 		///
 		/// @return The last element in the `RingBuffer`
-		[[nodiscard]] constexpr inline auto pop_back() noexcept -> T requires Copyable<T> {
+		[[nodiscard]] constexpr inline auto
+		pop_back() noexcept -> T requires concepts::Copyable<T> {
 			T back_ = back();
 			decrement_write();
 			return back_;
@@ -783,7 +787,8 @@ namespace hyperion {
 		/// @brief Removes the first element in the `RingBuffer` and returns it
 		///
 		/// @return The first element in the `RingBuffer`
-		[[nodiscard]] constexpr inline auto pop_front() noexcept -> T requires Copyable<T> {
+		[[nodiscard]] constexpr inline auto
+		pop_front() noexcept -> T requires concepts::Copyable<T> {
 			T front_ = front();
 			increment_start();
 			return front_;
@@ -837,14 +842,15 @@ namespace hyperion {
 		/// @param index - The index to get the corresponding element for
 		///
 		/// @return - The element at index
-		[[nodiscard]] constexpr inline auto operator[](Integral auto index) noexcept -> T& {
+		[[nodiscard]] constexpr inline auto
+		operator[](concepts::Integral auto index) noexcept -> T& {
 			auto i = get_adjusted_internal_index(index);
 
 			return m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
 
-		constexpr auto
-		operator=(const RingBuffer& buffer) noexcept -> RingBuffer& requires Copyable<T> {
+		constexpr auto operator=(const RingBuffer& buffer) noexcept
+			-> RingBuffer& requires concepts::CopyAssignable<T> {
 			if(this == &buffer) {
 				return *this;
 			}
@@ -891,7 +897,7 @@ namespace hyperion {
 		///
 		/// @return The corresponding index into the underlying `T` array
 		[[nodiscard]] constexpr inline auto
-		get_adjusted_internal_index(Integral auto index) const noexcept -> usize {
+		get_adjusted_internal_index(concepts::Integral auto index) const noexcept -> usize {
 			auto i = static_cast<usize>(index);
 			return (m_start_index + i) % (m_capacity);
 		}
@@ -903,7 +909,7 @@ namespace hyperion {
 		///
 		/// @return The corresponding user-facing index
 		[[nodiscard]] constexpr inline auto
-		get_external_index_from_internal(Integral auto index) const noexcept -> usize {
+		get_external_index_from_internal(concepts::Integral auto index) const noexcept -> usize {
 			auto i = static_cast<usize>(index);
 			if(i >= m_start_index && i <= m_loop_index) {
 				return i - m_start_index;
@@ -949,7 +955,8 @@ namespace hyperion {
 			}
 		}
 
-		constexpr inline auto decrement_write_n(UnsignedIntegral auto n) noexcept -> void {
+		constexpr inline auto
+		decrement_write_n(concepts::UnsignedIntegral auto n) noexcept -> void {
 			auto amount_to_decrement = static_cast<usize>(n);
 			if(amount_to_decrement > m_write_index) {
 				amount_to_decrement -= m_write_index;
@@ -987,7 +994,7 @@ namespace hyperion {
 				}
 
 				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
-					if constexpr(Movable<T>) {
+					if constexpr(concepts::MoveAssignable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
 					}
@@ -1013,7 +1020,7 @@ namespace hyperion {
 			auto index = get_adjusted_internal_index(external_index);
 
 			if(index == m_write_index) {
-				emplace_back(std::forward<T>(elem));
+				emplace_back(std::move(elem));
 			}
 			else {
 				const auto size_ = size();
@@ -1028,7 +1035,7 @@ namespace hyperion {
 				}
 
 				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
-					if constexpr(Movable<T>) {
+					if constexpr(concepts::MoveAssignable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
 					}
@@ -1038,7 +1045,7 @@ namespace hyperion {
 					}
 				}
 
-				m_buffer[index] = std::forward<T>(elem);
+				m_buffer[index] = std::move(elem);
 				increment_indices();
 			}
 		}
@@ -1052,7 +1059,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace_internal(usize external_index, Args&&... args) noexcept -> T& {
 			auto index = get_adjusted_internal_index(external_index);
@@ -1073,7 +1080,7 @@ namespace hyperion {
 				}
 
 				for(auto i = 0_usize; i < num_to_move; ++i, --j) {
-					if constexpr(Movable<T>) {
+					if constexpr(concepts::MoveAssignable<T>) {
 						m_buffer[get_adjusted_internal_index(size_ - i)]
 							= std::move(m_buffer[get_adjusted_internal_index(external_index + j)]);
 					}
@@ -1112,7 +1119,7 @@ namespace hyperion {
 				const auto pos_to_move = external_index + 1;
 				const auto pos_to_replace = external_index;
 				for(auto i = 0_usize; i < num_to_move; ++i) {
-					if constexpr(Movable<T>) {
+					if constexpr(concepts::MoveAssignable<T>) {
 						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
 							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
 					}
@@ -1165,7 +1172,7 @@ namespace hyperion {
 				const auto pos_to_move = last;
 				const auto pos_to_replace = first;
 				for(auto i = 0_usize; i < num_to_move; ++i) {
-					if constexpr(Movable<T>) {
+					if constexpr(concepts::MoveAssignable<T>) {
 						m_buffer[get_adjusted_internal_index(pos_to_replace + i)]
 							= std::move(m_buffer[get_adjusted_internal_index(pos_to_move + i)]);
 					}
@@ -1202,7 +1209,7 @@ namespace hyperion {
 	///
 	/// @tparam T - The type to store in the `RingBuffer`. Must Be Default Constructible.
 	/// Does not currently support `T` of array types (eg, `T` = `U[]` or `T` = `U[N]`)
-	template<DefaultConstructible T, template<typename ElementType> typename Allocator>
+	template<concepts::DefaultConstructible T, template<typename ElementType> typename Allocator>
 	class RingBuffer<T, RingBufferType::ThreadSafe, Allocator> {
 	  public:
 		using index_type = u32;
@@ -1229,7 +1236,7 @@ namespace hyperion {
 				: m_element(std::allocate_shared<T, Allocator<Element>>(alloc, element)) {
 			}
 			template<typename... Args>
-			requires ConstructibleFrom<T, Args...>
+			requires concepts::ConstructibleFrom<T, Args...>
 			explicit constexpr Element(Allocator<Element>& alloc, Args&&... args) noexcept
 				: m_element(
 					std::allocate_shared<T, Allocator<Element>>(alloc,
@@ -1383,7 +1390,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+(Integral auto rhs) const noexcept -> Iterator {
+			constexpr inline auto
+			operator+(concepts::Integral auto rhs) const noexcept -> Iterator {
 				const auto diff = static_cast<index_type>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
@@ -1401,12 +1409,13 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+=(Integral auto rhs) noexcept -> Iterator& {
+			constexpr inline auto operator+=(concepts::Integral auto rhs) noexcept -> Iterator& {
 				*this = std::move(*this + rhs);
 				return *this;
 			}
 
-			constexpr inline auto operator-(Integral auto rhs) const noexcept -> Iterator {
+			constexpr inline auto
+			operator-(concepts::Integral auto rhs) const noexcept -> Iterator {
 				const auto diff = static_cast<index_type>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
@@ -1424,7 +1433,7 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator-=(Integral auto rhs) noexcept -> Iterator& {
+			constexpr inline auto operator-=(concepts::Integral auto rhs) noexcept -> Iterator& {
 				*this = std::move(*this - rhs);
 				return *this;
 			}
@@ -1434,7 +1443,7 @@ namespace hyperion {
 					   - static_cast<std::ptrdiff_t>(rhs.m_current_index);
 			}
 
-			constexpr inline auto operator[](Integral auto index) noexcept -> Iterator {
+			constexpr inline auto operator[](concepts::Integral auto index) noexcept -> Iterator {
 				return std::move(*this + index);
 			}
 
@@ -1543,7 +1552,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+(Integral auto rhs) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator+(concepts::Integral auto rhs) const noexcept -> ConstIterator {
 				const auto diff = static_cast<index_type>(rhs);
 				if(rhs < 0) {
 					return std::move(*this - -rhs);
@@ -1561,12 +1571,14 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator+=(Integral auto rhs) noexcept -> ConstIterator& {
+			constexpr inline auto
+			operator+=(concepts::Integral auto rhs) noexcept -> ConstIterator& {
 				*this = std::move(*this + rhs);
 				return *this;
 			}
 
-			constexpr inline auto operator-(Integral auto rhs) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator-(concepts::Integral auto rhs) const noexcept -> ConstIterator {
 				const auto diff = static_cast<index_type>(rhs);
 				if(rhs < 0) {
 					return std::move(*this + -rhs);
@@ -1584,7 +1596,8 @@ namespace hyperion {
 				return temp;
 			}
 
-			constexpr inline auto operator-=(Integral auto rhs) noexcept -> ConstIterator& {
+			constexpr inline auto
+			operator-=(concepts::Integral auto rhs) noexcept -> ConstIterator& {
 				*this = std::move(*this - rhs);
 				return *this;
 			}
@@ -1595,7 +1608,8 @@ namespace hyperion {
 					   - static_cast<std::ptrdiff_t>(rhs.m_current_index);
 			}
 
-			constexpr inline auto operator[](Integral auto index) const noexcept -> ConstIterator {
+			constexpr inline auto
+			operator[](concepts::Integral auto index) const noexcept -> ConstIterator {
 				return std::move(*this + index);
 			}
 
@@ -1639,8 +1653,9 @@ namespace hyperion {
 		///
 		/// @param intitial_capacity - The initial capacity of the `RingBuffer`
 		/// @param default_value - The value to fill the `RingBuffer` with
-		constexpr RingBuffer(index_type intitial_capacity,
-							 const T& default_value) noexcept requires Copyable<T>
+		constexpr RingBuffer(
+			index_type intitial_capacity,
+			const T& default_value) noexcept requires concepts::CopyConstructible<T>
 			: m_buffer(allocate_unique<Element[]>(m_allocator, // NOLINT
 												  intitial_capacity + 1,
 												  m_allocator,
@@ -1648,7 +1663,7 @@ namespace hyperion {
 			  m_state(intitial_capacity + 1, 0U, intitial_capacity) {
 		}
 
-		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires Copyable<T>
+		constexpr RingBuffer(const RingBuffer& buffer) noexcept requires concepts::CopyAssignable<T>
 			: m_buffer(allocate_unique<Element[]>(m_allocator, // NOLINT
 												  buffer.m_capacity,
 												  m_allocator)),
@@ -1676,7 +1691,7 @@ namespace hyperion {
 		/// @param index - The index of the desired element
 		///
 		/// @return The element at the given index, or at capacity - 1 if index >= capacity
-		[[nodiscard]] constexpr inline auto at(Integral auto index) noexcept -> Element {
+		[[nodiscard]] constexpr inline auto at(concepts::Integral auto index) noexcept -> Element {
 			const auto i = m_state.adjusted_index(static_cast<index_type>(index));
 
 			return m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -1776,7 +1791,8 @@ namespace hyperion {
 		/// @note if `size() == capacity()` then this loops and overwrites `front()`
 		///
 		/// @param value - the element to insert
-		constexpr inline auto push_back(const T& value) noexcept -> void requires Copyable<T> {
+		constexpr inline auto
+		push_back(const T& value) noexcept -> void requires concepts::CopyAssignable<T> {
 			m_buffer[m_state.write()] // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 				= Element(m_allocator, value);
 
@@ -1823,7 +1839,7 @@ namespace hyperion {
 		///
 		/// @return A reference to the element constructed at the end of the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto emplace_back(Args&&... args) noexcept -> Element {
 			const auto index = m_state.write();
 
@@ -1848,7 +1864,7 @@ namespace hyperion {
 		///
 		/// @return A reference to the element constructed at the location indicated by `position`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		emplace(const Iterator& position, Args&&... args) noexcept -> Element {
 			const auto index = m_state.get_adjusted_internal_index(position.get_index());
@@ -1891,8 +1907,8 @@ namespace hyperion {
 		///
 		/// @param position - `Iterator` indicating where in the `RingBuffer` to place the element
 		/// @param element - The element to store in the `RingBuffer`
-		constexpr inline auto
-		insert(const Iterator& position, const T& element) noexcept -> void requires Copyable<T> {
+		constexpr inline auto insert(const Iterator& position, const T& element) noexcept
+			-> void requires concepts::CopyAssignable<T> {
 			insert_internal(position.get_index(), element);
 		}
 
@@ -1914,7 +1930,7 @@ namespace hyperion {
 		/// element
 		/// @param element - The element to store in the `RingBuffer`
 		constexpr inline auto insert(const ConstIterator& position, const T& element) noexcept
-			-> void requires Copyable<T> {
+			-> void requires concepts::CopyAssignable<T> {
 			insert_internal(position.get_index(), element);
 		}
 
@@ -1938,7 +1954,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace(const Iterator& position, Args&&... args) noexcept -> Element {
 			return insert_emplace_internal(position.get_index(), std::forward<Args>(args)...);
@@ -1953,7 +1969,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace(const ConstIterator& position, Args&&... args) noexcept -> Element {
 			return insert_emplace_internal(position.get_index(), std::forward<Args>(args)...);
@@ -2084,14 +2100,15 @@ namespace hyperion {
 		/// @param index - The index to get the corresponding element for
 		///
 		/// @return - The element at index
-		[[nodiscard]] constexpr inline auto operator[](Integral auto index) noexcept -> Element {
+		[[nodiscard]] constexpr inline auto
+		operator[](concepts::Integral auto index) noexcept -> Element {
 			const auto i = m_state.adjusted_index(static_cast<index_type>(index));
 
 			return m_buffer[i]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 		}
 
-		constexpr auto
-		operator=(const RingBuffer& buffer) noexcept -> RingBuffer& requires Copyable<T> {
+		constexpr auto operator=(const RingBuffer& buffer) noexcept
+			-> RingBuffer& requires concepts::CopyAssignable<T> {
 			if(this == &buffer) {
 				return *this;
 			}
@@ -2128,7 +2145,7 @@ namespace hyperion {
 			constexpr State() noexcept = default;
 			explicit constexpr State(index_type capacity) noexcept : m_capacity(capacity) {
 			}
-			explicit constexpr State(index_type capacity,
+			explicit constexpr State(index_type capacity, // NOLINT
 									 index_type start,
 									 index_type write) noexcept
 				: m_indices(merge_indices(start, write)), m_capacity(capacity) {
@@ -2142,7 +2159,8 @@ namespace hyperion {
 			constexpr ~State() noexcept = default;
 
 			inline constexpr auto
-			update(index_type start, index_type write, index_type capacity) noexcept -> void {
+			update(index_type start, index_type write, index_type capacity) // NOLINT
+				noexcept -> void {
 				auto indices = m_indices.load();
 				while(!m_indices.compare_exchange_weak(indices, merge_indices(start, write))) {
 				}
@@ -2187,9 +2205,9 @@ namespace hyperion {
 			}
 
 			[[nodiscard]] inline constexpr auto
-			size(UnsignedIntegral auto start,
-				 UnsignedIntegral auto write,
-				 UnsignedIntegral auto capacity) const noexcept -> index_type {
+			size(concepts::UnsignedIntegral auto start,
+				 concepts::UnsignedIntegral auto write,
+				 concepts::UnsignedIntegral auto capacity) const noexcept -> index_type {
 				const auto start_ = static_cast<index_type>(start);
 				const auto write_ = static_cast<index_type>(write);
 				const auto capacity_ = static_cast<index_type>(capacity);
@@ -2218,15 +2236,15 @@ namespace hyperion {
 			}
 
 			[[nodiscard]] inline constexpr auto
-			adjusted_index(UnsignedIntegral auto index) const noexcept -> index_type {
+			adjusted_index(concepts::UnsignedIntegral auto index) const noexcept -> index_type {
 				const auto i = static_cast<index_type>(index);
 				return (start() + i) % capacity();
 			}
 
 			[[nodiscard]] inline constexpr auto
-			adjusted_index(UnsignedIntegral auto index,
-						   UnsignedIntegral auto start,
-						   UnsignedIntegral auto capacity) const noexcept -> index_type {
+			adjusted_index(concepts::UnsignedIntegral auto index,
+						   concepts::UnsignedIntegral auto start,
+						   concepts::UnsignedIntegral auto capacity) const noexcept -> index_type {
 				const auto i = static_cast<index_type>(index);
 				const auto start_ = static_cast<index_type>(start);
 				const auto capacity_ = static_cast<index_type>(capacity);
@@ -2289,7 +2307,8 @@ namespace hyperion {
 				}
 			}
 
-			inline constexpr auto decrement_write_n(UnsignedIntegral auto n) noexcept -> void {
+			inline constexpr auto
+			decrement_write_n(concepts::UnsignedIntegral auto n) noexcept -> void {
 				auto indices = m_indices.load();
 				const auto capacity_ = m_capacity.load();
 
@@ -2309,7 +2328,8 @@ namespace hyperion {
 				}
 			}
 
-			inline constexpr auto set_write(UnsignedIntegral auto index) noexcept -> void {
+			inline constexpr auto
+			set_write(concepts::UnsignedIntegral auto index) noexcept -> void {
 				const auto index_ = static_cast<index_type>(index);
 				auto indices = m_indices.load();
 				while(!m_indices.compare_exchange_weak(indices,
@@ -2443,7 +2463,7 @@ namespace hyperion {
 		/// @param args - The arguments to the constructor for
 		/// the element to store in the `RingBuffer`
 		template<typename... Args>
-		requires ConstructibleFrom<T, Args...>
+		requires concepts::ConstructibleFrom<T, Args...>
 		constexpr inline auto
 		insert_emplace_internal(index_type external_index, Args&&... args) noexcept -> Element {
 			const auto [start, write] = m_state.indices();
