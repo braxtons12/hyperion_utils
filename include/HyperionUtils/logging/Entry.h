@@ -1,11 +1,12 @@
 #pragma once
 
+#include <string_view>
 #include <variant>
 
 #include "../Concepts.h"
-#include "../Macros.h"
+#include "../Format.h"
+#include "../HyperionDef.h"
 #include "Config.h"
-#include "fmtIncludes.h"
 
 namespace hyperion {
 
@@ -56,7 +57,7 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto entry() const noexcept -> std::string_view {
 			return underlying().log_entry();
 		}
 
@@ -83,21 +84,17 @@ namespace hyperion {
 	class MessageEntry final : public EntryBase<MessageEntry> {
 	  public:
 		MessageEntry() noexcept = delete;
-		explicit HYPERION_CONSTEXPR_STRINGS
-		MessageEntry(const std::string& entry) noexcept // NOLINT
-			: m_entry(entry) {
+		explicit MessageEntry(const std::string_view& entry) noexcept : m_entry(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS MessageEntry(std::string&& entry) noexcept
-			: m_entry(std::forward<std::string>(entry)) {
+		explicit MessageEntry(std::string_view&& entry) noexcept : m_entry(entry) {
 		}
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		MessageEntry(const S& format_string, Args&&... args) noexcept
+		template<typename... Args>
+		explicit MessageEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
 		}
-		HYPERION_CONSTEXPR_STRINGS MessageEntry(const MessageEntry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS MessageEntry(MessageEntry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~MessageEntry() noexcept = default;
+		MessageEntry(const MessageEntry& entry) noexcept = default;
+		MessageEntry(MessageEntry&& entry) noexcept = default;
+		~MessageEntry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -117,14 +114,12 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto log_entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto log_entry() const noexcept -> std::string_view {
 			return m_entry;
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const MessageEntry& entry) noexcept -> MessageEntry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(MessageEntry&& entry) noexcept -> MessageEntry& = default;
+		auto operator=(const MessageEntry& entry) noexcept -> MessageEntry& = default;
+		auto operator=(MessageEntry&& entry) noexcept -> MessageEntry& = default;
 
 	  private:
 		std::string m_entry;
@@ -134,20 +129,18 @@ namespace hyperion {
 	class TraceEntry final : public EntryBase<TraceEntry> {
 	  public:
 		TraceEntry() noexcept = delete;
-		explicit HYPERION_CONSTEXPR_STRINGS TraceEntry(const std::string& entry) noexcept // NOLINT
+		explicit TraceEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS TraceEntry(std::string&& entry) noexcept
-			: m_entry(std::forward<std::string>(entry)) {
+		explicit TraceEntry(std::string_view&& entry) noexcept : m_entry(entry) {
 		}
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		TraceEntry(const S& format_string, Args&&... args) noexcept
+		template<typename... Args>
+		explicit TraceEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
 		}
-		HYPERION_CONSTEXPR_STRINGS TraceEntry(const TraceEntry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS TraceEntry(TraceEntry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~TraceEntry() noexcept = default;
+		TraceEntry(const TraceEntry& entry) noexcept = default;
+		TraceEntry(TraceEntry&& entry) noexcept = default;
+		~TraceEntry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -167,14 +160,12 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto log_entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto log_entry() const noexcept -> std::string_view {
 			return m_entry;
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const TraceEntry& entry) noexcept -> TraceEntry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(TraceEntry&& entry) noexcept -> TraceEntry& = default;
+		auto operator=(const TraceEntry& entry) noexcept -> TraceEntry& = default;
+		auto operator=(TraceEntry&& entry) noexcept -> TraceEntry& = default;
 
 	  private:
 		std::string m_entry;
@@ -184,20 +175,18 @@ namespace hyperion {
 	class InfoEntry final : public EntryBase<InfoEntry> {
 	  public:
 		InfoEntry() noexcept = delete;
-		explicit HYPERION_CONSTEXPR_STRINGS InfoEntry(const std::string& entry) noexcept // NOLINT
+		explicit InfoEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS InfoEntry(std::string&& entry) noexcept
-			: m_entry(std::forward<std::string>(entry)) {
+		explicit InfoEntry(std::string_view&& entry) noexcept : m_entry(entry) {
 		}
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		InfoEntry(const S& format_string, Args&&... args) noexcept
+		template<typename... Args>
+		explicit InfoEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
 		}
-		HYPERION_CONSTEXPR_STRINGS InfoEntry(const InfoEntry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS InfoEntry(InfoEntry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~InfoEntry() noexcept = default;
+		InfoEntry(const InfoEntry& entry) noexcept = default;
+		InfoEntry(InfoEntry&& entry) noexcept = default;
+		~InfoEntry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -217,14 +206,12 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto log_entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto log_entry() const noexcept -> std::string_view {
 			return m_entry;
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const InfoEntry& entry) noexcept -> InfoEntry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(InfoEntry&& entry) noexcept -> InfoEntry& = default;
+		auto operator=(const InfoEntry& entry) noexcept -> InfoEntry& = default;
+		auto operator=(InfoEntry&& entry) noexcept -> InfoEntry& = default;
 
 	  private:
 		std::string m_entry;
@@ -234,20 +221,18 @@ namespace hyperion {
 	class WarnEntry final : public EntryBase<WarnEntry> {
 	  public:
 		WarnEntry() noexcept = delete;
-		explicit HYPERION_CONSTEXPR_STRINGS WarnEntry(const std::string& entry) noexcept // NOLINT
+		explicit WarnEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS WarnEntry(std::string&& entry) noexcept
-			: m_entry(std::forward<std::string>(entry)) {
+		explicit WarnEntry(std::string_view&& entry) noexcept : m_entry(entry) {
 		}
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		WarnEntry(const S& format_string, Args&&... args) noexcept
+		template<typename... Args>
+		explicit WarnEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
 		}
-		HYPERION_CONSTEXPR_STRINGS WarnEntry(const WarnEntry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS WarnEntry(WarnEntry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~WarnEntry() noexcept = default;
+		WarnEntry(const WarnEntry& entry) noexcept = default;
+		WarnEntry(WarnEntry&& entry) noexcept = default;
+		~WarnEntry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -267,14 +252,12 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto log_entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto log_entry() const noexcept -> std::string_view {
 			return m_entry;
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const WarnEntry& entry) noexcept -> WarnEntry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(WarnEntry&& entry) noexcept -> WarnEntry& = default;
+		auto operator=(const WarnEntry& entry) noexcept -> WarnEntry& = default;
+		auto operator=(WarnEntry&& entry) noexcept -> WarnEntry& = default;
 
 	  private:
 		std::string m_entry;
@@ -284,20 +267,18 @@ namespace hyperion {
 	class ErrorEntry final : public EntryBase<ErrorEntry> {
 	  public:
 		ErrorEntry() noexcept = delete;
-		explicit HYPERION_CONSTEXPR_STRINGS ErrorEntry(const std::string& entry) noexcept // NOLINT
+		explicit ErrorEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS ErrorEntry(std::string&& entry) noexcept
-			: m_entry(std::forward<std::string>(entry)) {
+		explicit ErrorEntry(std::string_view&& entry) noexcept : m_entry(entry) {
 		}
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		ErrorEntry(const S& format_string, Args&&... args) noexcept
+		template<typename... Args>
+		explicit ErrorEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
 		}
-		HYPERION_CONSTEXPR_STRINGS ErrorEntry(const ErrorEntry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ErrorEntry(ErrorEntry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~ErrorEntry() noexcept = default;
+		ErrorEntry(const ErrorEntry& entry) noexcept = default;
+		ErrorEntry(ErrorEntry&& entry) noexcept = default;
+		~ErrorEntry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -317,14 +298,12 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto log_entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto log_entry() const noexcept -> std::string_view {
 			return m_entry;
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const ErrorEntry& entry) noexcept -> ErrorEntry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(ErrorEntry&& entry) noexcept -> ErrorEntry& = default;
+		auto operator=(const ErrorEntry& entry) noexcept -> ErrorEntry& = default;
+		auto operator=(ErrorEntry&& entry) noexcept -> ErrorEntry& = default;
 
 	  private:
 		std::string m_entry;
@@ -340,25 +319,24 @@ namespace hyperion {
 		using variant_type
 			= std::variant<MessageEntry, TraceEntry, InfoEntry, WarnEntry, ErrorEntry>;
 
-		HYPERION_CONSTEXPR_STRINGS Entry() noexcept : m_inner(MessageEntry("DefaultMessage\n")) {
+		Entry() noexcept : m_inner(MessageEntry("DefaultMessage\n")) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS Entry(const EntryType auto& entry) noexcept
-			: m_inner(entry) {
+		explicit Entry(const EntryType auto& entry) noexcept : m_inner(entry) {
 		}
-		explicit HYPERION_CONSTEXPR_STRINGS
-		Entry(EntryType auto&& entry) noexcept // NOLINT(bugprone-forwarding-reference-overload)
-											   // the forwarding reference here is fine because it's
-											   // constrained by the concept
+		explicit Entry(				// NOLINT(bugprone-forwarding-reference-overload)
+			EntryType auto&& entry) // the forwarding reference here is fine because it's
+			noexcept				// constrained by the concept
 			: m_inner(std::forward<decltype(entry)>(entry)) {
 		}
 		template<EntryType T, typename... Args>
-		explicit HYPERION_CONSTEXPR_STRINGS
-		Entry(std::in_place_type_t<T> tag, Args&&... args) noexcept
-			: m_inner(tag, std::forward<Args>(args)...) {
+		explicit Entry(std::in_place_type_t<T> tag,
+					   fmt::format_string<Args...>&& fmt,
+					   Args&&... args) noexcept
+			: m_inner(tag, std::move(fmt), std::forward<Args>(args)...) {
 		}
-		HYPERION_CONSTEXPR_STRINGS Entry(const Entry& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS Entry(Entry&& entry) noexcept = default;
-		HYPERION_CONSTEXPR_STRINGS ~Entry() noexcept = default;
+		Entry(const Entry& entry) noexcept = default;
+		Entry(Entry&& entry) noexcept = default;
+		~Entry() noexcept = default;
 
 		/// @brief Returns the `LogLevel` associated with this entry
 		///
@@ -377,7 +355,7 @@ namespace hyperion {
 		/// @brief Returns the text entry for this
 		///
 		/// @return The text entry
-		[[nodiscard]] inline constexpr auto entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto entry() const noexcept -> std::string_view {
 			return std::visit([](const auto& entry) { return entry.entry(); }, m_inner);
 		}
 
@@ -385,8 +363,8 @@ namespace hyperion {
 			return !m_inner.valueless_by_exception();
 		}
 
-		HYPERION_CONSTEXPR_STRINGS auto operator=(const Entry& entry) noexcept -> Entry& = default;
-		HYPERION_CONSTEXPR_STRINGS auto operator=(Entry&& entry) noexcept -> Entry& = default;
+		auto operator=(const Entry& entry) noexcept -> Entry& = default;
+		auto operator=(Entry&& entry) noexcept -> Entry& = default;
 
 	  private:
 		variant_type m_inner = variant_type(MessageEntry("DefaultMessage\n"));
@@ -401,9 +379,9 @@ namespace hyperion {
 	///
 	/// @return an `Entry`
 	template<EntryType T, typename... Args>
-	requires ConstructibleFrom<T, Args...>
-	inline HYPERION_CONSTEXPR_STRINGS auto make_entry(Args&&... args) noexcept -> Entry {
-		return Entry(std::in_place_type_t<T>(), std::forward<Args>(args)...);
+	// requires ConstructibleFrom<T, Args...>
+	inline auto make_entry(fmt::format_string<Args...>&& fmt, Args&&... args) noexcept -> Entry {
+		return Entry(std::in_place_type_t<T>(), std::move(fmt), std::forward<Args>(args)...);
 	}
 
 	/// @brief Tag type for logging level of an entry

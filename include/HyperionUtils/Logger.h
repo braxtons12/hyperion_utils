@@ -15,17 +15,18 @@
 #include <thread>
 
 #include "BasicTypes.h"
+#include "FmtIO.h"
 #include "LockFreeQueue.h"
 #include "Logger.h"
+#include "Option.h"
 #include "logging/Config.h"
 #include "logging/Entry.h"
 #include "logging/Sink.h"
-#include "logging/fmtIncludes.h"
 
 namespace hyperion {
 
 	/// @brief Possible Error categories that can occur when using the logger
-	enum class LogErrorType : u8
+	enum class LoggerErrorCategory : i8
 	{
 		/// @brief No Error occurred
 		Success = 0,
@@ -34,128 +35,138 @@ namespace hyperion {
 		/// @brief the requested log level for the entry is
 		/// lower than the minium level for the logger
 		LogLevelError = 2,
+		Unknown = -1
 	};
 
 	/// @brief Alias for the Error type we might recieve from the internal queue
 	using QueueError = LockFreeQueueError;
 
-	IGNORE_PADDING_START
-	IGNORE_WEAK_VTABLES_START
-	/// @brief `std::error_category` type for `LogErrorType`s. Provides error catgory functionality
-	/// for `LogErrorType`s
-	struct LoggerErrorCategory final : public std::error_category {
+	class LoggerErrorDomain {
 	  public:
-		/// @brief Default Constructor
-		LoggerErrorCategory() noexcept = default;
-		/// @brief Copy Constructor. Deleted. Error Category types are singletons
-		LoggerErrorCategory(const LoggerErrorCategory&) = delete;
-		/// @brief Move Constructor. Deleted. Error Category types are singletons
-		LoggerErrorCategory(LoggerErrorCategory&&) = delete;
-		/// @brief Destructor
-		~LoggerErrorCategory() noexcept final = default;
+		using value_type = LoggerErrorCategory;
+		using LoggerStatusCode = error::StatusCode<LoggerErrorDomain>;
+		using LoggerErrorCode = error::ErrorCode<LoggerErrorDomain>;
 
-		/// @brief Returns the name of this error category
-		///
-		/// @return const char * - The name
-		[[nodiscard]] inline constexpr auto name() const noexcept -> const char* final {
-			return "Logger Error";
+		static constexpr const char (&UUID)[error::num_chars_in_uuid] // NOLINT
+			= "045dd371-9552-4ce1-bd4d-8e95b654fbe0";
+
+		static constexpr u64 ID = error::parse_uuid_from_string(UUID);
+
+		constexpr LoggerErrorDomain() noexcept = default;
+		explicit constexpr LoggerErrorDomain(u64 uuid) noexcept : m_uuid(uuid) {
+		}
+		explicit constexpr LoggerErrorDomain(const error::UUIDString auto& uuid) noexcept
+			: m_uuid(error::parse_uuid_from_string(uuid)) {
+		}
+		constexpr LoggerErrorDomain(const LoggerErrorDomain&) noexcept = default;
+		constexpr LoggerErrorDomain(LoggerErrorDomain&&) noexcept = default;
+		constexpr ~LoggerErrorDomain() noexcept = default;
+
+		[[nodiscard]] constexpr inline auto id() const noexcept -> u64 {
+			return m_uuid;
 		}
 
-		/// @brief Returns the message associated with the given error condition
-		///
-		/// @param condition - The condition to get the message for
-		///
-		/// @return The associated message
-		[[nodiscard]] inline HYPERION_CONSTEXPR_STRINGS auto
-		message(int condition) const noexcept -> std::string final {
-			const auto category = static_cast<LogErrorType>(condition);
-			if(category == LogErrorType::Success) {
-				return "Success"s;
+		[[nodiscard]] constexpr inline auto name() const noexcept -> std::string_view { // NOLINT
+			return "LoggerErrorDomain";
+		}
+
+		[[nodiscard]] constexpr inline auto message(value_type code) // NOLINT
+			const noexcept -> std::string_view {
+			if(code == value_type::Success) {
+				return "Success";
 			}
-			else if(category == LogErrorType::QueueingError) {
-				return "Queueing entry failed"s;
+			else if(code == value_type::QueueingError) {
+				return "Logger failed to queue log entry.";
 			}
-			else if(category == LogErrorType::QueueingError) {
-				return "Configured logging level is higher than the given entry"s;
+			else if(code == value_type::LogLevelError) {
+				return "Requested log level for entry is lower than minimum level configured for "
+					   "logger.";
 			}
 			else {
-				return "Unknown Error"s;
+				return "Unknown Logger error.";
 			}
 		}
 
-		/// @brief Copy assignment operator. Deleted. Error Category types are singletons
-		auto operator=(const LoggerErrorCategory&) -> LoggerErrorCategory& = delete;
-		/// @brief Move assignment operator. Deleted. Error Category types are singletons
-		auto operator=(LoggerErrorCategory&&) -> LoggerErrorCategory& = delete;
-	};
-	IGNORE_WEAK_VTABLES_STOP
+		[[nodiscard]] constexpr inline auto message(const LoggerStatusCode& code) // NOLINT
+			const noexcept -> std::string_view {
+			return message(code.code());
+		}
 
-	static inline auto logger_category() noexcept -> const LoggerErrorCategory& {
-		HYPERION_NO_DESTROY static const LoggerErrorCategory category{};
-		return category;
-	}
+		[[nodiscard]] constexpr inline auto is_error(const LoggerStatusCode& code) // NOLINT
+			const noexcept -> bool {
+			return code.code() != value_type::Success;
+		}
+
+		[[nodiscard]] constexpr inline auto is_success(const LoggerStatusCode& code) // NOLINT
+			const noexcept -> bool {
+			return code.code() == value_type::Success;
+		}
+
+		template<typename Domain2>
+		[[nodiscard]] constexpr inline auto
+		are_equivalent(const LoggerStatusCode& lhs,
+					   const error::StatusCode<Domain2>& rhs) const noexcept -> bool {
+			if constexpr(concepts::Same<LoggerStatusCode, error::StatusCode<Domain2>>) {
+				return lhs.code() == rhs.code();
+			}
+			else {
+				return false;
+			}
+		}
+
+		[[nodiscard]] constexpr inline auto as_generic_code(const LoggerStatusCode& code) // NOLINT
+			const noexcept -> error::GenericStatusCode {
+			if(code.code() == value_type::Success || code.code() == value_type::Unknown) {
+				return make_status_code(static_cast<error::Errno>(code.code()));
+			}
+			else {
+				return make_status_code(error::Errno::Unknown);
+			}
+		}
+
+		[[nodiscard]] constexpr inline auto success_value() const noexcept -> value_type { // NOLINT
+			return value_type::Success;
+		}
+
+		template<typename Domain>
+		friend constexpr inline auto
+		operator==(const LoggerErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
+			return rhs.id() == lhs.id();
+		}
+
+		template<typename Domain>
+		friend constexpr inline auto
+		operator!=(const LoggerErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
+			return rhs.id() != lhs.id();
+		}
+
+		constexpr auto operator=(const LoggerErrorDomain&) noexcept -> LoggerErrorDomain& = default;
+		constexpr auto operator=(LoggerErrorDomain&&) noexcept -> LoggerErrorDomain& = default;
+
+	  private:
+		u64 m_uuid = ID;
+	};
+
+	using LoggerStatusCode = LoggerErrorDomain::LoggerStatusCode;
+	using LoggerErrorCode = LoggerErrorDomain::LoggerErrorCode;
+	using LoggerError = error::Error<LoggerErrorDomain>;
 
 } // namespace hyperion
 
-namespace std {
-	template<>
-	struct is_error_code_enum<hyperion::LogErrorType> : std::true_type { };
-
-} // namespace std
-
-inline auto make_error_code(hyperion::LogErrorType code) noexcept -> std::error_code {
-	return {static_cast<int>(code), hyperion::logger_category()};
+template<>
+constexpr inline auto
+make_status_code_domain<hyperion::LoggerErrorDomain>() noexcept -> hyperion::LoggerErrorDomain {
+	return {};
 }
 
 namespace hyperion {
+	static_assert(error::StatusCodeDomain<LoggerErrorDomain>);
 
-	IGNORE_WEAK_VTABLES_START
-
-	/// @brief Error type for communicating logger errors
-	/// Errors can occur when an entry fails to be queued
-	/// or an entry is passed in at an invalid logging level
-	class LoggerError final : public Error {
-	  public:
-		/// @brief Default constructs a `LoggerError`
-		LoggerError() noexcept {
-			Error::m_message = "Error writing to logging queue"s;
-		}
-		/// @brief Constructs a `LoggerError` as a `std::error_code` from the given `LogErrorType`
-		///
-		/// @param type - The error type
-		LoggerError(LogErrorType type) noexcept : Error(make_error_code(type)) { // NOLINT
-			if(type == LogErrorType::QueueingError) {
-				Error::m_message = "Error writing to logging queue"s;
-			}
-			else {
-				Error::m_message = "Logging Level of this Logger is higher than the given entry"s;
-			}
-		}
-		/// @brief Converts the given `QueueError` into a `LoggerError`
-		///
-		/// @param error - The error to convert
-		LoggerError(const QueueError& error) noexcept // NOLINT
-			: Error("Error writing to logging queue", error) {
-		}
-		/// @brief Converts the given `QueueError` into a `LoggerError`
-		///
-		/// @param error - The error to convert
-		LoggerError(QueueError&& error) noexcept // NOLINT
-			: Error("Error writing to logging queue", error) {
-		}
-		/// @brief Copy constructor
-		LoggerError(const LoggerError& error) noexcept = default;
-		/// @brief Move constructor
-		LoggerError(LoggerError&& error) noexcept = default;
-		/// @brief Destructor
-		~LoggerError() noexcept final = default;
-
-		/// @brief Copy assignment operator
-		auto operator=(const LoggerError& error) noexcept -> LoggerError& = default;
-		/// @brief Move assignment operator
-		auto operator=(LoggerError&& error) noexcept -> LoggerError& = default;
+	template<>
+	struct error::status_code_enum_info<LoggerErrorCategory> {
+		using domain_type = LoggerErrorDomain;
+		static constexpr bool value = true;
 	};
-	IGNORE_WEAK_VTABLES_STOP
 
 	/// @brief Hyperion logging type for formatted logging.
 	/// Uses fmtlib/fmt for entry formatting and stylizing
@@ -177,7 +188,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-								log_file.print(message.style(), "{}", message.entry());
+								log_file.print("{}", message.entry());
 								//fmt::print(message.style(), "{}", message.entry());
 						}
 					}
@@ -196,7 +207,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -215,7 +226,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -235,7 +246,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -255,7 +266,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -275,7 +286,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -284,7 +295,7 @@ namespace hyperion {
 		{
 				//clang-format on
 		}
-		Logger(std::string&& root_name, std::string&& directory_name)
+		Logger(std::string&& root_name, std::string&& directory_name) // NOLINT
 			: m_root_name(root_name), m_directory_name(directory_name),
 			  m_log_file_path(create_log_file_path()),
 			  // clang-format off
@@ -295,7 +306,7 @@ namespace hyperion {
 					while(!stop.stop_requested()) {
 						if(auto res = messages->read()) {
 							auto message = res.unwrap();
-							log_file.print(message.style(), "{}", message.entry());
+							log_file.print("{}", message.entry());
 							//fmt::print("{}", message);
 						}
 					}
@@ -309,56 +320,56 @@ namespace hyperion {
 
 		~Logger() noexcept = default;
 
-		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
-		inline auto log(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
+		template<LogLevel Level, typename... Args>
+		inline auto log(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> Result<bool, LoggerError> {
 			if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 				if constexpr(POLICY == LogPolicy::DropWhenFull) {
-					return log_dropping<Level>(thread_id, format_string, args...);
+					return log_dropping<Level>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 				}
 				else if constexpr(POLICY == LogPolicy::FlushWhenFull) {
-					log_flushing<Level>(thread_id, format_string, args...);
+					log_flushing<Level>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 					return Ok(true);
 				}
 				else {
-					log_overwriting<Level>(thread_id, format_string, args...);
+					log_overwriting<Level>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 					return Ok(true);
 				}
 			}
 			else {
-				ignore(format_string, args...);
-				return Err(LoggerError(LogErrorType::LogLevelError));
+				ignore(format_string, std::forward<Args>(args)...);
+				return Err(LoggerError(make_error_code(LoggerErrorCategory::LogLevelError)));
 			}
 		}
 
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<typename... Args>
 		inline auto
-		message(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-			return log<LogLevel::MESSAGE>(thread_id, format_string, args...);
+		message(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return log<LogLevel::MESSAGE>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 		}
 
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<typename... Args>
 		inline auto
-		trace(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-			return log<LogLevel::TRACE>(thread_id, format_string, args...);
+		trace(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return log<LogLevel::TRACE>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 		}
 
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<typename... Args>
 		inline auto
-		info(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-			return log<LogLevel::INFO>(thread_id, format_string, args...);
+		info(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return log<LogLevel::INFO>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 		}
 
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<typename... Args>
 		inline auto
-		warn(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-			return log<LogLevel::WARN>(thread_id, format_string, args...);
+		warn(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return log<LogLevel::WARN>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 		}
 
-		template<typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<typename... Args>
 		inline auto
-		error(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-			return log<LogLevel::ERROR>(thread_id, format_string, args...);
+		error(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return log<LogLevel::ERROR>(thread_id, std::move(format_string), std::forward<Args>(args)...);
 		}
 
 		auto operator=(const Logger& logger) noexcept -> Logger& = delete;
@@ -404,13 +415,13 @@ namespace hyperion {
 			return temp_dir;
 		}
 
-		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<LogLevel Level, typename... Args>
 		inline auto
-		log_dropping(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
+		log_dropping(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> Result<bool, LoggerError>
 		requires(POLICY == LogPolicy::DropWhenFull) {
 			const auto timestamp = create_time_stamp();
-			const auto entry = fmt::format(format_string, args...);
+			const auto entry = fmt::format(format_string, std::forward<Args>(args)...);
 			const auto id = thread_id.is_some() ?
 								  thread_id.unwrap() :
 								  std::hash<std::thread::id>()(std::this_thread::get_id());
@@ -439,15 +450,15 @@ namespace hyperion {
 									 log_type,
 									 entry))
 						.template map_err<LoggerError>(
-								[](const QueueError& error) { return LoggerError(error); });
+								[]([[maybe_unused]] const QueueError& error) { return LoggerError(make_error_code(LoggerErrorCategory::QueueingError)); });
 		}
 
-		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<LogLevel Level, typename... Args>
 		inline auto
-		log_overwriting(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
+		log_overwriting(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> void requires(POLICY == LogPolicy::OverwriteWhenFull) {
 			const auto timestamp = create_time_stamp();
-			const auto entry = fmt::format(format_string, args...);
+			const auto entry = fmt::format(format_string, std::forward<Args>(args)...);
 			const auto id = thread_id.is_some() ?
 								  thread_id.unwrap() :
 								  std::hash<std::thread::id>()(std::this_thread::get_id());
@@ -477,13 +488,13 @@ namespace hyperion {
 									 entry));
 		}
 
-		template<LogLevel Level, typename S, typename... Args, typename Char = fmt::char_t<S>>
+		template<LogLevel Level, typename... Args>
 		inline auto
-		log_flushing(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept
+		log_flushing(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> void
 		requires(POLICY == LogPolicy::FlushWhenFull) {
 			const auto timestamp = create_time_stamp();
-			const auto entry = fmt::format(format_string, args...);
+			const auto entry = fmt::format(format_string, std::forward<Args>(args)...);
 			const auto id = thread_id.is_some() ?
 								  thread_id.unwrap() :
 								  std::hash<std::thread::id>()(std::this_thread::get_id());
@@ -505,12 +516,12 @@ namespace hyperion {
 				log_type = "ERROR"s;
 			}
 
-			const auto logline = fmt::format(MESSAGE_STYLE,
-											 "{0}  [Thread ID: {1}] [{2}]: {3}\n",
-											 timestamp,
-											 id,
-											 log_type,
-											 entry);
+		//const auto logline = fmt::format(MESSAGE_STYLE,
+		//								 "{0}  [Thread ID: {1}] [{2}]: {3}\n",
+		//								 timestamp,
+		//								 id,
+		//								 log_type,
+		//								 entry);
 
 			if(m_messages->full()) {
 				while(!m_messages->empty()) {
@@ -525,22 +536,6 @@ namespace hyperion {
 									 entry))) {}
 		}
 	};
-
-	IGNORE_WEAK_VTABLES_START
-	class LoggerInitError final : public Error {
-	  public:
-		LoggerInitError() noexcept {
-			Error::m_message = "Global logger already initialized"s;
-		}
-		LoggerInitError(const LoggerInitError& error) noexcept = default;
-		LoggerInitError(LoggerInitError&& error) noexcept = default;
-		~LoggerInitError() noexcept final = default;
-
-		auto operator=(const LoggerInitError& error) noexcept -> LoggerInitError& = default;
-		auto operator=(LoggerInitError&& error) noexcept -> LoggerInitError& = default;
-	};
-	IGNORE_WEAK_VTABLES_STOP
-	IGNORE_PADDING_STOP
 
 	IGNORE_UNUSED_TEMPLATES_START
 
@@ -586,43 +581,33 @@ namespace hyperion {
 	}
 
 	template<LoggerParametersType LogParameters,
-			 typename S,
-			 typename... Args,
-			 typename Char = fmt::char_t<S>>
-	inline auto MESSAGE(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-		return get_global_logger<LogParameters>().message(thread_id, format_string, args...);
+			 typename... Args>
+	inline auto MESSAGE(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+		return get_global_logger<LogParameters>().message(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<LoggerParametersType LogParameters,
-			 typename S,
-			 typename... Args,
-			 typename Char = fmt::char_t<S>>
-	inline auto TRACE(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-		return get_global_logger<LogParameters>().trace(thread_id, format_string, args...);
+			 typename... Args>
+	inline auto TRACE(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+		return get_global_logger<LogParameters>().trace(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<LoggerParametersType LogParameters,
-			 typename S,
-			 typename... Args,
-			 typename Char = fmt::char_t<S>>
-	inline auto INFO(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-		return get_global_logger<LogParameters>().info(thread_id, format_string, args...);
+			 typename... Args>
+	inline auto INFO(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+		return get_global_logger<LogParameters>().info(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<LoggerParametersType LogParameters,
-			 typename S,
-			 typename... Args,
-			 typename Char = fmt::char_t<S>>
-	inline auto WARN(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-		return get_global_logger<LogParameters>().warn(thread_id, format_string, args...);
+			 typename... Args>
+	inline auto WARN(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+		return get_global_logger<LogParameters>().warn(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<LoggerParametersType LogParameters,
-			 typename S,
-			 typename... Args,
-			 typename Char = fmt::char_t<S>>
-	inline auto ERROR(Option<usize> thread_id, const S& format_string, Args&&... args) noexcept {
-		return get_global_logger<LogParameters>().error(thread_id, format_string, args...);
+			 typename... Args>
+	inline auto ERROR(Option<usize> thread_id, fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+		return get_global_logger<LogParameters>().error(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	IGNORE_UNUSED_TEMPLATES_STOP

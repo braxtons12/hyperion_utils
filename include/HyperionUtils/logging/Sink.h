@@ -5,12 +5,13 @@
 #include <type_traits>
 #include <vector>
 
-#include "../Monads.h"
+#include "../Format.h"
+#include "../Result.h"
 #include "Entry.h"
 #include "SinkBase.h"
-#include "fmtIncludes.h"
 
 namespace hyperion {
+	using namespace std::literals::string_literals;
 
 	/// @brief Enum indicating whether the sink should style the text when writing it
 	enum class SinkTextStyle : uint8_t
@@ -19,72 +20,11 @@ namespace hyperion {
 		NotStyled = 1
 	};
 
-	/// @brief Possible error categories that can occur when creating a file for a `FileSink`
-	enum class FileCreationErrorCategory : uint8_t
-	{
-		DirectoryCreationFailed = 0,
-		FileCreationFailed = 1,
-		TempDirectoryAccessFailed = 2
-	};
-
-	IGNORE_PADDING_START
-	IGNORE_WEAK_VTABLES_START
-	/// @brief Error type for communicating file creation errors for a `FileSink`
-	class FileCreationError final : public Error {
-	  public:
-		FileCreationError() noexcept {
-			Error::m_message = "Error creating logging file"s;
-		}
-		FileCreationError(FileCreationErrorCategory category) noexcept // NOLINT
-			: m_category(category) {
-			if(category == FileCreationErrorCategory::DirectoryCreationFailed) {
-				Error::m_message = "Error creating logging directory"s;
-			}
-			else if(category == FileCreationErrorCategory::FileCreationFailed) {
-				Error::m_message = "Error creating logging file"s;
-			}
-			else {
-				Error::m_message = "Error accessing temporary directory"s;
-			}
-		}
-		FileCreationError(const std::error_code& error_code,
-						  FileCreationErrorCategory category) noexcept
-			: Error(error_code), m_category(category) {
-		}
-		FileCreationError(FileCreationErrorCategory category, const std::string& message) noexcept
-			: Error(message), m_category(category) {
-		}
-		FileCreationError(FileCreationErrorCategory category, std::string&& message) noexcept
-			: Error(std::forward<std::string>(message)), m_category(category) {
-		}
-		FileCreationError(const FileCreationError& error) noexcept = default;
-		FileCreationError(FileCreationError&& error) noexcept = default;
-		~FileCreationError() noexcept final = default;
-
-		/// @brief Returns the `FileCreationErrorCategory` associated with this error
-		///
-		/// @return The associated `FileCreationErrorCategory`
-		[[nodiscard]] inline auto category() const noexcept -> FileCreationErrorCategory {
-			return m_category;
-		}
-
-		auto operator=(const FileCreationError& error) noexcept -> FileCreationError& = default;
-		auto operator=(FileCreationError&& error) noexcept -> FileCreationError& = default;
-
-	  private:
-		FileCreationErrorCategory m_category = FileCreationErrorCategory::FileCreationFailed;
-	};
-	IGNORE_WEAK_VTABLES_STOP
-	IGNORE_PADDING_STOP
-
 	/// Alias for the file type used internally be `FileSink`s
-	using OutputFilePointer = std::unique_ptr<fmt::ostream>;
+	using OutputFilePointer = std::shared_ptr<fmt::ostream>;
 
 	/// @brief Logging Sink type to sink to a file
-	///
-	/// @tparam Style - Whether the text should be styled or not
-	template<SinkTextStyle Style = SinkTextStyle::NotStyled>
-	class FileSink final : public SinkBase<FileSink<Style>> {
+	class FileSink final : public SinkBase<FileSink> {
 	  public:
 		static constexpr auto DEFAULT_FILE_NAME = "HyperionLog";
 		static constexpr auto DEFAULT_FILE_SUBDIRECTORY = "Hyperion";
@@ -103,24 +43,14 @@ namespace hyperion {
 		///
 		/// @param entry - The entry to sink
 		inline auto sink_entry(const Entry& entry) noexcept -> void {
-			if constexpr(Style == SinkTextStyle::Styled) {
-				m_file->print(entry.style(), entry.entry());
-			}
-			else {
-				m_file->print(entry.entry());
-			}
+			m_file->print("{}", entry.entry());
 		}
 
 		/// @brief Sinks the given entry, writing it to the file associated with this
 		///
 		/// @param entry - The entry to sink
 		inline auto sink_entry(Entry&& entry) noexcept -> void {
-			if constexpr(Style == SinkTextStyle::Styled) {
-				m_file->print(entry.style(), entry.entry());
-			}
-			else {
-				m_file->print(entry.entry());
-			}
+			m_file->print("{}", entry.entry());
 		}
 
 		/// @brief Creates an `OutputFilePointer` with the given `file_name` inside the
@@ -140,28 +70,26 @@ namespace hyperion {
 		///
 		/// @return The `OutputFilePointer` on success, `FileCreationError` on error
 		[[nodiscard]] inline static auto
-		create_file(const std::string& root_file_name = DEFAULT_FILE_NAME,
+		create_file(const std::string& root_file_name = DEFAULT_FILE_NAME, // NOLINT
 					const std::string& subdirectory_name = DEFAULT_FILE_SUBDIRECTORY) noexcept
-			-> Result<OutputFilePointer, FileCreationError> {
+			-> Result<OutputFilePointer> {
 			return get_temp_directory()
-				.and_then([&](std::filesystem::path& temp_directory)
-							  -> Result<std::filesystem::path, FileCreationError> {
-					temp_directory.append(subdirectory_name);
-					return create_subdirectory(temp_directory);
-				})
-				.and_then([&](std::filesystem::path& temp_directory)
-							  -> Result<OutputFilePointer, FileCreationError> {
+				.and_then(
+					[&](std::filesystem::path&& temp_directory) -> Result<std::filesystem::path> {
+						temp_directory.append(subdirectory_name);
+						return create_subdirectory(temp_directory);
+					})
+				.and_then([&](std::filesystem::path&& root_path) -> Result<OutputFilePointer> {
 					const auto time_string = create_time_stamp();
-					temp_directory.append(time_string + " "s + root_file_name);
-					temp_directory.replace_extension("log"s);
+					root_path.append(time_string + " "s + root_file_name);
+					root_path.replace_extension("log"s);
 					try {
-						return Ok(std::make_unique<fmt::ostream>(
-							fmt::output_file(temp_directory.string())));
+						return Ok(
+							std::make_shared<fmt::ostream>(fmt::output_file(root_path.string())));
 					}
-					catch(const fmt::system_error& error) {
-						return Err(FileCreationError(
-							std::error_code(error.error_code(), std::generic_category()),
-							FileCreationErrorCategory::FileCreationFailed));
+					catch(const std::system_error& error) {
+						return Err(error::SystemError(
+							static_cast<error::SystemError::value_type>(error.code().value())));
 					}
 				});
 		}
@@ -180,13 +108,13 @@ namespace hyperion {
 		/// @return The `std::filesystem::path` to the temporary files directory on success,
 		/// `FileCreationError` on error
 		[[nodiscard]] inline static auto
-		get_temp_directory() noexcept -> Result<std::filesystem::path, FileCreationError> {
+		get_temp_directory() noexcept -> Result<std::filesystem::path> {
 			std::error_code err_code;
 			auto temp_dir = std::filesystem::temp_directory_path(err_code);
 
 			if(err_code.value() != 0) {
-				return Err(FileCreationError(err_code,
-											 FileCreationErrorCategory::TempDirectoryAccessFailed));
+				return Err(error::SystemError(
+					static_cast<error::SystemError::value_type>(err_code.value())));
 			}
 			else {
 				return Ok(temp_dir);
@@ -204,13 +132,13 @@ namespace hyperion {
 		/// `FileCreationError` on error
 		[[nodiscard]] inline static auto
 		create_subdirectory(const std::filesystem::path& subdirectory_path) noexcept
-			-> Result<std::filesystem::path, FileCreationError> {
+			-> Result<std::filesystem::path> {
 			std::error_code err_code;
 			std::filesystem::create_directory(subdirectory_path, err_code);
 
 			if(err_code.value() != 0) {
-				return Err(FileCreationError(err_code,
-											 FileCreationErrorCategory::DirectoryCreationFailed));
+				return Err(error::SystemError(
+					static_cast<error::SystemError::value_type>(err_code.value())));
 			}
 			else {
 				return Ok(subdirectory_path);
@@ -245,7 +173,7 @@ namespace hyperion {
 				fmt::print(stdout, entry.style(), entry.entry());
 			}
 			else {
-				fmt::print(stdout, entry.entry());
+				fmt::print(stdout, "{}", entry.entry());
 			}
 		}
 
@@ -257,7 +185,7 @@ namespace hyperion {
 				fmt::print(stdout, entry.style(), entry.entry());
 			}
 			else {
-				fmt::print(stdout, entry.entry());
+				fmt::print(stdout, "{}", entry.entry());
 			}
 		}
 
@@ -284,7 +212,7 @@ namespace hyperion {
 				fmt::print(stderr, entry.style(), entry.entry());
 			}
 			else {
-				fmt::print(stderr, entry.entry());
+				fmt::print(stderr, "{}", entry.entry());
 			}
 		}
 
@@ -296,7 +224,7 @@ namespace hyperion {
 				fmt::print(stderr, entry.style(), entry.entry());
 			}
 			else {
-				fmt::print(stderr, entry.entry());
+				fmt::print(stderr, "{}", entry.entry());
 			}
 		}
 
@@ -306,7 +234,7 @@ namespace hyperion {
 
 #ifndef HYPERION_LOGGING_SINKS
 	/// List of Sink types to sink logging entries to
-	#define HYPERION_LOGGING_SINKS FileSink<>, StdoutSink<>, StderrSink<> // NOLINT
+	#define HYPERION_LOGGING_SINKS FileSink, StdoutSink<>, StderrSink<> // NOLINT
 #endif
 
 	/// @brief Universal Hyperion logging Sink type.
