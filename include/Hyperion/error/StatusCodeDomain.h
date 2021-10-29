@@ -1,8 +1,34 @@
+/// @file StatusCodeDomain.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief Base requirements of a `StatusCodeDomain` and utilities for implementing one
+/// @version 0.1
+/// @date 2021-10-15
+///
+/// MIT License
+/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
+#include <Hyperion/BasicTypes.h>
+#include <Hyperion/Concepts.h>
 #include <concepts>
 #include <type_traits>
-
-#include "../BasicTypes.h"
 
 namespace hyperion::error {
 	template<typename T>
@@ -19,7 +45,7 @@ namespace hyperion::error {
 
 /// @brief Creates a `StatusCodeDomain` of type `Domain` from the given arguments
 ///
-/// A `StatusCodeDomain` must have a corresponding specialization of this requiring zero
+/// A `StatusCodeDomain` **must** have a corresponding specialization of this requiring zero
 /// arguments, but may provide additional specializations taking arbitrary arguments
 ///
 /// @tparam Domain - The `StatusCodeDomain` to construct
@@ -27,25 +53,21 @@ namespace hyperion::error {
 ///
 /// @param args - The arguments to pass to the constructor
 /// @return the newly constructed `StatusCodeDomain`
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 template<typename Domain, typename... Args>
 constexpr auto make_status_code_domain(Args&&... args) noexcept -> Domain;
 
 namespace hyperion::error {
-	namespace concepts {
-		// utility concepts should live in namespace concepts to match our Concepts header
-
-		/// @brief A concept for whether `T` is implicitly convertible to `std::string` or
-		/// `std::string_view`
-		template<typename T>
-		concept Stringable
-			= std::is_convertible_v<T, std::string> || std::is_convertible_v<T, std::string_view>;
-	} // namespace concepts
-
 	/// @brief The number of characters in a "typical-format",
 	/// Eg: "d4b729dd-655f-4b86-b2a6-924844a4c5f3", UUID string literal
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	static constexpr u64 num_chars_in_uuid = 37U;
 	/// @brief The number of characters in a "microsoft-format",
 	/// Eg: "{d4b729dd-655f-4b86-b2a6-924844a4c5f3}", UUID string literal
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	static constexpr u64 num_chars_in_ms_uuid = 39U;
 
 	/// @brief A `StatusCodeDomain` is a literal type that provides the semantic meaning for a
@@ -64,6 +86,8 @@ namespace hyperion::error {
 	/// @code {.cpp}
 	/// auto as_generic_code(const StatusCode<YourDomain>& code) -> GenericStatusCode;
 	/// @endcode
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<typename Domain>
 	concept StatusCodeDomain
 		= requires(Domain domain, Domain domain2, const StatusCode<Domain>& code) {
@@ -86,21 +110,16 @@ namespace hyperion::error {
 		{
 			domain.name()
 			} -> std::same_as<std::string_view>;
-		// the return type of message must be implicitly convertible to `std::string` half-XOR
+		// the return type of message must be implicitly convertible to `std::string` or
 		// `std::string_view`
-		// (it must be implicitly convertible to `std::string` and NOT `std::string_view`,
-		// OR implicitly convertible to `std::string_view`
 		{
 			domain.message(code)
 			} -> concepts::Stringable;
-		// the return type of message must be implicitly convertible to `std::string` half-XOR
+		// the return type of message must be implicitly convertible to `std::string` or
 		// `std::string_view`
-		// (it must be implicitly convertible to `std::string` and NOT `std::string_view`,
-		// OR implicitly convertible to `std::string_view`
-		// this requirement crashes clangd consistently, so for now leave it out
-		//{
-		//	domain.message(std::declval<typename Domain::value_type>())
-		//	} -> concepts::Stringable;
+		//	{
+		//		domain.message(value)
+		//		} -> concepts::Stringable;
 		{
 			domain.are_equivalent(code, code)
 			} -> std::same_as<bool>;
@@ -111,7 +130,7 @@ namespace hyperion::error {
 			domain.is_success(code)
 			} -> std::same_as<bool>;
 		{
-			domain.success_value()
+			Domain::success_value()
 			} -> std::same_as<typename Domain::value_type>;
 		domain == domain2;
 		domain != domain2;
@@ -123,11 +142,13 @@ namespace hyperion::error {
 
 	/// @brief A `UUIDString` is the string literal representation of a UUID.
 	///
-	/// A `UUIDString` is the, including the null terminator, 37 (typical) or 39 (microsoft)
-	/// character string literal representation of a UUID.
+	/// A `UUIDString` is the 37 (typical) or 39 (microsoft) character (including the null
+	/// terminator) string literal representation of a UUID.
 	/// Eg: "d4b729dd-655f-4b86-b2a6-924844a4c5f3" (typical)
 	/// or
 	/// "{d4b729dd-655f-4b86-b2a6-924844a4c5f3}" (microsoft)
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<typename T>
 	concept UUIDString = std::same_as<T, const char (&)[num_chars_in_uuid]> // NOLINT
 		|| std::same_as<T, const char (&)[num_chars_in_ms_uuid]>;			// NOLINT
@@ -137,7 +158,7 @@ namespace hyperion::error {
 		///
 		/// @param c - The character to parse
 		/// @return The semantic numerical value of `c`
-		constexpr inline auto parse_byte_from_char(const char c)->u64 {
+		inline constexpr auto parse_byte_from_char(const char c)->u64 {
 			if('0' <= c && c <= '9') {
 				return static_cast<u64>(c - '0');
 			}
@@ -157,12 +178,12 @@ namespace hyperion::error {
 		/// @param s - The `UUIDString` representing the UUID
 		/// @return The UUID represented as a `u64`
 		template<usize N>
-		constexpr inline auto parse_uuid(
+		inline constexpr auto parse_uuid(
 			const char(&s)[N]) // NOLINT(hicpp-avoid-c-arrays, modernize-avoid-c-arrays,
 							   // cppcoreguidelines-avoid-c-arrays)
 			->u64 requires UUIDString<decltype(s)> {
 
-			const char(&uuid)[num_chars_in_uuid] = s;									   // NOLINT
+			const char* uuid = s;														   // NOLINT
 			if constexpr(std::same_as<decltype(s), const char(&)[num_chars_in_ms_uuid]>) { // NOLINT
 				uuid = s + 1;
 			}
@@ -209,8 +230,10 @@ namespace hyperion::error {
 	/// @param uuid - The `UUIDString` to parse
 	///
 	/// @return the given `UUIDString` parsed into a `u64`
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<usize N>
-	constexpr inline auto parse_uuid_from_string(const char (&uuid)[N]) // NOLINT
+	inline constexpr auto parse_uuid_from_string(const char (&uuid)[N]) // NOLINT
 		noexcept -> u64 requires UUIDString<decltype(uuid)> {
 		return detail::parse_uuid(uuid);
 	}
