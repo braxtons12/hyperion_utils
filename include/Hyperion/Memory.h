@@ -3,7 +3,7 @@
 /// @brief This includes Hyperion's equivalents and extensions to the C++ standard library's
 /// `<memory>`
 /// @version 0.1
-/// @date 2021-08-27
+/// @date 2021-10-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,11 +27,11 @@
 /// SOFTWARE.
 #pragma once
 
-#include "memory/UniquePtr.h"
+#include <Hyperion/memory/UniquePtr.h>
 
 ///	@defgroup memory Memory
 /// Hyperion provides equivalents and extensions to the C++ standard library's
 /// `<memory>`. These include things like `constexpr` equivalents to `std:unique_ptr`
 /// and `std::shared_ptr` and allocator aware factory functions our `UniquePtr` and `SharedPtr`,
 /// among other things.
-/// @headerfile "HyperionUtils/Memory.h"
+/// @headerfile "Hyperion/Memory.h"
