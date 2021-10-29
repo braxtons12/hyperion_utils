@@ -30,30 +30,12 @@
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/error/Assert.h>
 #include <Hyperion/mpl/Index.h>
+#include <Hyperion/mpl/HasValue.h>
 #include <cassert>
 #include <type_traits>
 #include <utility>
 
 namespace hyperion::mpl {
-
-	namespace detail {
-		template<typename T, T value>
-		using is_static_constexpr_value_impl = T;
-
-		template<typename T>
-		concept HasStaticConstexprValue
-			= std::same_as < detail::is_static_constexpr_value_impl<decltype(T::value), T::value>,
-		decltype(T::value) > ;
-	} // namespace detail
-
-	/// @brief Concept that requires T is a meta-programming type with a value
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
-	template<typename T>
-	concept HasValue = requires() {
-		T::value;
-	}
-	&&detail::HasStaticConstexprValue<T>;
 
 	namespace detail {
 

@@ -132,6 +132,7 @@ set(EXPORTS
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Memory.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/CallWithIndex.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/ForAll.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/HasValue.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/Index.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/List.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/MPL.h"
