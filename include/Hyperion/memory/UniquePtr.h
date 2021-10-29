@@ -3,7 +3,7 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2021-08-27
+/// @date 2021-10-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,11 +27,10 @@
 /// SOFTWARE.
 #pragma once
 
+#include <Hyperion/Concepts.h>
+#include <Hyperion/HyperionDef.h>
+#include <Hyperion/memory/CompressedPair.h>
 #include <gsl/gsl>
-
-#include "../Concepts.h"
-#include "../HyperionDef.h"
-#include "CompressedPair.h"
 
 /// @ingroup memory
 /// @{
@@ -47,7 +46,7 @@
 ///
 /// auto ptr2 = hyperion::allocate_unique<i32>(std::allocator<i32>(), 42);
 /// ptr2.reset(24);
-/// @headerfile "HyperionUtils/Memory.h"
+/// @headerfile "Hyperion/memory/UniquePtr.h"
 /// @}
 
 namespace hyperion {
@@ -62,7 +61,7 @@ namespace hyperion {
 	/// - `concepts::Deletable<T>`: T must be a deletable type
 	/// - `concepts::NotFunction<T>`: T must NOT be a function type
 	/// @ingroup memory
-	/// @headerfile "HyperionUtils/Memory.h"
+	/// @headerfile "Hyperion/memory/UniquePtr.h"
 	template<typename T>
 	requires concepts::Deletable<T> && concepts::NotFunction<T>
 	struct DefaultDeleter {
@@ -134,12 +133,6 @@ namespace hyperion {
 		constexpr auto operator=(DefaultDeleter&&) noexcept -> DefaultDeleter& = default;
 	};
 
-	template<typename T, typename Deleter>
-	concept ForwardableDeleter
-		= (std::is_rvalue_reference_v<T> ?
-			   (concepts::NoexceptMoveConstructible<Deleter> && concepts::NotReference<Deleter>) :
-				 concepts::NoexceptCopyConstructible<Deleter>);
-
 	/// @brief `UniquePtr<T, Deleter>` is Hyperion's `constexpr` equivalent to the standard
 	/// library's `std::unique_ptr<T, Deleter>`
 	///
@@ -148,7 +141,7 @@ namespace hyperion {
 	/// It is a drop-in replacement in almost all situations(1).
 	/// Hyperion also provides extended functionality for `UniquePtr<T, Deleter>`
 	/// over `std::unique_ptr<T, Deleter>`, eg: an allocator-aware factory function set in
-	/// `allocate_unqiue`
+	/// `allocate_unique`
 	///
 	/// @tparam T - The type to store in the `UniquePtr`
 	/// @tparam Deleter - The deleter type to handle deletion of the stored `T`, by default, this is
@@ -167,7 +160,7 @@ namespace hyperion {
 	/// code relying on that behavior may experience issues. This is identical behavior to
 	/// `std::unique_ptr<T, Deleter>` when `_LIBCPP_ABI_ENABLE_UNIQUE_PTR_TRIVIAL_ABI` is defined
 	/// @ingroup UniquePtr
-	/// @headerfile "HyperionUtils/Memory.h"
+	/// @headerfile "Hyperion/memory/UniquePtr.h"
 	template<typename T, typename Deleter = DefaultDeleter<T>>
 	requires concepts::NotRValueReference<Deleter>
 	class HYPERION_TRIVIAL_ABI UniquePtr {
@@ -251,8 +244,19 @@ namespace hyperion {
 		/// `UniquePtr` is called
 		///
 		/// @ingroup UniquePtr
-		constexpr UniquePtr(pointer ptr, ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		constexpr UniquePtr(pointer ptr, const Deleter& deleter) noexcept requires
+			concepts::NoexceptCopyConstructible<Deleter> : m_ptr(ptr, deleter) {
+		}
+		/// @brief Constructs a `UniquePtr<T, Deleter>` managing the given pointer
+		///
+		/// @param ptr - The pointer to manage with this `UniquePtr`
+		/// @param deleter - The deleter to delete `ptr` with when the destructor of this
+		/// `UniquePtr` is called
+		///
+		/// @ingroup UniquePtr
+		constexpr UniquePtr(pointer ptr, Deleter&& deleter) noexcept requires
+			concepts::NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+			: m_ptr(ptr, std::move(deleter)) {
 		}
 		/// @brief Constructs a `UniquePtr<T, Deleter>` managing the given pointer
 		///
@@ -267,9 +271,26 @@ namespace hyperion {
 		/// a `UniquePtr` from it
 		/// @ingroup UniquePtr
 		template<typename U>
-		requires concepts::Convertible<U, pointer>
-		constexpr UniquePtr(U ptr, ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		requires concepts::Convertible<U, pointer> && concepts::NotSame<U, pointer> && concepts::
+			NoexceptCopyConstructible<Deleter>
+		constexpr UniquePtr(U ptr, const Deleter& deleter) noexcept : m_ptr(ptr, deleter) {
+		}
+		/// @brief Constructs a `UniquePtr<T, Deleter>` managing the given pointer
+		///
+		/// @tparam U - The type of the pointer to manage in this `UniquePtr`
+		///
+		/// @param ptr - The pointer to manage with this `UniquePtr`
+		/// @param deleter - The deleter to delete `ptr` with when the destructor of this
+		/// `UniquePtr` is called
+		///
+		/// # Requirements
+		/// - `concepts::Convertible<U, pointer>`: `U` must be convertible to `pointer` to construct
+		/// a `UniquePtr` from it
+		/// @ingroup UniquePtr
+		template<typename U>
+		requires concepts::Convertible<U, pointer> && concepts::NotSame<U, pointer> && concepts::
+			NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+		constexpr UniquePtr(U ptr, Deleter&& deleter) noexcept : m_ptr(ptr, std::move(deleter)) {
 		}
 		/// @brief Constructs a `UniquePtr<T, Deleter>` managing no pointer
 		///
@@ -278,9 +299,19 @@ namespace hyperion {
 		/// this `UniquePtr` is called
 		///
 		/// @ingroup UniquePtr
-		constexpr UniquePtr(std::nullptr_t ptr,
-							ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		constexpr UniquePtr(std::nullptr_t ptr, const Deleter& deleter) noexcept requires
+			concepts::NoexceptCopyConstructible<Deleter> : m_ptr(ptr, deleter) {
+		}
+		/// @brief Constructs a `UniquePtr<T, Deleter>` managing no pointer
+		///
+		/// @param ptr - The `nullptr` signaling this `UniquePtr` should manage no pointer
+		/// @param deleter - The deleter to delete a managed pointer with when the destructor of
+		/// this `UniquePtr` is called
+		///
+		/// @ingroup UniquePtr
+		constexpr UniquePtr(std::nullptr_t ptr, Deleter&& deleter) noexcept requires
+			concepts::NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+			: m_ptr(ptr, std::move(deleter)) {
 		}
 		/// @brief Constructs a `UniquePtr<T, Deleter>` from the given moved `UniquePtr<U, D>`
 		///
@@ -334,7 +365,7 @@ namespace hyperion {
 		///
 		/// @return The managed pointer
 		/// @ingroup UniquePtr
-		[[nodiscard]] constexpr inline auto release() noexcept -> pointer {
+		[[nodiscard]] inline constexpr auto release() noexcept -> pointer {
 			auto* ptr = m_ptr.first();
 			m_ptr.first() = pointer();
 			return ptr;
@@ -347,7 +378,7 @@ namespace hyperion {
 		/// # Requirements
 		/// - `noexcept(std::declval<deleter_type>()(std::declval<pointer>()))`: Deleting the
 		/// managed pointer via the associated `deleter_type`'s call operator must be noexcept
-		constexpr inline auto reset(pointer ptr = pointer()) noexcept -> void requires(
+		inline constexpr auto reset(pointer ptr = pointer()) noexcept -> void requires(
 			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
@@ -369,7 +400,7 @@ namespace hyperion {
 		/// @ingroup UniquePtr
 		template<typename U>
 		requires concepts::Convertible<U, pointer>
-		constexpr inline auto reset(U ptr) noexcept -> void requires(
+		inline constexpr auto reset(U ptr) noexcept -> void requires(
 			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
@@ -388,7 +419,7 @@ namespace hyperion {
 		/// and deleter, to allow for
 		/// [Empty Base Class Optimization](https://en.cppreference.com/w/cpp/language/ebo) )
 		/// @ingroup UniquePtr
-		constexpr inline auto swap(UniquePtr& ptr) noexcept
+		inline constexpr auto swap(UniquePtr& ptr) noexcept
 			-> void requires concepts::NoexceptSwappable<CompressedPair<pointer, deleter_type>> {
 			m_ptr.swap(ptr.m_ptr);
 		}
@@ -401,7 +432,7 @@ namespace hyperion {
 		///
 		/// @return The managed pointer
 		/// @ingroup UniquePtr
-		[[nodiscard]] constexpr inline auto get() noexcept -> pointer {
+		[[nodiscard]] inline constexpr auto get() noexcept -> pointer {
 			return m_ptr.first();
 		}
 
@@ -413,7 +444,7 @@ namespace hyperion {
 		///
 		/// @return The managed pointer
 		/// @ingroup UniquePtr
-		[[nodiscard]] constexpr inline auto get() const noexcept -> pointer_to_const {
+		[[nodiscard]] inline constexpr auto get() const noexcept -> pointer_to_const {
 			return m_ptr.first();
 		}
 
@@ -421,7 +452,7 @@ namespace hyperion {
 		///
 		/// @return The associated deleter
 		/// @ingroup UniquePtr
-		[[nodiscard]] constexpr inline auto get_deleter() const noexcept -> const deleter_type& {
+		[[nodiscard]] inline constexpr auto get_deleter() const noexcept -> const deleter_type& {
 			return m_ptr.second();
 		}
 
@@ -429,7 +460,7 @@ namespace hyperion {
 		///
 		/// @return The associated deleter
 		/// @ingroup UniquePtr
-		[[nodiscard]] constexpr inline auto get_deleter() noexcept -> deleter_type& {
+		[[nodiscard]] inline constexpr auto get_deleter() noexcept -> deleter_type& {
 			return m_ptr.second();
 		}
 
@@ -450,11 +481,11 @@ namespace hyperion {
 			return m_ptr.first();
 		}
 
-		constexpr inline auto operator==(const UniquePtr& ptr) const noexcept -> bool {
+		inline constexpr auto operator==(const UniquePtr& ptr) const noexcept -> bool {
 			return m_ptr.first() == ptr.first();
 		}
 
-		constexpr inline auto operator==(std::nullptr_t) const noexcept -> bool {
+		inline constexpr auto operator==(std::nullptr_t) const noexcept -> bool {
 			return m_ptr.first() == nullptr;
 		}
 
@@ -537,13 +568,15 @@ namespace hyperion {
 			return *this;
 		}
 
-	  private : template<typename T_, typename Deleter_>
-				using CompressedPair
-				= CompressedPair<T_, Deleter_>;
+		// clang-format off
+	  private:
+		template<typename T_, typename Deleter_>
+		using CompressedPair = CompressedPair<T_, Deleter_>;
 		template<typename T_>
 		using DefaultInitTag = DefaultInitTag<T_>;
 
 		CompressedPair<pointer, deleter_type> m_ptr;
+		// clang-format on
 	};
 
 	template<typename T, typename Deleter>
@@ -552,8 +585,8 @@ namespace hyperion {
 	  public:
 		using element_type = T;
 		using deleter_type = Deleter;
-		using pointer = T*;
-		using pointer_to_const = const T*;
+		using pointer = std::add_pointer_t<element_type>;
+		using pointer_to_const = std::add_pointer_t<std::add_const_t<element_type>>;
 
 		constexpr UniquePtr() noexcept requires concepts::NoexceptDefaultConstructible<
 			deleter_type> && concepts::NotPointer<deleter_type>
@@ -570,20 +603,32 @@ namespace hyperion {
 		}
 		template<typename U>
 		requires concepts::Convertible<U, pointer> && concepts::NoexceptDefaultConstructible<
-			deleter_type> && concepts::NotPointer<deleter_type>
+			deleter_type> && concepts::NotPointer<deleter_type> && concepts::NotSame<U, pointer>
 		explicit constexpr UniquePtr(U ptr) noexcept : m_ptr(ptr, DefaultInitTag<deleter_type>()) {
 		}
-		constexpr UniquePtr(pointer ptr, ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		constexpr UniquePtr(pointer ptr, const Deleter& deleter) noexcept requires
+			concepts::NoexceptCopyConstructible<Deleter> : m_ptr(ptr, deleter) {
+		}
+		constexpr UniquePtr(pointer ptr, Deleter&& deleter) noexcept requires
+			concepts::NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+			: m_ptr(ptr, std::move(deleter)) {
 		}
 		template<typename U>
-		requires concepts::Convertible<U, pointer>
-		constexpr UniquePtr(U ptr, ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		requires concepts::Convertible<U, pointer> && concepts::NotSame<U, pointer> && concepts::
+			NoexceptCopyConstructible<Deleter>
+		constexpr UniquePtr(U ptr, const Deleter& deleter) noexcept : m_ptr(ptr, deleter) {
 		}
-		constexpr UniquePtr(std::nullptr_t ptr,
-							ForwardableDeleter<deleter_type> auto&& deleter) noexcept
-			: m_ptr(ptr, std::forward<deleter_type>(deleter)) {
+		template<typename U>
+		requires concepts::Convertible<U, pointer> && concepts::NotSame<U, pointer> && concepts::
+			NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+		constexpr UniquePtr(U ptr, Deleter&& deleter) noexcept : m_ptr(ptr, std::move(deleter)) {
+		}
+		constexpr UniquePtr(std::nullptr_t ptr, const Deleter& deleter) noexcept requires
+			concepts::NoexceptCopyConstructible<Deleter> : m_ptr(ptr, deleter) {
+		}
+		constexpr UniquePtr(std::nullptr_t ptr, Deleter&& deleter) noexcept requires
+			concepts::NoexceptMoveConstructible<Deleter> && concepts::NotRValueReference<Deleter>
+			: m_ptr(ptr, std::move(deleter)) {
 		}
 		// clang-format off
 		template<typename U, typename D>
@@ -608,13 +653,13 @@ namespace hyperion {
 			reset();
 		}
 
-		[[nodiscard]] constexpr inline auto release() noexcept -> pointer {
+		[[nodiscard]] inline constexpr auto release() noexcept -> pointer {
 			auto* ptr = m_ptr.first();
 			m_ptr.first() = pointer();
 			return ptr;
 		}
 
-		constexpr inline auto reset(pointer ptr = pointer()) noexcept -> void requires(
+		inline constexpr auto reset(pointer ptr = pointer()) noexcept -> void requires(
 			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
@@ -624,7 +669,7 @@ namespace hyperion {
 
 		template<typename U>
 		requires concepts::Convertible<U, pointer>
-		constexpr inline auto reset(U ptr) noexcept -> void requires(
+		inline constexpr auto reset(U ptr) noexcept -> void requires(
 			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
@@ -632,24 +677,24 @@ namespace hyperion {
 			m_ptr.second()(tmp);
 		}
 
-		constexpr inline auto swap(UniquePtr& ptr) noexcept
+		inline constexpr auto swap(UniquePtr& ptr) noexcept
 			-> void requires concepts::NoexceptSwappable<CompressedPair<pointer, deleter_type>> {
 			m_ptr.swap(ptr.m_ptr);
 		}
 
-		[[nodiscard]] constexpr inline auto get() noexcept -> pointer {
+		[[nodiscard]] inline constexpr auto get() noexcept -> pointer {
 			return m_ptr.first();
 		}
 
-		[[nodiscard]] constexpr inline auto get() const noexcept -> pointer_to_const {
+		[[nodiscard]] inline constexpr auto get() const noexcept -> pointer_to_const {
 			return m_ptr.first();
 		}
 
-		[[nodiscard]] constexpr inline auto get_deleter() const noexcept -> const deleter_type& {
+		[[nodiscard]] inline constexpr auto get_deleter() const noexcept -> const deleter_type& {
 			return m_ptr.second();
 		}
 
-		[[nodiscard]] constexpr inline auto get_deleter() noexcept -> deleter_type& {
+		[[nodiscard]] inline constexpr auto get_deleter() noexcept -> deleter_type& {
 			return m_ptr.second();
 		}
 
@@ -657,22 +702,22 @@ namespace hyperion {
 			return m_ptr.first() != nullptr;
 		}
 
-		constexpr inline auto operator==(const UniquePtr& ptr) const noexcept -> bool {
+		inline constexpr auto operator==(const UniquePtr& ptr) const noexcept -> bool {
 			return m_ptr.first() == ptr.first();
 		}
 
-		constexpr inline auto operator==(std::nullptr_t) const noexcept -> bool {
+		inline constexpr auto operator==(std::nullptr_t) const noexcept -> bool {
 			return m_ptr.first() == nullptr;
 		}
 
-		constexpr inline auto operator[](concepts::Integral auto i) const
-			-> std::add_const_t<std::add_lvalue_reference_t<element_type>> {
-			return m_ptr.first()[i];
-		}
+		// constexpr inline auto operator[](concepts::Integral auto i) const
+		//	noexcept -> std::add_const_t<std::add_lvalue_reference_t<element_type>> {
+		//	return m_ptr.first()[i];
+		// }
 
-		constexpr inline auto
-		operator[](concepts::Integral auto i) -> std::add_lvalue_reference_t<element_type> {
-			return m_ptr.first()[i];
+		inline constexpr auto operator[](concepts::Integral auto index) const noexcept
+			-> std::add_lvalue_reference_t<element_type> {
+			return m_ptr.first()[index];
 		}
 
 		auto operator=(const UniquePtr&) -> UniquePtr& = delete;
@@ -714,13 +759,15 @@ namespace hyperion {
 			return *this;
 		}
 
-	  private : template<typename T_, typename Deleter_>
-				using CompressedPair
-				= CompressedPair<T_, Deleter_>;
+		// clang-format off
+	  private:
+		template<typename T_, typename Deleter_>
+		using CompressedPair = CompressedPair<T_, Deleter_>;
 		template<typename T_>
 		using DefaultInitTag = DefaultInitTag<T_>;
 
 		CompressedPair<pointer, deleter_type> m_ptr;
+		// clang-format on
 	};
 	template<typename T, typename Deleter>
 	UniquePtr(T*, Deleter) -> UniquePtr<T, Deleter>;
@@ -735,7 +782,7 @@ namespace hyperion {
 	/// @ingroup UniquePtr
 	template<typename T, typename Deleter>
 	requires concepts::Swappable<Deleter>
-	constexpr inline auto
+	inline constexpr auto
 	swap(UniquePtr<T, Deleter>& first, UniquePtr<T, Deleter>& second) noexcept -> void {
 		first.swap(second);
 	}
@@ -764,12 +811,13 @@ namespace hyperion {
 	/// @ingroup UniquePtr
 	template<typename T, typename Deleter = DefaultDeleter<T>, typename... Args>
 	requires concepts::ConstructibleFrom<T, Args...> && (!std::is_unbounded_array_v<T>)
-	static constexpr inline auto make_unique(Args&&... args)
+	inline static constexpr auto make_unique(Args&&... args)
 		noexcept(concepts::NoexceptConstructibleFrom<T, Args...>)
 		-> UniquePtr<T, Deleter>
 	{
 		// NOLINTNEXTLINE(modernize-use-auto, hicpp-use-auto)
 		gsl::owner<T*> ptr = new T(std::forward<Args>(args)...);
+		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<T, Deleter>(ptr);
 	}
 	// clang-format on
@@ -798,9 +846,10 @@ namespace hyperion {
 			 typename Deleter = DefaultDeleter<T>,
 			 typename ElementType = std::remove_extent_t<T>> // NOLINT
 	requires std::is_unbounded_array_v<T>
-	static constexpr inline auto make_unique(usize N) noexcept -> UniquePtr<T, Deleter> {
+	inline static constexpr auto make_unique(usize N) noexcept -> UniquePtr<T, Deleter> {
 		// NOLINTNEXTLINE(modernize-use-auto, hicpp-use-auto)
 		gsl::owner<ElementType*> ptr = new ElementType[N];
+		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<T, Deleter>(ptr);
 	}
 	IGNORE_UNUSED_TEMPLATES_STOP
@@ -823,11 +872,11 @@ namespace hyperion {
 	/// @note In the case that `T` is an array type, `AllocatorAwareDeleter` requires that the
 	/// managed array is fully-initialized and the same size as when the `AllocatorAwareDeleter`
 	/// was constructed with it (by a call to one of the factory functions, `allocate_unique`, or
-	/// `allocate_shared`) when its call operator is used to free the resouces associated with the
+	/// `allocate_shared`) when its call operator is used to free the resources associated with the
 	/// array.
 	/// @note If `T` is an array type and the array is resized, the deleter associated with it in
 	/// the owning smart pointer must be set to a new one to match the changed state.
-	/// @note If `T` is an array type and the members of the array are not all initiaized when the
+	/// @note If `T` is an array type and the members of the array are not all initialized when the
 	/// call operator of this deleter is used to free the resources associated with it, the result
 	/// is undefined behavior.
 	/// @ingroup memory
@@ -954,13 +1003,13 @@ namespace hyperion {
 		inline constexpr auto operator()(pointer p) const noexcept {
 			Alloc allocator = m_allocator;
 
-			auto i = m_num_elements >= 1 ? m_num_elements - 1 : 0_usize;
+			auto i = m_num_elements >= 1_usize ? m_num_elements - 1_usize : 0_usize;
 			// we need to use do-while to ensure we destroy the 0th element
 			// in a 1 element array
 			do {
 				Traits::destroy(allocator, std::addressof(*p) + i); // NOLINT
 				--i;
-			} while(i != 0);
+			} while(i != 0_usize);
 
 			Traits::deallocate(allocator, p, m_num_elements);
 		}
@@ -974,7 +1023,7 @@ namespace hyperion {
 
 	  private:
 		Alloc m_allocator;
-		usize m_num_elements = 1;
+		usize m_num_elements = 1_usize;
 	};
 	IGNORE_PADDING_STOP
 
@@ -1024,6 +1073,7 @@ namespace hyperion {
 		auto* p = Traits::allocate(allocator, 1);
 		Traits::construct(allocator, std::addressof(*p), std::forward<Args>(args)...);
 
+		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<T, Deleter>(p, Deleter(allocator));
 	}
 
@@ -1065,19 +1115,19 @@ namespace hyperion {
 		-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
 	requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)> {
 		using Traits = std::allocator_traits<Alloc>;
-		using Deleter = AllocatorAwareDeleter<T, Alloc>;
+		using Deleter = AllocatorAwareDeleter<ElementType[], Alloc>; // NOLINT (c arrays)
 
 		Alloc allocator(alloc);
 		auto* p = Traits::allocate(allocator, N);
-		// we need to use do-while so we make sure we construct the 0th element in
-		// a one element array
+		// we need to use do-while to make sure we construct the 0th element in a one element array
 		auto i = 0_usize;
 		do {
 			Traits::construct(allocator, std::addressof(*p) + i); // NOLINT
 			++i;
 		} while(i < N);
 
-		return UniquePtr<T, Deleter>(p, Deleter(allocator, N));
+		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
+		return UniquePtr<ElementType[], Deleter>(p, Deleter(allocator, N)); // NOLINT ( c arrays)
 	}
 
 	/// @brief Constructs an allocator-aware `UniquePtr`
@@ -1115,27 +1165,30 @@ namespace hyperion {
 			 typename Alloc =
 				 typename std::allocator_traits<Allocator>::template rebind_alloc<ElementType>,
 			 typename... Args>
-	requires concepts::NoexceptDefaultConstructible<
-		ElementType> && concepts::Allocatable<ElementType, Alloc> && std::is_unbounded_array_v<T>
+	requires concepts::NoexceptConstructibleFrom<ElementType, Args...> && mpl::for_all_types_v<
+		std::is_nothrow_copy_constructible,
+		std::true_type,
+		mpl::list<Args...>> && concepts::Allocatable<ElementType,
+													 Alloc> && std::is_unbounded_array_v<T>
 	[[nodiscard]] inline constexpr auto
 	allocate_unique(const Allocator& alloc, usize N, Args&&... args) noexcept
 		-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
 	requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)> {
 		using Traits = std::allocator_traits<Alloc>;
-		using Deleter = AllocatorAwareDeleter<T, Alloc>;
+		using Deleter = AllocatorAwareDeleter<ElementType[], Alloc>; // NOLINT (c arrays)
 
 		Alloc allocator(alloc);
 		auto* p = Traits::allocate(allocator, N);
-		// we need to use do-while so we make sure we construct the 0th element in
-		// a one element array
+		auto tuple = std::make_tuple(std::forward<Args>(args)...);
+		// we need to use do-while to make sure we construct the 0th element in a one element array
 		auto i = 0_usize;
 		do {
 			Traits::construct(allocator,
 							  std::addressof(*p) + i,
-							  std::forward<Args>(args)...); // NOLINT
+							  std::make_from_tuple<T>(tuple)); // NOLINT
 			++i;
 		} while(i < N);
 
-		return UniquePtr<T, Deleter>(p, Deleter(allocator, N));
+		return UniquePtr<ElementType[], Deleter>(p, Deleter(allocator, N)); // NOLINT (c arrays)
 	}
 } // namespace hyperion
