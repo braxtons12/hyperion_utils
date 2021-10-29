@@ -1,14 +1,43 @@
+/// @file OptionData.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief Implementation of `Option`'s storage representation
+/// @version 0.1
+/// @date 2021-10-19
+///
+/// MIT License
+/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
 
+#include <Hyperion/Concepts.h>
+#include <Hyperion/HyperionDef.h>
+#include <Hyperion/option/None.h>
 #include <functional>
 #include <variant>
 
-#include "../Concepts.h"
-#include "../HyperionDef.h"
-#include "None.h"
-
 namespace hyperion::option {
 	IGNORE_PADDING_START
+
+	/// @brief `OptionData` is the storage implementation backing `Option`
+	/// It acts as a tagged union, supports references (unlike `std::optional`), and abstracts away
+	/// the storage details of `Option`'s implementation
 	template<typename T>
 	struct OptionData;
 
@@ -36,6 +65,9 @@ namespace hyperion::option {
 			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
 			: rep(std::move(t)) {
 		}
+		/// @brief Constructs an `OptionData` by constructing the `T` in place in it
+		/// @tparam Args - The types of the arguments to pass to `T`'s constructor
+		/// @param args  - The arguments to pass to `T`'s constructor
 		template<typename... Args>
 		requires concepts::ConstructibleFrom<T, Args...>
 		explicit constexpr OptionData(Args&&... args) noexcept(
@@ -54,22 +86,23 @@ namespace hyperion::option {
 		}
 		constexpr ~OptionData() noexcept(concepts::NoexceptDestructible<T>) = default;
 
-		[[nodiscard]] constexpr inline auto has_value() const noexcept -> bool {
+		/// @brief Returns whether this currently contains an active `T`
+		[[nodiscard]] inline constexpr auto has_value() const noexcept -> bool {
 			return this->index() == T_INDEX;
 		}
 
 		/// @brief Returns a const reference to the contained data
-		[[nodiscard]] constexpr inline auto get() const noexcept -> const_reference {
+		[[nodiscard]] inline constexpr auto get() const noexcept -> const_reference {
 			return std::get<T_INDEX>(*this);
 		}
 
 		/// @brief Returns a reference to the contained data
-		[[nodiscard]] constexpr inline auto get() noexcept -> reference {
+		[[nodiscard]] inline constexpr auto get() noexcept -> reference {
 			return std::get<T_INDEX>(*this);
 		}
 
 		/// @brief Extracts the contained data out of this
-		[[nodiscard]] constexpr inline auto extract() noexcept(concepts::NoexceptMovable<T>)
+		[[nodiscard]] inline constexpr auto extract() noexcept(concepts::NoexceptMovable<T>)
 			-> extracted requires concepts::Movable<T> {
 			return std::get<T_INDEX>(std::move(*this));
 		}
@@ -125,22 +158,22 @@ namespace hyperion::option {
 		}
 		constexpr ~OptionData() noexcept = default;
 
-		[[nodiscard]] constexpr inline auto has_value() const noexcept -> bool {
+		[[nodiscard]] inline constexpr auto has_value() const noexcept -> bool {
 			return this->index() == T_INDEX;
 		}
 
 		/// @brief Returns a const reference to the contained data
-		[[nodiscard]] constexpr inline auto get() const noexcept -> const_reference {
+		[[nodiscard]] inline constexpr auto get() const noexcept -> const_reference {
 			return std::get<T_INDEX>(*this).get();
 		}
 
 		/// @brief Returns a reference to the contained data
-		[[nodiscard]] constexpr inline auto get() noexcept -> storage_type& {
+		[[nodiscard]] inline constexpr auto get() noexcept -> storage_type& {
 			return std::get<T_INDEX>(*this);
 		}
 
 		/// @brief Extracts the contained data out of this
-		[[nodiscard]] constexpr inline auto extract() noexcept -> extracted {
+		[[nodiscard]] inline constexpr auto extract() noexcept -> extracted {
 			return std::get<T_INDEX>(std::move(*this)).get();
 		}
 
