@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file provides access to Hyperion's synchronization primitives and utilities
 /// @version 0.1
-/// @date 2021-08-27
+/// @date 2021-10-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -28,6 +28,6 @@
 
 ///	@defgroup synchronization Synchronization
 /// Hyperion provides various synchronization primitives and utilities
-/// @headerfile "HyperionUtils/Synchronization.h"
+/// @headerfile "Hyperion/Synchronization.h"
 
-#include "synchronization/ReadWriteLock.h"
+#include <Hyperion/synchronization/ReadWriteLock.h>
