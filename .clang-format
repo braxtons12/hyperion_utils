@@ -99,7 +99,7 @@ ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
 PPIndentWidth: -1
 #Not Yet supported in 13.0
-#PackConstructorInitializers: NextLine
+PackConstructorInitializers: NextLine
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300
@@ -109,11 +109,10 @@ PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Left
-PointerBindsToType: true
 ReferenceAlignment: Left
 ReflowComments: true
 ShortNamespaceLines: 0
-SortIncludes: true
+SortIncludes: CaseSensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
@@ -147,3 +146,5 @@ StatementMacros:
 TabWidth: 4
 UseCRLF: false
 UseTab: Always
+QualifierOrder: ['inline', 'static', 'const', 'constexpr', 'volatile', 'restrict', 'type']
+QualifierAlignment: Custom
