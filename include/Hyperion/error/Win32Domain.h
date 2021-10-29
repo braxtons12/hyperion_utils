@@ -1,7 +1,34 @@
+/// @file Win32Domain.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief `StatusCodeDomain` supporting Win32 error codes
+/// @version 0.1
+/// @date 2021-10-19
+///
+/// MIT License
+/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
 
-#include "GenericDomain.h"
-#include "StatusCode.h"
+#include <Hyperion/error/GenericDomain.h>
+#include <Hyperion/error/StatusCode.h>
+#include <cstdarg>
 
 #if HYPERION_PLATFORM_WINDOWS
 namespace hyperion::error {
@@ -73,92 +100,217 @@ namespace hyperion::error {
 	using Win32StatusCode = StatusCode<Win32Domain>;
 	using Win32ErrorCode = ErrorCode<Win32Domain>;
 
+	/// @brief `Win32Domain` is the `StatusCodeDomain` that covers Win32 error codes
+	/// @ingroup error
+	/// @headerfile "Hyperion/error/Win32Domain.h"
 	class [[nodiscard]] Win32Domain {
 	  public:
+		/// @brief The value type of `Win32Domain` status codes is `DWORD`
+		/// @ingroup error
 		using value_type = detail::win32::DWORD;
 
-		static constexpr const char (&UUID)[num_chars_in_uuid] // NOLINT
+		static const constexpr char (&UUID)[num_chars_in_uuid] // NOLINT
 			= "53b43298-f1f6-4a7b-a998-49dfa96c7159";
 
 		static constexpr u64 ID = parse_uuid_from_string(UUID);
 
+		/// @brief Constructs a `Win32Domain` with the default UUID
+		/// @ingroup error
 		constexpr Win32Domain() noexcept = default;
+		/// @brief Constructs a `Win32Domain` with a user-specific UUID
+		///
+		/// @note When using a custom UUID __**ALL**__ instances of `Win32Domain` in the program
+		/// should be constructed with the same custom UUID, otherwise equality comparison between
+		/// other domains and `Win32Domain` instances could give erroneous results, and equality
+		/// comparison between different `Win32Domain` instances will give erroneous results.
+		/// As a result, this constructor should only be used when you specifically require a custom
+		/// UUID and **YOU KNOW WHAT YOU ARE DOING™**
+		///
+		/// @param uuid - The UUID to use for `Win32Domain`
+		/// @ingroup error
 		explicit constexpr Win32Domain(u64 uuid) noexcept : m_uuid(uuid) {
 		}
-		explicit constexpr Win32Domain(const UUIDString auto& uuid) noexcept
-			: m_uuid(parse_uuid_from_string(uuid)) {
+		/// @brief Constructs a `Win32Domain` with a user-specific UUID
+		///
+		/// @note When using a custom UUID __**ALL**__ instances of `Win32Domain` in the program
+		/// should be constructed with the same custom UUID, otherwise equality comparison between
+		/// other domains and `Win32Domain` instances could give erroneous results, and equality
+		/// comparison between different `Win32Domain` instances will give erroneous results.
+		/// As a result, this constructor should only be used when you specifically require a custom
+		/// UUID and **YOU KNOW WHAT YOU ARE DOING™**
+		///
+		/// @param uuid - The UUID to use for `Win32Domain`
+		/// @ingroup error
+		template<UUIDString UUID>
+		explicit constexpr Win32Domain(UUID&& uuid) noexcept // NOLINT (forwarding reference)
+			: m_uuid(parse_uuid_from_string(std::forward<UUID>(uuid))) {
 		}
-		constexpr ~Win32Domain() noexcept = default;
+		/// @brief Copy-Constructor
+		/// @ingroup error
 		constexpr Win32Domain(const Win32Domain&) noexcept = default;
+		/// @brief Move-Constructor
+		/// @ingroup error
 		constexpr Win32Domain(Win32Domain&&) noexcept = default;
+		/// @brief Destructor
+		/// @ingroup error
+		constexpr ~Win32Domain() noexcept = default;
 
+		/// @brief Returns the UUID of the domain
+		///
+		/// @return the domain UUID
+		/// @ingroup error
 		[[nodiscard]] constexpr auto id() const noexcept -> u64 {
 			return m_uuid;
 		}
 
+		/// @brief Returns the name of the domain
+		///
+		/// @return the domain name
+		/// @ingroup error
 		[[nodiscard]] constexpr auto name() const noexcept -> std::string_view { // NOLINT
 			return "win32 domain";
 		}
 
+		/// @brief Returns the textual message associated with the given status code
+		///
+		/// @param code - The status code to get the message for
+		///
+		/// @return the message associated with the code
+		/// @ingroup error
 		[[nodiscard]] auto message(value_type code) // NOLINT
 			const noexcept -> std::string {
 			return as_string(code);
 		}
 
+		/// @brief Returns the textual message associated with the given status code
+		///
+		/// @param code - The status code to get the message for
+		///
+		/// @return the message associated with the code
+		/// @ingroup error
 		[[nodiscard]] auto message(const Win32StatusCode& code) // NOLINT
 			const noexcept -> std::string {
 			return as_string(code.code());
 		}
 
+		/// @brief Returns whether the given status code represents an error
+		///
+		/// @param code - The status code to check
+		///
+		/// @return `true` if the code represents an error, otherwise `false`
+		/// @ingroup error
 		[[nodiscard]] constexpr auto
 		is_error(const Win32StatusCode& code) const noexcept -> bool { // NOLINT
 			return code.code() != 0;
 		}
 
+		/// @brief Returns whether the given status code represents success
+		///
+		/// @param code - The status code to check
+		///
+		/// @return `true` if the code represents success, otherwise `false`
+		/// @ingroup error
 		[[nodiscard]] constexpr auto
 		is_success(const Win32StatusCode& code) const noexcept -> bool { // NOLINT
 			return code.code() == 0;
 		}
 
-		template<typename Domain2>
+		/// @brief Returns whether the given status codes are semantically equivalent
+		///
+		/// Checks if the given codes are semantically equivalent. For most `StatusCodeDomain`s,
+		/// this usually means checking the codes for equality after being converted to
+		/// `GenericStatusCode`s.
+		///
+		/// @tparam Domain - The `StatusCodeDomain` of the second status code
+		/// @param lhs - The first status code to compare
+		/// @param rhs - The second status code to compare
+		/// @return `true` if the codes are semantically equivalent, `false` otherwise
+		/// @ingroup error
+		template<typename Domain>
 		[[nodiscard]] constexpr auto
-		are_equivalent(const Win32StatusCode& lhs, const StatusCode<Domain2>& rhs) const noexcept
+		are_equivalent(const Win32StatusCode& lhs, const StatusCode<Domain>& rhs) const noexcept
 			-> bool {
-			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain2>>) {
-				const auto as_generic_lhs = as_generic_code(lhs);
-				const auto as_generic_rhs = rhs.as_generic_code();
-				return as_generic_lhs.code() == as_generic_rhs.code();
+			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain>>) {
+				return as_generic_code(lhs) == rhs.as_generic_code();
 			}
 			else if(rhs.domain() == *this) {
-				return lhs.code() == rhs.code();
+				const auto lhs_code = lhs.code();
+				const auto rhs_code = rhs.code();
+				return lhs_code == rhs_code && lhs_code != -1 && rhs_code != -1;
 			}
 			else {
 				return false;
 			}
 		}
 
+		/// @brief Converts the given status code to a `GenericStatusCode`
+		///
+		/// This will convert the given code to its semantically equivalent counterpart in the
+		/// `GenericDomain`.
+		///
+		/// @param code - The status code to convert to a `GenericStatusCode`
+		/// @return The given status code as a `GenericStatusCode`
+		/// @note Not all status code values are convertible to the `GenericDomain`, even
+		/// from domains fully compatible with `GenericDomain` and that satisfy
+		/// `ConvertibleToGenericStatusCode`. In this case, they will map to `Errno::Unknown`.
+		/// Codes of value `Errno::Unknown` will never compare as semantically equivalent.
+		/// @ingroup error
 		[[nodiscard]] constexpr auto
 		as_generic_code(const Win32StatusCode& code) const noexcept -> GenericStatusCode { // NOLINT
 			return make_status_code(to_generic_code(code.code()));
 		}
 
-		[[nodiscard]] constexpr inline auto success_value() const noexcept -> value_type { // NOLINT
+		/// @brief Returns the value indicating success for this domain
+		///
+		/// @return The domain's success value
+		/// @ingroup error
+		[[nodiscard]] inline static constexpr auto success_value() noexcept -> value_type {
 			return 0;
 		}
 
+		/// @brief Returns the most recent value of `GetLastError()`
+		///
+		/// @return the most recent error at the time of the call
+		/// @ingroup error
+		[[nodiscard]] inline static auto get_last_error() noexcept -> value_type {
+			return detail::win32::GetLastError();
+		}
+
+		/// @brief Domain equality comparison operator
+		///
+		/// @tparam Domain - The type of the second domain to compare
+		///
+		/// @param lhs - The left-hand domain to compare
+		/// @param rhs - The right-hand domain to compare
+		///
+		/// @return Whether the two domains are equal
+		/// @ingroup error
 		template<typename Domain>
 		friend constexpr auto
 		operator==(const Win32Domain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() == rhs.id();
 		}
 
+		/// @brief Domain inequality comparison operator
+		///
+		/// @tparam Domain - The type of the second domain to compare
+		///
+		/// @param lhs - The left-hand domain to compare
+		/// @param rhs - The right-hand domain to compare
+		///
+		/// @return Whether the two domains are __not__ equal
+		/// @ingroup error
 		template<typename Domain>
 		friend constexpr auto
 		operator!=(const Win32Domain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() != rhs.id();
 		}
 
+		/// @brief Copy-assignment operator
+		/// @ingroup error
 		constexpr auto operator=(const Win32Domain&) noexcept -> Win32Domain& = default;
+		/// @brief Move-assignment operator
+		/// @ingroup error
 		constexpr auto operator=(Win32Domain&&) noexcept -> Win32Domain& = default;
 
 	  private:
@@ -171,7 +323,7 @@ namespace hyperion::error {
 		/// @param code - The win32 error code to convert
 		///
 		/// @return the message string associated with `code`, as a `std::string`
-		static inline auto as_string(value_type code) -> std::string {
+		inline static auto as_string(value_type code) -> std::string {
 			// Nial uses 32k in his implementation for proposal P1028, but that seems excessively
 			// large
 			wchar_t buffer[1024]; // NOLINT
@@ -191,7 +343,7 @@ namespace hyperion::error {
 				return "failed to get message from system";
 			}
 
-			usize alloc_size = static_cast<usize>(wide_length) * 2;
+			auto alloc_size = wide_length * 2_usize;
 			detail::win32::DWORD error = 0;
 			// try to convert the "wide" error message string (UTF16, or UCS-2) to "narrow/normal"
 			// UTF8
@@ -204,15 +356,15 @@ namespace hyperion::error {
 
 				// attempt to convert the system error message from "wide" string (UTF16 or UCS-2)
 				// to "narrow/normal" UTF8
-				detail::win32::DWORD bytes
-					= detail::win32::WideCharToMultiByte(65001 /**CP_UTF8**/, // NOLINT
-														 0,
-														 buffer, // NOLINT
-														 static_cast<int>(wide_length + 1),
-														 p,
-														 static_cast<int>(alloc_size),
-														 nullptr,
-														 nullptr);
+				auto bytes = static_cast<detail::win32::DWORD>(
+					detail::win32::WideCharToMultiByte(65001 /**CP_UTF8**/, // NOLINT
+													   0,
+													   buffer, // NOLINT
+													   static_cast<int>(wide_length + 1),
+													   p,
+													   static_cast<int>(alloc_size),
+													   nullptr,
+													   nullptr));
 				// if conversion succeeded, trim the string and return it
 				if(bytes != 0) {
 					char* end = strchr(p, 0); // NOLINT
@@ -245,7 +397,7 @@ namespace hyperion::error {
 		/// @param code - The win32 error code to convert to its corresponding POSIX error code
 		///
 		/// @return `code` as its corresponding POSIX error code
-		static constexpr inline auto to_generic_code(value_type code) noexcept -> Errno {
+		inline static constexpr auto to_generic_code(value_type code) noexcept -> Errno {
 			switch(code) {
 				case 0: return Errno::Success;
 				case 0x1: return Errno::FunctionNotSupported;			// NOLINT
@@ -329,8 +481,83 @@ namespace hyperion::error {
 	};
 } // namespace hyperion::error
 
+/// @brief Specialize `make_status_code_domain` for `Win32Domain` and `u64`.
+/// Creates a `Win32Domain` with a custom UUID.
+///
+/// @note When using a custom UUID __**ALL**__ instances of `Win32Domain` in the program
+/// should be constructed with the same custom UUID, otherwise equality comparison between
+/// other domains and `Win32Domain` instances could give erroneous results, and equality
+/// comparison between different `Win32Domain` instances will give erroneous results.
+/// As a result, this constructor should only be used when you specifically require a custom
+/// UUID and **YOU KNOW WHAT YOU ARE DOING™**
+///
+/// @param uuid - The UUID to use for `Win32Domain`
+///
+/// @return a `Win32Domain`
+/// @ingroup error
 template<>
-constexpr inline auto
+[[nodiscard]] inline constexpr auto
+// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+make_status_code_domain<hyperion::error::Win32Domain, hyperion::u64>(hyperion::u64&& uuid) noexcept
+	-> hyperion::error::Win32Domain {
+	return hyperion::error::Win32Domain(uuid);
+}
+
+/// @brief Specialize `make_status_code_domain` for `Win32Domain` and a `UUIDString`.
+/// Creates a `Win32Domain` with a custom UUID.
+///
+/// @note When using a custom UUID __**ALL**__ instances of `Win32Domain` in the program
+/// should be constructed with the same custom UUID, otherwise equality comparison between
+/// other domains and `Win32Domain` instances could give erroneous results, and equality
+/// comparison between different `Win32Domain` instances will give erroneous results.
+/// As a result, this constructor should only be used when you specifically require a custom
+/// UUID and **YOU KNOW WHAT YOU ARE DOING™**
+///
+/// @param uuid - The UUID to use for `Win32Domain`
+///
+/// @return a `Win32Domain`
+/// @ingroup error
+template<>
+[[nodiscard]] inline constexpr auto
+	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+	make_status_code_domain<hyperion::error::Win32Domain,
+							const char (&)[hyperion::error::num_chars_in_uuid]> // NOLINT
+	(const char (&uuid)[hyperion::error::num_chars_in_uuid]) noexcept			// NOLINT
+	-> hyperion::error::Win32Domain {
+	return hyperion::error::Win32Domain(uuid);
+}
+
+/// @brief Specialize `make_status_code_domain` for `Win32Domain` and an MS-style `UUIDString`.
+/// Creates a `Win32Domain` with a custom UUID.
+///
+/// @note When using a custom UUID __**ALL**__ instances of `Win32Domain` in the program
+/// should be constructed with the same custom UUID, otherwise equality comparison between
+/// other domains and `Win32Domain` instances could give erroneous results, and equality
+/// comparison between different `Win32Domain` instances will give erroneous results.
+/// As a result, this constructor should only be used when you specifically require a custom
+/// UUID and **YOU KNOW WHAT YOU ARE DOING™**
+///
+/// @param uuid - The UUID to use for `Win32Domain`
+///
+/// @return a `Win32Domain`
+/// @ingroup error
+template<>
+[[nodiscard]] inline constexpr auto
+	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+	make_status_code_domain<hyperion::error::Win32Domain,
+							const char (&)[hyperion::error::num_chars_in_ms_uuid]> // NOLINT
+	(const char (&uuid)[hyperion::error::num_chars_in_ms_uuid]) noexcept		   // NOLINT
+	-> hyperion::error::Win32Domain {
+	return hyperion::error::Win32Domain(uuid);
+}
+
+/// @brief Specialize `make_status_code_domain` for `Win32Domain` with no arguments. Creates
+/// a `Win32Domain` with the default UUID.
+///
+/// @return a `Win32Domain`
+/// @ingroup error
+template<>
+inline constexpr auto
 make_status_code_domain<hyperion::error::Win32Domain>() noexcept -> hyperion::error::Win32Domain {
 	return {};
 }
