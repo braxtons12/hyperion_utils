@@ -3,7 +3,7 @@
 /// @brief This includes a utility class for performing
 /// [Empty Base Class Optimization](https://en.cppreference.com/w/cpp/language/ebo)
 /// @version 0.1
-/// @date 2021-08-27
+/// @date 2021-10-19
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,18 +27,18 @@
 /// SOFTWARE.
 #pragma once
 
-#include "../Concepts.h"
+#include <Hyperion/Concepts.h>
 
 /// @ingroup memory
 /// @{
 ///	@defgroup EmptyBaseClass EmptyBaseClass
 /// THis modules provides a utility type for wrapping a type in a potentially Empty Base Class
-/// Optimized manner, along with relevant utilites for the associated implementation.
-/// @headerfile "HyperionUtils/Memory.h"
+/// Optimized manner, along with relevant utilities for the associated implementation.
+/// @headerfile "Hyperion/memory/EmptyBaseClass.h"
 /// @}
 namespace hyperion {
 
-	/// @brief Tag type indicating the type should be left unitialized
+	/// @brief Tag type indicating the type should be left initialized
 	/// @ingroup EmptyBaseClass
 	template<typename T>
 	struct UnInitTag { };
@@ -67,7 +67,7 @@ namespace hyperion {
 	class EmptyBaseClass;
 
 	template<EmptyBaseClassOptimizable T>
-	class EmptyBaseClass<T> {
+	class EmptyBaseClass<T> : private T {
 		// clang-format on
 	  public:
 		/// @brief The type wrapped by this `EmptyBaseClass`
@@ -75,10 +75,10 @@ namespace hyperion {
 		using type = T;
 		/// @brief Reference to the type wrapped by this `EmptyBaseClass`
 		/// @ingroup EmptyBaseClass
-		using reference = type&;
+		using reference = std::add_lvalue_reference_t<type>;
 		/// @brief Reference to const the type wrapped by this `EmptyBaseClass`
 		/// @ingroup EmptyBaseClass
-		using const_reference = const type&;
+		using const_reference = std::add_const_t<std::add_lvalue_reference_t<type>>;
 
 		/// @brief Constructs this `EmptyBaseClass` in an uninitialized state
 		/// @ingroup EmptyBaseClass
@@ -114,7 +114,7 @@ namespace hyperion {
 		requires concepts::ConstructibleFrom<T, Args...>
 		explicit constexpr EmptyBaseClass(Args&&... args)
 			noexcept(concepts::NoexceptConstructibleFrom<T, Args...>)
-			: m_value(std::forward<Args>(args)...) {
+			: type(std::forward<Args>(args)...) {
 		}
 		// clang-format on
 
@@ -124,16 +124,16 @@ namespace hyperion {
 		///
 		/// @return reference to const `T`
 		/// @ingroup EmptyBaseClass
-		constexpr inline auto get() const noexcept -> const_reference {
-			return m_value;
+		inline constexpr auto get() const noexcept -> const_reference {
+			return *static_cast<const type*>(this);
 		}
 
 		/// @brief Returns a reference to the `T` wrapped by this
 		///
 		/// @return reference to `T`
 		/// @ingroup EmptyBaseClass
-		constexpr inline auto get() noexcept -> reference {
-			return m_value;
+		inline constexpr auto get() noexcept -> reference {
+			return *static_cast<type*>(this);
 		}
 
 		// clang-format off
@@ -150,10 +150,8 @@ namespace hyperion {
 		// clang-format on
 
 	  private:
-		constexpr EmptyBaseClass() noexcept(concepts::NoexceptDefaultConstructible<T>)
-			: m_value(type()) {
+		constexpr EmptyBaseClass() noexcept(concepts::NoexceptDefaultConstructible<T>) : type() {
 		}
-		[[no_unique_address]] type m_value;
 	};
 	// clang-format off
 
@@ -164,9 +162,9 @@ namespace hyperion {
 		/// @brief The type wrapped by this `EmptyBaseClass`
 		using type = T;
 		/// @brief Reference to the type wrapped by this `EmptyBaseClass`
-		using reference = type&;
+		using reference = std::add_lvalue_reference_t<type>;
 		/// @brief Reference to const the type wrapped by this `EmptyBaseClass`
-		using const_reference = const type&;
+		using const_reference = std::add_lvalue_reference_t<std::add_const_t<type>>;
 
 		/// @brief Constructs this `EmptyBaseClass` in an uninitialized state
 		constexpr EmptyBaseClass(UnInitTag<T>) noexcept { // NOLINT
@@ -208,14 +206,14 @@ namespace hyperion {
 		/// @brief Returns a reference to const to the `T` wrapped by this
 		///
 		/// @return reference to const `T`
-		constexpr inline auto get() const noexcept -> const_reference {
+		inline constexpr auto get() const noexcept -> const_reference {
 			return m_value;
 		}
 
 		/// @brief Returns a reference to the `T` wrapped by this
 		///
 		/// @return reference to `T`
-		constexpr inline auto get() noexcept -> reference {
+		inline constexpr auto get() noexcept -> reference {
 			return m_value;
 		}
 
