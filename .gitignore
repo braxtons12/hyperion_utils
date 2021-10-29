@@ -8,3 +8,4 @@ docs/doxygen/
 /cmake-build-release/
 /cmake-build-debug-clang/
 /cmake-build-release-clang/
+.idea/
