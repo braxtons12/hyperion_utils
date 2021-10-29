@@ -1,5 +1,6 @@
+#include <Hyperion/BasicTypes.h>
+
 #include "ChangeDetectorTest.h"
-#include "HyperionUtils/BasicTypes.h"
 #include "LoggerTest.h"
 #include "OptionTest.h"
 #include "ResultTest.h"

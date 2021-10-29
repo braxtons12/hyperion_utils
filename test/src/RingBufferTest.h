@@ -1,6 +1,7 @@
 #pragma once
 
-#include "HyperionUtils/RingBuffer.h"
+#include <Hyperion/RingBuffer.h>
+
 #include "microTest.h"
 
 namespace hyperion::test {

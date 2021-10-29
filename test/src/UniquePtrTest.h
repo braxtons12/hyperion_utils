@@ -1,6 +1,7 @@
 #pragma once
 
-#include "HyperionUtils/Memory.h"
+#include <Hyperion/Memory.h>
+
 #include "microTest.h"
 
 namespace hyperion::test {

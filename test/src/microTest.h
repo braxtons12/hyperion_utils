@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HyperionUtils/HyperionDef.h"
+#include "Hyperion/HyperionDef.h"
 
 IGNORE_COMMA_MISUSE_START
 #include <boost/ut.hpp>
