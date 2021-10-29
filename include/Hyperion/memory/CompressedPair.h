@@ -3,7 +3,7 @@
 /// @brief This file includes an
 /// [Empty Base Class Optimized](https://en.cppreference.com/w/cpp/language/ebo) pair type
 /// @version 0.1
-/// @date 2021-08-27
+/// @date 2021-10-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,8 +27,8 @@
 /// SOFTWARE.
 #pragma once
 
-#include "../Concepts.h"
-#include "EmptyBaseClass.h"
+#include <Hyperion/Concepts.h>
+#include <Hyperion/memory/EmptyBaseClass.h>
 
 namespace hyperion {
 
@@ -39,7 +39,7 @@ namespace hyperion {
 	/// @tparam U - The second type stored in the pair
 	///
 	/// # Requirements
-	/// - `concepts::NotSame<T, U>` because Empy Base Class Optimization can't be performed when
+	/// - `concepts::NotSame<T, U>` because Empty Base Class Optimization can't be performed when
 	/// the types are the same, we can't have a compressed pair wrapping two of the same type
 	/// @ingroup memory
 	template<typename T, typename U>
@@ -113,13 +113,18 @@ namespace hyperion {
 		/// construct a `CompressedPair` from `t` and `u`
 		/// @ingroup memory
 		template<typename T_, typename U_>
-		constexpr CompressedPair(T_&& t, U_&& u) noexcept(
-			concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
-			concepts::ConstructibleFrom<T, decltype(t)> && concepts::ConstructibleFrom<U,
-																					   decltype(u)>
+			constexpr CompressedPair(T_&& t, U_&& u) noexcept(
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
+					concepts::NoexceptConstructibleFrom<
+						EmptyBaseClass<U>,
+						decltype(u)>) requires(concepts::
+												   ConstructibleFrom<
+													   T,
+													   decltype(t)> || concepts::Convertible<decltype(t), T>)
+			&& (concepts::ConstructibleFrom<U,
+											decltype(u)> || concepts::Convertible<decltype(u), U>)
 			: EmptyBaseClass<T>(std::forward<T_>(t)),
-			  EmptyBaseClass<U>(std::forward<U_>(u)) {
+		EmptyBaseClass<U>(std::forward<U_>(u)) {
 		}
 		/// @brief Constructs a `CompressedPair` from the pair of arguments.
 		///
@@ -160,8 +165,9 @@ namespace hyperion {
 		constexpr CompressedPair(T_&& t, UnInitTag<U> u) noexcept(
 			concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
 				concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
-			concepts::ConstructibleFrom<T, decltype(t)> : EmptyBaseClass<T>(std::forward<T_>(t)),
-														  EmptyBaseClass<U>(u) {
+			concepts::ConstructibleFrom<T, decltype(t)> || concepts::Convertible<decltype(t), T>
+			: EmptyBaseClass<T>(std::forward<T_>(t)),
+			  EmptyBaseClass<U>(u) {
 		}
 		/// @brief Constructs a `CompressedPair`, leaving both the `T` and `U` uninitialized
 		///
@@ -171,7 +177,7 @@ namespace hyperion {
 		constexpr CompressedPair(UnInitTag<T> t, UnInitTag<U> u) noexcept(
 			concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
 				concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>)
-			: EmptyBaseClass<T>(UnInitTag<T>()), EmptyBaseClass<U>(UnInitTag<U>()) {
+			: EmptyBaseClass<T>(t), EmptyBaseClass<U>(u) {
 		}
 		/// @brief Constructs a `CompressedPair` from the pair of arguments.
 		///
@@ -212,8 +218,9 @@ namespace hyperion {
 		constexpr CompressedPair(T_&& t, DefaultInitTag<U> u) noexcept(
 			concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
 				concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
-			concepts::ConstructibleFrom<T, decltype(t)> : EmptyBaseClass<T>(std::forward<T_>(t)),
-														  EmptyBaseClass<U>(u) {
+			concepts::ConstructibleFrom<T, decltype(t)> || concepts::Convertible<decltype(t), T>
+			: EmptyBaseClass<T>(std::forward<T_>(t)),
+			  EmptyBaseClass<U>(u) {
 		}
 		/// @brief Constructs a `CompressedPair`, default-constructing both the `T` and `U`
 		///
@@ -223,7 +230,7 @@ namespace hyperion {
 		constexpr CompressedPair(DefaultInitTag<T> t, DefaultInitTag<U> u) noexcept(
 			concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
 				concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>)
-			: EmptyBaseClass<T>(UnInitTag<T>()), EmptyBaseClass<U>(UnInitTag<U>()) {
+			: EmptyBaseClass<T>(t), EmptyBaseClass<U>(u) {
 		}
 		/// @brief Copy-Constructs a `CompressedPair` from the given one
 		/// @ingroup memory
@@ -251,14 +258,14 @@ namespace hyperion {
 		/// @return a reference to the wrapped `T`
 		/// @ingroup memory
 		constexpr auto first() const noexcept -> typename BaseT::const_reference {
-			return static_cast<const BaseT*>(this)->get();
+			return static_cast<const BaseT&>(*this).get();
 		}
 		/// @brief Returns a reference to the wrapped `T`
 		///
 		/// @return a reference to the wrapped `T`
 		/// @ingroup memory
 		constexpr auto first() noexcept -> typename BaseT::reference {
-			return static_cast<BaseT*>(this)->get();
+			return static_cast<BaseT&>(*this).get();
 		}
 
 		/// @brief Returns a reference to const to the wrapped `U`
@@ -266,21 +273,21 @@ namespace hyperion {
 		/// @return a reference to the wrapped `U`
 		/// @ingroup memory
 		constexpr auto second() const noexcept -> typename BaseU::const_reference {
-			return static_cast<const BaseU*>(this)->get();
+			return static_cast<const BaseU&>(*this).get();
 		}
 		/// @brief Returns a reference to the wrapped `U`
 		///
 		/// @return a reference to the wrapped `U`
 		/// @ingroup memory
 		constexpr auto second() noexcept -> typename BaseU::reference {
-			return static_cast<BaseU*>(this)->get();
+			return static_cast<BaseU&>(*this).get();
 		}
 
 		/// @brief Swaps the contents of this `CompressedPair` with the given one
 		///
 		/// @param pair - The `CompressedPair` to swap contents with
 		/// @ingroup memory
-		constexpr inline auto swap(CompressedPair& pair) noexcept(
+		inline constexpr auto swap(CompressedPair& pair) noexcept(
 			concepts::NoexceptSwappable<T>&& concepts::NoexceptSwappable<U>)
 			-> void requires concepts::Swappable<T> && concepts::Swappable<U> {
 			std::swap(first(), pair.first());
@@ -307,7 +314,7 @@ namespace hyperion {
 	/// @ingroup memory
 	template<typename T, typename U>
 	requires concepts::Swappable<T> && concepts::Swappable<U>
-	constexpr inline auto swap(CompressedPair<T, U>& first, CompressedPair<T, U>& second) noexcept(
+	inline constexpr auto swap(CompressedPair<T, U>& first, CompressedPair<T, U>& second) noexcept(
 		concepts::NoexceptSwappable<T>&& concepts::NoexceptSwappable<U>) -> void {
 		first.swap(second);
 	}
