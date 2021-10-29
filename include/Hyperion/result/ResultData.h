@@ -1,15 +1,44 @@
+/// @file ResultData.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief Implementation of `Result`'s storage representation
+/// @version 0.1
+/// @date 2021-10-20
+///
+/// MIT License
+/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
 
+#include <Hyperion/Concepts.h>
+#include <Hyperion/option/None.h>
+#include <Hyperion/result/Err.h>
+#include <Hyperion/result/Ok.h>
 #include <functional>
 #include <variant>
 
-#include "../Concepts.h"
-#include "../option/None.h"
-#include "Err.h"
-#include "Ok.h"
-
 namespace hyperion::result {
 	IGNORE_PADDING_START
+
+	/// @brief `ResultData` is the storage implementation backing `Result`
+	/// It acts as a tagged union, supports references, and abstracts away
+	/// the storage details of `Result`'s implementation
 	template<typename T, typename E>
 	struct ResultData;
 
@@ -80,40 +109,50 @@ namespace hyperion::result {
 		}
 		constexpr ~ResultData() noexcept(concepts::NoexceptDestructible<rep>) = default;
 
-		[[nodiscard]] constexpr inline auto has_ok() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Ok` variant
+		[[nodiscard]] inline constexpr auto has_ok() const noexcept -> bool {
 			return this->index() == OK_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto has_err() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Err` variant
+		[[nodiscard]] inline constexpr auto has_err() const noexcept -> bool {
 			return this->index() == ERR_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto is_empty() const noexcept -> bool {
+		/// @brief Returns whether this is currently disengaged (it's not in the `Ok` nor the `Err`
+		/// variant; it has been moved out of)
+		[[nodiscard]] inline constexpr auto is_empty() const noexcept -> bool {
 			return !(has_ok() || has_err());
 		}
 
-		[[nodiscard]] constexpr inline auto get() const noexcept -> ok_const_reference {
+		/// @brief Returns a const reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() const noexcept -> ok_const_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get() noexcept -> ok_reference {
+		/// @brief Returns a reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() const noexcept -> err_const_reference {
+		/// @brief Returns a const reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() const noexcept -> err_const_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() noexcept -> err_reference {
+		/// @brief Returns a reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto extract() noexcept(concepts::NoexceptMovable<T>)
+		/// @brief Extracts the `Ok` variant out of this
+		[[nodiscard]] inline constexpr auto extract() noexcept(concepts::NoexceptMovable<T>)
 			-> ok_extracted requires concepts::Movable<T> {
 			return std::get<OK_INDEX>(std::move(*this));
 		}
 
-		[[nodiscard]] constexpr inline auto extract_err() noexcept(concepts::NoexceptMovable<E>)
+		/// @brief Extracts the `Err` variant out of this
+		[[nodiscard]] inline constexpr auto extract_err() noexcept(concepts::NoexceptMovable<E>)
 			-> err_extracted requires concepts::Movable<E> {
 			return std::get<ERR_INDEX>(std::move(*this));
 		}
@@ -200,39 +239,49 @@ namespace hyperion::result {
 		}
 		constexpr ~ResultData() noexcept(concepts::NoexceptDestructible<rep>) = default;
 
-		[[nodiscard]] constexpr inline auto has_ok() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Ok` variant
+		[[nodiscard]] inline constexpr auto has_ok() const noexcept -> bool {
 			return this->index() == OK_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto has_err() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Err` variant
+		[[nodiscard]] inline constexpr auto has_err() const noexcept -> bool {
 			return this->index() == ERR_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto is_empty() const noexcept -> bool {
+		/// @brief Returns whether this is currently disengaged (it's not in the `Ok` nor the `Err`
+		/// variant; it has been moved out of)
+		[[nodiscard]] inline constexpr auto is_empty() const noexcept -> bool {
 			return !has_ok() && !has_err();
 		}
 
-		[[nodiscard]] constexpr inline auto get() const noexcept -> ok_const_reference {
+		/// @brief Returns a const reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() const noexcept -> ok_const_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get() noexcept -> ok_storage_type& {
+		/// @brief Returns a reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_storage_type& {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() const noexcept -> err_const_reference {
+		/// @brief Returns a const reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() const noexcept -> err_const_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() noexcept -> err_reference {
+		/// @brief Returns a reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto extract() noexcept -> ok_extracted {
+		/// @brief Extracts the `Ok` variant out of this
+		[[nodiscard]] inline constexpr auto extract() noexcept -> ok_extracted {
 			return std::get<OK_INDEX>(std::move(*this)).get();
 		}
 
-		[[nodiscard]] constexpr inline auto extract_err() noexcept(concepts::NoexceptMovable<E>)
+		/// @brief Extracts the `Err` variant out of this
+		[[nodiscard]] inline constexpr auto extract_err() noexcept(concepts::NoexceptMovable<E>)
 			-> err_extracted requires concepts::Movable<E> {
 			return std::get<ERR_INDEX>(std::move(*this));
 		}
@@ -333,39 +382,49 @@ namespace hyperion::result {
 		}
 		constexpr ~ResultData() noexcept(concepts::NoexceptDestructible<rep>) = default;
 
-		[[nodiscard]] constexpr inline auto has_ok() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Ok` variant
+		[[nodiscard]] inline constexpr auto has_ok() const noexcept -> bool {
 			return this->index() == OK_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto has_err() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Err` variant
+		[[nodiscard]] inline constexpr auto has_err() const noexcept -> bool {
 			return this->index() == ERR_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto is_empty() const noexcept -> bool {
+		/// @brief Returns whether this is currently disengaged (it's not in the `Ok` nor the `Err`
+		/// variant; it has been moved out of)
+		[[nodiscard]] inline constexpr auto is_empty() const noexcept -> bool {
 			return !has_ok() && !has_err();
 		}
 
-		[[nodiscard]] constexpr inline auto get() const noexcept -> ok_const_reference {
+		/// @brief Returns a const reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() const noexcept -> ok_const_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get() noexcept -> ok_reference {
+		/// @brief Returns a reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() const noexcept -> err_const_reference {
+		/// @brief Returns a const reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() const noexcept -> err_const_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() noexcept -> err_storage_type& {
+		/// @brief Returns a reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_storage_type& {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto extract() noexcept -> ok_extracted {
+		/// @brief Extracts the `Ok` variant out of this
+		[[nodiscard]] inline constexpr auto extract() noexcept -> ok_extracted {
 			return std::get<OK_INDEX>(std::move(*this));
 		}
 
-		[[nodiscard]] constexpr inline auto extract_err() noexcept -> err_extracted {
+		/// @brief Extracts the `Err` variant out of this
+		[[nodiscard]] inline constexpr auto extract_err() noexcept -> err_extracted {
 			return std::get<ERR_INDEX>(std::move(*this)).get();
 		}
 
@@ -457,39 +516,49 @@ namespace hyperion::result {
 		}
 		constexpr ~ResultData() noexcept(concepts::NoexceptDestructible<rep>) = default;
 
-		[[nodiscard]] constexpr inline auto has_ok() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Ok` variant
+		[[nodiscard]] inline constexpr auto has_ok() const noexcept -> bool {
 			return this->index() == OK_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto has_err() const noexcept -> bool {
+		/// @brief Returns whether this is currently the `Err` variant
+		[[nodiscard]] inline constexpr auto has_err() const noexcept -> bool {
 			return this->index() == ERR_INDEX;
 		}
 
-		[[nodiscard]] constexpr inline auto is_empty() const noexcept -> bool {
+		/// @brief Returns whether this is currently disengaged (it's not in the `Ok` nor the `Err`
+		/// variant; it has been moved out of)
+		[[nodiscard]] inline constexpr auto is_empty() const noexcept -> bool {
 			return !has_ok() && !has_err();
 		}
 
-		[[nodiscard]] constexpr inline auto get() const noexcept -> ok_const_reference {
+		/// @brief Returns a const reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() const noexcept -> ok_const_reference {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get() noexcept -> ok_storage_type& {
+		/// @brief Returns a reference to this as the `Ok` variant
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_storage_type& {
 			return std::get<OK_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() const noexcept -> err_const_reference {
+		/// @brief Returns a const reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() const noexcept -> err_const_reference {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto get_err() noexcept -> err_storage_type& {
+		/// @brief Returns a reference to this as the `Err` variant
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_storage_type& {
 			return std::get<ERR_INDEX>(*this);
 		}
 
-		[[nodiscard]] constexpr inline auto extract() noexcept -> ok_extracted {
+		/// @brief Extracts the `Ok` variant out of this
+		[[nodiscard]] inline constexpr auto extract() noexcept -> ok_extracted {
 			return std::get<OK_INDEX>(std::move(*this)).get();
 		}
 
-		[[nodiscard]] constexpr inline auto extract_err() noexcept -> err_extracted {
+		/// @brief Extracts the `Err` variant out of this
+		[[nodiscard]] inline constexpr auto extract_err() noexcept -> err_extracted {
 			return std::get<ERR_INDEX>(std::move(*this)).get();
 		}
 
