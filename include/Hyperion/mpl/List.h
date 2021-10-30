@@ -1,10 +1,39 @@
-/// @brief Collection of basic meta-programming functions for querying a list of types
+/// @file Index.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief Meta-programming facilities for working with a list of types
+/// @version 0.1
+/// @date 2021-10-29
+///
+/// MIT License
+/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
 
-#include "../BasicTypes.h"
+#include <Hyperion/BasicTypes.h>
+#include <Hyperion/HyperionDef.h>
 
 namespace hyperion::mpl {
 
+	/// @brief Basic meta-programming type list
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename... T>
 	struct list { };
 
@@ -32,7 +61,6 @@ namespace hyperion::mpl {
 		// clang-format off
 
 		template<typename T, template<typename...> typename List, typename... Types>
-		requires(std::is_same_v<List<Types...>, list<Types...>>)
 		struct contains_list_impl<T, List<Types...>> : contains_impl<T, Types...> { };
 
 		// clang-format on
@@ -42,13 +70,17 @@ namespace hyperion::mpl {
 	///
 	/// @tparam T - The type to search for
 	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	struct contains : detail::contains_list_impl<T, List> { };
 
 	/// @brief Value of `mpl::contains`. Used to determine if the given `mpl::list`, `List`,
 	/// contains the given type `T`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
-	static inline constexpr auto contains_v = contains<T, List>::value;
+	inline static constexpr auto contains_v = contains<T, List>::value;
 
 	namespace detail {
 		struct not_found { };
@@ -61,7 +93,7 @@ namespace hyperion::mpl {
 		template<usize I, usize Current, usize Size, typename Head, typename... Types>
 		struct at_impl<I, Current, Size, Head, Types...> {
 			static_assert(I < Size);
-#ifdef HYPERION_HAS_TYPE_PACK_ELEMENT
+#if HYPERION_HAS_TYPE_PACK_ELEMENT
 			using type = __type_pack_element<I, Head, Types...>;
 #else
 			using type = std::conditional_t<I == Current,
@@ -73,13 +105,18 @@ namespace hyperion::mpl {
 		/// we should never reach this case, as the static_assert in the other specializations
 		/// should trigger before hand
 		template<usize I, usize Current, usize Size>
-		struct at_impl<I, Size, Current> {
+		struct at_impl<I, Current, Size> {
 			static_assert(I < Size);
 			using type = not_found;
 		};
 
+		template<>
+		struct at_impl<0, 0, 0> {
+			using type = not_found;
+		};
+
 		static_assert(std::is_same_v<u8, at_impl<0, 0, 4, u8, u16, u32, u64>::type>,
-					  "mpl::at implemenation failing");
+					  "mpl::at implementation failing");
 		static_assert(std::is_same_v<u16, at_impl<1, 0, 4, u8, u16, u32, u64>::type>,
 					  "mpl::at implementation failing");
 		static_assert(std::is_same_v<u32, at_impl<2, 0, 4, u8, u16, u32, u64>::type>,
@@ -93,26 +130,29 @@ namespace hyperion::mpl {
 		// clang-format off
 
 		template<usize I, template<typename...> typename List, typename... Types>
-		requires(std::is_same_v<List<Types...>, list<Types...>>)
 		struct at_list_impl<I, List<Types...>> : at_impl<I, 0, sizeof...(Types), Types...> { };
 
 		// clang-format on
 	} // namespace detail
 
-	/// @brief Used to find the `I`th type in the `mpl::list`, `List`
+	/// @brief Used to find the `N`th type in the `mpl::list`, `List`
 	///
-	/// @tparam I - The index in the parameter pack to get the type of
-	/// @tparam List - The `mpl::list` to search in
-	template<usize I, typename List>
-	struct at : detail::at_list_impl<I, List> { };
+	/// @tparam N - The index into the list
+	/// @tparam List - The `mpl::list` to get a type from
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<usize N, typename List>
+	struct at : detail::at_list_impl<N, List> { };
 
-	/// @brief Alias to `mpl::at<I, List>::type`. Used to get the `I`th type in the `mpl::list`,
+	/// @brief Alias to `mpl::at<N, List>::type`. Used to get the `N`th type in the `mpl::list`,
 	/// `List`
 	///
-	/// @tparam I - The index in the parameter pack to get the type of
-	/// @tparam List - The `mpl::list` to search in
-	template<usize I, typename List>
-	using at_t = typename at<I, List>::type;
+	/// @tparam N - The index into the list
+	/// @tparam List - The `mpl::list` to get a type from
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<usize N, typename List>
+	using at_t = typename at<N, List>::type;
 
 	static_assert(std::is_same_v<u32, at_t<2, list<u8, u16, u32, u64>>>,
 				  "mpl::at implementation failing");
@@ -143,7 +183,6 @@ namespace hyperion::mpl {
 		// clang-format off
 
 		template<typename T, template<typename...> typename List, typename... Types>
-		requires(std::is_same_v<List<Types...>, list<Types...>>)
 		struct index_of_list_impl<T, List<Types...>> : index_of_impl<0, T, Types...> { };
 
 		// clang-format on
@@ -155,6 +194,8 @@ namespace hyperion::mpl {
 	///
 	/// @tparam T - The type to search for
 	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	requires(contains_v<T, List>)
 	struct index_of : detail::index_of_list_impl<T, List> {
@@ -162,6 +203,8 @@ namespace hyperion::mpl {
 
 	/// @brief Value of `mpl::index_of`. Used to determine the index of the type `T`
 	/// in the `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	requires(contains_v<T, List>)
 	inline static constexpr usize index_of_v = index_of<T, List>::value;
@@ -193,7 +236,6 @@ namespace hyperion::mpl {
 		// clang-format off
 
 		template<template<typename...> typename List, typename... Types>
-		requires(std::is_same_v<List<Types...>, list<Types...>>)
 		struct max_size_list_impl<List<Types...>> : max_size_impl<0, Types...> {
 		};
 
@@ -203,11 +245,15 @@ namespace hyperion::mpl {
 	/// @brief Used to determine the size of the largest type in the `mpl::list`, `List`
 	///
 	/// @tparam List - The `mpl::list` to get the largest type for
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	struct max_size_of : detail::max_size_list_impl<List> { };
 
 	/// @brief Value of `mpl::max_size_of`. Used to determine the size of the largest type in
 	/// the `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	inline static constexpr usize max_size_of_v = max_size_of<List>::value;
 
@@ -240,25 +286,33 @@ namespace hyperion::mpl {
 		struct instances_of_list_impl<T, List<Types...>> : instances_of_impl<0, T, Types...> { };
 	} // namespace detail
 
-	/// @brief Used to determine the number of occurences of `T` in the `mpl::list`, `List`
+	/// @brief Used to determine the number of occurrences of `T` in the `mpl::list`, `List`
 	///
-	/// @tparam T - The type to get the number of occurences of
+	/// @tparam T - The type to get the number of occurrences of
 	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	struct instances_of : detail::instances_of_list_impl<T, List> { };
 
-	/// @brief Value of `instances_of`. Used to determine the number of occurences of `T` in the
+	/// @brief Value of `instances_of`. Used to determine the number of occurrences of `T` in the
 	/// `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	inline static constexpr usize instances_of_v = instances_of<T, List>::value;
 
 	/// @brief Used to get the first type in the `mpl::list`, `List`
 	///
 	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	struct first : at<0, List> { };
 
 	/// @brief Alias to `mpl::first::type`. Used to get the first type in the `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	using first_t = typename first<List>::type;
 
@@ -278,9 +332,18 @@ namespace hyperion::mpl {
 		struct size_list_impl<List<Types...>> : size_impl<Types...> { };
 	} // namespace detail
 
+	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
+	///
+	/// @tparam List - The `mpl::list` to query the size of
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	struct size : detail::size_list_impl<List> { };
 
+	/// @brief The value of `mpl::size<List>`. Used to determine the number of elements in the
+	/// `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	inline static constexpr usize size_v = size<List>::value;
 
