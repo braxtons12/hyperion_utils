@@ -234,10 +234,10 @@ namespace hyperion {
 			// template parameters, but we'll keep them for completeness’ sake and
 			// clarity of requirements
 			if(is_some()) {
-				return Option<U>::Some(std::forward<F>(map_func)(this->get()));
+				return Some(std::forward<F>(map_func)(this->get()));
 			}
 			else {
-				return Option<U>::None();
+				return hyperion::None();
 			}
 		}
 
