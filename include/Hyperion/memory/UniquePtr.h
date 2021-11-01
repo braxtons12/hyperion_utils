@@ -1183,9 +1183,10 @@ namespace hyperion {
 		// we need to use do-while to make sure we construct the 0th element in a one element array
 		auto i = 0_usize;
 		do {
+			auto t = std::tuple(tuple);
 			Traits::construct(allocator,
 							  std::addressof(*p) + i,
-							  std::make_from_tuple<T>(tuple)); // NOLINT
+							  std::make_from_tuple<ElementType>(std::move(t))); // NOLINT
 			++i;
 		} while(i < N);
 
