@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic high-level types for communicating recoverable errors
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -223,6 +223,42 @@ namespace hyperion::error {
 		/// @ingroup error
 		constexpr operator value_type() const noexcept { // NOLINT
 			return static_cast<value_type>(m_error_code);
+		}
+
+		/// @brief Equality comparison operator with another `Error` from a possibly different
+		/// `StatusCodeDomain`
+		/// @tparam Domain2 - The `StatusCodeDomain` of `error`
+		/// @ingroup error
+		template<StatusCodeDomain Domain2>
+		constexpr auto operator==(const Error<Domain2>& error) const noexcept -> bool {
+			return m_error_code == error.m_error_code;
+		}
+
+		/// @brief Inequality comparison operator with another `Error` from a possibly different
+		/// `StatusCodeDomain`
+		/// @tparam Domain2 - The `StatusCodeDomain` of `error`
+		/// @ingroup error
+		template<StatusCodeDomain Domain2>
+		constexpr auto operator!=(const Error<Domain2>& error) const noexcept -> bool {
+			return m_error_code != error.m_error_code;
+		}
+
+		/// @brief Equality comparison operator with an `ErrorCode` from a possibly different
+		/// `StatusCodeDomain`
+		/// @tparam Domain2 - The `StatusCodeDomain` of `code`
+		/// @ingroup error
+		template<StatusCodeDomain Domain2>
+		constexpr auto operator==(const ErrorCode<Domain2>& code) const noexcept -> bool {
+			return m_error_code == code;
+		}
+
+		/// @brief Inequality comparison operator with an `ErrorCode` from a possibly different
+		/// `StatusCodeDomain`
+		/// @tparam Domain2 - The `StatusCodeDomain` of `code`
+		/// @ingroup error
+		template<StatusCodeDomain Domain2>
+		constexpr auto operator!=(const ErrorCode<Domain2>& code) const noexcept -> bool {
+			return m_error_code != code;
 		}
 
 		/// @brief Copy-assigns the given `error` to this `Error`
