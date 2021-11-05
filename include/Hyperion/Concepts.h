@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Aliases for and additions to the C++20 standard concepts library
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -664,30 +664,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename Return, typename Func, typename... Args>
-	concept InvocableR = std::is_invocable_r_v<Return, Func, Args...>;
-
-	/// @brief Concept that requires `Func` is invocable with a const argument of unqualified type
-	/// `Arg`, with the return type `Return`
-	///
-	/// Requires that `Func` is invocable with `Arg` or `const Arg&`
-	///
-	/// @ingroup concepts
-	/// @headerfile "Hyperion/Concepts.h"
-	template<typename Return, typename Func, typename Arg>
-	concept InvocableRConst = InvocableR<Return, Func, Arg> || InvocableR<Return, Func, const Arg&>;
-
-	/// @brief Concept that requires `Func` is invocable with a mutable argument of unqualified type
-	/// `Arg`, with the return type `Return`
-	///
-	/// Requires that `Func` is invocable with `Arg`, `Arg&`, or `Arg&&`
-	///
-	/// @ingroup concepts
-	/// @headerfile "Hyperion/Concepts.h"
-	template<typename Return, typename Func, typename Arg>
-	concept InvocableRMut
-		= InvocableR<Return, Func, Arg> || InvocableR<Return, Func, Arg&> || InvocableR<Return,
-																						Func,
-																						Arg&&>;
+	concept InvocableWithReturn = std::is_invocable_r_v<Return, Func, Args...>;
 
 	/// @brief Concept that requires `T` is allocatable by the allocator `Allocator`
 	/// @ingroup concepts

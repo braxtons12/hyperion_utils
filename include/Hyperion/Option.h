@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief A monadic type representing an optional value
 /// @version 0.1
-/// @date 2021-10-20
+/// @date 2021-11-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -186,6 +186,7 @@ namespace hyperion {
 		constexpr Option(Option&& option) noexcept(
 			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
 			: OptionData(static_cast<OptionData&&>(option)) {
+			option = None();
 		}
 
 		/// @brief Destructor
@@ -228,7 +229,7 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F,
 				 typename U = decltype(std::declval<F>()(std::declval<const_reference>()))>
-		requires concepts::InvocableRConst<U, F, T>
+		requires concepts::InvocableWithReturn<U, F, const_reference>
 		[[nodiscard]] inline auto map(F&& map_func) const noexcept -> Option<U> {
 			// the invocable checks above are probably redundant because of the inferred
 			// template parameters, but we'll keep them for completeness’ sake and
@@ -256,7 +257,7 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F, typename U>
-		requires concepts::InvocableRConst<U, F, T>
+		requires concepts::InvocableWithReturn<U, F, const_reference>
 		[[nodiscard]] inline auto map_or(F&& map_func, U&& default_value) const noexcept -> U {
 			if(is_some()) {
 				return std::forward<F>(map_func)(this->get());
@@ -288,11 +289,10 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F,
-				 typename G,
+				 concepts::Invocable G,
 				 typename U = decltype(std::declval<F>()(std::declval<const_reference>())),
 				 typename V = decltype(std::declval<G>()())>
-		requires concepts::Same<U, V> && concepts::InvocableRConst<U, F, T> && concepts::
-			InvocableR<V, G>
+		requires concepts::Same<U, V> && concepts::InvocableWithReturn<U, F, const_reference>
 		[[nodiscard]] inline auto
 		map_or_else(F&& map_func, G&& default_generator) const noexcept -> U {
 			// the invocable checks above are probably redundant because of the inferred
@@ -329,14 +329,16 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename SomeFunc,
-				 typename NoneFunc,
+				 concepts::Invocable NoneFunc,
 				 typename R1 = decltype(std::declval<SomeFunc>()(std::declval<rvalue_reference>())),
 				 typename R2 = decltype(std::declval<NoneFunc>()())>
-		requires concepts::Same<R1, R2> && concepts::
-			InvocableR<void, SomeFunc, rvalue_reference> && concepts::InvocableR<void, NoneFunc>
+		requires concepts::Same<R1,
+								R2> && concepts::InvocableWithReturn<R1, SomeFunc, rvalue_reference>
 		inline auto match(SomeFunc&& some_func, NoneFunc&& none_func) noexcept -> R1 {
 			if(is_some()) {
-				return std::forward<SomeFunc>(some_func)(std::forward<T>(this->extract()));
+				auto&& ret = this->extract();
+				*this = None();
+				return std::forward<SomeFunc>(some_func)(std::forward<type>(ret));
 			}
 			else {
 				return std::forward<NoneFunc>(none_func)();
@@ -362,16 +364,18 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F,
-				 typename U =
-					 typename decltype(std::declval<F>(std::declval<rvalue_reference>()))::type,
+				 typename U = typename decltype(std::declval<F>()(
+					 std::declval<rvalue_reference>()))::rvalue_reference,
 				 typename R
 				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableRMut<Option<R>, F, rvalue_reference>
+		requires concepts::InvocableWithReturn<Option<R>, F, rvalue_reference>
 		[[nodiscard]] inline auto and_then(F&& func) noexcept -> Option<R> {
 			// the invocable checks above are probably redundant because of the inferred
 			// template
 			if(is_some()) {
-				return std::forward<F>(func)(this->extract());
+				auto&& ret = this->extract();
+				*this = None();
+				return std::forward<F>(func)(std::forward<type>(ret));
 			}
 			else {
 				return hyperion::None();
@@ -401,7 +405,7 @@ namespace hyperion {
 		/// @return this if this is `Some`, otherwise `option`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		[[nodiscard]] inline auto or_else(Option&& option) noexcept -> Option&& {
+		[[nodiscard]] inline auto or_else(Option&& option) noexcept -> Option {
 			if(is_some()) {
 				return std::move(*this);
 			}
@@ -421,8 +425,8 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F>
-		requires concepts::InvocableR<Option<T>, F>
-		[[nodiscard]] inline auto or_else(F&& func) const noexcept -> Option&& {
+		requires concepts::InvocableWithReturn<Option<T>, F>
+		[[nodiscard]] inline auto or_else(F&& func) noexcept -> Option {
 			if(is_some()) {
 				return std::move(*this);
 			}
@@ -445,7 +449,9 @@ namespace hyperion {
 		template<typename E>
 		[[nodiscard]] inline constexpr auto ok_or(E&& error) noexcept -> Result<T, E> {
 			if(is_some()) {
-				return Ok(this->extract());
+				auto&& ret = this->extract();
+				*this = None();
+				return Ok(std::forward<type>(ret));
 			}
 			else {
 				return Err(std::forward<E>(error));
@@ -469,7 +475,9 @@ namespace hyperion {
 		requires concepts::ConstructibleFrom<E, Args...>
 		[[nodiscard]] inline constexpr auto ok_or(Args&&... args) noexcept -> Result<T, E> {
 			if(is_some()) {
-				return Ok(this->extract());
+				auto&& ret = this->extract();
+				*this = None();
+				return Ok(std::forward<type>(ret));
 			}
 			else {
 				return Err<E>(std::forward<Args>(args)...);
@@ -491,14 +499,15 @@ namespace hyperion {
 		/// `None`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		template<typename F, typename E = decltype(std::declval<F>()())>
-		requires concepts::InvocableR<E, F> && error::ErrorType<E>
+		template<concepts::Invocable F, typename E = decltype(std::declval<F>()())>
 		[[nodiscard]] inline auto ok_or_else(F&& error_generator) noexcept -> Result<T, E> {
 			// the invocable checks above are probably redundant because of the inferred
 			// template parameters, but we'll keep them for completeness’ sake and
 			// clarity of requirements
 			if(is_some()) {
-				return Ok(this->extract());
+				auto&& ret = this->extract();
+				*this = None();
+				return Ok(std::forward<type>(ret));
 			}
 			else {
 				return Err(std::forward<F>(error_generator)());
@@ -515,7 +524,9 @@ namespace hyperion {
 		[[nodiscard]] inline constexpr auto
 		unwrap() noexcept -> rvalue_reference requires concepts::NoexceptMovable<T> {
 			if(is_some()) {
-				return this->extract();
+				auto&& ret = this->extract();
+				*this = None();
+				return std::forward<type>(ret);
 			}
 			else {
 				panic("Option::unwrap called on a None, terminating");
@@ -576,7 +587,7 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F>
-		requires concepts::InvocableR<T, F>
+		requires concepts::InvocableWithReturn<T, F>
 		[[nodiscard]] inline auto unwrap_or_else(F&& default_generator) noexcept -> T {
 			if(is_some()) {
 				return unwrap();
@@ -641,6 +652,56 @@ namespace hyperion {
 			}
 		}
 
+		/// @brief Equality comparison operator to `None`
+		///
+		/// @return true if this is `None`, false otherwise
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator==(const None& none) const noexcept -> bool {
+			ignore(none);
+			return is_none();
+		}
+
+		/// @brief Inequality comparison operator to `None`
+		///
+		/// @return true if this is `None`, false otherwise
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator!=(const None& none) const noexcept -> bool {
+			ignore(none);
+			return is_some();
+		}
+
+		/// @brief Equality comparison operator to `T`
+		///
+		/// @return true if this is `None`, false otherwise
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto
+		operator==(const T& some) const noexcept -> bool requires concepts::EqualityComparable<T> {
+			if(is_some()) {
+				return this->get() == some;
+			}
+			else {
+				return false;
+			}
+		}
+
+		/// @brief Inequality comparison operator to `T`
+		///
+		/// @return true if this is `None`, false otherwise
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator!=(const T& some) const noexcept
+			-> bool requires concepts::InequalityComparable<T> {
+			if(is_some()) {
+				return this->get() != some;
+			}
+			else {
+				return true;
+			}
+		}
+
 		/// @brief Boolean conversion operator. Returns true if this is the `Some`
 		/// variant.
 		///
@@ -663,6 +724,7 @@ namespace hyperion {
 			OptionData::operator=(static_cast<const OptionData&>(option));
 			return *this;
 		}
+
 		/// @brief Move assignment operator
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
@@ -674,6 +736,41 @@ namespace hyperion {
 			}
 
 			OptionData::operator=(static_cast<OptionData&&>(option));
+			option = None();
+			return *this;
+		}
+
+		/// @brief Copy assignment operator from `T`
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator=(const T& some) noexcept(concepts::NoexceptCopyAssignable<T>)
+			-> Option& requires concepts::CopyAssignable<T> {
+			OptionData::operator=(some);
+			return *this;
+		}
+
+		/// @brief Move assignment operator from `T`
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator=(T&& some) noexcept(concepts::NoexceptMoveAssignable<T>)
+			-> Option& requires concepts::MoveAssignable<T> {
+			OptionData::operator=(std::move(some));
+			return *this;
+		}
+
+		/// @brief Copy assignment operator from `None`
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator=(const None& none) noexcept -> Option& {
+			OptionData::operator=(none);
+			return *this;
+		}
+
+		/// @brief Move assignment operator from `None`
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		constexpr auto operator=(None&& none) noexcept -> Option& {
+			OptionData::operator=(none);
 			return *this;
 		}
 	};

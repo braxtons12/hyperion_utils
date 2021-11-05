@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Implementation of `Result`'s storage representation
 /// @version 0.1
-/// @date 2021-10-20
+/// @date 2021-11-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -176,6 +176,14 @@ namespace hyperion::result {
 			rep::operator=(static_cast<rep&&>(data));
 			return *this;
 		}
+		constexpr auto operator=(const option::None& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
+		constexpr auto operator=(option::None&& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
 	};
 
 	template<concepts::Reference T, concepts::NotReference E>
@@ -303,6 +311,14 @@ namespace hyperion::result {
 			}
 
 			rep::operator=(static_cast<rep&&>(data));
+			return *this;
+		}
+		constexpr auto operator=(const option::None& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
+		constexpr auto operator=(option::None&& none) noexcept -> ResultData& {
+			rep::operator=(none);
 			return *this;
 		}
 		// clang-format off
@@ -447,6 +463,14 @@ namespace hyperion::result {
 			rep::operator=(static_cast<rep&&>(data));
 			return *this;
 		}
+		constexpr auto operator=(const option::None& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
+		constexpr auto operator=(option::None&& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
 		// clang-format off
 
 	  private:
@@ -579,6 +603,14 @@ namespace hyperion::result {
 			}
 
 			rep::operator=(static_cast<rep&&>(data));
+			return *this;
+		}
+		constexpr auto operator=(const option::None& none) noexcept -> ResultData& {
+			rep::operator=(none);
+			return *this;
+		}
+		constexpr auto operator=(option::None&& none) noexcept -> ResultData& {
+			rep::operator=(none);
 			return *this;
 		}
 		// clang-format off

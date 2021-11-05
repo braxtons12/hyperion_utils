@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Implementation of `Option`'s storage representation
 /// @version 0.1
-/// @date 2021-10-19
+/// @date 2021-11-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -74,7 +74,9 @@ namespace hyperion::option {
 			concepts::NoexceptConstructibleFrom<T, Args...>)
 			: rep(std::forward<Args>(args)...) {
 		}
-		explicit constexpr OptionData(None n) noexcept : rep(n) {
+		explicit constexpr OptionData(const None& n) noexcept : rep(n) {
+		}
+		explicit constexpr OptionData(None&& n) noexcept : rep(n) {
 		}
 		constexpr OptionData(const OptionData& data) noexcept(
 			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
@@ -124,6 +126,29 @@ namespace hyperion::option {
 			}
 
 			rep::operator=(static_cast<rep&&>(data));
+			return *this;
+		}
+		constexpr auto operator=(const_reference t) noexcept(concepts::NoexceptCopyAssignable<T>)
+			-> OptionData& requires concepts::CopyAssignable<T> {
+			rep::operator=(t);
+			return *this;
+		}
+		constexpr auto operator=(rvalue_reference t) noexcept(concepts::NoexceptMoveAssignable<T>)
+			-> OptionData& requires concepts::MoveAssignable<T> {
+			if constexpr(std::is_trivially_copy_assignable_v<T>) {
+				rep::operator=(t);
+			}
+			else {
+				rep::operator=(std::move(t));
+			}
+			return *this;
+		}
+		constexpr auto operator=(const None& n) noexcept -> OptionData& {
+			rep::operator=(n);
+			return *this;
+		}
+		constexpr auto operator=(None&& n) noexcept -> OptionData& {
+			rep::operator=(n);
 			return *this;
 		}
 	};
@@ -191,6 +216,29 @@ namespace hyperion::option {
 			}
 
 			rep::operator=(static_cast<rep&&>(data));
+			return *this;
+		}
+		constexpr auto operator=(const_reference t) noexcept(concepts::NoexceptCopyAssignable<T>)
+		-> OptionData& requires concepts::CopyAssignable<T> {
+			rep::operator=(ref(t));
+			return *this;
+		}
+		constexpr auto operator=(rvalue_reference t) noexcept(concepts::NoexceptMoveAssignable<T>)
+		-> OptionData& requires concepts::MoveAssignable<T> {
+			if constexpr(std::is_trivially_copy_assignable_v<T>) {
+				rep::operator=(ref(t));
+			}
+			else {
+				rep::operator=(std::move(t));
+			}
+			return *this;
+		}
+		constexpr auto operator=(const None& n) noexcept -> OptionData& {
+			rep::operator=(n);
+			return *this;
+		}
+		constexpr auto operator=(None&& n) noexcept -> OptionData& {
+			rep::operator=(n);
 			return *this;
 		}
 
