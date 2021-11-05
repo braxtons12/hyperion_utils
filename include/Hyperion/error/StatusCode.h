@@ -102,6 +102,20 @@ namespace hyperion::error {
 	using status_code_enum_domain_checked = status_code_enum_domain<T>;
 } // namespace hyperion::error
 
+#if HYPERION_PLATFORM_COMPILER_MSVC
+/// @brief Creates a `hyperion::error::StatusCode` from the given `hyperion::error::StatusCodeEnum`
+///
+/// @param code - The `hyperion::error::StatusCodeEnum` to create a `hyperion::error::StatusCode`
+/// from
+/// @return a `hyperion::error::StatusCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeEnum Enum>
+constexpr auto make_status_code(Enum code) noexcept
+	-> hyperion::error::StatusCode<hyperion::error::status_code_enum_domain<Enum>> {
+	return hyperion::error::StatusCode(code);
+}
+#else
 /// @brief Creates a `hyperion::error::StatusCode` from the given `hyperion::error::StatusCodeEnum`
 ///
 /// @param code - The `hyperion::error::StatusCodeEnum` to create a `hyperion::error::StatusCode`
@@ -113,6 +127,7 @@ constexpr auto make_status_code(hyperion::error::StatusCodeEnum auto code) noexc
 	-> hyperion::error::StatusCode<hyperion::error::status_code_enum_domain<decltype(code)>> {
 	return hyperion::error::StatusCode(code);
 }
+#endif
 
 namespace hyperion::error {
 
@@ -625,6 +640,20 @@ constexpr auto make_error_code(hyperion::i64 code, Domain&& domain) noexcept
 	return hyperion::error::ErrorCode(code, std::forward<Domain>(domain));
 }
 
+#if HYPERION_PLATFORM_COMPILER_MSVC
+/// @brief Creates a `hyperion::error::ErrorCode` from the given `hyperion::error::StatusCodeEnum`
+///
+/// @param code - The `hyperion::error::StatusCodeEnum` to create a `hyperion::error::ErrorCode`
+/// from
+/// @return a `hyperion::error::ErrorCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeEnum Enum>
+constexpr auto make_error_code(Enum code) noexcept
+	-> hyperion::error::ErrorCode<hyperion::error::status_code_enum_domain<Enum>> {
+	return hyperion::error::ErrorCode(code);
+}
+#else
 /// @brief Creates a `hyperion::error::ErrorCode` from the given `hyperion::error::StatusCodeEnum`
 ///
 /// @param code - The `hyperion::error::StatusCodeEnum` to create a `hyperion::error::ErrorCode`
@@ -636,3 +665,4 @@ constexpr auto make_error_code(hyperion::error::StatusCodeEnum auto code) noexce
 	-> hyperion::error::ErrorCode<hyperion::error::status_code_enum_domain<decltype(code)>> {
 	return hyperion::error::ErrorCode(code);
 }
+#endif
