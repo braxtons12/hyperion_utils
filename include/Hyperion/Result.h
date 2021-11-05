@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2021-11-04
+/// @date 2021-11-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -403,14 +403,12 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto
-		unwrap() noexcept -> ok_rvalue_reference requires concepts::NoexceptMovable<T> {
+		unwrap() noexcept -> ok_type requires concepts::NoexceptMovable<T> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<ok_type>(ret);
+				return this->extract();
 			}
 			else {
 				panic("Result::unwrap called on an Error result, terminating");
@@ -426,8 +424,8 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T& default_value) noexcept
-			-> ok_rvalue_reference requires concepts::NotReference<T> {
+		[[nodiscard]] inline constexpr auto
+		unwrap_or(T& default_value) noexcept -> ok_type requires concepts::NotReference<T> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -448,8 +446,7 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto
-		unwrap_or(T&& default_value) noexcept -> ok_rvalue_reference {
+		[[nodiscard]] inline constexpr auto unwrap_or(T&& default_value) noexcept -> ok_type {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -498,7 +495,7 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename U>
 		requires concepts::Convertible<U, std::string> || concepts::Convertible<U, std::string_view>
-		[[nodiscard]] inline auto expect(U&& panic_message) noexcept -> ok_rvalue_reference {
+		[[nodiscard]] inline auto expect(U&& panic_message) noexcept -> ok_type {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -517,14 +514,13 @@ namespace hyperion {
 		/// @return The contained `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_err() noexcept -> err_rvalue_reference {
+		[[nodiscard]] inline constexpr auto
+		unwrap_err() noexcept -> err_type requires concepts::NoexceptMovable<E> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_err()) {
-				auto&& ret = this->extract_err();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<err_type>(ret);
+				return this->extract_err();
 			}
 			else {
 				panic("Result::unwrap_err called on an Ok result, terminating");
@@ -540,14 +536,13 @@ namespace hyperion {
 		/// @return `Option<T>`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto ok() noexcept -> Option<T> {
+		[[nodiscard]] inline constexpr auto ok() noexcept -> Option<T>
+		requires concepts::NoexceptMovable<T> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return Some(std::forward<ok_type>(ret));
+				return Some(this->extract());
 			}
 			else {
 				return None();
@@ -563,14 +558,13 @@ namespace hyperion {
 		/// @return `Option<E>`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto err() noexcept -> Option<E> {
+		[[nodiscard]] inline constexpr auto err() noexcept -> Option<E>
+		requires concepts::NoexceptMovable<E> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_err()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return Some(std::forward<err_type>(ret));
+				return Some(this->extract_err());
 			}
 			else {
 				return None();
@@ -594,7 +588,8 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
 				 typename U = decltype(std::declval<F>()(std::declval<ok_const_reference>()))>
-		requires concepts::InvocableWithReturn<U, F, ok_const_reference>
+		requires concepts::InvocableWithReturn<U, F, ok_const_reference> && concepts::
+			NoexceptMovable<U> && concepts::NoexceptCopyable<E>
 		[[nodiscard]] inline auto map(F&& map_func) const noexcept -> Result<U, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
@@ -693,9 +688,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
 				 typename U = decltype(std::declval<F>()(std::declval<err_const_reference>()))>
-		requires concepts::InvocableWithReturn<U, F, err_const_reference>
-		[[nodiscard]] inline auto map_err(F&& map_func) const noexcept -> Result<T, U>
-		requires concepts::NoexceptCopyable<T> {
+		requires concepts::InvocableWithReturn<U, F, err_const_reference> && concepts::
+			NoexceptCopyable<T> && concepts::NoexceptCopyable<E>
+		[[nodiscard]] inline auto map_err(F&& map_func) const noexcept -> Result<T, U> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -738,23 +733,19 @@ namespace hyperion {
 			typename ErrFunc,
 			typename R1 = decltype(std::declval<OkFunc>()(std::declval<ok_rvalue_reference>())),
 			typename R2 = decltype(std::declval<ErrFunc>()(std::declval<err_rvalue_reference>()))>
-		requires concepts::Same<R1, R2> && concepts::InvocableWithReturn<
-			R1,
-			OkFunc,
-			ok_rvalue_reference> && concepts::InvocableWithReturn<R2, ErrFunc, err_rvalue_reference>
+		requires concepts::Same<R1, R2> && concepts::
+			InvocableWithReturn<R1, OkFunc, ok_rvalue_reference> && concepts::
+				InvocableWithReturn<R2, ErrFunc, err_rvalue_reference> && concepts::NoexceptMovable<
+					T> && concepts::NoexceptMovable<E>
 		inline auto match(OkFunc&& ok_func, ErrFunc&& err_func) noexcept -> R1 {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<OkFunc>(ok_func)(std::forward<ok_type>(ret));
+				return std::forward<OkFunc>(ok_func)(this->extract());
 			}
 			else {
-				auto&& ret = this->extract_err();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<ErrFunc>(err_func)(std::forward<err_type>(ret));
+				return std::forward<ErrFunc>(err_func)(this->extract_err());
 			}
 		}
 
@@ -777,7 +768,8 @@ namespace hyperion {
 					 std::declval<ok_rvalue_reference>()))::ok_rvalue_reference,
 				 typename R
 				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableWithReturn<Result<R, E>, F, ok_rvalue_reference>
+		requires concepts::InvocableWithReturn<Result<R, E>, F, ok_rvalue_reference> && concepts::
+			NoexceptMovable<T> && concepts::NoexceptMovable<E>
 		[[nodiscard]] inline auto and_then(F&& func) noexcept -> Result<R, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
@@ -785,14 +777,10 @@ namespace hyperion {
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<F>(func)(std::forward<ok_type>(ret));
+				return std::forward<F>(func)(this->extract());
 			}
 			else {
-				auto&& ret = this->extract_err();
-				static_cast<ResultData&>(*this) = option::None();
-				return hyperion::Err<E>(std::forward<err_type>(ret));
+				return hyperion::Err<E>(this->extract_err());
 			}
 		}
 
@@ -810,14 +798,13 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F>
+		requires concepts::NoexceptMovable<T>
 		[[nodiscard]] inline auto or_else(Result<T, F>&& result) const noexcept -> Result<T, F> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return hyperion::Ok<T>(std::forward<ok_type>(ret));
+				return hyperion::Ok<T>(this->extract());
 			}
 			else {
 				return std::move(result);
@@ -845,7 +832,8 @@ namespace hyperion {
 					 std::declval<err_rvalue_reference>()))::err_rvalue_reference,
 				 typename R
 				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference>
+		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference> && concepts::
+			NoexceptMovable<T> && concepts::NoexceptMovable<E>
 		[[nodiscard]] inline auto or_else(F&& func) noexcept -> Result<T, R> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
@@ -853,14 +841,10 @@ namespace hyperion {
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(is_ok()) {
-				auto&& ret = this->extract();
-				static_cast<ResultData&>(*this) = option::None();
-				return hyperion::Ok<T>(std::forward<ok_type>(ret));
+				return hyperion::Ok<T>(this->extract());
 			}
 			else {
-				auto&& ret = this->extract_err();
-				static_cast<ResultData&>(*this) = option::None();
-				return std::forward<F>(func)(std::forward<err_type>(ret));
+				return std::forward<F>(func)(this->extract_err());
 			}
 		}
 

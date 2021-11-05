@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief A monadic type representing an optional value
 /// @version 0.1
-/// @date 2021-11-04
+/// @date 2021-11-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -336,9 +336,7 @@ namespace hyperion {
 								R2> && concepts::InvocableWithReturn<R1, SomeFunc, rvalue_reference>
 		inline auto match(SomeFunc&& some_func, NoneFunc&& none_func) noexcept -> R1 {
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return std::forward<SomeFunc>(some_func)(std::forward<type>(ret));
+				return std::forward<SomeFunc>(some_func)(this->extract());
 			}
 			else {
 				return std::forward<NoneFunc>(none_func)();
@@ -373,9 +371,7 @@ namespace hyperion {
 			// the invocable checks above are probably redundant because of the inferred
 			// template
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return std::forward<F>(func)(std::forward<type>(ret));
+				return std::forward<F>(func)(this->extract());
 			}
 			else {
 				return hyperion::None();
@@ -449,9 +445,7 @@ namespace hyperion {
 		template<typename E>
 		[[nodiscard]] inline constexpr auto ok_or(E&& error) noexcept -> Result<T, E> {
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return Ok(std::forward<type>(ret));
+				return Ok<T>(this->extract());
 			}
 			else {
 				return Err(std::forward<E>(error));
@@ -475,9 +469,7 @@ namespace hyperion {
 		requires concepts::ConstructibleFrom<E, Args...>
 		[[nodiscard]] inline constexpr auto ok_or(Args&&... args) noexcept -> Result<T, E> {
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return Ok(std::forward<type>(ret));
+				return Ok<T>(this->extract());
 			}
 			else {
 				return Err<E>(std::forward<Args>(args)...);
@@ -505,9 +497,7 @@ namespace hyperion {
 			// template parameters, but we'll keep them for completeness’ sake and
 			// clarity of requirements
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return Ok(std::forward<type>(ret));
+				return Ok<T>(this->extract());
 			}
 			else {
 				return Err(std::forward<F>(error_generator)());
@@ -522,11 +512,9 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		[[nodiscard]] inline constexpr auto
-		unwrap() noexcept -> rvalue_reference requires concepts::NoexceptMovable<T> {
+		unwrap() noexcept -> type requires concepts::NoexceptMovable<T> {
 			if(is_some()) {
-				auto&& ret = this->extract();
-				*this = None();
-				return std::forward<type>(ret);
+				return this->extract();
 			}
 			else {
 				panic("Option::unwrap called on a None, terminating");
@@ -544,7 +532,7 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		[[nodiscard]] inline constexpr auto unwrap_or(T& default_value) noexcept
-			-> rvalue_reference requires concepts::NotReference<T> {
+			-> type requires concepts::NotReference<T> {
 			if(is_some()) {
 				return unwrap();
 			}
@@ -564,7 +552,7 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		[[nodiscard]] inline constexpr auto
-		unwrap_or(T&& default_value) noexcept -> rvalue_reference {
+		unwrap_or(T&& default_value) noexcept -> type {
 			if(is_some()) {
 				return unwrap();
 			}
@@ -608,7 +596,7 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
 		requires concepts::Convertible<U, std::string> || concepts::Convertible<U, std::string_view>
-		[[nodiscard]] inline auto expect(U&& panic_message) noexcept -> rvalue_reference {
+		[[nodiscard]] inline auto expect(U&& panic_message) noexcept -> type {
 			if(is_some()) {
 				return unwrap();
 			}
