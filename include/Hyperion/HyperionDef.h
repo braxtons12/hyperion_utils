@@ -3,7 +3,7 @@
 /// @brief Provides various macro definitions for things like compiler-specific attributes,
 /// feature enablement, and warning suppression
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -187,6 +187,37 @@
 #endif
 
 IGNORE_UNUSED_MACROS_START
+
+/// @def IGNORE_INVALID_NORETURN_START
+/// @brief Use to temporarily disable warnings for functions marked `[[noreturn]]` that may return
+/// (-Winvalid-noreturn).
+/// Make sure to pair with `IGNORE_INVALID_NORETURN_STOP` to properly scope the area where
+/// the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+	// NOLINTNEXTLINE
+#define IGNORE_INVALID_NORETURN_START \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Winvalid-noreturn\"")
+#else
+// NOLINTNEXTLINE
+#define IGNORE_INVALID_NORETURN_START
+#endif
+
+/// @def IGNORE_INVALID_NORETURN_STOP
+/// @brief Use to re-enable warnings for for functions marked `[[noreturn]]` that may return
+/// `IGNORE_INVALID_NORETURN_START`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_INVALID_NORETURN_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+// NOLINTNEXTLINE
+	#define IGNORE_INVALID_NORETURN_STOP
+#endif
 
 /// @def IGNORE_DEPRECATED_DECLARATIONS_START
 /// @brief Use to temporarily disable warnings for using deprecated declarations
