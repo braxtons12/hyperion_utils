@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -174,8 +174,8 @@ namespace hyperion::fs {
 		/// @brief Move-constructs a `File` from the given one
 		/// @ingroup filesystem
 		constexpr File(File&& file) noexcept
-			: m_file(file.m_file.release()),
-			  m_buffer(file.m_buffer.release()),
+			: m_file(std::move(file.m_file)),
+			  m_buffer(std::move(file.m_buffer)),
 			  m_options(file.m_options) {
 		}
 
@@ -346,8 +346,8 @@ namespace hyperion::fs {
 			if(this == &file) {
 				return *this;
 			}
-			m_file = UniquePtr<std::FILE, FileDeleter>(file.m_file.release());
-			m_buffer = UniquePtr<buffer_type>(file.m_buffer.release());
+			m_file = std::move(file.m_file);
+			m_buffer = std::move(file.m_buffer);
 			m_options = file.m_options;
 
 			return *this;
