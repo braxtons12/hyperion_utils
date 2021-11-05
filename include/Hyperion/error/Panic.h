@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Runtime termination facilities
 /// @version 0.1
-/// @date 2021-10-19
+/// @date 2021-11-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -116,6 +116,8 @@ namespace hyperion::error {
 
 #if HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
 
+	IGNORE_INVALID_NORETURN_START
+
 	/// @brief Invokes a panic with the given message
 	///
 	/// A panic is a forced termination due to a detected irrecoverable error
@@ -158,6 +160,8 @@ namespace hyperion::error {
 	#endif	   // HYPERION_USES_CUSTOM_PANIC_HANDLER
 	}
 
+	IGNORE_INVALID_NORETURN_STOP
+
 	IGNORE_RESERVED_IDENTIFIERS_START
 	#define __hyperion_panic(format_string, ...) /** NOLINT(cppcoreguidelines-macro-usage, 	   **/ \
 												 /** bugprone-reserved-identifier,  		   **/       \
@@ -168,6 +172,7 @@ namespace hyperion::error {
 	IGNORE_RESERVED_IDENTIFIERS_STOP
 
 #else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+	IGNORE_INVALID_NORETURN_START
 
 	/// @brief Invokes a panic with the given message
 	///
@@ -206,6 +211,8 @@ namespace hyperion::error {
 		#endif									 // HYPERION_PLATFORM_DEBUG
 	#endif										 // HYPERION_USES_CUSTOM_PANIC_HANDLER
 	}
+
+	IGNORE_INVALID_NORETURN_STOP
 
 	IGNORE_RESERVED_IDENTIFIERS_START
 	#define __hyperion_panic(format_string, ...) /** NOLINT( 				                   **/            \
