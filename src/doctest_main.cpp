@@ -40,3 +40,4 @@ IGNORE_RESERVED_IDENTIFIERS_STOP
 IGNORE_UNUSED_MACROS_STOP
 
 #include <Hyperion/Utils.h>
+#include <Hyperion/test/OptionAndResultTests.h>
