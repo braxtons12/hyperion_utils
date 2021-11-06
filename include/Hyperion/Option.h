@@ -443,7 +443,8 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename E>
-		[[nodiscard]] inline constexpr auto ok_or(E&& error) noexcept -> Result<T, E> {
+		[[nodiscard]] inline constexpr auto
+		ok_or(E&& error) noexcept -> Result<T, std::remove_reference_t<E>> {
 			if(is_some()) {
 				return Ok<T>(this->extract());
 			}
@@ -531,8 +532,8 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Some`, or `default_value`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T& default_value) noexcept
-			-> type requires concepts::NotReference<T> {
+		[[nodiscard]] inline constexpr auto
+		unwrap_or(T& default_value) noexcept -> type requires concepts::NotReference<T> {
 			if(is_some()) {
 				return unwrap();
 			}
@@ -551,8 +552,7 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Some`, or `default_value`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		[[nodiscard]] inline constexpr auto
-		unwrap_or(T&& default_value) noexcept -> type {
+		[[nodiscard]] inline constexpr auto unwrap_or(T&& default_value) noexcept -> type {
 			if(is_some()) {
 				return unwrap();
 			}
