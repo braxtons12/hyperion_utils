@@ -11,7 +11,7 @@ if (NOT MSVC)
 endif ()
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_CXX_EXTENSIONS OFF)
-SET(CMAKE_C_STANDARD 11)
+SET(CMAKE_C_STANDARD 17)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 SET(CMAKE_C_EXTENSIONS OFF)
 
@@ -39,69 +39,21 @@ FetchContent_MakeAvailable(fmt)
 #############################################################################
 #############################################################################
 
-SET(CMAKE_CXX_CLANG_TIDY clang-tidy)
-
-add_library(HyperionUtils INTERFACE)
-# Dummy library. A cheap hack to make tooling find fmt and gsl headers
-add_library(HyperionUtils.headers STATIC EXCLUDE_FROM_ALL)
-
-if (MSVC)
-    target_compile_options(HyperionUtils.headers PRIVATE /WX /W4 /std:c++latest)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
-    target_compile_options(HyperionUtils
-            INTERFACE
-            -Wno-c++98-compat
-            -Wno-c++98-compat-pedantic
-            -Wno-c++98-c++11-c++14-compat-pedantic
-            -Wno-c++20-compat
-            -Wno-gnu-zero-variadic-macro-arguments
-            -Wno-undefined-func-template
-            -Wno-ctad-maybe-unsupported
-            -Wno-global-constructors
-            -Wno-exit-time-destructors
-            )
-    target_compile_options(HyperionUtils.headers PRIVATE
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Weverything
-            -Werror
-            -Wno-c++98-compat
-            -Wno-c++98-compat-pedantic
-            -Wno-c++98-c++11-c++14-compat-pedantic
-            -Wno-c++20-compat
-            -Wno-gnu-zero-variadic-macro-arguments
-            -Wno-undefined-func-template
-            -Wno-ctad-maybe-unsupported
-            -Wno-global-constructors
-            -Wno-exit-time-destructors
-            )
-else ()
-    target_compile_options(HyperionUtils
-            INTERFACE
-            -Wno-c++20-compat
-            -Wno-terminate
-            )
-    target_compile_options(HyperionUtils.headers
-            PRIVATE
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Werror
-            -Wno-c++20-compat
-            -Wno-terminate
-            )
-endif ()
-
-target_include_directories(HyperionUtils INTERFACE
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+#############################################################################
+# Import doctest
+#############################################################################
+FetchContent_Declare(doctest
+        GIT_REPOSITORY "https://github.com/onqtam/doctest"
+        GIT_TAG "2.4.6"
         )
 
-target_include_directories(HyperionUtils.headers PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        )
+FetchContent_MakeAvailable(doctest)
+#############################################################################
+#############################################################################
 
-###### We add headers to sources sets because it helps with `#include` lookup for some tooling #####
+if(NOT MSVC)
+    SET(CMAKE_CXX_CLANG_TIDY clang-tidy)
+endif()
 
 set(EXPORTS
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/ChangeDetector.h"
@@ -154,12 +106,115 @@ set(EXPORTS
         "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Utils.h"
         )
 
-target_sources(HyperionUtils INTERFACE
+add_library(HyperionUtils INTERFACE)
+# Dummy library. A cheap hack to make tooling find fmt and gslTest
+add_executable(HyperionUtilsTest
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/doctest_main.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/test/OptionAndResultTests.h"
         ${EXPORTS}
         )
 
-target_sources(HyperionUtils.headers PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/empty_cpp_for_tooling.cpp"
+add_executable(HyperionUtilsBenchmark
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/benchmark.cpp"
+        ${EXPORTS}
+        )
+
+if (MSVC)
+    target_compile_options(HyperionUtilsTest PRIVATE /WX /W4 /std:c++latest /Zc:preprocessor /permissive- /Zc:rvalueCast /MP /sdl)
+    target_compile_options(HyperionUtilsBenchmark PRIVATE /WX /W4 /std:c++latest /Zc:preprocessor /permissive- /Zc:rvalueCast /MP /sdl)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
+    target_compile_options(HyperionUtils
+            INTERFACE
+            -Wno-c++98-compat
+            -Wno-c++98-compat-pedantic
+            -Wno-c++98-c++11-c++14-compat-pedantic
+            -Wno-c++20-compat
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-undefined-func-template
+            -Wno-ctad-maybe-unsupported
+            -Wno-global-constructors
+            -Wno-exit-time-destructors
+            -Wno-extra-semi-stmt
+            )
+    target_compile_options(HyperionUtilsTest PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Weverything
+            -Werror
+            -Wno-c++98-compat
+            -Wno-c++98-compat-pedantic
+            -Wno-c++98-c++11-c++14-compat-pedantic
+            -Wno-c++20-compat
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-undefined-func-template
+            -Wno-ctad-maybe-unsupported
+            -Wno-global-constructors
+            -Wno-exit-time-destructors
+            -Wno-extra-semi-stmt
+            )
+    target_compile_options(HyperionUtilsBenchmark PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Weverything
+            -Werror
+            -Wno-c++98-compat
+            -Wno-c++98-compat-pedantic
+            -Wno-c++98-c++11-c++14-compat-pedantic
+            -Wno-c++20-compat
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-undefined-func-template
+            -Wno-ctad-maybe-unsupported
+            -Wno-global-constructors
+            -Wno-exit-time-destructors
+            -Wno-extra-semi-stmt
+            -Wno-keyword-macro
+            )
+else ()
+    target_compile_options(HyperionUtils
+            INTERFACE
+            -Wno-c++20-compat
+            -Wno-terminate
+            )
+    target_compile_options(HyperionUtilsTest
+            PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Werror
+            -Wno-c++20-compat
+            -Wno-terminate
+            )
+    target_compile_options(HyperionUtilsBenchmark
+            PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Werror
+            -Wno-c++20-compat
+            -Wno-terminate
+            )
+endif ()
+
+target_include_directories(HyperionUtils INTERFACE
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        )
+
+target_include_directories(HyperionUtilsTest PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        )
+
+target_include_directories(HyperionUtilsBenchmark PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        )
+
+target_compile_definitions(HyperionUtils INTERFACE DOCTEST_CONFIG_DISABLE)
+target_compile_definitions(HyperionUtilsBenchmark PUBLIC DOCTEST_CONFIG_DISABLE)
+
+###### We addTest to sources sets because it helps with `#include` lookup for some tooling #####
+
+target_sources(HyperionUtils INTERFACE
         ${EXPORTS}
         )
 
@@ -168,22 +223,41 @@ if (UNIX)
             GSL
             fmt::fmt
             pthread
+            doctest::doctest
             )
-    target_link_libraries(HyperionUtils.headers PUBLIC
+    target_link_libraries(HyperionUtilsTest PUBLIC
             GSL
             fmt::fmt
             pthread
+            doctest::doctest
+            )
+    target_link_libraries(HyperionUtilsBenchmark PUBLIC
+            GSL
+            fmt::fmt
+            pthread
+            doctest::doctest
             )
 else ()
     target_link_libraries(HyperionUtils INTERFACE
             GSL
             fmt::fmt
+            doctest::doctest
             )
-    target_link_libraries(HyperionUtils.headers PUBLIC
+    target_link_libraries(HyperionUtilsTest PUBLIC
             GSL
             fmt::fmt
+            doctest::doctest
+            )
+    target_link_libraries(HyperionUtilsBenchmark PUBLIC
+            GSL
+            fmt::fmt
+            doctest::doctest
             )
 endif ()
 
 
 add_subdirectory("docs")
+
+enable_testing()
+
+add_test(test HyperionUtilsTest)

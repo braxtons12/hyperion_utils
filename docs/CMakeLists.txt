@@ -2,7 +2,7 @@ find_package(Doxygen REQUIRED)
 
 set(MCSS_DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile-mcss.in")
 set(MCSS_DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile-mcss")
-set(DOXYGEN_INPUT_DIR "${PROJECT_SOURCE_DIR}/include/HyperionUtils")
+set(DOXYGEN_INPUT_DIR "${PROJECT_SOURCE_DIR}/include/Hyperion")
 set(DOXYGEN_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/doxygen")
 set(DOXYGEN_INDEX_FILE "${DOXYGEN_OUTPUT_DIR}/xml/index.xml")
 set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")

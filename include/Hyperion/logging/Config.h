@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Logging configuration types
 /// @version 0.1
-/// @date 2021-10-29
+/// @date 2021-11-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -28,6 +28,12 @@
 
 #include <Hyperion/Concepts.h>
 #include <cstddef>
+
+#if HYPERION_PLATFORM_WINDOWS
+	#ifdef ERROR
+		#undef ERROR
+	#endif
+#endif
 
 namespace hyperion {
 
@@ -63,6 +69,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/logging/Config.h"
 	enum class LogThreadingPolicy : u8 {
 		SingleThreaded = 0,
+		SingleThreadedAsync,
 		MultiThreaded,
 		MultiThreadedAsync
 	};
