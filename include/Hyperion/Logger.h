@@ -698,7 +698,6 @@ namespace hyperion {
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
 				std::atomic_thread_fence(std::memory_order_seq_cst);
 				return m_queue.read();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
 			}
 
 #if HYPERION_HAS_JTHREAD
