@@ -3,7 +3,7 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>

@@ -3,7 +3,7 @@
 /// @brief basic value-change detector type. Useful when you need to track when
 /// writes to a stored value actually change it semantically
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2021-11-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
