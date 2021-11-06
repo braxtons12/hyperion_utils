@@ -35,12 +35,6 @@
 
 IGNORE_UNUSED_MACROS_START
 
-#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
-#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
-#define DOCTEST_CONFIG_USE_STD_HEADERS
-#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
-#include <doctest/doctest.h>
-
 #if defined(DOCTEST_CONFIG_DISABLE)
 	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 	#define HYPERION_DEFINE_TESTS false
@@ -49,84 +43,95 @@ IGNORE_UNUSED_MACROS_START
 	#define HYPERION_DEFINE_TESTS true
 #endif // defined(DOCTEST_CONFIG_DISABLE)
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_SUITE(decorators)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_TEST_SUITE(decorators) \
-	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_CASE(decorators)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_TEST_CASE(decorators) \
-	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define SUBCASE(decorators)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_SUBCASE(decorators) \
-	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+#if HYPERION_DEFINE_TESTS
+	#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
+	#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
+	#define DOCTEST_CONFIG_USE_STD_HEADERS
+	#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
+	#include <doctest/doctest.h>
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK(...) \
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define TEST_SUITE(decorators)                                                          \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_TEST_SUITE( \
+			decorators)                                                                     \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_FALSE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_FALSE(...) \
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define TEST_CASE(decorators)                                                          \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_TEST_CASE( \
+			decorators)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_EQ(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_EQ(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_NE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_NE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_GT(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GT(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_LT(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LT(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_GE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CHECK_LE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LE(...) \
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define SUBCASE(decorators)                                                          \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_SUBCASE( \
+			decorators)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_FALSE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_FALSE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_EQ(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_EQ(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_NE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_NE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_GT(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GT(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_LT(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LT(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_GE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define REQUIRE_LE(...)                                                                     \
-	IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LE(...) \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_FALSE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_FALSE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_EQ(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_EQ(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_NE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_NE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GT(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GT(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LT(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LT(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_FALSE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_FALSE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_EQ(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_EQ(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_NE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_NE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GT(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GT(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LT(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LT(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LE(...)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_START INGORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LE(...) \
+			IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+#endif // HYPERION_DEFINE_TESTS
 
 IGNORE_UNUSED_MACROS_STOP
 
