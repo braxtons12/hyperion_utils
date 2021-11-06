@@ -568,6 +568,23 @@ namespace hyperion {
 			return *this;
 		}
 
+		/// @brief Assigns this `UniquePtr` with `ptr`
+		///
+		/// Calls the deleter on the managed pointer and replaces it with `ptr`
+		///
+		/// # Requirements
+		/// - `noexcept(std::declval<deleter_type>()(std::declval<pointer>()))`: Deleting the
+		/// managed pointer via the associated `deleter_type`'s call operator must be noexcept
+		///
+		/// @return this
+		/// @ingroup UniquePtr
+		constexpr auto operator=(pointer ptr) noexcept -> UniquePtr& requires(
+			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
+		{
+			reset(ptr);
+			return *this;
+		}
+
 		// clang-format off
 	  private:
 		template<typename T_, typename Deleter_>
@@ -756,6 +773,13 @@ namespace hyperion {
 			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			reset();
+			return *this;
+		}
+
+		constexpr auto operator=(pointer ptr) noexcept -> UniquePtr& requires(
+			noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
+		{
+			reset(ptr);
 			return *this;
 		}
 
