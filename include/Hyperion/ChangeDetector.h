@@ -84,10 +84,6 @@ namespace hyperion {
 		/// @brief Updates the stored value and returns if the new value
 		/// is different than the previous one.
 		///
-		/// @note In the case that T is a pointer, the values located AT the pointers will be
-		/// compared, NOT the pointers themselves. If `new_value` is not `nullptr`, the stored
-		/// pointer will be replaced with `new_value`.
-		///
 		/// @param new_value - The new value to store and check for equality
 		///
 		/// @return Whether the new value was different than the old one
@@ -96,34 +92,13 @@ namespace hyperion {
 		inline constexpr auto
 		changed(const T& new_value) noexcept(concepts::NoexceptCopyAssignable<T>)
 			-> bool requires concepts::CopyAssignable<T> {
-			bool returnVal = false;
-			if constexpr(std::is_pointer_v<T>) {
-				if(new_value != nullptr) {
-					if(m_previous_value == nullptr) {
-						returnVal = true;
-					}
-					else {
-						returnVal = *m_previous_value != *new_value;
-					}
-				}
-				else if(m_previous_value != nullptr) {
-					returnVal = true;
-				}
-				m_previous_value = new_value;
-			}
-			else {
-				returnVal = m_previous_value != new_value;
-				m_previous_value = new_value;
-			}
+			bool returnVal = m_previous_value != new_value;
+			m_previous_value = new_value;
 			return returnVal;
 		}
 
 		/// @brief Updates the stored value and returns if the new value
 		/// is different than the previous one.
-		///
-		/// @note In the case that T is a pointer, the values located AT the pointers will be
-		/// compared, NOT the pointers themselves. If `new_value` is not `nullptr`, the stored
-		/// pointer will be replaced with `new_value`.
 		///
 		/// @param new_value - The new value to store and check for equality
 		///
@@ -132,25 +107,8 @@ namespace hyperion {
 		/// @headerfile "Hyperion/ChangeDetector.h"
 		inline constexpr auto changed(T&& new_value) noexcept(concepts::NoexceptMoveAssignable<T>)
 			-> bool requires concepts::MoveAssignable<T> {
-			bool returnVal = false;
-			if constexpr(std::is_pointer_v<T>) {
-				if(new_value != nullptr) {
-					if(m_previous_value == nullptr) {
-						returnVal = true;
-					}
-					else {
-						returnVal = *m_previous_value != *new_value;
-					}
-				}
-				else if(m_previous_value != nullptr) {
-					returnVal = true;
-				}
-				m_previous_value = std::move(new_value);
-			}
-			else {
-				returnVal = m_previous_value != new_value;
-				m_previous_value = std::move(new_value);
-			}
+			bool returnVal = m_previous_value != new_value;
+			m_previous_value = std::move(new_value);
 			return returnVal;
 		}
 
@@ -159,7 +117,7 @@ namespace hyperion {
 		/// @return the current value
 		/// @ingroup utils
 		/// @headerfile "Hyperion/ChangeDetector.h"
-		inline constexpr auto
+		[[nodiscard]] inline constexpr auto
 		value() const noexcept(concepts::NoexceptCopyable<T>) -> T requires concepts::Copyable<T> {
 			return m_previous_value;
 		}
@@ -177,4 +135,37 @@ namespace hyperion {
 		T m_previous_value = T();
 	};
 
+#if HYPERION_DEFINE_TESTS
+
+	// NOLINTNEXTLINE(modernize-use-trailing-return-type)
+	TEST_SUITE("ChangeDetector") {
+		TEST_CASE("value") {
+			auto detector = ChangeDetector<i32>();
+			CHECK_EQ(detector.value(), 0_i32);
+
+			SUBCASE("changed_lvalue") {
+				auto val = 2_i32;
+				CHECK(detector.changed(val));
+				CHECK_EQ(detector.value(), 2_i32);
+			}
+
+			SUBCASE("changed_rvalue") {
+				CHECK(detector.changed(2_i32));
+				CHECK_EQ(detector.value(), 2_i32);
+			}
+		}
+
+		TEST_CASE("pointer") {
+			auto value = 0_i32;
+			auto detector = ChangeDetector<i32*>(&value);
+			CHECK_EQ(*(detector.value()), 0_i32);
+
+			SUBCASE("changed") {
+				auto val = 2_i32;
+				CHECK(detector.changed(&val));
+				CHECK_EQ(*(detector.value()), 2_i32);
+			}
+		}
+	}
+#endif
 } // namespace hyperion
