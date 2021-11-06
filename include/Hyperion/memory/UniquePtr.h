@@ -839,7 +839,7 @@ namespace hyperion {
 		noexcept(concepts::NoexceptConstructibleFrom<T, Args...>)
 		-> UniquePtr<T, Deleter>
 	{
-		// NOLINTNEXTLINE(modernize-use-auto, hicpp-use-auto)
+		// NOLINTNEXTLINE(modernize-use-auto,hicpp-use-auto,bugprone-unhandled-exception-at-new)
 		gsl::owner<T*> ptr = new T(std::forward<Args>(args)...);
 		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<T, Deleter>(ptr);
@@ -871,7 +871,7 @@ namespace hyperion {
 			 typename ElementType = std::remove_extent_t<T>> // NOLINT
 	requires std::is_unbounded_array_v<T>
 	inline static constexpr auto make_unique(usize N) noexcept -> UniquePtr<T, Deleter> {
-		// NOLINTNEXTLINE(modernize-use-auto, hicpp-use-auto)
+		// NOLINTNEXTLINE(modernize-use-auto,hicpp-use-auto,bugprone-unhandled-exception-at-new)
 		gsl::owner<ElementType*> ptr = new ElementType[N];
 		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<T, Deleter>(ptr);
@@ -1216,4 +1216,50 @@ namespace hyperion {
 
 		return UniquePtr<ElementType[], Deleter>(p, Deleter(allocator, N)); // NOLINT (c arrays)
 	}
+
+#if HYPERION_DEFINE_TESTS
+
+	// NOLINTNEXTLINE(modernize-use-trailing-return-type)
+	TEST_SUITE("UniquePtr") {
+		TEST_CASE("Constructor") {
+			auto ptr1 = UniquePtr<i32>();
+			// NOLINTNEXTLINE
+			auto ptr2 = UniquePtr<i32>(new i32(3_i32));
+			auto ptr3 = hyperion::make_unique<i32>(2_i32);
+
+			CHECK_EQ(ptr1, nullptr);
+			CHECK_NE(ptr2, nullptr);
+			CHECK_NE(ptr3, nullptr);
+			CHECK_EQ(*ptr2, 3_i32);
+			CHECK_EQ(*ptr3, 2_i32);
+
+			SUBCASE("move") {
+				auto ptr4 = std::move(ptr3);
+				// NOLINTNEXTLINE(bugprone-use-after-move,hicpp-invalid-access-moved)
+				CHECK_EQ(ptr3, nullptr);
+				CHECK_NE(ptr4, nullptr);
+				CHECK_EQ(*ptr4, 2_i32);
+			}
+
+			SUBCASE("accessors_and_modifiers") {
+				CHECK(ptr3);
+				CHECK(static_cast<bool>(ptr3));
+				CHECK_NE(ptr3.get(), nullptr);
+				CHECK_EQ(*(ptr3.get()), 2_i32);
+
+				auto* ptr4 = ptr3.release();
+				CHECK_EQ(ptr3, nullptr);
+				CHECK_NE(ptr4, nullptr);
+				CHECK_EQ(*ptr4, 2_i32);
+
+				*ptr4 = 4_i32;
+				ptr3.reset(ptr4);
+				CHECK_NE(ptr3, nullptr);
+				CHECK(ptr3);
+				CHECK_EQ(*ptr3, 4_i32);
+				CHECK_EQ(*(ptr3.get()), 4_i32);
+			}
+		}
+	}
+#endif // HYPERION_DEFINE_TESTS
 } // namespace hyperion
