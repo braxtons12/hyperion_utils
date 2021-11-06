@@ -9,3 +9,6 @@ docs/doxygen/
 /cmake-build-debug-clang/
 /cmake-build-release-clang/
 .idea/
+/cmake-build-debug-clang-coverage/
+/test/cmake-build-release-clang/
+/test/cmake-build-debug-clang/
