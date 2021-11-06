@@ -90,7 +90,7 @@ namespace hyperion::fs {
 		/// @ingroup filesystem
 		static constexpr usize DEFAULT_FILE_BUFFER_SIZE
 			// try to squeeze a little more perf out on Windows with a large cache
-			= HYPERION_PLATFORM_WINDOWS ? 4UL * BUFSIZ : BUFSIZ;
+			= HYPERION_PLATFORM_WINDOWS ? 4_usize * BUFSIZ : BUFSIZ;
 
 		using element_type = char;
 		using buffer_type = element_type[]; // NOLINT (c-arrays)
