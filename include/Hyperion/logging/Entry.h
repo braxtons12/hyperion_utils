@@ -33,11 +33,9 @@ namespace hyperion {
 		MessageEntry() noexcept = delete;
 		explicit MessageEntry(const std::string_view& entry) noexcept : m_entry(entry) {
 		}
-		explicit MessageEntry(std::string_view&& entry) noexcept : m_entry(entry) {
-		}
 		template<typename... Args>
 		explicit MessageEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
-			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
 		}
 		MessageEntry(const MessageEntry& entry) noexcept = default;
 		MessageEntry(MessageEntry&& entry) noexcept = default;
@@ -79,11 +77,9 @@ namespace hyperion {
 		explicit TraceEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit TraceEntry(std::string_view&& entry) noexcept : m_entry(entry) {
-		}
 		template<typename... Args>
 		explicit TraceEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
-			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
 		}
 		TraceEntry(const TraceEntry& entry) noexcept = default;
 		TraceEntry(TraceEntry&& entry) noexcept = default;
@@ -125,11 +121,9 @@ namespace hyperion {
 		explicit InfoEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit InfoEntry(std::string_view&& entry) noexcept : m_entry(entry) {
-		}
 		template<typename... Args>
 		explicit InfoEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
-			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
 		}
 		InfoEntry(const InfoEntry& entry) noexcept = default;
 		InfoEntry(InfoEntry&& entry) noexcept = default;
@@ -171,11 +165,9 @@ namespace hyperion {
 		explicit WarnEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit WarnEntry(std::string_view&& entry) noexcept : m_entry(entry) {
-		}
 		template<typename... Args>
 		explicit WarnEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
-			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
 		}
 		WarnEntry(const WarnEntry& entry) noexcept = default;
 		WarnEntry(WarnEntry&& entry) noexcept = default;
@@ -217,11 +209,9 @@ namespace hyperion {
 		explicit ErrorEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
-		explicit ErrorEntry(std::string_view&& entry) noexcept : m_entry(entry) {
-		}
 		template<typename... Args>
 		explicit ErrorEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
-			: m_entry(fmt::format(format_string, std::forward<Args>(args)...)) {
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
 		}
 		ErrorEntry(const ErrorEntry& entry) noexcept = default;
 		ErrorEntry(ErrorEntry&& entry) noexcept = default;
