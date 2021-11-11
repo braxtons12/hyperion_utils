@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2021-11-05
+/// @date 2021-11-10
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -409,7 +409,7 @@ namespace hyperion::fs {
 	}
 
 	// NOLINTNEXTLINE(readability-function-cognitive-complexity)
-	inline auto File::validate_open_options(OpenOptions options) noexcept -> Result<const char*> {
+	[[nodiscard]] inline auto File::validate_open_options(OpenOptions options) noexcept -> Result<const char*> {
 
 		static constexpr u32 append_binary_mask
 			= ~(AccessModifier::Append | AccessModifier::Binary);
