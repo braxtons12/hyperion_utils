@@ -142,7 +142,7 @@ namespace hyperion {
 		/// @brief Constructs an `Option<T>` from the given `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(const T& some) noexcept
+		constexpr Option(const T& some) noexcept // NOLINT (explicit)
 			requires concepts::NoexceptCopyConstructible<T>
 			: OptionData(some)
 		{
@@ -150,7 +150,7 @@ namespace hyperion {
 		/// @brief Constructs an `Option<T>` from the given `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(T&& some) noexcept
+		constexpr Option(T&& some) noexcept // NOLINT (explicit)
 			requires concepts::NoexceptMoveConstructible<T> && concepts::NotReference<T>
 			: OptionData(std::move(some))
 		{
