@@ -4,7 +4,7 @@ AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
 AlignArrayOfStructures: Right
 AlignConsecutiveAssignments: None
-AlignConsecutiveBitFields: AcrossEmptyLinesAndComments
+AlignConsecutiveBitFields: Consecutive
 AlignConsecutiveDeclarations: None
 AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: Left
@@ -26,7 +26,7 @@ BinPackArguments: false
 BinPackParameters: false
 BitFieldColonSpacing: Both
 BraceWrapping:
-  AfterCaseLabel: false
+  AfterCaseLabel: true
   AfterClass: false
   AfterControlStatement: MultiLine
   AfterEnum: false
@@ -109,6 +109,8 @@ PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: [ 'static', 'inline', 'const', 'constexpr', 'volatile', 'restrict', 'type' ]
 ReferenceAlignment: Left
 ReflowComments: true
 ShortNamespaceLines: 0
@@ -146,5 +148,3 @@ StatementMacros:
 TabWidth: 4
 UseCRLF: false
 UseTab: Always
-QualifierOrder: ['inline', 'static', 'const', 'constexpr', 'volatile', 'restrict', 'type']
-QualifierAlignment: Custom
