@@ -472,7 +472,7 @@ namespace hyperion {
 
 				CHECK_FALSE(next.is_ok());
 				CHECK(next.is_err());
-				CHECK_EQ(next.unwrap_err(), error::SystemError(2_i32 * 2_i32));
+				CHECK_EQ(next.unwrap_err(), error::SystemError(4_i32));
 			}
 
 			SUBCASE("move") {
