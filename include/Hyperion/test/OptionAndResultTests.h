@@ -63,6 +63,10 @@ namespace hyperion {
 				CHECK_EQ(some.unwrap_or_else([]() { return 2_i32; }), 5_i32);
 			}
 
+			SUBCASE("expect") {
+				CHECK_EQ(some.expect("Test failed!"), 5_i32);
+			}
+
 			SUBCASE("map") {
 				auto mapped = some.map([](const i32 value) noexcept { return value * 2_i32; });
 
@@ -84,6 +88,13 @@ namespace hyperion {
 									   []() { return 3_i32; });
 
 				CHECK_EQ(mapped, 10_i32);
+			}
+
+			SUBCASE("match") {
+				CHECK_EQ(some.match(
+							 [](const i32 value) noexcept { return std::to_string(value * 2_i32); },
+							 []() noexcept -> std::string { return "4"; }),
+						 std::to_string(10_i32));
 			}
 
 			SUBCASE("ok_or") {
@@ -159,6 +170,10 @@ namespace hyperion {
 			CHECK_EQ(none.unwrap_or_else([]() { return 2_i32; }), 2_i32);
 		}
 
+		SUBCASE("expect") {
+			// can't test currently because doctest doesn't have an aborts macro
+		}
+
 		SUBCASE("map") {
 			auto mapped = none.map([](const i32 value) noexcept { return value * 2_i32; });
 
@@ -174,11 +189,17 @@ namespace hyperion {
 		}
 
 		SUBCASE("map_or_else") {
-			auto mapped
-				= none.map_or_else([](const i32 value) noexcept { return value * 2_i32; },
-								   []() { return 3_i32; });
+			auto mapped = none.map_or_else([](const i32 value) noexcept { return value * 2_i32; },
+										   []() { return 3_i32; });
 
 			CHECK_EQ(mapped, 3_i32);
+		}
+
+		SUBCASE("match") {
+			CHECK_EQ(
+				none.match([](const i32 value) noexcept { return std::to_string(value * 2_i32); },
+						   []() noexcept -> std::string { return "4"; }),
+				std::string("4"));
 		}
 
 		SUBCASE("ok_or") {
@@ -222,6 +243,248 @@ namespace hyperion {
 			};
 
 			move_test(std::move(none));
+		}
+	}
+
+	// NOLINTNEXTLINE(modernize-use-trailing-return-type)
+	TEST_SUITE("Result") {
+		TEST_CASE("Ok") {
+			Result<i32> ok = Ok(5_i32);
+
+			SUBCASE("accessors") {
+				CHECK(ok.is_ok());
+				CHECK_FALSE(ok.is_err());
+				CHECK(ok);
+				CHECK(static_cast<bool>(ok));
+			}
+
+			SUBCASE("as_const") {
+				CHECK_EQ(ok.as_const(), 5_i32);
+			}
+
+			SUBCASE("as_mut") {
+				CHECK_EQ(ok.as_mut(), 5_i32);
+
+				ok.as_mut() = 2_i32;
+				CHECK_EQ(ok.as_mut(), 2_i32);
+				CHECK_EQ(ok.as_const(), 2_i32);
+			}
+
+			SUBCASE("unwrap") {
+				CHECK_EQ(ok.unwrap(), 5_i32);
+			}
+
+			SUBCASE("unwrap_or") {
+				CHECK_EQ(ok.unwrap_or(2_i32), 5_i32);
+			}
+
+			SUBCASE("unwrap_or_else") {
+				CHECK_EQ(ok.unwrap_or_else([]() { return 2_i32; }), 5_i32);
+			}
+
+			SUBCASE("expect") {
+				CHECK_EQ(ok.expect("Test failed!"), 5_i32);
+			}
+
+			SUBCASE("unwrap_err") {
+				// can't test currently as doctest doesn't support an aborts test
+			}
+
+			SUBCASE("ok") {
+				auto maybe_ok = ok.ok();
+				CHECK(maybe_ok.is_some());
+				CHECK_EQ(maybe_ok.unwrap(), 5_i32);
+			}
+
+			SUBCASE("err") {
+				auto maybe_err = ok.err();
+				CHECK(maybe_err.is_none());
+			}
+
+			SUBCASE("map") {
+				auto maybe_ok = ok.map([](const i32 value) { return value * 2_i32; });
+				CHECK(maybe_ok.is_ok());
+				CHECK_FALSE(maybe_ok.is_err());
+				CHECK_EQ(maybe_ok.unwrap(), 10_i32);
+			}
+
+			SUBCASE("map_or") {
+				CHECK_EQ(ok.map_or([](const i32 value) { return value * 2_i32; }, 4_i32), 10_i32);
+			}
+
+			SUBCASE("map_or_else") {
+				CHECK_EQ(ok.map_or_else([](const i32 value) { return value * 2_i32; },
+										[]() { return 4_i32; }),
+						 10_i32);
+			}
+
+			SUBCASE("map_err") {
+				auto maybe_ok = ok.map_err([]([[maybe_unused]] const error::SystemError& _) noexcept
+										   -> error::SystemError { return {3}; });
+
+				CHECK(maybe_ok.is_ok());
+				CHECK_FALSE(maybe_ok.is_err());
+				CHECK_EQ(maybe_ok.unwrap(), 5_i32);
+			}
+
+			SUBCASE("match") {
+				CHECK_EQ(
+					ok.match([](const i32 value) noexcept { return std::to_string(value * 2_i32); },
+							 [](const error::SystemError& error) noexcept -> std::string {
+								 return error.message();
+							 }),
+					std::to_string(10_i32));
+			}
+
+			SUBCASE("and_then") {
+				auto next = ok.and_then([](const i32 value) noexcept -> Result<std::string> {
+					return Ok(std::to_string(value));
+				});
+
+				CHECK(next.is_ok());
+				CHECK_FALSE(next.is_err());
+				CHECK_EQ(next.unwrap(), std::to_string(5_i32));
+			}
+
+			SUBCASE("or_else") {
+				auto next = ok.or_else([](const error::SystemError& error) noexcept -> Result<i32> {
+					return error::SystemError(error.value() * 2_i32);
+				});
+
+				CHECK(next.is_ok());
+				CHECK_FALSE(next.is_err());
+				CHECK_EQ(next.unwrap(), 5_i32);
+			}
+
+			SUBCASE("move") {
+				constexpr auto move_test = [](Result<i32>&& value) noexcept -> void {
+					CHECK(value.is_ok());
+					CHECK_FALSE(value.is_err());
+					CHECK(value);
+					CHECK_EQ(value.unwrap(), 5_i32);
+				};
+
+				move_test(std::move(ok));
+			}
+		}
+
+		TEST_CASE("Err") {
+			Result<i32> err = error::SystemError(2_i32);
+
+			SUBCASE("accessors") {
+				CHECK_FALSE(err.is_ok());
+				CHECK(err.is_err());
+				CHECK_FALSE(err);
+				CHECK_FALSE(static_cast<bool>(err));
+			}
+
+			SUBCASE("as_const") {
+				// can't test currently as doctest doesn't support an aborts test
+			}
+
+			SUBCASE("as_mut") {
+				// can't test currently as doctest doesn't support an aborts test
+			}
+
+			SUBCASE("unwrap") {
+				// can't test currently as doctest doesn't support an aborts test
+			}
+
+			SUBCASE("unwrap_or") {
+				CHECK_EQ(err.unwrap_or(2_i32), 2_i32);
+			}
+
+			SUBCASE("unwrap_or_else") {
+				CHECK_EQ(err.unwrap_or_else([]() { return 2_i32; }), 2_i32);
+			}
+
+			SUBCASE("expect") {
+				// can't test currently as doctest doesn't support an aborts test
+			}
+
+			SUBCASE("unwrap_err") {
+				CHECK_EQ(err.unwrap_err(), error::SystemError(2_i32));
+			}
+
+			SUBCASE("ok") {
+				auto maybe_ok = err.ok();
+				CHECK_FALSE(maybe_ok.is_some());
+			}
+
+			SUBCASE("err") {
+				auto maybe_err = err.err();
+				CHECK(maybe_err.is_some());
+				CHECK_FALSE(maybe_err.is_none());
+				CHECK_EQ(maybe_err.unwrap(), error::SystemError(2_i32));
+			}
+
+			SUBCASE("map") {
+				auto maybe_ok = err.map([](const i32 value) { return value * 2_i32; });
+				CHECK_FALSE(maybe_ok.is_ok());
+				CHECK(maybe_ok.is_err());
+				CHECK_EQ(maybe_ok.unwrap_err(), error::SystemError(2_i32));
+			}
+
+			SUBCASE("map_or") {
+				CHECK_EQ(err.map_or([](const i32 value) { return value * 2_i32; }, 4_i32), 4_i32);
+			}
+
+			SUBCASE("map_or_else") {
+				CHECK_EQ(err.map_or_else([](const i32 value) { return value * 2_i32; },
+										 []() { return 4_i32; }),
+						 4_i32);
+			}
+
+			SUBCASE("map_err") {
+				auto maybe_ok
+					= err.map_err([]([[maybe_unused]] const error::SystemError& _) noexcept
+								  -> error::SystemError { return {3}; });
+
+				CHECK_FALSE(maybe_ok.is_ok());
+				CHECK(maybe_ok.is_err());
+				CHECK_EQ(maybe_ok.unwrap_err(), error::SystemError(3_i32));
+			}
+
+			SUBCASE("match") {
+				CHECK_EQ(err.match(
+							 [](const i32 value) noexcept { return std::to_string(value * 2_i32); },
+							 [](const error::SystemError& error) noexcept -> std::string {
+								 return error.message();
+							 }),
+						 error::SystemError(2).message());
+			}
+
+			SUBCASE("and_then") {
+				auto next = err.and_then([](const i32 value) noexcept -> Result<std::string> {
+					return Ok(std::to_string(value));
+				});
+
+				CHECK_FALSE(next.is_ok());
+				CHECK(next.is_err());
+				CHECK_EQ(next.unwrap_err(), error::SystemError(2_i32));
+			}
+
+			SUBCASE("or_else") {
+				auto next
+					= err.or_else([](const error::SystemError& error) noexcept -> Result<i32> {
+						  return error::SystemError(error.value() * 2_i32);
+					  });
+
+				CHECK_FALSE(next.is_ok());
+				CHECK(next.is_err());
+				CHECK_EQ(next.unwrap_err(), error::SystemError(2_i32 * 2_i32));
+			}
+
+			SUBCASE("move") {
+				constexpr auto move_test = [](Result<i32>&& value) noexcept -> void {
+					CHECK_FALSE(value.is_ok());
+					CHECK(value.is_err());
+					CHECK_FALSE(value);
+					CHECK_EQ(value.unwrap_err(), error::SystemError(2_i32));
+				};
+
+				move_test(std::move(err));
+			}
 		}
 	}
 } // namespace hyperion

@@ -196,14 +196,14 @@ namespace hyperion {
 		/// @brief Constructs a `Result` from the given `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr explicit Result(const T& ok) noexcept
+		constexpr Result(const T& ok) noexcept
 			requires concepts::NoexceptCopyConstructible<T>
 			: ResultData(ok) {
 		}
 		/// @brief Constructs a `Result` from the given `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr explicit Result(T&& ok) noexcept
+		constexpr Result(T&& ok) noexcept
 			requires concepts::NoexceptMoveConstructible<T>
 			: ResultData(std::move(ok)) {
 		}
@@ -221,14 +221,14 @@ namespace hyperion {
 		/// @brief Constructs a `Result` from the given `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr explicit Result(const E& err) noexcept
+		constexpr Result(const E& err) noexcept
 			requires concepts::NoexceptCopyConstructible<E>
 			: ResultData(err) {
 		}
 		/// @brief Constructs a `Result` from the given `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr explicit Result(E&& err) noexcept
+		constexpr Result(E&& err) noexcept
 			requires concepts::NoexceptMoveConstructible<E>
 			: ResultData(std::move(err)) {
 		}
