@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `StatusCodeDomain` supporting Win32 error codes
 /// @version 0.1
-/// @date 2021-10-19
+/// @date 2021-11-10
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -103,13 +103,13 @@ namespace hyperion::error {
 	/// @brief `Win32Domain` is the `StatusCodeDomain` that covers Win32 error codes
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/Win32Domain.h"
-	class [[nodiscard]] Win32Domain {
+	class [[nodiscard("A StatusCodeDomain should always be used")]] Win32Domain {
 	  public:
 		/// @brief The value type of `Win32Domain` status codes is `DWORD`
 		/// @ingroup error
 		using value_type = detail::win32::DWORD;
 
-		static const constexpr char (&UUID)[num_chars_in_uuid] // NOLINT
+		static const constexpr char(&UUID)[num_chars_in_uuid] // NOLINT
 			= "53b43298-f1f6-4a7b-a998-49dfa96c7159";
 
 		static constexpr u64 ID = parse_uuid_from_string(UUID);
@@ -142,7 +142,7 @@ namespace hyperion::error {
 		/// @param uuid - The UUID to use for `Win32Domain`
 		/// @ingroup error
 		template<UUIDString UUID>
-		explicit constexpr Win32Domain(UUID&& uuid) noexcept // NOLINT (forwarding reference)
+		explicit constexpr Win32Domain(UUID && uuid) noexcept // NOLINT (forwarding reference)
 			: m_uuid(parse_uuid_from_string(std::forward<UUID>(uuid))) {
 		}
 		/// @brief Copy-Constructor
@@ -150,7 +150,7 @@ namespace hyperion::error {
 		constexpr Win32Domain(const Win32Domain&) noexcept = default;
 		/// @brief Move-Constructor
 		/// @ingroup error
-		constexpr Win32Domain(Win32Domain&&) noexcept = default;
+		constexpr Win32Domain(Win32Domain &&) noexcept = default;
 		/// @brief Destructor
 		/// @ingroup error
 		constexpr ~Win32Domain() noexcept = default;
@@ -159,7 +159,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain UUID
 		/// @ingroup error
-		[[nodiscard]] constexpr auto id() const noexcept -> u64 {
+		[[nodiscard]] constexpr auto id() const noexcept->u64 {
 			return m_uuid;
 		}
 
@@ -167,7 +167,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain name
 		/// @ingroup error
-		[[nodiscard]] constexpr auto name() const noexcept -> std::string_view { // NOLINT
+		[[nodiscard]] constexpr auto name() const noexcept->std::string_view { // NOLINT
 			return "win32 domain";
 		}
 
@@ -178,7 +178,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(value_type code) // NOLINT
-			const noexcept -> std::string {
+			const noexcept->std::string {
 			return as_string(code);
 		}
 
@@ -189,7 +189,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(const Win32StatusCode& code) // NOLINT
-			const noexcept -> std::string {
+			const noexcept->std::string {
 			return as_string(code.code());
 		}
 
@@ -199,8 +199,8 @@ namespace hyperion::error {
 		///
 		/// @return `true` if the code represents an error, otherwise `false`
 		/// @ingroup error
-		[[nodiscard]] constexpr auto
-		is_error(const Win32StatusCode& code) const noexcept -> bool { // NOLINT
+		[[nodiscard]] constexpr auto is_error(const Win32StatusCode& code) // NOLINT
+			const noexcept->bool {
 			return code.code() != 0;
 		}
 
@@ -210,8 +210,8 @@ namespace hyperion::error {
 		///
 		/// @return `true` if the code represents success, otherwise `false`
 		/// @ingroup error
-		[[nodiscard]] constexpr auto
-		is_success(const Win32StatusCode& code) const noexcept -> bool { // NOLINT
+		[[nodiscard]] constexpr auto is_success(const Win32StatusCode& code) // NOLINT
+			const noexcept->bool {
 			return code.code() == 0;
 		}
 
@@ -227,9 +227,9 @@ namespace hyperion::error {
 		/// @return `true` if the codes are semantically equivalent, `false` otherwise
 		/// @ingroup error
 		template<typename Domain>
-		[[nodiscard]] constexpr auto
-		are_equivalent(const Win32StatusCode& lhs, const StatusCode<Domain>& rhs) const noexcept
-			-> bool {
+		[[nodiscard]] constexpr auto are_equivalent(const Win32StatusCode& lhs,
+													const StatusCode<Domain>& rhs)
+			const noexcept->bool {
 			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain>>) {
 				return as_generic_code(lhs) == rhs.as_generic_code();
 			}
@@ -255,8 +255,8 @@ namespace hyperion::error {
 		/// `ConvertibleToGenericStatusCode`. In this case, they will map to `Errno::Unknown`.
 		/// Codes of value `Errno::Unknown` will never compare as semantically equivalent.
 		/// @ingroup error
-		[[nodiscard]] constexpr auto
-		as_generic_code(const Win32StatusCode& code) const noexcept -> GenericStatusCode { // NOLINT
+		[[nodiscard]] constexpr auto as_generic_code(const Win32StatusCode& code) // NOLINT
+			const noexcept->GenericStatusCode {
 			return make_status_code(to_generic_code(code.code()));
 		}
 
@@ -264,7 +264,7 @@ namespace hyperion::error {
 		///
 		/// @return The domain's success value
 		/// @ingroup error
-		[[nodiscard]] inline static constexpr auto success_value() noexcept -> value_type {
+		[[nodiscard]] static inline constexpr auto success_value() noexcept->value_type {
 			return 0;
 		}
 
@@ -272,7 +272,7 @@ namespace hyperion::error {
 		///
 		/// @return the most recent error at the time of the call
 		/// @ingroup error
-		[[nodiscard]] inline static auto get_last_error() noexcept -> value_type {
+		[[nodiscard]] static inline auto get_last_error() noexcept->value_type {
 			return detail::win32::GetLastError();
 		}
 
@@ -286,8 +286,7 @@ namespace hyperion::error {
 		/// @return Whether the two domains are equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto
-		operator==(const Win32Domain& lhs, const Domain& rhs) noexcept -> bool {
+		friend constexpr auto operator==(const Win32Domain& lhs, const Domain& rhs) noexcept->bool {
 			return lhs.id() == rhs.id();
 		}
 
@@ -301,17 +300,16 @@ namespace hyperion::error {
 		/// @return Whether the two domains are __not__ equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto
-		operator!=(const Win32Domain& lhs, const Domain& rhs) noexcept -> bool {
+		friend constexpr auto operator!=(const Win32Domain& lhs, const Domain& rhs) noexcept->bool {
 			return lhs.id() != rhs.id();
 		}
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(const Win32Domain&) noexcept -> Win32Domain& = default;
+		constexpr auto operator=(const Win32Domain&) noexcept->Win32Domain& = default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(Win32Domain&&) noexcept -> Win32Domain& = default;
+		constexpr auto operator=(Win32Domain&&) noexcept->Win32Domain& = default;
 
 	  private:
 		u64 m_uuid = ID;
@@ -323,7 +321,7 @@ namespace hyperion::error {
 		/// @param code - The win32 error code to convert
 		///
 		/// @return the message string associated with `code`, as a `std::string`
-		inline static auto as_string(value_type code) -> std::string {
+		static inline auto as_string(value_type code)->std::string {
 			// Nial uses 32k in his implementation for proposal P1028, but that seems excessively
 			// large
 			wchar_t buffer[1024]; // NOLINT
@@ -397,7 +395,8 @@ namespace hyperion::error {
 		/// @param code - The win32 error code to convert to its corresponding POSIX error code
 		///
 		/// @return `code` as its corresponding POSIX error code
-		inline static constexpr auto to_generic_code(value_type code) noexcept -> Errno {
+		[[nodiscard]] static inline constexpr auto to_generic_code(
+			value_type code) noexcept->Errno {
 			switch(code) {
 				case 0: return Errno::Success;
 				case 0x1: return Errno::FunctionNotSupported;			// NOLINT

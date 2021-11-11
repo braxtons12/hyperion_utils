@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `StatusCodeDomain` supporting the values of `errno` __required__ by POSIX
 /// @version 0.1
-/// @date 2021-10-16
+/// @date 2021-11-10
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -131,13 +131,13 @@ namespace hyperion::error {
 	/// @see `PosixDomain`.
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/GenericDomain.h"
-	class [[nodiscard]] GenericDomain {
+	class [[nodiscard("A StatusCodeDomain should always be used")]] GenericDomain {
 	  public:
 		/// @brief The value type of `GenericDomain` status codes is `Errno`
 		/// @ingroup error
 		using value_type = Errno;
 
-		static const constexpr char (&UUID)[num_chars_in_uuid] // NOLINT
+		static const constexpr char(&UUID)[num_chars_in_uuid] // NOLINT
 			= "bb14ea47-2e32-4296-8ff8-1f9e2660ccc6";
 
 		static constexpr u64 ID = parse_uuid_from_string(UUID);
@@ -170,7 +170,7 @@ namespace hyperion::error {
 		/// @param uuid - The UUID to use for `GenericDomain`
 		/// @ingroup error
 		template<UUIDString UUID>
-		explicit constexpr GenericDomain(UUID&& uuid) noexcept // NOLINT (forwarding reference)
+		explicit constexpr GenericDomain(UUID && uuid) noexcept // NOLINT (forwarding reference)
 			: m_uuid(parse_uuid_from_string(std::forward<UUID>(uuid))) {
 		}
 		/// @brief Copy-Constructor
@@ -178,7 +178,7 @@ namespace hyperion::error {
 		constexpr GenericDomain(const GenericDomain&) = default;
 		/// @brief Move-Constructor
 		/// @ingroup error
-		constexpr GenericDomain(GenericDomain&&) = default;
+		constexpr GenericDomain(GenericDomain &&) = default;
 		/// @brief Destructor
 		/// @ingroup error
 		constexpr ~GenericDomain() noexcept = default;
@@ -187,7 +187,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain UUID
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto id() const noexcept -> u64 {
+		[[nodiscard]] inline constexpr auto id() const noexcept->u64 {
 			return m_uuid;
 		}
 
@@ -195,7 +195,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain name
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto name() const noexcept -> std::string_view { // NOLINT
+		[[nodiscard]] inline constexpr auto name() const noexcept->std::string_view { // NOLINT
 			return "generic domain";
 		}
 
@@ -206,7 +206,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto message(value_type code) // NOLINT
-			const noexcept -> std::string_view {
+			const noexcept->std::string_view {
 
 			return to_posix_message(code);
 		}
@@ -218,7 +218,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto message(const GenericStatusCode& code) // NOLINT
-			const noexcept -> std::string_view {
+			const noexcept->std::string_view {
 
 			return to_posix_message(code.code());
 		}
@@ -229,8 +229,8 @@ namespace hyperion::error {
 		///
 		/// @return `true` if the code represents an error, otherwise `false`
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto
-		is_error(const GenericStatusCode& code) const noexcept -> bool { // NOLINT
+		[[nodiscard]] inline constexpr auto is_error(const GenericStatusCode& code) // NOLINT
+			const noexcept->bool {
 			return code.code() != Errno::Success;
 		}
 
@@ -240,8 +240,8 @@ namespace hyperion::error {
 		///
 		/// @return `true` if the code represents success, otherwise `false`
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto
-		is_success(const GenericStatusCode& code) const noexcept -> bool { // NOLINT
+		[[nodiscard]] inline constexpr auto is_success(const GenericStatusCode& code) // NOLINT
+			const noexcept->bool {
 			return code.code() == Errno::Success;
 		}
 
@@ -257,9 +257,9 @@ namespace hyperion::error {
 		/// @return `true` if the codes are semantically equivalent, `false` otherwise
 		/// @ingroup error
 		template<typename Domain>
-		[[nodiscard]] inline constexpr auto
-		are_equivalent(const GenericStatusCode& lhs, const StatusCode<Domain>& rhs) const noexcept
-			-> bool {
+		[[nodiscard]] inline constexpr auto are_equivalent(const GenericStatusCode& lhs,
+														   const StatusCode<Domain>& rhs)
+			const noexcept->bool {
 			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain>>) {
 				const auto as_generic = rhs.as_generic_code();
 				const auto lhs_code = lhs.code();
@@ -284,9 +284,8 @@ namespace hyperion::error {
 		/// `ConvertibleToGenericStatusCode`. In this case, they will map to `Errno::Unknown`.
 		/// Codes of value `Errno::Unknown` will never compare as semantically equivalent.
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto
-		as_generic_code(const ConvertibleToGenericStatusCode auto& code) const noexcept
-			-> GenericStatusCode {
+		[[nodiscard]] inline constexpr auto as_generic_code(
+			const ConvertibleToGenericStatusCode auto& code) const noexcept->GenericStatusCode {
 			return code.domain().as_generic_code(code);
 		}
 
@@ -294,7 +293,7 @@ namespace hyperion::error {
 		///
 		/// @return The domain's success value
 		/// @ingroup error
-		[[nodiscard]] inline static constexpr auto success_value() noexcept -> value_type {
+		[[nodiscard]] static inline constexpr auto success_value() noexcept->value_type {
 			return Errno::Success;
 		}
 
@@ -302,7 +301,7 @@ namespace hyperion::error {
 		///
 		/// @return the value of `errno` at the time of the call
 		/// @ingroup error
-		[[nodiscard]] inline static auto get_last_error() noexcept -> value_type {
+		[[nodiscard]] static inline auto get_last_error() noexcept->value_type {
 			return static_cast<Errno>(errno);
 		}
 
@@ -316,8 +315,8 @@ namespace hyperion::error {
 		/// @return Whether the two domains are equal
 		/// @ingroup error
 		template<typename Domain>
-		friend inline constexpr auto
-		operator==(const GenericDomain& lhs, const Domain& rhs) noexcept -> bool {
+		friend inline constexpr auto operator==(const GenericDomain& lhs,
+												const Domain& rhs) noexcept->bool {
 			return rhs.id() == lhs.id();
 		}
 
@@ -331,22 +330,23 @@ namespace hyperion::error {
 		/// @return Whether the two domains are __not__ equal
 		/// @ingroup error
 		template<typename Domain>
-		friend inline constexpr auto
-		operator!=(const GenericDomain& lhs, const Domain& rhs) noexcept -> bool {
+		friend inline constexpr auto operator!=(const GenericDomain& lhs,
+												const Domain& rhs) noexcept->bool {
 			return rhs.id() != lhs.id();
 		}
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(const GenericDomain&) noexcept -> GenericDomain& = default;
+		constexpr auto operator=(const GenericDomain&) noexcept->GenericDomain& = default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(GenericDomain&&) noexcept -> GenericDomain& = default;
+		constexpr auto operator=(GenericDomain&&) noexcept->GenericDomain& = default;
 
 	  private:
 		u64 m_uuid = ID;
 
-		inline static constexpr auto to_posix_message(Errno code) noexcept -> std::string_view {
+		[[nodiscard]] static inline constexpr auto to_posix_message(
+			Errno code) noexcept->std::string_view {
 			switch(code) {
 				case Errno::Success: return "Success.";
 				case Errno::AddressFamilyNotSupported: return "Address family not supported.";
