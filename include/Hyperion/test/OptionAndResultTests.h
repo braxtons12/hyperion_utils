@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Unit Tests for `Option<T>` and `Result<T, E>`
 /// @version 0.1
-/// @date 2021-11-05
+/// @date 2021-11-10
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
