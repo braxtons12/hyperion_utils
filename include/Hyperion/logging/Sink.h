@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Provides basic logging sink implementations
 /// @version 0.1
-/// @date 2021-10-29
+/// @date 2021-11-14
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -157,7 +157,7 @@ namespace hyperion {
 		/// @return The `fs::File` on success, `error::SystemError` on error
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		[[nodiscard]] inline static auto
+		[[nodiscard]] static inline auto
 		create_file(const std::string& root_file_name = DEFAULT_FILE_NAME, // NOLINT
 					const std::string& subdirectory_name = DEFAULT_FILE_SUBDIRECTORY)
 			-> Result<fs::File> {
@@ -195,7 +195,7 @@ namespace hyperion {
 		///
 		/// @return The `std::filesystem::path` to the temporary files directory on success,
 		/// `FileCreationError` on error
-		[[nodiscard]] inline static auto get_temp_directory() -> Result<std::filesystem::path> {
+		[[nodiscard]] static inline auto get_temp_directory() -> Result<std::filesystem::path> {
 			std::error_code err_code;
 			auto temp_dir = std::filesystem::temp_directory_path(err_code);
 
@@ -217,7 +217,7 @@ namespace hyperion {
 		///
 		/// @return The given `std::filesystem::path` to the subdirectory on success,
 		/// `FileCreationError` on error
-		[[nodiscard]] inline static auto
+		[[nodiscard]] static inline auto
 		create_directory(const std::filesystem::path& subdirectory_path)
 			-> Result<std::filesystem::path> {
 			std::error_code err_code;
@@ -236,8 +236,9 @@ namespace hyperion {
 		/// [Year-Month-Day|Hour-Minute-Second] for the current local time
 		///
 		/// @return The time stamp
-		[[nodiscard]] inline static auto create_time_stamp() -> std::string {
-			return fmt::format("[{:%Y-%m-%d=%H-%M-%S}]", fmt::localtime(std::time(nullptr)));
+		[[nodiscard]] static inline auto create_time_stamp() -> std::string {
+			return fmt::format(FMT_COMPILE("[{:%Y-%m-%d=%H-%M-%S}]"),
+							   fmt::localtime(std::time(nullptr)));
 		}
 	};
 
@@ -552,7 +553,8 @@ namespace hyperion {
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline constexpr auto sink(const Entry& entry) noexcept -> void {
+		inline auto sink(const Entry& entry) noexcept -> void {
+			HYPERION_PROFILE_FUNCTION();
 			std::visit([&](auto& sink) { sink.sink_entry(entry); }, *static_cast<rep*>(this));
 		}
 
@@ -562,7 +564,8 @@ namespace hyperion {
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline constexpr auto sink(Entry&& entry) noexcept -> void {
+		inline auto sink(Entry&& entry) noexcept -> void {
+			HYPERION_PROFILE_FUNCTION();
 			std::visit([&](auto& sink) { sink.sink_entry(std::move(entry)); },
 					   *static_cast<rep*>(this));
 		}

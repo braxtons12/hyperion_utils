@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief various type aliases for builtin types and user defined literals for them
 /// @version 0.1
-/// @date 2021-11-05
+/// @date 2021-11-14
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -45,7 +45,7 @@ IGNORE_UNUSED_MACROS_START
 
 #if HYPERION_DEFINE_TESTS
 
-	IGNORE_RESERVED_IDENTIFIERS_START
+IGNORE_RESERVED_IDENTIFIERS_START
 
 	#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
 	#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
@@ -156,8 +156,67 @@ IGNORE_UNUSED_MACROS_START
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
-	IGNORE_RESERVED_IDENTIFIERS_STOP
+IGNORE_RESERVED_IDENTIFIERS_STOP
 #endif // HYPERION_DEFINE_TESTS
+
+#if defined(TRACY_ENABLE)
+
+IGNORE_RESERVED_IDENTIFIERS_START
+IGNORE_OLD_STYLE_CASTS_START
+IGNORE_PADDING_START
+IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_START
+	#include <Tracy.hpp>
+IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP
+IGNORE_PADDING_STOP
+IGNORE_OLD_STYLE_CASTS_STOP
+IGNORE_RESERVED_IDENTIFIERS_STOP
+
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PLATFORM_PROFILING_ENABLED true
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_FUNCTION()                                                           \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		ZoneScoped /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,                \
+					   hicpp-no-array-decay) **/                                                  \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_START_FRAME(name)                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMarkStart(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,      \
+								 hicpp-no-array-decay) **/                                        \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_END_FRAME(name)                                                      \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMarkEnd(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,        \
+							   hicpp-no-array-decay) **/                                          \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_MARK_FRAME()                                                         \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMark /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,                 \
+					  hicpp-no-array-decay) **/                                                   \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+#else
+/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PLATFORM_PROFILING_ENABLED false
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_FUNCTION()
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_START_FRAME(name)
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_END_FRAME(name)
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_MARK_FRAME()
+#endif
 
 IGNORE_UNUSED_MACROS_STOP
 
@@ -234,7 +293,7 @@ namespace hyperion {
 
 	namespace detail {
 
-		inline static constexpr umax ten = 10U;
+		static inline constexpr umax ten = 10U;
 
 		template<umax Sum = 0U, char... Chars>
 		struct literal_parser : std::integral_constant<umax, 0U> { };
@@ -252,7 +311,7 @@ namespace hyperion {
 		struct literal_parser<Sum> : std::integral_constant<umax, Sum> { };
 
 		template<umax Sum, char... Chars>
-		inline static constexpr umax literal_parser_v = literal_parser<Sum, Chars...>::value;
+		static inline constexpr umax literal_parser_v = literal_parser<Sum, Chars...>::value;
 
 		template<umax Value, typename Type>
 		concept ValidLiteral
@@ -265,7 +324,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, byte>
-	[[nodiscard]] inline static constexpr auto operator""_byte() noexcept -> byte { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_byte() noexcept -> byte { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -274,7 +333,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u8>
-	[[nodiscard]] inline static constexpr auto operator""_u8() noexcept -> u8 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_u8() noexcept -> u8 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -283,7 +342,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u16>
-	[[nodiscard]] inline static constexpr auto operator""_u16() noexcept -> u16 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_u16() noexcept -> u16 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -292,7 +351,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u32>
-	[[nodiscard]] inline static constexpr auto operator""_u32() noexcept -> u32 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_u32() noexcept -> u32 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -301,7 +360,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u64>
-	[[nodiscard]] inline static constexpr auto operator""_u64() noexcept -> u64 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_u64() noexcept -> u64 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -310,7 +369,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, usize>
-	[[nodiscard]] inline static constexpr auto operator""_usize() noexcept -> usize { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_usize() noexcept -> usize { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -319,7 +378,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, umax>
-	[[nodiscard]] inline static constexpr auto operator""_umax() noexcept -> umax { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_umax() noexcept -> umax { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -328,7 +387,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i8>
-	[[nodiscard]] inline static constexpr auto operator""_i8() noexcept -> i8 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_i8() noexcept -> i8 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -337,7 +396,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i16>
-	[[nodiscard]] inline static constexpr auto operator""_i16() noexcept -> i16 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_i16() noexcept -> i16 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -346,7 +405,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i32>
-	[[nodiscard]] inline static constexpr auto operator""_i32() noexcept -> i32 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_i32() noexcept -> i32 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -355,7 +414,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i64>
-	[[nodiscard]] inline static constexpr auto operator""_i64() noexcept -> i64 { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_i64() noexcept -> i64 { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 
@@ -364,7 +423,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
 	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, imax>
-	[[nodiscard]] inline static constexpr auto operator""_imax() noexcept -> imax { // NOLINT
+	[[nodiscard]] static inline constexpr auto operator""_imax() noexcept -> imax { // NOLINT
 		return detail::literal_parser_v<0U, Chars...>;
 	}
 	IGNORE_UNUSED_TEMPLATES_STOP
@@ -373,21 +432,21 @@ namespace hyperion {
 	/// @brief user defined literal for `f32`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] inline static constexpr auto operator""_f32(long double val) noexcept -> f32 {
+	[[nodiscard]] static inline constexpr auto operator""_f32(long double val) noexcept -> f32 {
 		return static_cast<f32>(val);
 	}
 
 	/// @brief user defined literal for `f64`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] inline static constexpr auto operator""_f64(long double val) noexcept -> f64 {
+	[[nodiscard]] static inline constexpr auto operator""_f64(long double val) noexcept -> f64 {
 		return static_cast<f64>(val);
 	}
 
 	/// @brief user defined literal for `fmax`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] inline static constexpr auto operator""_fmax(long double val) noexcept -> fmax {
+	[[nodiscard]] static inline constexpr auto operator""_fmax(long double val) noexcept -> fmax {
 		return static_cast<fmax>(val);
 	}
 	IGNORE_UNUSED_FUNCTIONS_STOP

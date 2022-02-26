@@ -125,7 +125,7 @@ namespace hyperion {
 			}
 		}
 
-		[[nodiscard]] inline static constexpr auto success_value() noexcept -> value_type {
+		[[nodiscard]] static inline constexpr auto success_value() noexcept -> value_type {
 			return value_type::Success;
 		}
 
@@ -187,12 +187,15 @@ namespace hyperion {
 			= fmt::fg(fmt::color::red) | fmt::emphasis::bold;
 
 		IGNORE_UNNEEDED_INTERNAL_DECL_START
-		[[nodiscard]] inline static auto create_time_stamp() noexcept -> std::string {
-			return fmt::format("[{:%Y-%m-%d|%H-%M-%S}]", fmt::localtime(std::time(nullptr)));
+		[[nodiscard]] static inline auto create_time_stamp() noexcept -> std::string {
+			HYPERION_PROFILE_FUNCTION();
+			return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H-%M-%S}]"),
+							   fmt::localtime(std::time(nullptr)));
 		}
 
-		inline static auto
+		static inline auto
 		create_default_sinks() noexcept -> Sinks { // NOLINT(bugprone-exception-escape)
+			HYPERION_PROFILE_FUNCTION();
 			auto file = FileSink::create_file();
 			auto file_sink = make_sink<FileSink>(file.expect("Failed to create default log file"));
 			auto stdout_sink = make_sink<StdoutSink<>>();
@@ -203,10 +206,11 @@ namespace hyperion {
 
 		IGNORE_UNUSED_TEMPLATES_START
 		template<LogLevel Level, typename... Args>
-		inline static auto
+		static inline auto
 		format_entry(Option<usize> thread_id, // NOLINT(bugprone-exception-escape)
 					 fmt::format_string<Args...>&& format_string,
 					 Args&&... args) noexcept -> Entry {
+			HYPERION_PROFILE_FUNCTION();
 			const auto timestamp = create_time_stamp();
 			const auto entry = fmt::format(format_string, std::forward<Args>(args)...);
 			const auto id = thread_id.is_some() ?
@@ -229,7 +233,7 @@ namespace hyperion {
 			else if constexpr(Level == LogLevel::ERROR) {
 				log_type = "ERROR"s;
 			}
-			return make_entry<entry_level_t<Level>>("{0}  [Thread ID: {1}] [{2}]: {3}",
+			return make_entry<entry_level_t<Level>>(FMT_COMPILE("{0}  [Thread ID: {1}] [{2}]: {3}"),
 													timestamp,
 													id,
 													log_type,
@@ -262,6 +266,7 @@ namespace hyperion {
 			inline auto log(Option<usize> thread_id,
 							fmt::format_string<Args...>&& format_string,
 							Args&&... args) noexcept -> void {
+				HYPERION_PROFILE_FUNCTION();
 				const auto message = format_entry<Level>(std::move(thread_id),
 														 std::move(format_string),
 														 std::forward<Args>(args)...);
@@ -274,6 +279,7 @@ namespace hyperion {
 			template<LogLevel, typename... Args>
 			inline auto
 			log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+				HYPERION_PROFILE_FUNCTION();
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
@@ -335,6 +341,7 @@ namespace hyperion {
 			inline auto log(Option<usize> thread_id,
 							fmt::format_string<Args...>&& format_string,
 							Args&&... args) noexcept {
+				HYPERION_PROFILE_FUNCTION();
 				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 					auto message = format_entry<Level>(std::move(thread_id),
 													   std::move(format_string),
@@ -357,6 +364,7 @@ namespace hyperion {
 
 			template<LogLevel, typename... Args>
 			inline auto log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+				HYPERION_PROFILE_FUNCTION();
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
@@ -381,7 +389,7 @@ namespace hyperion {
 			}
 
 		  private:
-			[[nodiscard]] inline static consteval auto get_queue_policy() noexcept -> QueuePolicy {
+			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
 				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull
 							 || ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull)
 				{
@@ -411,6 +419,7 @@ namespace hyperion {
 
 			inline auto log_dropping(Entry&& message) noexcept -> Result<bool, LoggerError>
 			requires(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				return m_queue.push(std::move(message))
 					.map_err([]([[maybe_unused]] const QueueError& error) {
 						return LoggerError(LoggerErrorCategory::QueueingError);
@@ -419,11 +428,13 @@ namespace hyperion {
 
 			inline auto log_overwriting(Entry&& message) noexcept
 				-> void requires(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				m_queue.push(std::move(message));
 			}
 
 			inline auto log_flushing(Entry&& message) noexcept
 				-> void requires(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				if(m_queue.full()) {
 					m_flush.store(true);
 				}
@@ -434,6 +445,7 @@ namespace hyperion {
 			}
 
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
+				HYPERION_PROFILE_FUNCTION();
 				return m_queue.read();
 			}
 
@@ -512,6 +524,7 @@ namespace hyperion {
 			inline auto log(Option<usize> thread_id,
 							fmt::format_string<Args...>&& format_string,
 							Args&&... args) noexcept -> void {
+				HYPERION_PROFILE_FUNCTION();
 				const auto message = format_entry<Level>(std::move(thread_id),
 														 std::move(format_string),
 														 std::forward<Args>(args)...);
@@ -527,6 +540,7 @@ namespace hyperion {
 			template<LogLevel, typename... Args>
 			inline auto
 			log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+				HYPERION_PROFILE_FUNCTION();
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
@@ -588,6 +602,7 @@ namespace hyperion {
 			inline auto log(Option<usize> thread_id,
 							fmt::format_string<Args...>&& format_string,
 							Args&&... args) noexcept {
+				HYPERION_PROFILE_FUNCTION();
 				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 					auto message = format_entry<Level>(std::move(thread_id),
 													   std::move(format_string),
@@ -610,6 +625,7 @@ namespace hyperion {
 
 			template<LogLevel, typename... Args>
 			inline auto log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+				HYPERION_PROFILE_FUNCTION();
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
@@ -634,7 +650,7 @@ namespace hyperion {
 			}
 
 		  private:
-			[[nodiscard]] inline static consteval auto get_queue_policy() noexcept -> QueuePolicy {
+			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
 				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull
 							 || ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull)
 				{
@@ -666,6 +682,7 @@ namespace hyperion {
 
 			inline auto log_dropping(Entry&& message) noexcept -> Result<bool, LoggerError>
 			requires(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				std::atomic_thread_fence(std::memory_order_seq_cst);
 				auto res = m_queue.push(std::move(message))
 							   .map_err([]([[maybe_unused]] const QueueError& error) {
@@ -677,6 +694,7 @@ namespace hyperion {
 
 			inline auto log_overwriting(Entry&& message) noexcept
 				-> void requires(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				std::atomic_thread_fence(std::memory_order_seq_cst);
 				m_queue.push(std::move(message));
 				std::atomic_thread_fence(std::memory_order_seq_cst);
@@ -684,6 +702,7 @@ namespace hyperion {
 
 			inline auto log_flushing(Entry&& message) noexcept
 				-> void requires(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
+				HYPERION_PROFILE_FUNCTION();
 				std::atomic_thread_fence(std::memory_order_seq_cst);
 				if(m_queue.full()) {
 					m_flush.store(true);
@@ -696,6 +715,7 @@ namespace hyperion {
 			}
 
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
+				HYPERION_PROFILE_FUNCTION();
 				std::atomic_thread_fence(std::memory_order_seq_cst);
 				return m_queue.read();
 			}
@@ -872,7 +892,7 @@ namespace hyperion {
 		using Parameters = HYPERION_LOG_GLOBAL_LOGGER_PARAMETERS;
 		static UniquePtr<Logger<Parameters>> GLOBAL_LOGGER; // NOLINT
 
-		[[nodiscard]] inline static auto
+		[[nodiscard]] static inline auto
 		get_global_logger() noexcept -> Result<Logger<Parameters>*, LoggerError> {
 			if(GLOBAL_LOGGER == nullptr) {
 				return Err(LoggerError(LoggerErrorCategory::LoggerNotInitialized));
@@ -880,12 +900,12 @@ namespace hyperion {
 			return Ok(GLOBAL_LOGGER.get());
 		}
 
-		inline static auto set_global_logger(Logger<Parameters>&& logger) noexcept -> void {
+		static inline auto set_global_logger(Logger<Parameters>&& logger) noexcept -> void {
 			GLOBAL_LOGGER = make_unique<Logger<Parameters>>(std::move(logger));
 		}
 
 		template<typename... Args>
-		inline static auto MESSAGE(const Option<usize>& thread_id,
+		static inline auto MESSAGE(const Option<usize>& thread_id,
 								   fmt::format_string<Args...>&& format_string,
 								   Args&&... args) noexcept {
 			return get_global_logger()
@@ -894,13 +914,13 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		inline static auto
+		static inline auto
 		MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 			return MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		inline static auto TRACE(const Option<usize>& thread_id,
+		static inline auto TRACE(const Option<usize>& thread_id,
 								 fmt::format_string<Args...>&& format_string,
 								 Args&&... args) noexcept {
 			return get_global_logger()
@@ -909,13 +929,13 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		inline static auto
+		static inline auto
 		TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 			return TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		inline static auto INFO(const Option<usize>& thread_id,
+		static inline auto INFO(const Option<usize>& thread_id,
 								fmt::format_string<Args...>&& format_string,
 								Args&&... args) noexcept {
 			return get_global_logger()
@@ -924,13 +944,13 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		inline static auto
+		static inline auto
 		INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 			return INFO(None(), std::move(format_string), std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		inline static auto WARN(const Option<usize>& thread_id,
+		static inline auto WARN(const Option<usize>& thread_id,
 								fmt::format_string<Args...>&& format_string,
 								Args&&... args) noexcept {
 			return get_global_logger()
@@ -939,13 +959,13 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		inline static auto
+		static inline auto
 		WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 			return WARN(None(), std::move(format_string), std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		inline static auto ERROR(const Option<usize>& thread_id,
+		static inline auto ERROR(const Option<usize>& thread_id,
 								 fmt::format_string<Args...>&& format_string,
 								 Args&&... args) noexcept {
 			return get_global_logger()
@@ -954,7 +974,7 @@ namespace hyperion {
 		}
 
 		template<typename... Args>
-		inline static auto
+		static inline auto
 		ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 			return ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
 		}
@@ -970,20 +990,20 @@ namespace hyperion {
 	}
 
 	template<typename... Args>
-	inline static auto
+	static inline auto
 	MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline static auto TRACE(const Option<usize>& thread_id,
+	static inline auto TRACE(const Option<usize>& thread_id,
 							 fmt::format_string<Args...>&& format_string,
 							 Args&&... args) noexcept {
 		return GlobalLog::TRACE(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline static auto TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+	static inline auto TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 

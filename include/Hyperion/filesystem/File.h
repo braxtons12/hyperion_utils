@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2021-11-14
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -244,6 +244,7 @@ namespace hyperion::fs {
 		template<typename... Args>
 		[[nodiscard]] inline auto
 		print(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> Result<i32> {
+			HYPERION_PROFILE_FUNCTION();
 
 			if(m_options.type == AccessType::Read) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -282,6 +283,7 @@ namespace hyperion::fs {
 		[[nodiscard]] inline auto
 		println(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> Result<i32> {
+			HYPERION_PROFILE_FUNCTION();
 
 			return print("{}\n",
 						 fmt::format(std::move(format_string), std::forward<Args>(args)...));
@@ -408,8 +410,10 @@ namespace hyperion::fs {
 		return lhs == static_cast<const u32>(rhs);
 	}
 
+	[[nodiscard]] inline auto
 	// NOLINTNEXTLINE(readability-function-cognitive-complexity)
-	[[nodiscard]] inline auto File::validate_open_options(OpenOptions options) noexcept -> Result<const char*> {
+	File::validate_open_options(OpenOptions options) noexcept -> Result<const char*> {
+		HYPERION_PROFILE_FUNCTION();
 
 		static constexpr u32 append_binary_mask
 			= ~(AccessModifier::Append | AccessModifier::Binary);
@@ -516,6 +520,7 @@ namespace hyperion::fs {
 	File::open(const std::filesystem::path& path, // NOLINT(bugprone-exception-escape)
 			   OpenOptions open_options,
 			   usize buffer_size) noexcept -> Result<File> {
+		HYPERION_PROFILE_FUNCTION();
 
 		return validate_open_options(open_options)
 			.and_then([&](const char* options) noexcept -> Result<File> {
@@ -541,6 +546,7 @@ namespace hyperion::fs {
 	[[nodiscard]] inline auto
 	File::open(const std::filesystem::path& path, // NOLINT(bugprone-exception-escape)
 			   OpenOptions open_options) noexcept -> Result<File> {
+		HYPERION_PROFILE_FUNCTION();
 
 		return open(path, open_options, DEFAULT_FILE_BUFFER_SIZE);
 	}
@@ -548,11 +554,13 @@ namespace hyperion::fs {
 	[[nodiscard]] inline auto
 	File::open(const std::filesystem::path& path) // NOLINT(bugprone-exception-escape)
 		noexcept -> Result<File> {
+		HYPERION_PROFILE_FUNCTION();
 
 		return open(path, {}, DEFAULT_FILE_BUFFER_SIZE);
 	}
 
 	[[nodiscard]] inline auto File::read(usize num_chars) noexcept -> Result<std::string> {
+		HYPERION_PROFILE_FUNCTION();
 
 		if(m_options.type == AccessType::Write) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -573,6 +581,8 @@ namespace hyperion::fs {
 
 	[[nodiscard]] inline auto
 	File::read_bytes(usize num_bytes) noexcept -> Result<UniquePtr<u8[]>> { // NOLINT
+		HYPERION_PROFILE_FUNCTION();
+
 		if(m_options.type == AccessType::Write) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
 			return Err(error::SystemError(ERROR_INVALID_FUNCTION));
@@ -591,6 +601,7 @@ namespace hyperion::fs {
 	}
 
 	[[nodiscard]] inline auto File::read_line() noexcept -> Result<std::string> {
+		HYPERION_PROFILE_FUNCTION();
 
 		if(m_options.type == AccessType::Write || m_options.modifier == AccessModifier::Binary) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -617,6 +628,7 @@ namespace hyperion::fs {
 	}
 
 	[[nodiscard]] inline auto File::flush() noexcept -> Result<> {
+		HYPERION_PROFILE_FUNCTION();
 
 		if(m_options.type == AccessType::Read) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
