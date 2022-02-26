@@ -3,7 +3,7 @@
 /// @brief Provides various macro definitions for things like compiler-specific attributes,
 /// feature enablement, and warning suppression
 /// @version 0.1
-/// @date 2021-11-02
+/// @date 2021-11-14
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -187,6 +187,65 @@
 #endif
 
 IGNORE_UNUSED_MACROS_START
+
+/// @def IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_START
+/// @brief Use to temporarily disable warnings for destructors that override but are not marked
+/// `override` (-Wsuggest-destructor-override).
+/// Make sure to pair with `IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP` to properly scope the area
+/// where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_START \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wsuggest-destructor-override\"")
+#else
+// NOLINTNEXTLINE
+#define IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_START
+#endif
+
+/// @def IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP
+/// @brief Use to re-enable warnings for destructors that override but are not marked `override`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+// NOLINTNEXTLINE
+	#define IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP
+#endif
+
+/// @def IGNORE_OLD_STYLE_CASTS_START
+/// @brief Use to temporarily disable warnings for c-style casts (-Wold-style-cast).
+/// Make sure to pair with `IGNORE_OLD_STYLE_CASTS_START` to properly scope the area where
+/// the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_OLD_STYLE_CASTS_START \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wold-style-cast\"")
+#else
+// NOLINTNEXTLINE
+#define IGNORE_OLD_STYLE_CASTS_START
+#endif
+
+/// @def IGNORE_OLD_STYLE_CASTS_STOP
+/// @brief Use to re-enable warnings for c-style casts
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_OLD_STYLE_CASTS_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+// NOLINTNEXTLINE
+	#define IGNORE_OLD_STYLE_CASTS_STOP
+#endif
 
 /// @def IGNORE_INVALID_NORETURN_START
 /// @brief Use to temporarily disable warnings for functions marked `[[noreturn]]` that may return
