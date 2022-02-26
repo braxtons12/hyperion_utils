@@ -33,9 +33,22 @@ namespace hyperion {
 		MessageEntry() noexcept = delete;
 		explicit MessageEntry(const std::string_view& entry) noexcept : m_entry(entry) {
 		}
+		template<usize N>
+		explicit MessageEntry(const char (&entry)[N]) noexcept : m_entry(entry) { // NOLINT
+		}
 		template<typename... Args>
 		explicit MessageEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename CharT, typename... Args>
+		explicit MessageEntry(fmt::basic_string_view<CharT>&& format_string,
+							  Args&&... args) noexcept
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		explicit MessageEntry(String&& format_string, Args&&... args) noexcept
+			: m_entry(
+				fmt::format(std::forward<String>(format_string), std::forward<Args>(args)...)) {
 		}
 		MessageEntry(const MessageEntry& entry) noexcept = default;
 		MessageEntry(MessageEntry&& entry) noexcept = default;
@@ -51,8 +64,7 @@ namespace hyperion {
 		/// @brief Returns the text style of this entry
 		///
 		/// @return The `fmt::text_style` of this entry
-		[[nodiscard]] inline constexpr auto
-		style() const noexcept -> fmt::text_style { // NOLINT
+		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style { // NOLINT
 			return fmt::fg(fmt::color::white);
 		}
 
@@ -77,9 +89,21 @@ namespace hyperion {
 		explicit TraceEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
+		template<usize N>
+		explicit TraceEntry(const char (&entry)[N]) noexcept : m_entry(entry) { // NOLINT
+		}
 		template<typename... Args>
 		explicit TraceEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename CharT, typename... Args>
+		explicit TraceEntry(fmt::basic_string_view<CharT>&& format_string, Args&&... args) noexcept
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		explicit TraceEntry(String&& format_string, Args&&... args) noexcept
+			: m_entry(
+				fmt::format(std::forward<String>(format_string), std::forward<Args>(args)...)) {
 		}
 		TraceEntry(const TraceEntry& entry) noexcept = default;
 		TraceEntry(TraceEntry&& entry) noexcept = default;
@@ -95,8 +119,7 @@ namespace hyperion {
 		/// @brief Returns the text style of this entry
 		///
 		/// @return The `fmt::text_style` of this entry
-		[[nodiscard]] inline constexpr auto
-		style() const noexcept -> fmt::text_style { // NOLINT
+		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style { // NOLINT
 			return fmt::fg(fmt::color::steel_blue);
 		}
 
@@ -121,9 +144,21 @@ namespace hyperion {
 		explicit InfoEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
+		template<usize N>
+		explicit InfoEntry(const char (&entry)[N]) noexcept : m_entry(entry) { // NOLINT
+		}
 		template<typename... Args>
 		explicit InfoEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename CharT, typename... Args>
+		explicit InfoEntry(fmt::basic_string_view<CharT>&& format_string, Args&&... args) noexcept
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		explicit InfoEntry(String&& format_string, Args&&... args) noexcept
+			: m_entry(
+				fmt::format(std::forward<String>(format_string), std::forward<Args>(args)...)) {
 		}
 		InfoEntry(const InfoEntry& entry) noexcept = default;
 		InfoEntry(InfoEntry&& entry) noexcept = default;
@@ -139,8 +174,7 @@ namespace hyperion {
 		/// @brief Returns the text style of this entry
 		///
 		/// @return The `fmt::text_style` of this entry
-		[[nodiscard]] inline constexpr auto
-		style() const noexcept -> fmt::text_style { // NOLINT
+		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style { // NOLINT
 			return fmt::fg(fmt::color::light_green) | fmt::emphasis::italic;
 		}
 
@@ -165,9 +199,21 @@ namespace hyperion {
 		explicit WarnEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
+		template<usize N>
+		explicit WarnEntry(const char (&entry)[N]) noexcept : m_entry(entry) { // NOLINT
+		}
 		template<typename... Args>
 		explicit WarnEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename CharT, typename... Args>
+		explicit WarnEntry(fmt::basic_string_view<CharT>&& format_string, Args&&... args) noexcept
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		explicit WarnEntry(String&& format_string, Args&&... args) noexcept
+			: m_entry(
+				fmt::format(std::forward<String>(format_string), std::forward<Args>(args)...)) {
 		}
 		WarnEntry(const WarnEntry& entry) noexcept = default;
 		WarnEntry(WarnEntry&& entry) noexcept = default;
@@ -183,8 +229,7 @@ namespace hyperion {
 		/// @brief Returns the text style of this entry
 		///
 		/// @return The `fmt::text_style` of this entry
-		[[nodiscard]] inline constexpr auto
-		style() const noexcept -> fmt::text_style { // NOLINT
+		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style { // NOLINT
 			return fmt::fg(fmt::color::orange) | fmt::emphasis::bold;
 		}
 
@@ -209,9 +254,21 @@ namespace hyperion {
 		explicit ErrorEntry(const std::string_view& entry) noexcept // NOLINT
 			: m_entry(entry) {
 		}
+		template<usize N>
+		explicit ErrorEntry(const char (&entry)[N]) noexcept : m_entry(entry) { // NOLINT
+		}
 		template<typename... Args>
 		explicit ErrorEntry(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename CharT, typename... Args>
+		explicit ErrorEntry(fmt::basic_string_view<CharT>&& format_string, Args&&... args) noexcept
+			: m_entry(fmt::format(std::move(format_string), std::forward<Args>(args)...)) {
+		}
+		template<typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		explicit ErrorEntry(String&& format_string, Args&&... args) noexcept
+			: m_entry(
+				fmt::format(std::forward<String>(format_string), std::forward<Args>(args)...)) {
 		}
 		ErrorEntry(const ErrorEntry& entry) noexcept = default;
 		ErrorEntry(ErrorEntry&& entry) noexcept = default;
@@ -227,8 +284,7 @@ namespace hyperion {
 		/// @brief Returns the text style of this entry
 		///
 		/// @return The `fmt::text_style` of this entry
-		[[nodiscard]] inline constexpr auto
-		style() const noexcept -> fmt::text_style { // NOLINT
+		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style { // NOLINT
 			return fmt::fg(fmt::color::red) | fmt::emphasis::bold;
 		}
 
@@ -273,6 +329,18 @@ namespace hyperion {
 					   fmt::format_string<Args...>&& fmt,
 					   Args&&... args) noexcept
 			: rep(tag, std::move(fmt), std::forward<Args>(args)...) {
+		}
+		template<EntryType T, typename CharT, typename... Args>
+		requires mpl::contains_v<T, types_list>
+		explicit Entry(std::in_place_type_t<T> tag,
+					   fmt::basic_string_view<CharT>&& fmt,
+					   Args&&... args) noexcept
+			: rep(tag, std::move(fmt), std::forward<Args>(args)...) {
+		}
+		template<EntryType T, typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+		requires mpl::contains_v<T, types_list>
+		explicit Entry(std::in_place_type_t<T> tag, String&& fmt, Args&&... args) noexcept
+			: rep(tag, std::forward<String>(fmt), std::forward<Args>(args)...) {
 		}
 		Entry(const Entry& entry) noexcept = default;
 		Entry(Entry&& entry) noexcept = default;
@@ -320,7 +388,24 @@ namespace hyperion {
 	template<EntryType T, typename... Args>
 	requires mpl::contains_v<T, Entry::types_list>
 	inline auto make_entry(fmt::format_string<Args...>&& fmt, Args&&... args) noexcept -> Entry {
+		HYPERION_PROFILE_FUNCTION();
 		return Entry(std::in_place_type_t<T>(), std::move(fmt), std::forward<Args>(args)...);
+	}
+
+	template<EntryType T, typename CharT, typename... Args>
+	requires mpl::contains_v<T, Entry::types_list>
+	inline auto make_entry(fmt::basic_string_view<CharT>&& fmt, Args&&... args) noexcept -> Entry {
+		HYPERION_PROFILE_FUNCTION();
+		return Entry(std::in_place_type_t<T>(), std::move(fmt), std::forward<Args>(args)...);
+	}
+
+	template<EntryType T, typename String = decltype(FMT_COMPILE("{}")), typename... Args>
+	requires mpl::contains_v<T, Entry::types_list>
+	inline auto make_entry(String&& fmt, Args&&... args) noexcept -> Entry {
+		HYPERION_PROFILE_FUNCTION();
+		return Entry(std::in_place_type_t<T>(),
+					 std::forward<String>(fmt),
+					 std::forward<Args>(args)...);
 	}
 
 	/// @brief Tag type for logging level of an entry
