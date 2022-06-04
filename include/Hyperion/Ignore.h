@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Provides utilities to ignore an arbitrary number of values
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-05-12
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -30,6 +30,7 @@
 #include <type_traits>
 
 namespace hyperion {
+	// clang-format off
 
 	/// @brief Utility function to ignore the given values
 	///
@@ -38,18 +39,8 @@ namespace hyperion {
 	/// @ingroup utils
 	/// @headerfile "Hyperion/Ignore.h"
 	template<typename... Args>
-	inline constexpr auto ignore(Args&&... args) noexcept -> void {
-		std::ignore = std::make_tuple<Args...>(std::forward<Args>(args)...);
+	inline constexpr auto ignore([[maybe_unused]] Args&&... args) noexcept -> void {
+		// std::ignore = std::make_tuple<Args...>(std::forward<Args>(args)...);
 	}
-
-	/// @brief Utility function to ignore the given value
-	///
-	/// @tparam T - The type of the thing to ignore
-	/// @param t - The thing to ignore
-	/// @ingroup utils
-	/// @headerfile "Hyperion/Ignore.h"
-	template<typename T>
-	inline constexpr auto ignore(T&& t) noexcept -> void {
-		std::ignore = t;
-	}
+	// clang-format on
 } // namespace hyperion

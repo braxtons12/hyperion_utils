@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief singular include point for fmtlib
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-05-12
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -39,6 +39,7 @@ IGNORE_RESERVED_IDENTIFIERS_START
 IGNORE_MISSING_NORETURN_START
 IGNORE_CONSTANT_CONDITIONAL_EXPRESSIONS_START
 IGNORE_DEPRECATED_DECLARATIONS_START
+IGNORE_SWITCH_MISSING_ENUM_VALUES_START
 
 #include <fmt/chrono.h>
 #include <fmt/color.h>
@@ -46,6 +47,7 @@ IGNORE_DEPRECATED_DECLARATIONS_START
 #include <fmt/format.h>
 #include <fmt/os.h>
 
+IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP
 IGNORE_DEPRECATED_DECLARATIONS_STOP
 IGNORE_CONSTANT_CONDITIONAL_EXPRESSIONS_STOP
 IGNORE_MISSING_NORETURN_STOP

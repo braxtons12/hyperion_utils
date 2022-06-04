@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief various type aliases for builtin types and user defined literals for them
 /// @version 0.1
-/// @date 2021-11-14
+/// @date 2022-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,6 +27,7 @@
 #pragma once
 
 #include <Hyperion/HyperionDef.h>
+#include <Hyperion/Ignore.h>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -35,46 +36,39 @@
 
 IGNORE_UNUSED_MACROS_START
 
-#if defined(DOCTEST_CONFIG_DISABLE)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_DEFINE_TESTS false
-#else // defined(DOCTEST_CONFIG_DISABLE)
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_DEFINE_TESTS true
-#endif // defined(DOCTEST_CONFIG_DISABLE)
-
-#if HYPERION_DEFINE_TESTS
+#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
+#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
+#define DOCTEST_CONFIG_USE_STD_HEADERS
+#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
+#include <doctest/doctest.h>
 
 IGNORE_RESERVED_IDENTIFIERS_START
 
-	#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
-	#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
-	#define DOCTEST_CONFIG_USE_STD_HEADERS
-	#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
-	#include <doctest/doctest.h>
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define TEST_SUITE(decorators)                         \
+	IGNORE_RESERVED_IDENTIFIERS_START                  \
+	IGNORE_UNUSED_TEMPLATES_START                      \
+	DOCTEST_TEST_SUITE(decorators)                     \
+	/** NOLINT(modernize-use-trailing-return-type) **/ \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define TEST_CASE(decorators)                                                  \
+	IGNORE_RESERVED_IDENTIFIERS_START                                          \
+	IGNORE_UNUSED_TEMPLATES_START                                              \
+	/** NOLINTNEXTLINE(modernize-use-trailing-return-type, cert-err58-cpp) **/ \
+	DOCTEST_TEST_CASE(decorators)                                              \
+	/** NOLINT(modernize-use-trailing-return-type, cert-err58-cpp) **/         \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define SUBCASE(decorators)                                                    \
+	IGNORE_RESERVED_IDENTIFIERS_START                                          \
+	IGNORE_UNUSED_TEMPLATES_START                                              \
+	/** NOLINTNEXTLINE(modernize-use-trailing-return-type, cert-err58-cpp) **/ \
+	DOCTEST_SUBCASE(decorators)                                                \
+	/** NOLINT(modernize-use-trailing-return-type, cert-err58-cpp) **/         \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define TEST_SUITE(decorators)                         \
-		IGNORE_RESERVED_IDENTIFIERS_START                  \
-		IGNORE_UNUSED_TEMPLATES_START                      \
-		DOCTEST_TEST_SUITE(decorators)                     \
-		/** NOLINT(modernize-use-trailing-return-type) **/ \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define TEST_CASE(decorators)                          \
-		IGNORE_RESERVED_IDENTIFIERS_START                  \
-		IGNORE_UNUSED_TEMPLATES_START                      \
-		DOCTEST_TEST_CASE(decorators)                      \
-		/** NOLINT(modernize-use-trailing-return-type) **/ \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define SUBCASE(decorators)                            \
-		IGNORE_RESERVED_IDENTIFIERS_START                  \
-		IGNORE_UNUSED_TEMPLATES_START                      \
-		DOCTEST_SUBCASE(decorators)                        \
-		/** NOLINT(modernize-use-trailing-return-type) **/ \
-		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-
+#if !defined(DOCTEST_CONFIG_DISABLE)
 	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 	#define CHECK(...)                                                                             \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK(__VA_ARGS__) \
@@ -156,10 +150,46 @@ IGNORE_RESERVED_IDENTIFIERS_START
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
-IGNORE_RESERVED_IDENTIFIERS_STOP
-#endif // HYPERION_DEFINE_TESTS
+#else
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK(...)		   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_FALSE(...)   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_EQ(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_NE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LE(...)	   hyperion::ignore(__VA_ARGS__)
 
-#if defined(TRACY_ENABLE)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_FALSE(...) hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_EQ(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_NE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LE(...)	   hyperion::ignore(__VA_ARGS__)
+IGNORE_RESERVED_IDENTIFIERS_STOP
+#endif // !defined(DOCTEST_CONFIG_DISABLE)
+
+// #undef TRACY_ENABLE
+//  #define TRACY_ENABLE false
+#ifdef TRACY_ENABLE
 
 IGNORE_RESERVED_IDENTIFIERS_START
 IGNORE_OLD_STYLE_CASTS_START
@@ -299,13 +329,12 @@ namespace hyperion {
 		struct literal_parser : std::integral_constant<umax, 0U> { };
 
 		template<umax Sum, char Head, char... Chars>
-		requires((Head >= '0' && Head <= '9')
-				 || Head == '\'') struct literal_parser<Sum, Head, Chars...>
+		requires((Head >= '0' && Head <= '9') || Head == '\'')
+		struct literal_parser<Sum, Head, Chars...>
 			: std::integral_constant<
 				  umax,
 				  literal_parser<Head == '\'' ? Sum : Sum * ten + static_cast<umax>(Head - '0'),
-								 Chars...>::value> {
-		};
+								 Chars...>::value> { };
 
 		template<umax Sum>
 		struct literal_parser<Sum> : std::integral_constant<umax, Sum> { };
@@ -315,7 +344,7 @@ namespace hyperion {
 
 		template<umax Value, typename Type>
 		concept ValidLiteral
-			= std::is_integral_v<Type> &&(Value <= std::numeric_limits<Type>::max());
+			= std::is_integral_v<Type> && (Value <= std::numeric_limits<Type>::max());
 	} // namespace detail
 
 	IGNORE_UNUSED_TEMPLATES_START

@@ -23,52 +23,46 @@
 #include <Hyperion/Span.h>
 #include <Hyperion/Synchronization.h>
 #include <Hyperion/TypeTraits.h>
-
-#if HYPERION_DEFINE_TESTS
 #include <Hyperion/test/OptionAndResultTests.h>
-#endif
 
 using hyperion::Err;  // NOLINT(misc-unused-using-decls,
-                      // google-global-names-in-headers)
+					  // google-global-names-in-headers)
 using hyperion::None; // NOLINT(misc-unused-using-decls,
-                      // google-global-names-in-headers)
-using hyperion::Ok;   // NOLINT(misc-unused-using-decls,
-                      // google-global-names-in-headers)
+					  // google-global-names-in-headers)
+using hyperion::Ok;	  // NOLINT(misc-unused-using-decls,
+					  // google-global-names-in-headers)
 using hyperion::Some; // NOLINT(misc-unused-using-decls,
-                      // google-global-names-in-headers)
+					  // google-global-names-in-headers)
 
-// clang-format off
-using hyperion::u8;	   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::u16;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::u32;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::u64;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::usize; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::u8;	   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::umax;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::usize; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 
-using hyperion::i8;	   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::i16;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::i32;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::i64;   // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::imax;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::i16;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::i32;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::i64;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::i8;	  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::imax; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 
-using hyperion::f32; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::f64; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-// using hyperion::fmax;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::f32;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::f64;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 
-using hyperion::operator""_u8; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_u16; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_u32; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_u64; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_u8;	  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_u16;	  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_u32;	  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_u64;	  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::operator""_usize; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_umax; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_umax;  // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 
-using hyperion::operator""_i8; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_i16; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_i32; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_i64; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_i8;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_i16;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_i32;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_i64;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::operator""_imax; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 
-using hyperion::operator""_f32; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-using hyperion::operator""_f64; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_f32;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
+using hyperion::operator""_f64;	 // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
 using hyperion::operator""_fmax; // NOLINT(misc-unused-using-decls, google-global-names-in-headers)
-// clang-format on

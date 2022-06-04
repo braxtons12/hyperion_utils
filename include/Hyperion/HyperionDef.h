@@ -218,6 +218,37 @@ IGNORE_UNUSED_MACROS_START
 	#define IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP
 #endif
 
+/// @def IGNORE_SWITCH_MISSING_ENUM_VALUES_START
+/// @brief Use to temporarily disable warnings for switches that don't cover all enum values of the
+/// enum being "switched" on (-Wswitch-enum).
+/// Make sure to pair with `IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP` to properly scope the area
+/// where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_SWITCH_MISSING_ENUM_VALUES_START \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wswitch-enum\"")
+#else
+// NOLINTNEXTLINE
+#define IGNORE_SWITCH_MISSING_ENUM_VALUES_START
+#endif
+
+/// @def IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP
+/// @brief Use to re-enable warnings for switches that don't cover all enum values of the enum being
+/// "switched" on (-Wswitch-enum)
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+// NOLINTNEXTLINE
+#define IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+// NOLINTNEXTLINE
+#define IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP
+#endif
+
 /// @def IGNORE_OLD_STYLE_CASTS_START
 /// @brief Use to temporarily disable warnings for c-style casts (-Wold-style-cast).
 /// Make sure to pair with `IGNORE_OLD_STYLE_CASTS_START` to properly scope the area where
@@ -656,6 +687,36 @@ IGNORE_UNUSED_MACROS_START
 #else
 	// NOLINTNEXTLINE
 	#define IGNORE_UNUSED_FUNCTIONS_STOP
+#endif
+
+/// @def IGNORE_UNUSED_MEMBER_FUNCTIONS_START
+/// @brief Use to temporarily disable warnings for unused member functions
+/// Make sure to pair with `IGNORE_UNUSED_MEMBER_FUNCTIONS_STOP` to properly scope the
+/// area where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+		// NOLINTNEXTLINE
+		#define IGNORE_UNUSED_MEMBER_FUNCTIONS_START \
+			_Pragma("GCC diagnostic push")\
+			_Pragma("GCC diagnostic ignored \"-Wunused-member-function\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MEMBER_FUNCTIONS_START
+#endif
+
+/// @def IGNORE_UNUSED_MEMBER_FUNCTIONS_STOP
+/// @brief Use to re-enable warnings for unused member functions after having
+/// previously used `IGNORE_UNUSED_MEMBER_FUNCTIONS_START`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+		// NOLINTNEXTLINE
+		#define IGNORE_UNUSED_MEMBER_FUNCTIONS_STOP \
+			_Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MEMBER_FUNCTIONS_STOP
 #endif
 
 /// @def IGNORE_SIGNED_BITFIELD_START

@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Aliases for and additions to the C++20 standard concepts library
 /// @version 0.1
-/// @date 2021-11-04
+/// @date 2022-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -686,11 +686,11 @@ namespace hyperion::concepts {
 	template<typename T, typename U = std::remove_all_extents_t<T>>
 	concept Deletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
 						&& (std::is_array_v<T> ?
-								requires(U * t) {
-									delete[] t; // NOLINT
+								requires(U * arr) {
+									delete[] arr; // NOLINT
 								} :
-								  requires(U * t) {
-									delete t; // NOLINT
+								requires(U * ptr) {
+									delete ptr; // NOLINT
 								});
 
 	/// @brief Concept that requires `T` is noexcept deletable
@@ -699,19 +699,19 @@ namespace hyperion::concepts {
 	template<typename T, typename U = std::remove_all_extents_t<T>>
 	concept NoexceptDeletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
 								&& (std::is_array_v<T> ?
-										requires(U * t) {
-											noexcept(delete[] t); // NOLINT
+										requires(U * arr) {
+											noexcept(delete[] arr); // NOLINT
 										} :
-										  requires(U * t) {
-											noexcept(delete t); // NOLINT
+										requires(U * ptr) {
+											noexcept(delete ptr); // NOLINT
 										});
 
 	/// @brief Concept that requires `T` is equality comparable with `U`
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = T>
-	concept EqualityComparable = requires(T t, U u) {
-		t == u;
+	concept EqualityComparable = requires(T lhs, U rhs) {
+		lhs == rhs;
 	};
 
 	/// @brief Concept that requires that the single-extent removed `T` is equality comparable

@@ -13,3 +13,7 @@ docs/doxygen/
 /test/cmake-build-release-clang/
 /test/cmake-build-debug-clang/
 /cmake-build-release-clang-profile/
+/cmake-build-release-gcc/
+/cmake-build-release-gcc-profile/
+/cmake-build-debug-gcc/
+/cmake-build-debug-gcc-coverage/
