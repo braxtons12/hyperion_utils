@@ -31,7 +31,7 @@ using namespace hyperion; // NOLINT
 
 auto main([[maybe_unused]] i32 argc, [[maybe_unused]] char** argv) -> i32 { // NOLINT
 	using Parameters = LoggerParameters<
-		LoggerPolicy<LogThreadingPolicy::MultiThreadedAsync, LogAsyncPolicy::BlockWhenFull>,
+		LoggerPolicy<LogThreadingPolicy::MultiThreadedAsync, LogAsyncPolicy::DropWhenFull>,
 		LoggerLevel<LogLevel::MESSAGE>,
 		1024_usize>; // NOLINT
 
@@ -73,8 +73,8 @@ auto main([[maybe_unused]] i32 argc, [[maybe_unused]] char** argv) -> i32 { // N
 		auto single_threaded_longest = decltype(now - now)(); // NOLINT
 		for(auto i = 0U; i < num_entries; ++i) {
 			const auto curr = std::chrono::high_resolution_clock::now();
-			logger->error("Hello logger: msg number {}", i);
-			//ignore(logger->error("Hello logger: msg number {}", i));
+			//logger->error("Hello logger: msg number {}", i);
+			ignore(logger->error("Hello logger: msg number {}", i));
 			const auto fin = std::chrono::high_resolution_clock::now();
 			const auto diff = fin - curr;
 			if(diff > single_threaded_longest) {
@@ -92,10 +92,10 @@ auto main([[maybe_unused]] i32 argc, [[maybe_unused]] char** argv) -> i32 { // N
 		for(auto index = 0_usize; index < num_threads; ++index) {
 			threads.emplace_back([&logger, &longest]() {
 				auto threaded_longest = decltype(now - now)(); // NOLINT
-				for(auto i = 0U; i < num_entries; ++i) {
+				for(auto i = 0U; i < num_entries / num_threads; ++i) {
 					const auto curr = std::chrono::high_resolution_clock::now();
-					logger->error("Hello logger: msg number {}", i);
-					//ignore(logger->error("Hello logger: msg number {}", i));
+					//logger->error("Hello logger: msg number {}", i);
+					ignore(logger->error("Hello logger: msg number {}", i));
 					const auto fin = std::chrono::high_resolution_clock::now();
 					const auto diff = fin - curr;
 					if(diff > threaded_longest) {
@@ -122,7 +122,7 @@ auto main([[maybe_unused]] i32 argc, [[maybe_unused]] char** argv) -> i32 { // N
 	println("Elapsed time: {}",
 			std::chrono::duration_cast<std::chrono::duration<double, std::chrono::seconds::period>>(
 				elapsed));
-	println("Entries / second : {}", gsl::narrow_cast<float>(num_entries * num_threads) / seconds);
+	println("Entries / second : {}", gsl::narrow_cast<float>(num_entries) / seconds);
 
 	const auto latency_as_nanoseconds
 		= std::chrono::duration_cast<std::chrono::nanoseconds>(longest.read().read());
