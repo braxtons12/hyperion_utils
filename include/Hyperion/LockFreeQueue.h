@@ -18,7 +18,7 @@ namespace hyperion {
 		static const constexpr usize DEFAULT_CAPACITY = 16;
 		using allocator_traits = std::allocator_traits<Allocator<T>>;
 		using unique_pointer = decltype(hyperion::allocate_unique<T[]>( // NOLINT
-			std::declval<Allocator<T[]>>(),						   // NOLINT
+			std::declval<Allocator<T[]>>(),								// NOLINT
 			DEFAULT_CAPACITY));
 
 		/// @brief Creates a `LockFreeQueue` with default capacity
@@ -26,6 +26,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
+			std::atomic_thread_fence(std::memory_order_release);
 		}
 
 		/// @brief Creates a `LockFreeQueue` with (at least) the given initial capacity
@@ -37,6 +38,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
+			std::atomic_thread_fence(std::memory_order_release);
 		}
 
 		/// @brief Constructs a new `LockFreeQueue` with the given initial capacity and
@@ -48,60 +50,62 @@ namespace hyperion {
 								const T& default_value) noexcept
 		requires concepts::NoexceptCopyConstructible<T>
 		: m_buffer(hyperion::allocate_unique<T[]>(m_allocator, // NOLINT
-											 initial_capacity,
-											 default_value)),
+												  initial_capacity,
+												  default_value)),
 		  m_capacity(initial_capacity) {
 
-			set_all(0_u32, initial_capacity, initial_capacity);
 			for(auto index = 0_usize; index < initial_capacity; ++index) {
 				m_buffer[index] = default_value;
 			}
+			set_all(0_u32, initial_capacity, initial_capacity);
 		}
 
 		explicit(false) constexpr LockFreeQueue(std::initializer_list<T> values) noexcept
 		requires concepts::NoexceptMoveAssignable<T>
 		: m_buffer(hyperion::allocate_unique<T[]>(m_allocator, // NOLINT
-											 values.size())),
+												  values.size())),
 		  m_capacity(values.size()) {
 
-			set_all(0_u32, values.size(), values.size());
 			auto index = 0_usize;
 			for(auto&& val : values) {
 				m_buffer[index] = std::forward<T>(val);
 				index++;
 			}
+			set_all(0_u32, values.size(), values.size());
 		}
 
 		constexpr LockFreeQueue(const LockFreeQueue& buffer) noexcept
 		requires concepts::NoexceptCopyConstructible<T>
 		: m_buffer(hyperion::allocate_unique<T[]>(m_allocator, // NOLINT
-											 buffer.m_capacity)),
+												  buffer.m_capacity)),
 		  m_capacity(buffer.m_capacity) {
 
 			const auto size = buffer.size();
-			set_all(0_u32, size, size);
 			for(auto index = 0_usize; index < size; ++index) {
 				m_buffer[index] = buffer[index];
 			}
+			set_all(0_u32, size, size);
 		}
 
 		constexpr LockFreeQueue(LockFreeQueue&& buffer) noexcept
-			: m_allocator(buffer.m_allocator),
-			  m_buffer(std::move(buffer.m_buffer)),
-			  m_capacity(buffer.m_capacity) {
+			: m_allocator(buffer.m_allocator), m_capacity(buffer.m_capacity) {
 
 			const auto [read, write, size] = buffer.get_all();
-			set_all(read, write, size);
-			buffer.set_all(0_u32, 0_u32, 0_u32);
+			// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
+			m_buffer = std::move(buffer.m_buffer);
 			buffer.m_buffer = nullptr;
+			buffer.set_all(0_u32, 0_u32, 0_u32);
+			set_all(read, write, size);
 		}
 
 		~LockFreeQueue() noexcept
 		requires concepts::NoexceptDestructible<T>
 		{
+			std::atomic_thread_fence(std::memory_order_acquire);
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::destroy_at(std::addressof(m_buffer[index])); // NOLINT
 			}
+			set_all(0_u32, 0_u32, 0_u32);
 		}
 
 		/// @brief Returns whether the `LockFreeQueue` is empty
@@ -152,8 +156,8 @@ namespace hyperion {
 			// we only need to do anything if `new_capacity` is actually larger than `m_capacity`
 			if(new_capacity > m_capacity) {
 				std::atomic_thread_fence(std::memory_order_acquire);
-				auto temp = hyperion::allocate_unique<T[],			  // NOLINT
-												 Allocator<T[]>>( // NOLINT
+				auto temp = hyperion::allocate_unique<T[],			   // NOLINT
+													  Allocator<T[]>>( // NOLINT
 					m_allocator,
 					new_capacity); // NOLINT
 				auto span = gsl::make_span(std::addressof(temp[0]), new_capacity);
@@ -174,6 +178,7 @@ namespace hyperion {
 
 		/// @brief Erases all elements from the `LockFreeQueue`
 		inline constexpr auto clear() noexcept -> void {
+			std::atomic_thread_fence(std::memory_order_acquire);
 			m_buffer = hyperion::allocate_unique<T[]>(m_allocator, m_capacity); // NOLINT
 			set_all(0_u32, 0_u32, 0_i32);
 		}
@@ -274,8 +279,7 @@ namespace hyperion {
 		/// @return `true` if successfully pushed, `false` if the queue was full
 		template<typename... Args>
 		requires concepts::NoexceptConstructibleFrom<T, Args...>
-		inline constexpr auto
-		try_emplace_back(Args&&... args) noexcept -> bool {
+		inline constexpr auto try_emplace_back(Args&&... args) noexcept -> bool {
 			if(!increment_size()) {
 				return false;
 			}
@@ -357,21 +361,18 @@ namespace hyperion {
 			m_buffer = std::move(temp);
 			m_capacity = buffer.m_capacity;
 			set_all(0_u32, size, size);
-			std::atomic_thread_fence(std::memory_order_release);
 			return *this;
 		}
 
 		constexpr auto operator=(LockFreeQueue&& buffer) noexcept -> LockFreeQueue& {
-			std::atomic_thread_fence(std::memory_order_acquire);
+			const auto [read, write, size] = buffer.get_all();
 			m_allocator = buffer.m_allocator;
 			m_buffer = std::move(buffer.m_buffer);
-			const auto [read, write, size] = buffer.get_all();
-			set_all(read, write, size);
 			m_capacity = buffer.m_capacity;
 			buffer.m_buffer = nullptr;
 			buffer.set_all(0_u32, 0_u32, 0_u32);
 			buffer.m_capacity = 0_usize;
-			std::atomic_thread_fence(std::memory_order_release);
+			set_all(read, write, size);
 			return *this;
 		}
 
@@ -396,7 +397,8 @@ namespace hyperion {
 
 		inline auto increment_size() noexcept -> bool {
 			if(const auto _size = m_size.fetch_add(1, std::memory_order_acquire);
-				_size >= m_capacity) {
+			   _size >= m_capacity)
+			{
 				m_size.fetch_sub(1, std::memory_order_release);
 				return false;
 			}
@@ -406,7 +408,7 @@ namespace hyperion {
 
 		[[no_unique_address]] Allocator<T> m_allocator = Allocator<T>();
 		unique_pointer m_buffer = hyperion::allocate_unique<T[]>(m_allocator, // NOLINT
-															DEFAULT_CAPACITY);
+																 DEFAULT_CAPACITY);
 		u32 m_capacity = DEFAULT_CAPACITY;
 	};
 
@@ -471,108 +473,108 @@ namespace hyperion {
 
 	} // namespace detail::lock_free_queue::test
 
-//	// NOLINTNEXTLINE
-//	TEST_SUITE("LockFreeQueue") {
-//		// NOLINTNEXTLINE
-//		TEST_CASE("DefaultConstructed") {
-//			auto buffer = LockFreeQueue<detail::lock_free_queue::test::TestClass>();
-//
-//			constexpr auto capacity
-//				= LockFreeQueue<detail::lock_free_queue::test::TestClass>::DEFAULT_CAPACITY;
-//
-//			SUBCASE("accessors") {
-//				CHECK_EQ(buffer.size(), 0_usize);
-//				CHECK_EQ(buffer.capacity(), capacity);
-//				CHECK(buffer.empty());
-//			}
-//
-//			SUBCASE("push_back") {
-//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
-//					buffer.push_back(detail::lock_free_queue::test::TestClass(i));
-//				}
-//
-//				SUBCASE("at") {
-//					for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
-//						auto front = buffer.pop_front();
-//						CHECK(front.is_some());
-//						CHECK_EQ(front.unwrap(), i);
-//					}
-//				}
-//
-//				SUBCASE("looping") {
-//					for(auto i = static_cast<i32>(capacity) - 1_i32; i >= 0; --i) {
-//						buffer.push_back(detail::lock_free_queue::test::TestClass(i));
-//					}
-//
-//					auto value = static_cast<i32>(capacity) - 1_i32;
-//					for(auto i = 0_usize; i < capacity; ++i, --value) {
-//						auto front = buffer.pop_front();
-//						CHECK(front.is_some());
-//						CHECK_EQ(front.unwrap(), value);
-//					}
-//				}
-//			}
-//
-//			SUBCASE("emplace_back") {
-//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
-//					buffer.emplace_back(i);
-//				}
-//
-//				SUBCASE("at") {
-//					for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
-//						auto front = buffer.pop_front();
-//						CHECK(front.is_some());
-//						CHECK_EQ(front.unwrap(), i);
-//					}
-//				}
-//
-//				SUBCASE("looping") {
-//					for(auto i = static_cast<i32>(capacity) - 1_i32; i >= 0; --i) {
-//						buffer.emplace_back(i);
-//					}
-//
-//					auto value = static_cast<i32>(capacity) - 1_i32;
-//					for(auto i = 0_usize; i < capacity; ++i, --value) {
-//						auto front = buffer.pop_front();
-//						CHECK(front.is_some());
-//						CHECK_EQ(front.unwrap(), value);
-//					}
-//				}
-//			}
-//
-//			SUBCASE("reserve") {
-//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
-//					buffer.emplace_back(i);
-//				}
-//
-//				const auto new_capacity = capacity * 2_usize;
-//				buffer.reserve(new_capacity);
-//
-//				CHECK_EQ(buffer.capacity(), new_capacity);
-//				CHECK_EQ(buffer.size(), capacity);
-//			}
-//
-//			SUBCASE("front") {
-//				buffer.emplace_back(2);
-//				CHECK_EQ(buffer.front().as_cref(), 2);
-//			}
-//
-//			SUBCASE("pop_front") {
-//				buffer.emplace_back(1);
-//				buffer.emplace_back(2);
-//
-//				CHECK_EQ(buffer.size(), 2_usize);
-//				CHECK_EQ(buffer.front().as_cref(), 1);
-//
-//				auto front = buffer.pop_front();
-//
-//				CHECK(front.is_some());
-//				CHECK_EQ(front.unwrap(), 1);
-//
-//				CHECK_EQ(buffer.size(), 1_usize);
-//				CHECK_EQ(buffer.front().as_cref(), 2);
-//			}
-//		}
-//	}
+	//	// NOLINTNEXTLINE
+	//	TEST_SUITE("LockFreeQueue") {
+	//		// NOLINTNEXTLINE
+	//		TEST_CASE("DefaultConstructed") {
+	//			auto buffer = LockFreeQueue<detail::lock_free_queue::test::TestClass>();
+	//
+	//			constexpr auto capacity
+	//				= LockFreeQueue<detail::lock_free_queue::test::TestClass>::DEFAULT_CAPACITY;
+	//
+	//			SUBCASE("accessors") {
+	//				CHECK_EQ(buffer.size(), 0_usize);
+	//				CHECK_EQ(buffer.capacity(), capacity);
+	//				CHECK(buffer.empty());
+	//			}
+	//
+	//			SUBCASE("push_back") {
+	//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
+	//					buffer.push_back(detail::lock_free_queue::test::TestClass(i));
+	//				}
+	//
+	//				SUBCASE("at") {
+	//					for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
+	//						auto front = buffer.pop_front();
+	//						CHECK(front.is_some());
+	//						CHECK_EQ(front.unwrap(), i);
+	//					}
+	//				}
+	//
+	//				SUBCASE("looping") {
+	//					for(auto i = static_cast<i32>(capacity) - 1_i32; i >= 0; --i) {
+	//						buffer.push_back(detail::lock_free_queue::test::TestClass(i));
+	//					}
+	//
+	//					auto value = static_cast<i32>(capacity) - 1_i32;
+	//					for(auto i = 0_usize; i < capacity; ++i, --value) {
+	//						auto front = buffer.pop_front();
+	//						CHECK(front.is_some());
+	//						CHECK_EQ(front.unwrap(), value);
+	//					}
+	//				}
+	//			}
+	//
+	//			SUBCASE("emplace_back") {
+	//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
+	//					buffer.emplace_back(i);
+	//				}
+	//
+	//				SUBCASE("at") {
+	//					for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
+	//						auto front = buffer.pop_front();
+	//						CHECK(front.is_some());
+	//						CHECK_EQ(front.unwrap(), i);
+	//					}
+	//				}
+	//
+	//				SUBCASE("looping") {
+	//					for(auto i = static_cast<i32>(capacity) - 1_i32; i >= 0; --i) {
+	//						buffer.emplace_back(i);
+	//					}
+	//
+	//					auto value = static_cast<i32>(capacity) - 1_i32;
+	//					for(auto i = 0_usize; i < capacity; ++i, --value) {
+	//						auto front = buffer.pop_front();
+	//						CHECK(front.is_some());
+	//						CHECK_EQ(front.unwrap(), value);
+	//					}
+	//				}
+	//			}
+	//
+	//			SUBCASE("reserve") {
+	//				for(auto i = 0_i32; i < static_cast<i32>(capacity); ++i) {
+	//					buffer.emplace_back(i);
+	//				}
+	//
+	//				const auto new_capacity = capacity * 2_usize;
+	//				buffer.reserve(new_capacity);
+	//
+	//				CHECK_EQ(buffer.capacity(), new_capacity);
+	//				CHECK_EQ(buffer.size(), capacity);
+	//			}
+	//
+	//			SUBCASE("front") {
+	//				buffer.emplace_back(2);
+	//				CHECK_EQ(buffer.front().as_cref(), 2);
+	//			}
+	//
+	//			SUBCASE("pop_front") {
+	//				buffer.emplace_back(1);
+	//				buffer.emplace_back(2);
+	//
+	//				CHECK_EQ(buffer.size(), 2_usize);
+	//				CHECK_EQ(buffer.front().as_cref(), 1);
+	//
+	//				auto front = buffer.pop_front();
+	//
+	//				CHECK(front.is_some());
+	//				CHECK_EQ(front.unwrap(), 1);
+	//
+	//				CHECK_EQ(buffer.size(), 1_usize);
+	//				CHECK_EQ(buffer.front().as_cref(), 2);
+	//			}
+	//		}
+	//	}
 
 } // namespace hyperion
