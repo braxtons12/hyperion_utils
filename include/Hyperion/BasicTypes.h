@@ -55,17 +55,17 @@ IGNORE_RESERVED_IDENTIFIERS_START
 #define TEST_CASE(decorators)                                                  \
 	IGNORE_RESERVED_IDENTIFIERS_START                                          \
 	IGNORE_UNUSED_TEMPLATES_START                                              \
-	/** NOLINTNEXTLINE(modernize-use-trailing-return-type, cert-err58-cpp) **/ \
+	/** NOLINTNEXTLINE **/ \
 	DOCTEST_TEST_CASE(decorators)                                              \
-	/** NOLINT(modernize-use-trailing-return-type, cert-err58-cpp) **/         \
+	/** NOLINT **/         \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define SUBCASE(decorators)                                                    \
 	IGNORE_RESERVED_IDENTIFIERS_START                                          \
 	IGNORE_UNUSED_TEMPLATES_START                                              \
-	/** NOLINTNEXTLINE(modernize-use-trailing-return-type, cert-err58-cpp) **/ \
+	/** NOLINTNEXTLINE **/ \
 	DOCTEST_SUBCASE(decorators)                                                \
-	/** NOLINT(modernize-use-trailing-return-type, cert-err58-cpp) **/         \
+	/** NOLINT **/         \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
 #if !defined(DOCTEST_CONFIG_DISABLE)
