@@ -1,3 +1,4 @@
 #!/bin/zsh
 
-cd test/build && ./Test --gtest_color=yes
+cd build || exit
+./HyperionUtilsTest

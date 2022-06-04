@@ -1,6 +1,4 @@
 #!/bin/zsh
 
-cd build
-ninja clean
-cd ../test/build
+cd build || exit
 ninja clean
