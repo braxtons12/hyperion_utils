@@ -7,13 +7,13 @@
 
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/FmtIO.h>
-#include <Hyperion/Logger.h>
 #include <Hyperion/Option.h>
 #include <Hyperion/logging/Config.h>
 #include <Hyperion/logging/Entry.h>
 #include <Hyperion/logging/Queue.h>
 #include <Hyperion/logging/Sink.h>
 #include <Hyperion/synchronization/ReadWriteLock.h>
+#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <filesystem>
@@ -31,143 +31,58 @@ namespace hyperion {
 		/// @brief No Error occurred
 		Success = 0,
 		/// @brief failed to queue the entry for logging
-		QueueingError,
+		QueueingError = 1,
 		/// @brief the requested log level for the entry is
 		/// lower than the minimum level for the logger
-		LogLevelError,
-		LoggerNotInitialized,
+		LogLevelError = 2,
+		LoggerNotInitialized = 3,
 		Unknown = -1
 	};
-
-	/// @brief Alias for the Error type we might receive from the internal queue
-	using QueueError = LoggingQueueError;
-
-	class LoggerErrorDomain {
-	  public:
-		using value_type = LoggerErrorCategory;
-		using LoggerStatusCode = error::StatusCode<LoggerErrorDomain>;
-		using LoggerErrorCode = error::ErrorCode<LoggerErrorDomain>;
-
-		static const constexpr char (&UUID)[error::num_chars_in_uuid] // NOLINT
-			= "045dd371-9552-4ce1-bd4d-8e95b654fbe0";
-
-		static constexpr u64 ID = error::parse_uuid_from_string(UUID);
-
-		constexpr LoggerErrorDomain() noexcept = default;
-		explicit constexpr LoggerErrorDomain(u64 uuid) noexcept : m_uuid(uuid) {
-		}
-		explicit constexpr LoggerErrorDomain(const error::UUIDString auto& uuid) noexcept
-			: m_uuid(error::parse_uuid_from_string(uuid)) {
-		}
-		constexpr LoggerErrorDomain(const LoggerErrorDomain&) noexcept = default;
-		constexpr LoggerErrorDomain(LoggerErrorDomain&&) noexcept = default;
-		constexpr ~LoggerErrorDomain() noexcept = default;
-
-		[[nodiscard]] inline constexpr auto id() const noexcept -> u64 {
-			return m_uuid;
-		}
-
-		[[nodiscard]] inline constexpr auto name() const noexcept -> std::string_view { // NOLINT
-			return "LoggerErrorDomain";
-		}
-
-		[[nodiscard]] inline constexpr auto message(value_type code) // NOLINT
-			const noexcept -> std::string_view {
-			if(code == value_type::Success) {
-				return "Success";
-			}
-			else if(code == value_type::QueueingError) {
-				return "Logger failed to queue log entry.";
-			}
-			else if(code == value_type::LogLevelError) {
-				return "Requested log level for entry is lower than minimum level configured for "
-					   "logger.";
-			}
-			else {
-				return "Unknown Logger error.";
-			}
-		}
-
-		[[nodiscard]] inline constexpr auto message(const LoggerStatusCode& code) // NOLINT
-			const noexcept -> std::string_view {
-			return message(code.code());
-		}
-
-		[[nodiscard]] inline constexpr auto is_error(const LoggerStatusCode& code) // NOLINT
-			const noexcept -> bool {
-			return code.code() != value_type::Success;
-		}
-
-		[[nodiscard]] inline constexpr auto is_success(const LoggerStatusCode& code) // NOLINT
-			const noexcept -> bool {
-			return code.code() == value_type::Success;
-		}
-
-		template<typename Domain2>
-		[[nodiscard]] inline constexpr auto
-		are_equivalent(const LoggerStatusCode& lhs,
-					   const error::StatusCode<Domain2>& rhs) const noexcept -> bool {
-			if constexpr(concepts::Same<LoggerStatusCode, error::StatusCode<Domain2>>) {
-				return lhs.code() == rhs.code();
-			}
-			else {
-				return false;
-			}
-		}
-
-		[[nodiscard]] inline constexpr auto as_generic_code(const LoggerStatusCode& code) // NOLINT
-			const noexcept -> error::GenericStatusCode {
-			if(code.code() == value_type::Success || code.code() == value_type::Unknown) {
-				return make_status_code(static_cast<error::Errno>(code.code()));
-			}
-			else {
-				return make_status_code(error::Errno::Unknown);
-			}
-		}
-
-		[[nodiscard]] static inline constexpr auto success_value() noexcept -> value_type {
-			return value_type::Success;
-		}
-
-		template<typename Domain>
-		friend inline constexpr auto
-		operator==(const LoggerErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
-			return rhs.id() == lhs.id();
-		}
-
-		template<typename Domain>
-		friend inline constexpr auto
-		operator!=(const LoggerErrorDomain& lhs, const Domain& rhs) noexcept -> bool {
-			return rhs.id() != lhs.id();
-		}
-
-		constexpr auto operator=(const LoggerErrorDomain&) noexcept -> LoggerErrorDomain& = default;
-		constexpr auto operator=(LoggerErrorDomain&&) noexcept -> LoggerErrorDomain& = default;
-
-	  private:
-		u64 m_uuid = ID;
-	};
-
-	using LoggerStatusCode = LoggerErrorDomain::LoggerStatusCode;
-	using LoggerErrorCode = LoggerErrorDomain::LoggerErrorCode;
-	using LoggerError = error::Error<LoggerErrorDomain>;
-
 } // namespace hyperion
 
-template<>
-inline constexpr auto
-make_status_code_domain<hyperion::LoggerErrorDomain>() noexcept -> hyperion::LoggerErrorDomain {
-	return {};
-}
+STATUS_CODE_DOMAIN(
+	LoggerErrorDomain /**NOLINT**/,
+	Logger,
+	hyperion,
+	hyperion::LoggerErrorCategory,
+	true,
+	"045dd371-9552-4ce1-bd4d-8e95b654fbe0",
+	"LoggerErrorDomain",
+	hyperion::LoggerErrorCategory::Success,
+	hyperion::LoggerErrorCategory::Unknown,
+	[](hyperion::LoggerErrorCategory code) noexcept -> std::string_view {
+		if(code == value_type::Success) {
+			return "Success";
+		}
+		// NOLINTNEXTLINE(readability-else-after-return)
+		else if(code == value_type::QueueingError) {
+			return "Logger failed to queue log entry.";
+		}
+		else if(code == value_type::LogLevelError) {
+			return "Requested log level for entry is lower than minimum level configured for "
+				   "logger.";
+		}
+		else {
+			return "Unknown Logger error.";
+		}
+	},
+	[](const auto& code) noexcept -> hyperion::error::GenericStatusCode {
+		if(code == value_type::Success || code == value_type::Unknown) {
+			return make_status_code(static_cast<error::Errno>(code));
+		}
+		else {
+			return make_status_code(error::Errno::Unknown);
+		}
+	});
 
 namespace hyperion {
-	static_assert(error::StatusCodeDomain<LoggerErrorDomain>);
-
 	template<>
 	struct error::status_code_enum_info<LoggerErrorCategory> {
-		using domain_type = LoggerErrorDomain;
+		using domain_type [[maybe_unused]] = LoggerErrorDomain;
 		static constexpr bool value = true;
 	};
+
+	using QueueError = LoggingQueueError;
 
 	IGNORE_PADDING_START
 
@@ -177,20 +92,23 @@ namespace hyperion {
 #else
 		using thread = std::thread;
 #endif
-		static constexpr fmt::text_style MESSAGE_STYLE = fmt::fg(fmt::color::white);
-		static constexpr fmt::text_style TRACE_STYLE = fmt::fg(fmt::color::steel_blue);
-		static constexpr fmt::text_style INFO_STYLE
-			= fmt::fg(fmt::color::light_green) | fmt::emphasis::italic;
-		static constexpr fmt::text_style WARN_STYLE
-			= fmt::fg(fmt::color::orange) | fmt::emphasis::bold;
-		static constexpr fmt::text_style ERROR_STYLE
-			= fmt::fg(fmt::color::red) | fmt::emphasis::bold;
 
 		IGNORE_UNNEEDED_INTERNAL_DECL_START
 		[[nodiscard]] static inline auto create_time_stamp() noexcept -> std::string {
 			HYPERION_PROFILE_FUNCTION();
-			return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H-%M-%S}]"),
-							   fmt::localtime(std::time(nullptr)));
+			//	return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H:%M:%S}]"),
+			//	                   fmt::gmtime(std::time(nullptr)));
+			const auto now = fmt::gmtime(
+				std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
+			const auto years = 1900 + now.tm_year;
+			const auto months = 1 + now.tm_mon;
+			return fmt::format(FMT_COMPILE("[{:#04}-{:#02}-{:#02}|{:#02}:{:#02}:{:#02}]"),
+							   years,
+							   months,
+							   now.tm_mday,
+							   now.tm_hour,
+							   now.tm_min,
+							   now.tm_sec);
 		}
 
 		static inline auto
@@ -210,12 +128,15 @@ namespace hyperion {
 		format_entry(Option<usize> thread_id, // NOLINT(bugprone-exception-escape)
 					 fmt::format_string<Args...>&& format_string,
 					 Args&&... args) noexcept -> Entry {
+			using namespace std::string_literals;
+
 			HYPERION_PROFILE_FUNCTION();
-			const auto timestamp = create_time_stamp();
-			const auto entry = fmt::format(format_string, std::forward<Args>(args)...);
-			const auto id = thread_id.is_some() ?
+
+			[[maybe_unused]] const auto timestamp = create_time_stamp();
+			const auto entry = fmt::format(std::move(format_string), std::forward<Args>(args)...);
+			const auto tid = thread_id.is_some() ?
 								thread_id.unwrap() :
-								  std::hash<std::thread::id>()(std::this_thread::get_id());
+								std::hash<std::thread::id>()(std::this_thread::get_id());
 
 			std::string log_type;
 			if constexpr(Level == LogLevel::MESSAGE) {
@@ -233,11 +154,15 @@ namespace hyperion {
 			else if constexpr(Level == LogLevel::ERROR) {
 				log_type = "ERROR"s;
 			}
-			return make_entry<entry_level_t<Level>>(FMT_COMPILE("{0}  [Thread ID: {1}] [{2}]: {3}"),
+			return make_entry<entry_level_t<Level>>(FMT_COMPILE("{0} [Thread ID: {1}] [{2}]: {3}"),
 													timestamp,
-													id,
+													tid,
 													log_type,
 													entry);
+			//	return make_entry<entry_level_t<Level>>(FMT_COMPILE("[Thread ID: {0}] [{1}]: {2}"),
+			//	                                        id,
+			//	                                        log_type,
+			//	                                        entry);
 		}
 		IGNORE_UNUSED_TEMPLATES_STOP
 
@@ -247,10 +172,11 @@ namespace hyperion {
 				 usize QueueSize = DefaultLogParameters::queue_size>
 		class LogBase;
 
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy>
-		class LogBase<MinimumLevel, LogThreadingPolicy::SingleThreaded, AsyncPolicy> {
+		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
+		class LogBase<MinimumLevel, LogThreadingPolicy::SingleThreaded, AsyncPolicy, QueueSize> {
 		  public:
-			static constexpr auto THREADING_POLICY = LogThreadingPolicy::SingleThreaded;
+			[[maybe_unused]] static constexpr auto THREADING_POLICY
+				= LogThreadingPolicy::SingleThreaded;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 
@@ -271,8 +197,8 @@ namespace hyperion {
 														 std::move(format_string),
 														 std::forward<Args>(args)...);
 
-				std::for_each(m_sinks.begin(), m_sinks.end(), [&](Sink& sink) noexcept -> void {
-					sink.sink(message);
+				std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
+					sink->sink(message);
 				});
 			}
 
@@ -283,7 +209,7 @@ namespace hyperion {
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
-			inline auto flush() const noexcept -> void {
+			[[maybe_unused]] inline auto flush() const noexcept -> void {
 				// intentionally does nothing
 			}
 
@@ -300,7 +226,8 @@ namespace hyperion {
 					  AsyncPolicy,
 					  QueueSize> {
 		  public:
-			static constexpr auto THREADING_POLICY = LogThreadingPolicy::SingleThreadedAsync;
+			[[maybe_unused]] static constexpr auto THREADING_POLICY
+				= LogThreadingPolicy::SingleThreadedAsync;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 			static constexpr usize QUEUE_SIZE = QueueSize;
@@ -310,50 +237,39 @@ namespace hyperion {
 			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)), m_queue() {
 #if HYPERION_HAS_JTHREAD
 				m_logging_thread = detail::thread(
-					[&](const std::stop_token& token) { message_thread_function(token); });
+					[this](const std::stop_token& token) { message_thread_function(token); });
 #else
-				m_logging_thread = detail::thread([&]() { message_thread_function(); });
+				m_logging_thread = detail::thread([this]() { message_thread_function(); });
 #endif
 			}
 			LogBase(const LogBase&) = delete;
-			LogBase(LogBase&& logger) noexcept {
-				std::atomic_thread_fence(std::memory_order_acquire);
-				logger.request_thread_stop();
-				logger.m_logging_thread.join();
-				// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-				m_sinks = std::move(logger.m_sinks);
-				// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-				m_queue = std::move(logger.m_queue);
+			LogBase(LogBase&&) = delete;
 #if HYPERION_HAS_JTHREAD
-				m_logging_thread = detail::thread(
-					[&](const std::stop_token& token) { message_thread_function(token); });
+			~LogBase() noexcept = default;
 #else
-				m_logging_thread = detail::thread([&]() { message_thread_function(); });
-#endif
-				std::atomic_thread_fence(std::memory_order_release);
-			}
 			~LogBase() noexcept {
 				request_thread_stop();
 				m_logging_thread.join();
 			}
+#endif
 
 			template<LogLevel Level, typename... Args>
-			inline auto log(Option<usize> thread_id,
-							fmt::format_string<Args...>&& format_string,
-							Args&&... args) noexcept {
+			[[maybe_unused]] inline auto log(Option<usize> thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept {
 				HYPERION_PROFILE_FUNCTION();
 				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 					auto message = format_entry<Level>(std::move(thread_id),
 													   std::move(format_string),
 													   std::forward<Args>(args)...);
 					if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-						return log_dropping(std::move(message));
-					}
-					else if constexpr(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
-						log_flushing(std::move(message));
+						return m_queue.push(std::move(message))
+							.map_err([]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
 					}
 					else {
-						log_overwriting(std::move(message));
+						m_queue.push(std::move(message));
 					}
 				}
 				else {
@@ -368,81 +284,37 @@ namespace hyperion {
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
-			inline auto flush() noexcept -> void {
-				m_flush.store(true);
-			}
-
 			auto operator=(const LogBase&) -> LogBase& = delete;
-			auto operator=(LogBase&& logger) noexcept -> LogBase& {
-				std::atomic_thread_fence(std::memory_order_acquire);
-				if(this == &logger) {
-					return *this;
-				}
-
-				logger.request_thread_stop();
-				logger.m_logging_thread.join();
-				m_sinks = std::move(logger.m_sinks);
-				m_queue = std::move(logger.m_queue);
-
-				std::atomic_thread_fence(std::memory_order_release);
-				return *this;
-			}
+			auto operator=(LogBase&&) -> LogBase& = delete;
 
 		  private:
 			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
-				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull
-							 || ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull)
-				{
+				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
 					return QueuePolicy::ErrWhenFull;
 				}
-				else {
+				else if constexpr(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
 					return QueuePolicy::OverwriteWhenFull;
 				}
+				else {
+					return QueuePolicy::BlockWhenFull;
+				}
 			}
+
 			using Queue = LoggingQueue<Entry, get_queue_policy(), QUEUE_SIZE>;
 
 			Sinks m_sinks;
 			Queue m_queue;
-			std::atomic_bool m_flush = false;
+
 #if !HYPERION_HAS_JTHREAD
 			std::atomic_bool m_exit_flag = false;
 #endif
 			detail::thread m_logging_thread;
 
+#if !HYPERION_HAS_JTHREAD
 			inline auto request_thread_stop() noexcept -> void {
-#if HYPERION_HAS_JTHREAD
-				ignore(m_logging_thread.request_stop());
-#else
 				m_exit_flag.store(true);
+			}
 #endif
-			}
-
-			inline auto log_dropping(Entry&& message) noexcept -> Result<bool, LoggerError>
-			requires(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				return m_queue.push(std::move(message))
-					.map_err([]([[maybe_unused]] const QueueError& error) {
-						return LoggerError(LoggerErrorCategory::QueueingError);
-					});
-			}
-
-			inline auto log_overwriting(Entry&& message) noexcept
-				-> void requires(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				m_queue.push(std::move(message));
-			}
-
-			inline auto log_flushing(Entry&& message) noexcept
-				-> void requires(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				if(m_queue.full()) {
-					m_flush.store(true);
-				}
-
-				const auto& mess = message;
-				while(!m_queue.push(mess)) {
-				}
-			}
 
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
 				HYPERION_PROFILE_FUNCTION();
@@ -459,56 +331,29 @@ namespace hyperion {
 				while(!m_exit_flag.load()) {
 #endif
 
-					auto res = try_read();
-					if(res) {
-						const auto message = res.unwrap();
-						std::atomic_thread_fence(std::memory_order_acquire);
-						std::for_each(m_sinks.begin(),
-									  m_sinks.end(),
-									  [&](Sink& sink) noexcept -> void { sink.sink(message); });
-						std::atomic_thread_fence(std::memory_order_release);
-					}
-
-					if(m_flush.load()) {
-						m_flush.store(false);
-						do {
-							auto res2 = m_queue.read();
-							if(res2) {
-								const auto message = res2.unwrap();
-								std::atomic_thread_fence(std::memory_order_acquire);
-								std::for_each(
-									m_sinks.begin(),
-									m_sinks.end(),
-									[&](Sink& sink) noexcept -> void { sink.sink(message); });
-								std::atomic_thread_fence(std::memory_order_release);
-							}
-							else {
-								break;
-							}
-						} while(true);
-					}
+					ignore(try_read().and_then([this](const auto& message) noexcept -> None {
+						std::ranges::for_each(m_sinks,
+											  [&message](const auto& sink) noexcept
+											  -> void { sink->sink(message); });
+						return {};
+					}));
 				}
-				do {
-					auto res2 = m_queue.read();
-					if(res2) {
-						const auto message = res2.unwrap();
-						std::atomic_thread_fence(std::memory_order_acquire);
-						std::for_each(m_sinks.begin(),
-									  m_sinks.end(),
-									  [&](Sink& sink) noexcept -> void { sink.sink(message); });
-						std::atomic_thread_fence(std::memory_order_release);
-					}
-					else {
-						break;
-					}
-				} while(true);
+				while(try_read().and_then([this](const auto& message) noexcept -> None {
+					std::ranges::for_each(m_sinks,
+										  [&message](const auto& sink) noexcept
+										  -> void { sink->sink(message); });
+					return {};
+				})) {
+					// loop until we flush the queue
+				}
 			}
 		};
 
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy>
-		class LogBase<MinimumLevel, LogThreadingPolicy::MultiThreaded, AsyncPolicy> {
+		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
+		class LogBase<MinimumLevel, LogThreadingPolicy::MultiThreaded, AsyncPolicy, QueueSize> {
 		  public:
-			static constexpr auto THREADING_POLICY = LogThreadingPolicy::MultiThreaded;
+			[[maybe_unused]] static constexpr auto THREADING_POLICY
+				= LogThreadingPolicy::MultiThreaded;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 
@@ -531,9 +376,9 @@ namespace hyperion {
 
 				{
 					auto sinks_guard = m_sinks.write();
-					std::for_each(sinks_guard->begin(),
-								  sinks_guard->end(),
-								  [&](Sink& sink) noexcept -> void { sink.sink(message); });
+					std::ranges::for_each(*sinks_guard,
+										  [&message](const auto& sink) noexcept
+										  -> void { sink->sink(message); });
 				}
 			}
 
@@ -544,7 +389,8 @@ namespace hyperion {
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
-			inline auto flush() const noexcept -> void {
+			[[maybe_unused]] [[maybe_unused]] [[maybe_unused]] inline auto
+			flush() const noexcept -> void {
 				// intentionally does nothing
 			}
 
@@ -561,7 +407,8 @@ namespace hyperion {
 					  AsyncPolicy,
 					  QueueSize> {
 		  public:
-			static constexpr auto THREADING_POLICY = LogThreadingPolicy::MultiThreadedAsync;
+			[[maybe_unused]] static constexpr auto THREADING_POLICY
+				= LogThreadingPolicy::MultiThreadedAsync;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 			static constexpr usize QUEUE_SIZE = QueueSize;
@@ -571,50 +418,39 @@ namespace hyperion {
 			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)), m_queue() {
 #if HYPERION_HAS_JTHREAD
 				m_logging_thread = detail::thread(
-					[&](const std::stop_token& token) { message_thread_function(token); });
+					[this](const std::stop_token& token) { message_thread_function(token); });
 #else
-				m_logging_thread = detail::thread([&]() { message_thread_function(); });
+				m_logging_thread = detail::thread([this]() { message_thread_function(); });
 #endif
 			}
 			LogBase(const LogBase&) = delete;
-			LogBase(LogBase&& logger) noexcept {
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				logger.request_thread_stop();
-				logger.m_logging_thread.join();
-				// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-				m_sinks = std::move(logger.m_sinks);
-				// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-				m_queue = std::move(logger.m_queue);
+			LogBase(LogBase&&) = delete;
 #if HYPERION_HAS_JTHREAD
-				m_logging_thread = detail::thread(
-					[&](const std::stop_token& token) { message_thread_function(token); });
+			~LogBase() noexcept = default;
 #else
-				m_logging_thread = detail::thread([&]() { message_thread_function(); });
-#endif
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-			}
 			~LogBase() noexcept {
 				request_thread_stop();
 				m_logging_thread.join();
 			}
+#endif
 
 			template<LogLevel Level, typename... Args>
-			inline auto log(Option<usize> thread_id,
-							fmt::format_string<Args...>&& format_string,
-							Args&&... args) noexcept {
+			[[maybe_unused]] inline auto log(Option<usize> thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept {
 				HYPERION_PROFILE_FUNCTION();
 				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
 					auto message = format_entry<Level>(std::move(thread_id),
 													   std::move(format_string),
 													   std::forward<Args>(args)...);
 					if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-						return log_dropping(std::move(message));
-					}
-					else if constexpr(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
-						log_flushing(std::move(message));
+						return m_queue.push(std::move(message))
+									   .map_err([]([[maybe_unused]] const QueueError& error) {
+										   return LoggerError(LoggerErrorCategory::QueueingError);
+									   });
 					}
 					else {
-						log_overwriting(std::move(message));
+						m_queue.push(std::move(message));
 					}
 				}
 				else {
@@ -629,95 +465,41 @@ namespace hyperion {
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
-			inline auto flush() noexcept -> void {
-				m_flush.store(true);
-			}
-
 			auto operator=(const LogBase&) -> LogBase& = delete;
-			auto operator=(LogBase&& logger) noexcept -> LogBase& {
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				if(this == &logger) {
-					return *this;
-				}
-
-				logger.request_thread_stop();
-				logger.m_logging_thread.join();
-				m_sinks = std::move(logger.m_sinks);
-				m_queue = std::move(logger.m_queue);
-
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				return *this;
-			}
+			auto operator=(LogBase&& logger) -> LogBase& = delete;
 
 		  private:
 			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
-				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull
-							 || ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull)
-				{
+				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
 					return QueuePolicy::ErrWhenFull;
 				}
-				else {
+				else if constexpr(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
 					return QueuePolicy::OverwriteWhenFull;
 				}
+				else {
+					return QueuePolicy::BlockWhenFull;
+				}
 			}
+
 			using Queue = LoggingQueue<Entry, get_queue_policy(), QUEUE_SIZE>;
 
 			Sinks m_sinks;
 			Queue m_queue;
-			std::atomic_bool m_flush = false;
+
 #if !HYPERION_HAS_JTHREAD
 			std::atomic_bool m_exit_flag = false;
 #endif
 			detail::thread m_logging_thread;
-
+#if !HYPERION_HAS_JTHREAD
 			inline auto request_thread_stop() noexcept -> void {
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-#if HYPERION_HAS_JTHREAD
-				ignore(m_logging_thread.request_stop());
-#else
 				m_exit_flag.store(true);
+			}
 #endif
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-			}
-
-			inline auto log_dropping(Entry&& message) noexcept -> Result<bool, LoggerError>
-			requires(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				auto res = m_queue.push(std::move(message))
-							   .map_err([]([[maybe_unused]] const QueueError& error) {
-								   return LoggerError(LoggerErrorCategory::QueueingError);
-							   });
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				return res;
-			}
-
-			inline auto log_overwriting(Entry&& message) noexcept
-				-> void requires(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				m_queue.push(std::move(message));
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-			}
-
-			inline auto log_flushing(Entry&& message) noexcept
-				-> void requires(ASYNC_POLICY == LogAsyncPolicy::FlushWhenFull) {
-				HYPERION_PROFILE_FUNCTION();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				if(m_queue.full()) {
-					m_flush.store(true);
-				}
-
-				const auto& mess = message;
-				while(!m_queue.push(mess)) {
-				}
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-			}
 
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
 				HYPERION_PROFILE_FUNCTION();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
-				return m_queue.read();
+				auto res = m_queue.read();
+				return res;
 			}
 
 #if HYPERION_HAS_JTHREAD
@@ -730,53 +512,23 @@ namespace hyperion {
 				while(!m_exit_flag.load()) {
 #endif
 
-					auto res = try_read();
-					if(res) {
-						std::atomic_thread_fence(std::memory_order_seq_cst);
-						const auto message = res.unwrap();
-						std::for_each(m_sinks.begin(),
-									  m_sinks.end(),
-									  [&](Sink& sink) noexcept -> void { sink.sink(message); });
-						std::atomic_thread_fence(std::memory_order_seq_cst);
-					}
-
-					if(m_flush.load()) {
-						m_flush.store(false);
-						do {
-							std::atomic_thread_fence(std::memory_order_seq_cst);
-							auto res2 = m_queue.read();
-							if(res2) {
-								const auto message = res2.unwrap();
-								std::for_each(
-									m_sinks.begin(),
-									m_sinks.end(),
-									[&](Sink& sink) noexcept -> void { sink.sink(message); });
-								std::atomic_thread_fence(std::memory_order_seq_cst);
-							}
-							else {
-								std::atomic_thread_fence(std::memory_order_seq_cst);
-								break;
-							}
-						} while(true);
-					}
+					ignore(try_read().and_then([this](const auto& message) noexcept -> None {
+						std::ranges::for_each(m_sinks,
+											  [&message](const auto& sink) noexcept
+											  -> void { sink->sink(message); });
+						return {};
+					}));
 				}
-				do {
-					std::atomic_thread_fence(std::memory_order_seq_cst);
-					auto res2 = m_queue.read();
-					if(res2) {
-						const auto message = res2.unwrap();
-						std::for_each(m_sinks.begin(),
-									  m_sinks.end(),
-									  [&](Sink& sink) noexcept -> void { sink.sink(message); });
-						std::atomic_thread_fence(std::memory_order_seq_cst);
-					}
-					else {
-						std::atomic_thread_fence(std::memory_order_seq_cst);
-						break;
-					}
-				} while(true);
+				while(try_read().and_then([this](const auto& message) noexcept -> None {
+				  std::ranges::for_each(m_sinks,
+				                        [&message](const auto& sink) noexcept
+					                        -> void { sink->sink(message); });
+				  return {};
+				})) {
+					// loop until we flush the queue
+				}
 			}
-		};
+			};
 	} // namespace detail
 
 	/// @brief Hyperion logging type for formatted logging.
@@ -789,10 +541,11 @@ namespace hyperion {
 										  LogParameters::async_policy,
 										  LogParameters::queue_size> {
 	  public:
-		static constexpr LogThreadingPolicy THREADING_POLICY = LogParameters::threading_policy;
-		static constexpr LogAsyncPolicy ASYNC_POLICY = LogParameters::async_policy;
-		static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
-		static constexpr usize QUEUE_SIZE = LogParameters::queue_size;
+		[[maybe_unused]] static constexpr LogThreadingPolicy THREADING_POLICY
+			= LogParameters::threading_policy;
+		[[maybe_unused]] static constexpr LogAsyncPolicy ASYNC_POLICY = LogParameters::async_policy;
+		[[maybe_unused]] static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
+		[[maybe_unused]] static constexpr usize QUEUE_SIZE = LogParameters::queue_size;
 		using LogBase = detail::LogBase<LogParameters::minimum_level,
 										LogParameters::threading_policy,
 										LogParameters::async_policy,
@@ -900,8 +653,9 @@ namespace hyperion {
 			return Ok(GLOBAL_LOGGER.get());
 		}
 
-		static inline auto set_global_logger(Logger<Parameters>&& logger) noexcept -> void {
-			GLOBAL_LOGGER = make_unique<Logger<Parameters>>(std::move(logger));
+		[[maybe_unused]] static inline auto
+		set_global_logger(hyperion::UniquePtr<Logger<Parameters>>&& logger) noexcept -> void {
+			GLOBAL_LOGGER = std::move(logger);
 		}
 
 		template<typename... Args>
@@ -983,63 +737,67 @@ namespace hyperion {
 	UniquePtr<Logger<GlobalLog::Parameters>> GlobalLog::GLOBAL_LOGGER = nullptr; // NOLINT
 
 	template<typename... Args>
-	inline auto MESSAGE(const Option<usize>& thread_id,
-						fmt::format_string<Args...>&& format_string,
-						Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto MESSAGE(const Option<usize>& thread_id,
+												fmt::format_string<Args...>&& format_string,
+												Args&&... args) noexcept {
 		return GlobalLog::MESSAGE(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	static inline auto
+	[[maybe_unused]] static inline auto
 	MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	static inline auto TRACE(const Option<usize>& thread_id,
-							 fmt::format_string<Args...>&& format_string,
-							 Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto TRACE(const Option<usize>& thread_id,
+											  fmt::format_string<Args...>&& format_string,
+											  Args&&... args) noexcept {
 		return GlobalLog::TRACE(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	static inline auto TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto
+	TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto INFO(const Option<usize>& thread_id,
-					 fmt::format_string<Args...>&& format_string,
-					 Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto INFO(const Option<usize>& thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept {
 		return GlobalLog::INFO(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto
+	INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::INFO(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto WARN(const Option<usize>& thread_id,
-					 fmt::format_string<Args...>&& format_string,
-					 Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto WARN(const Option<usize>& thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept {
 		return GlobalLog::WARN(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto
+	WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::WARN(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto ERROR(const Option<usize>& thread_id,
-					  fmt::format_string<Args...>&& format_string,
-					  Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto ERROR(const Option<usize>& thread_id,
+											  fmt::format_string<Args...>&& format_string,
+											  Args&&... args) noexcept {
 		return GlobalLog::ERROR(thread_id, std::move(format_string), std::forward<Args>(args)...);
 	}
 
 	template<typename... Args>
-	inline auto ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+	[[maybe_unused]] static inline auto
+	ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
 		return GlobalLog::ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
 	}
 
