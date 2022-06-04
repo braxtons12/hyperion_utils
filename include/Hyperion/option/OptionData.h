@@ -30,7 +30,6 @@
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/option/None.h>
 #include <functional>
-#include <variant>
 
 namespace hyperion::option {
 	IGNORE_PADDING_START
@@ -42,7 +41,7 @@ namespace hyperion::option {
 	struct OptionData;
 
 	template<concepts::NotReference T>
-	struct OptionData<T> : private std::variant<T, None> {
+	struct OptionData<T> {
 		using type = T;
 		using reference = std::add_lvalue_reference_t<type>;
 		using const_reference = std::add_lvalue_reference_t<std::add_const_t<type>>;
@@ -50,20 +49,29 @@ namespace hyperion::option {
 		using extracted = rvalue_reference;
 		using pointer = std::conditional_t<concepts::Pointer<T>, T, std::add_pointer_t<T>>;
 		using pointer_to_const = std::add_pointer_t<std::add_const_t<std::remove_pointer_t<type>>>;
-		using rep = std::variant<T, None>;
 
-		static constexpr auto T_INDEX = 0_usize;
 		using storage_type = T;
 
-		constexpr OptionData() noexcept : rep(None()) {
+		union {
+			storage_type m_some;
+			None m_none;
+		};
+
+		bool m_is_some = false;
+
+		constexpr OptionData() noexcept : m_none() {
 		}
 		explicit constexpr OptionData(const_reference t) noexcept(
-			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
-			: rep(t) {
+			concepts::NoexceptCopyConstructible<storage_type>)
+		requires concepts::CopyConstructible<storage_type>
+		: m_some(t),
+		  m_is_some(true) {
 		}
 		explicit constexpr OptionData(rvalue_reference t) noexcept(
-			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
-			: rep(std::move(t)) {
+			concepts::NoexceptMoveConstructible<storage_type>)
+		requires concepts::MoveConstructible<storage_type>
+		: m_some(std::move(t)),
+		  m_is_some(true) {
 		}
 		/// @brief Constructs an `OptionData` by constructing the `T` in place in it
 		/// @tparam Args - The types of the arguments to pass to `T`'s constructor
@@ -72,89 +80,216 @@ namespace hyperion::option {
 		requires concepts::ConstructibleFrom<T, Args...>
 		explicit constexpr OptionData(Args&&... args) noexcept(
 			concepts::NoexceptConstructibleFrom<T, Args...>)
-			: rep(std::forward<Args>(args)...) {
+			: m_some(std::forward<Args>(args)...), m_is_some(true) {
 		}
-		explicit constexpr OptionData(const None& n) noexcept : rep(n) {
+		explicit constexpr OptionData(const None& n) noexcept : m_none(n) {
 		}
-		explicit constexpr OptionData(None&& n) noexcept : rep(n) {
+		explicit constexpr OptionData(None&& n) noexcept : m_none(n) {
 		}
 		constexpr OptionData(const OptionData& data) noexcept(
-			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
-			: rep(static_cast<const rep&>(data)) {
+			concepts::NoexceptCopyConstructible<storage_type>)
+		requires concepts::CopyConstructible<storage_type>
+		{
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), data.m_some);
+				m_is_some = true;
+			}
 		}
 		constexpr OptionData(OptionData&& data) noexcept(
-			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
-			: rep(static_cast<rep&&>(data)) {
+			concepts::NoexceptMoveConstructible<storage_type>)
+		requires concepts::MoveConstructible<storage_type>
+		{
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), std::move(data.m_some));
+				m_is_some = true;
+				data.m_is_some = false;
+			}
 		}
-		constexpr ~OptionData() noexcept(concepts::NoexceptDestructible<T>) = default;
+		template<typename U>
+		requires concepts::Same<storage_type, std::remove_const_t<std::remove_reference_t<U>>>
+		constexpr OptionData(const OptionData<U>& data) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<storage_type>)
+		requires concepts::CopyConstructible<storage_type> && concepts::Reference<U>
+		{
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), data.get());
+				m_is_some = true;
+			}
+		}
+		constexpr ~OptionData() noexcept(concepts::NoexceptDestructible<T>) {
+			if constexpr(!std::is_trivially_destructible_v<T>) {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+			}
+		}
 
 		/// @brief Returns whether this currently contains an active `T`
 		[[nodiscard]] inline constexpr auto has_value() const noexcept -> bool {
-			return this->index() == T_INDEX;
+			return m_is_some;
 		}
 
 		/// @brief Returns a const reference to the contained data
 		[[nodiscard]] inline constexpr auto get() const noexcept -> const_reference {
-			return std::get<T_INDEX>(*this);
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return m_some;
 		}
 
 		/// @brief Returns a reference to the contained data
 		[[nodiscard]] inline constexpr auto get() noexcept -> reference {
-			return std::get<T_INDEX>(*this);
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return m_some;
 		}
 
 		/// @brief Extracts the contained data out of this
-		[[nodiscard]] inline constexpr auto extract() noexcept(concepts::NoexceptMovable<T>)
-			-> extracted requires concepts::Movable<T> {
-			return std::get<T_INDEX>(std::move(*this));
+		[[nodiscard]] inline constexpr auto
+		extract() noexcept(concepts::NoexceptMovable<storage_type>) -> type
+		requires concepts::Movable<storage_type>
+		{
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return std::move(m_some);
 		}
 
 		constexpr auto
-		operator=(const OptionData& data) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> OptionData& requires concepts::CopyAssignable<T> {
+		operator=(const OptionData& data) noexcept(concepts::NoexceptCopyable<storage_type>)
+			-> OptionData&
+		requires concepts::Copyable<storage_type>
+		{
 			if(this == &data) {
 				return *this;
 			}
 
-			rep::operator=(static_cast<const rep&>(data));
+			if(data.m_is_some) {
+				*this = data.m_some;
+			}
+			else if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
 			return *this;
 		}
-		constexpr auto operator=(OptionData&& data) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> OptionData& requires concepts::MoveAssignable<T> {
+		// clang-format off
+
+
+		template<typename U>
+		requires concepts::Same<storage_type, std::remove_reference_t<U>>
+		constexpr auto operator=(const OptionData& data)
+			noexcept(concepts::NoexceptCopyable<storage_type>)
+			-> OptionData&
+			requires concepts::Copyable<storage_type> && concepts::Reference<U>
+		{
+			// clang-format on
+
+			if(data.m_is_some) {
+				*this = data.get();
+			}
+			else if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
+			return *this;
+		}
+		constexpr auto
+		operator=(OptionData&& data) noexcept(concepts::NoexceptMovable<storage_type>)
+			-> OptionData&
+		requires concepts::Movable<storage_type>
+		{
 			if(this == &data) {
 				return *this;
 			}
 
-			rep::operator=(static_cast<rep&&>(data));
+			if(data.m_is_some) {
+				data.m_is_some = false;
+				*this = std::move(data.m_some);
+			}
+			else if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
 			return *this;
 		}
-		constexpr auto operator=(const_reference t) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> OptionData& requires concepts::CopyAssignable<T> {
-			rep::operator=(t);
-			return *this;
-		}
-		constexpr auto operator=(rvalue_reference t) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> OptionData& requires concepts::MoveAssignable<T> {
-			if constexpr(std::is_trivially_copy_assignable_v<T>) {
-				rep::operator=(t);
+		constexpr auto
+		operator=(const_reference t) noexcept(concepts::NoexceptCopyable<storage_type>)
+			-> OptionData&
+		requires concepts::Copyable<storage_type>
+		{
+			if(m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				m_some = t;
 			}
 			else {
-				rep::operator=(std::move(t));
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), t);
+				m_is_some = true;
 			}
 			return *this;
 		}
-		constexpr auto operator=(const None& n) noexcept -> OptionData& {
-			rep::operator=(n);
+		constexpr auto
+		operator=(rvalue_reference t) noexcept(concepts::NoexceptMovable<storage_type>)
+			-> OptionData&
+		requires concepts::Movable<storage_type>
+		{
+			if constexpr(std::is_trivially_copy_assignable_v<T>) {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					m_some = t;
+				}
+				else {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::construct_at(std::addressof(m_some), t);
+					m_is_some = true;
+				}
+			}
+			else {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					m_some = std::move(t);
+				}
+				else {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::construct_at(std::addressof(m_some), std::move(t));
+					m_is_some = true;
+				}
+			}
 			return *this;
 		}
-		constexpr auto operator=(None&& n) noexcept -> OptionData& {
-			rep::operator=(n);
+		constexpr auto operator=([[maybe_unused]] const None& n) noexcept -> OptionData& {
+			if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
+			return *this;
+		}
+		constexpr auto operator=([[maybe_unused]] None&& n) noexcept -> OptionData& {
+			if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
 			return *this;
 		}
 	};
 
 	template<concepts::Reference T>
-	struct OptionData<T> : std::variant<std::reference_wrapper<std::remove_reference_t<T>>, None> {
+	struct OptionData<T> {
 		using type = std::remove_reference_t<T>;
 		using reference = std::add_lvalue_reference_t<std::remove_const_t<type>>;
 		using const_reference = std::add_lvalue_reference_t<std::add_const_t<type>>;
@@ -163,43 +298,72 @@ namespace hyperion::option {
 		using extracted = rvalue_reference;
 		using pointer = std::add_pointer_t<std::remove_const_t<type>>;
 		using pointer_to_const = std::add_pointer_t<std::add_const_t<type>>;
-		using rep = std::variant<std::reference_wrapper<type>, None>;
 
-		static constexpr auto T_INDEX = 0_usize;
 		using storage_type = std::reference_wrapper<type>;
 
-		constexpr OptionData() noexcept : rep(None()) {
+		union {
+			storage_type m_some;
+			None m_none;
+		};
+
+		bool m_is_some = false;
+		;
+
+		constexpr OptionData() noexcept : m_none() {
 		}
-		explicit constexpr OptionData(const_reference t) noexcept requires std::is_const_v<T>
-			: rep(ref(t)) {
+		explicit constexpr OptionData(const_reference t) noexcept
+		requires std::is_const_v<std::remove_reference_t<T>>
+		: m_some(ref(t)),
+		  m_is_some(true) {
 		}
-		explicit constexpr OptionData(reference t) noexcept : rep(ref(t)) {
+		explicit constexpr OptionData(reference t) noexcept : m_some(ref(t)), m_is_some(true) {
 		}
-		explicit constexpr OptionData(None n) noexcept : rep(n) {
+		explicit constexpr OptionData(None n) noexcept : m_none(n) {
 		}
-		constexpr OptionData(const OptionData& data) noexcept : rep(static_cast<const rep&>(data)) {
+		constexpr OptionData(const OptionData& data) noexcept {
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), data.m_some);
+				m_is_some = true;
+			}
 		}
-		constexpr OptionData(OptionData&& data) noexcept : rep(static_cast<rep&&>(data)) {
+		constexpr OptionData(OptionData&& data) noexcept {
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), std::move(data.m_some));
+				m_is_some = true;
+				data.m_is_some = false;
+			}
 		}
-		constexpr ~OptionData() noexcept = default;
+		constexpr ~OptionData() noexcept {
+			if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+			}
+		}
 
 		[[nodiscard]] inline constexpr auto has_value() const noexcept -> bool {
-			return this->index() == T_INDEX;
+			return m_is_some;
 		}
 
 		/// @brief Returns a const reference to the contained data
 		[[nodiscard]] inline constexpr auto get() const noexcept -> const_reference {
-			return std::get<T_INDEX>(*this).get();
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return m_some.get();
 		}
 
 		/// @brief Returns a reference to the contained data
-		[[nodiscard]] inline constexpr auto get() noexcept -> storage_type& {
-			return std::get<T_INDEX>(*this);
+		[[nodiscard]] inline constexpr auto get() noexcept -> reference {
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return m_some.get();
 		}
 
 		/// @brief Extracts the contained data out of this
 		[[nodiscard]] inline constexpr auto extract() noexcept -> extracted {
-			return std::get<T_INDEX>(std::move(*this)).get();
+			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+			return std::move(m_some).get();
 		}
 
 		constexpr auto operator=(const OptionData& data) noexcept -> OptionData& {
@@ -207,7 +371,18 @@ namespace hyperion::option {
 				return *this;
 			}
 
-			rep::operator=(static_cast<const rep&>(data));
+			if(data.m_is_some) {
+				*this = data.m_some;
+			}
+			else {
+				if(m_is_some) {
+					if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+						std::destroy_at(std::addressof(m_some));
+					}
+					m_is_some = false;
+				}
+			}
 			return *this;
 		}
 		constexpr auto operator=(OptionData&& data) noexcept -> OptionData& {
@@ -215,36 +390,92 @@ namespace hyperion::option {
 				return *this;
 			}
 
-			rep::operator=(static_cast<rep&&>(data));
-			return *this;
-		}
-		constexpr auto operator=(const_reference t) noexcept(concepts::NoexceptCopyAssignable<T>)
-		-> OptionData& requires concepts::CopyAssignable<T> {
-			rep::operator=(ref(t));
-			return *this;
-		}
-		constexpr auto operator=(rvalue_reference t) noexcept(concepts::NoexceptMoveAssignable<T>)
-		-> OptionData& requires concepts::MoveAssignable<T> {
-			if constexpr(std::is_trivially_copy_assignable_v<T>) {
-				rep::operator=(ref(t));
+			if(data.m_is_some) {
+				data.m_is_some = false;
+				*this = std::move(data.m_some);
+				m_is_some = true;
 			}
 			else {
-				rep::operator=(std::move(t));
+				if(m_is_some) {
+					m_is_some = false;
+					if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+						std::destroy_at(std::addressof(m_some));
+					}
+				}
 			}
 			return *this;
 		}
-		constexpr auto operator=(const None& n) noexcept -> OptionData& {
-			rep::operator=(n);
+
+		constexpr auto
+		operator=(const_reference t) noexcept(concepts::NoexceptCopyable<storage_type>)
+			-> OptionData&
+		requires concepts::Copyable<storage_type>
+		{
+			if(m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				m_some = ref(t);
+			}
+			else {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), ref(t));
+				m_is_some = true;
+			}
 			return *this;
 		}
-		constexpr auto operator=(None&& n) noexcept -> OptionData& {
-			rep::operator=(n);
+		constexpr auto
+		operator=(rvalue_reference t) noexcept(concepts::NoexceptMovable<storage_type>)
+			-> OptionData&
+		requires concepts::Movable<storage_type>
+		{
+			if constexpr(std::is_trivially_copy_assignable_v<T>) {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					m_some = ref(t);
+				}
+				else {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::construct_at(std::addressof(m_some), ref(t));
+					m_is_some = true;
+				}
+			}
+			else {
+				if(m_is_some) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					m_some = std::move(t);
+				}
+				else {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::construct_at(std::addressof(m_some), std::move(t));
+					m_is_some = true;
+				}
+			}
+			return *this;
+		}
+		constexpr auto operator=([[maybe_unused]] const None& n) noexcept -> OptionData& {
+			if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
+			return *this;
+		}
+		constexpr auto operator=([[maybe_unused]] None&& n) noexcept -> OptionData& {
+			if(m_is_some) {
+				if constexpr(!std::is_trivially_destructible_v<storage_type>) {
+					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+					std::destroy_at(std::addressof(m_some));
+				}
+				m_is_some = false;
+			}
 			return *this;
 		}
 
 	  private:
 		template<typename U>
-		[[nodiscard]] inline static constexpr auto ref(U&& u) noexcept {
+		[[nodiscard]] static inline constexpr auto ref(U&& u) noexcept {
 			if constexpr(std::is_const_v<T>) {
 				return std::cref(std::forward<U>(u));
 			}
