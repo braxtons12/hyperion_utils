@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Logging configuration types
 /// @version 0.1
-/// @date 2021-11-02
+/// @date 2022-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -87,7 +87,7 @@ namespace hyperion {
 	/// is called, if the queue is full entries not yet logged to disk will be overwritten by new
 	/// entries. Useful when data-preservation is not necessary and throughput and latency are more
 	/// important.
-	/// - `FlushWhenFull`: The logger will block the calling thread when the logging queue is full
+	/// - `BlockWhenFull`: The logger will block the calling thread when the logging queue is full
 	/// until the queue is empty again. Useful when data-preservation is essential and throughput
 	/// and (particularly) latency are unimportant
 	/// @ingroup logging
@@ -95,7 +95,7 @@ namespace hyperion {
 	enum class LogAsyncPolicy : u8 {
 		DropWhenFull = 0,
 		OverwriteWhenFull,
-		FlushWhenFull
+		BlockWhenFull
 	};
 
 	/// @brief Configuration type for configuring a logger's threading and (potential) asynchronous
@@ -166,7 +166,7 @@ namespace hyperion {
 	/// @headerfile "Hyperion/logging/Config.h"
 	template<LoggerPolicyType PolicyType = DefaultLogPolicy,
 			 LoggerLevelType MinimumLevelType = DefaultLogLevel,
-			 usize QueueSize = 128> // NOLINT (magic numbers)
+			 usize QueueSize = 1024> // NOLINT (magic numbers)
 	struct LoggerParameters {
 		static constexpr auto threading_policy = PolicyType::threading_policy;
 		static constexpr auto async_policy = PolicyType::async_policy;
