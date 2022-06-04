@@ -3,10 +3,10 @@
 /// @brief This file includes a reader/writer lock type that manages access to a single instance of
 /// a type
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-06-04
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -91,8 +91,8 @@ namespace hyperion {
 		/// - `concepts::DefaultConstructible<T>`: The protected `T` must be default constructible
 		/// in order to default construct a `ReadWriteLock<T>`
 		/// @ingroup synchronization
-		ReadWriteLock() noexcept(
-			concepts::NoexceptDefaultConstructible<T>) requires concepts::DefaultConstructible<T>
+		ReadWriteLock() noexcept(concepts::NoexceptDefaultConstructible<T>)
+		requires concepts::DefaultConstructible<T>
 		= default;
 
 		/// @brief `ReadWriteLock<T>`s are not copyable
@@ -110,9 +110,10 @@ namespace hyperion {
 		/// - `concepts::MoveAssignable<T>`: The protected `T` must be move assignable in order to
 		/// move construct a `ReadWriteLock<T>`
 		/// @ingroup synchronization
-		ReadWriteLock(ReadWriteLock&& lock) noexcept(
-			concepts::NoexceptMoveAssignable<T>) requires concepts::MoveAssignable<T> {
-			auto l = std::unique_lock(lock.m_mutex);
+		ReadWriteLock(ReadWriteLock&& lock) noexcept(concepts::NoexceptMoveAssignable<T>)
+		requires concepts::MoveAssignable<T>
+		{
+			auto _lock = std::unique_lock(lock.m_mutex);
 			// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
 			m_data = std::move(lock.m_data);
 		}
@@ -125,9 +126,11 @@ namespace hyperion {
 		/// - `concepts::CopyConstructible<T>`: The protected `T` must be copy constructible in
 		/// order to construct a `ReadWriteLock<T>` initialized with a copy of the given `data`
 		/// @ingroup synchronization
-		explicit ReadWriteLock(const T& data) noexcept(
-			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
-			: m_data(data) {
+		ReadWriteLock(const T& data) // NOLINT(google-explicit-constructor,
+									 // hicpp-explicit-conversions)
+			noexcept(concepts::NoexceptCopyConstructible<T>)
+		requires concepts::CopyConstructible<T>
+		: m_data(data) {
 		}
 
 		/// @brief Constructs a `ReadWriteLock<T>` with the given initial data
@@ -138,9 +141,10 @@ namespace hyperion {
 		/// - `concepts::MoveConstructible<T>`: The protected `T` must be move constructible in
 		/// order to construct a `ReadWriteLock<T>` initialized by moving `data` into it
 		/// @ingroup synchronization
-		explicit ReadWriteLock(T&& data) noexcept(
-			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
-			: m_data(std::move(data)) {
+		ReadWriteLock(T&& data) // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
+			noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T>
+		: m_data(std::move(data)) {
 		}
 
 		~ReadWriteLock() noexcept(concepts::NoexceptDestructible<T>) = default;
@@ -150,6 +154,7 @@ namespace hyperion {
 		/// @return a `ReadLockGuard<T>` to the data
 		/// @ingroup synchronization
 		[[nodiscard]] inline auto read() const noexcept -> ReadLockGuard<T> {
+			// NOLINTNEXTLINE(google-readability-casting)
 			return ReadLockGuard<T>(std::shared_lock(m_mutex), m_data);
 		}
 
@@ -162,16 +167,15 @@ namespace hyperion {
 		/// @ingroup synchronization
 		[[nodiscard]] inline auto try_read() const noexcept -> Result<ReadLockGuard<T>> {
 			auto lock = std::shared_lock(m_mutex, std::defer_lock_t());
-			if(lock.try_lock()) {
-				return Ok(ReadLockGuard<T>(std::move(lock), m_data));
-			}
-			else {
+			if(!lock.try_lock()) {
 #if !HYPERION_PLATFORM_WINDOWS || HYPERION_WINDOWS_USES_POSIX_CODES
 				return Err(error::SystemError(EWOULDBLOCK));
 #else
 				return Err(error::SystemError(ERROR_CANT_WAIT));
 #endif // !HYPERION_PLATFORM_WINDOWS || HYPERION_WINDOWS_USES_POSIX_CODES
 			}
+
+			return Ok(ReadLockGuard<T>(std::move(lock), m_data));
 		}
 
 		/// @brief Returns a `WriteLockGuard<T>` providing exclusive read/write access to the
@@ -180,6 +184,7 @@ namespace hyperion {
 		/// @return a `WriteLockGuard<T>` the the data
 		/// @ingroup synchronization
 		[[nodiscard]] inline auto write() noexcept -> WriteLockGuard<T> {
+			// NOLINTNEXTLINE(google-readability-casting)
 			return WriteLockGuard<T>(std::unique_lock(m_mutex), m_data);
 		}
 
@@ -192,16 +197,15 @@ namespace hyperion {
 		/// @ingroup synchronization
 		[[nodiscard]] inline auto try_write() noexcept -> Result<WriteLockGuard<T>> {
 			auto lock = std::unique_lock(m_mutex, std::defer_lock_t());
-			if(lock.try_lock()) {
-				return Ok(WriteLockGuard<T>(std::move(lock), m_data));
-			}
-			else {
+			if(!lock.try_lock()) {
 #if !HYPERION_PLATFORM_WINDOWS || HYPERION_WINDOWS_USES_POSIX_CODES
 				return Err(error::SystemError(EWOULDBLOCK));
 #else
 				return Err(error::SystemError(ERROR_CANT_WAIT));
 #endif // !HYPERION_PLATFORM_WINDOWS || HYPERION_WINDOWS_USES_POSIX_CODES
 			}
+
+			return Ok(WriteLockGuard<T>(std::move(lock), m_data));
 		}
 
 		/// @brief `ReadWriteLock<T>` is not copyable
@@ -218,12 +222,14 @@ namespace hyperion {
 		/// move construct a `ReadWriteLock<T>`
 		/// @ingroup synchronization
 		auto operator=(ReadWriteLock&& lock) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> ReadWriteLock& requires concepts::MoveAssignable<T> {
+			-> ReadWriteLock&
+		requires concepts::MoveAssignable<T>
+		{
 			if(this == &lock) {
 				return *this;
 			}
 
-			auto l = std::unique_lock(lock);
+			auto _lock = std::unique_lock(lock);
 			m_data = std::move(lock.m_data);
 
 			return *this;

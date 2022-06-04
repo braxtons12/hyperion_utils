@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file includes a unique lock guard for automatic unlocking of a typed lock
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-06-04
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@
 #include <Hyperion/Concepts.h>
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <shared_mutex>
 
 namespace hyperion {
@@ -36,9 +37,8 @@ namespace hyperion {
 	/// @ingroup synchronization
 	/// @headerfile "Hyperion/synchronization/ScopedLockGuard.h"
 	template<template<typename> typename T>
-	concept LockType
-		= concepts::Same<T<std::shared_mutex>, std::unique_lock<std::shared_mutex>> || concepts::
-			Same<T<std::shared_mutex>, std::shared_lock<std::shared_mutex>>;
+	concept LockType = concepts::Same<T<std::shared_mutex>, std::unique_lock<std::shared_mutex>>
+					   || concepts::Same<T<std::shared_mutex>, std::shared_lock<std::shared_mutex>>;
 
 	/// @brief Usable by an owning lock type to provide scoped synchronized access to the protected
 	/// data.
@@ -53,7 +53,8 @@ namespace hyperion {
 	/// @headerfile "Hyperion/synchronization/ScopedLockGuard.h"
 	template<concepts::NotReference T, template<typename> typename Lock>
 	requires LockType<Lock>
-	class [[nodiscard]] ScopedLockGuard;
+	class [[nodiscard("Discarding a ScopedLockGuard defeats the purpose of locking the protected "
+					  "data")]] ScopedLockGuard;
 
 	/// @brief Specialization of `ScopedLockGuard<T, Lock>` for `std::unique_lock`.
 	/// Provides exclusive access to the protected data
@@ -62,7 +63,8 @@ namespace hyperion {
 	/// @ingroup synchronization
 	/// @headerfile "Hyperion/synchronization/ScopedLockGuard.h"
 	template<concepts::NotReference T>
-	class [[nodiscard]] ScopedLockGuard<T, std::unique_lock> {
+	class [[nodiscard("Discarding a ScopedLockGuard defeats the purpose of locking the protected "
+					  "data")]] ScopedLockGuard<T, std::unique_lock> {
 	  public:
 		using pointer = T*;
 		using pointer_to_const = const T*;
@@ -81,7 +83,7 @@ namespace hyperion {
 		///
 		/// @param guard - The `ScopedLockGuard` to move
 		/// @ingroup synchronization
-		ScopedLockGuard(ScopedLockGuard&& guard) noexcept
+		ScopedLockGuard(ScopedLockGuard && guard) noexcept
 			: m_data(guard.m_data), m_lock(std::move(guard.m_lock)) {
 		}
 
@@ -90,7 +92,7 @@ namespace hyperion {
 		/// @param lock - The `std::unique_lock` providing synchronization
 		/// @param data - A reference to the protected data
 		/// @ingroup synchronization
-		ScopedLockGuard(lock_type&& lock, reference data) noexcept
+		ScopedLockGuard(lock_type && lock, reference data) noexcept
 			: m_data(data), m_lock(std::move(lock)) {
 		}
 
@@ -101,7 +103,9 @@ namespace hyperion {
 		/// @param newValue - The new value to write to the data
 		/// @ingroup synchronization
 		inline auto write(const T& newValue) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> void requires concepts::CopyAssignable<T> {
+			->void
+		requires concepts::CopyAssignable<T>
+		{
 			m_data = newValue;
 		}
 
@@ -109,8 +113,10 @@ namespace hyperion {
 		///
 		/// @param newValue - The new value to write to the data
 		/// @ingroup synchronization
-		inline auto write(T&& newValue) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> void requires concepts::MoveAssignable<T> {
+		inline auto write(T && newValue) noexcept(concepts::NoexceptMoveAssignable<T>)
+			->void
+		requires concepts::MoveAssignable<T>
+		{
 			m_data = std::move(newValue);
 		}
 
@@ -172,10 +178,10 @@ namespace hyperion {
 
 		/// @brief Exclusive-access `ScopedLockGuard`s can't be copy-assigned to
 		/// @ingroup synchronization
-		auto operator=(const ScopedLockGuard& guard) -> ScopedLockGuard& = delete;
+		auto operator=(const ScopedLockGuard& guard)->ScopedLockGuard& = delete;
 		/// @brief Exclusive-access `ScopedLockGuard`s can't be move-assigned to
 		/// @ingroup synchronization
-		auto operator=(ScopedLockGuard&& guard) -> ScopedLockGuard& = delete;
+		auto operator=(ScopedLockGuard&& guard)->ScopedLockGuard& = delete;
 
 		/// @brief Copy assigns the given value to the protected data
 		///
@@ -186,7 +192,9 @@ namespace hyperion {
 		/// protected data
 		/// @ingroup synchronization
 		auto operator=(const T& value) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> ScopedLockGuard& requires concepts::CopyAssignable<T> {
+			->ScopedLockGuard&
+		requires concepts::CopyAssignable<T>
+		{
 			m_data = value;
 			return *this;
 		}
@@ -199,7 +207,9 @@ namespace hyperion {
 		/// protected data
 		/// @ingroup synchronization
 		auto operator=(T&& value) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> ScopedLockGuard& requires concepts::MoveAssignable<T> {
+			->ScopedLockGuard&
+		requires concepts::MoveAssignable<T>
+		{
 			m_data = std::move(value);
 			return *this;
 		}
@@ -218,7 +228,8 @@ namespace hyperion {
 	/// @ingroup synchronization
 	/// @headerfile "Hyperion/synchronization/ScopedLockGuard.h"
 	template<concepts::NotReference T>
-	class [[nodiscard]] ScopedLockGuard<T, std::shared_lock> {
+	class [[nodiscard("Discarding a ScopedLockGuard defeats the purpose of locking the protected "
+					  "data")]] ScopedLockGuard<T, std::shared_lock> {
 	  public:
 		using pointer = T*;
 		using pointer_to_const = const T*;
@@ -234,13 +245,13 @@ namespace hyperion {
 		/// @param guard - The `ScopedLockGuard` to copy
 		/// @ingroup synchronization
 		ScopedLockGuard(const ScopedLockGuard& guard) noexcept
-			: m_data(guard.m_data), m_lock(guard.m_lock) {
+			: m_data(guard.m_data), m_lock(*guard.m_lock.mutex()) {
 		}
 		/// @brief Move constructs a shared read-only access `ScopedLockGuard` from the given one
 		///
 		/// @param guard - The `ScopedLockGuard` to move
 		/// @ingroup synchronization
-		ScopedLockGuard(ScopedLockGuard&& guard) noexcept
+		ScopedLockGuard(ScopedLockGuard && guard) noexcept
 			: m_data(guard.m_data), m_lock(std::move(guard.m_lock)) {
 		}
 
@@ -249,8 +260,8 @@ namespace hyperion {
 		/// @param lock - The `std::shared_lock` providing synchronization
 		/// @param data - A reference to the protected data
 		/// @ingroup synchronization
-		ScopedLockGuard(lock_type&& lock, reference data) noexcept
-			: m_data(data), m_lock(std::make_shared<lock_type>(std::move(lock))) {
+		ScopedLockGuard(lock_type && lock, const_reference data) noexcept
+			: m_data(data), m_lock(std::move(lock)) {
 		}
 
 		~ScopedLockGuard() noexcept = default;
@@ -287,14 +298,14 @@ namespace hyperion {
 
 		/// @brief Shared read-only access `ScopedLockGuard`s can't be copy-assigned to
 		/// @ingroup synchronization
-		auto operator=(const ScopedLockGuard& guard) -> ScopedLockGuard& = delete;
+		auto operator=(const ScopedLockGuard& guard)->ScopedLockGuard& = delete;
 		/// @brief Shared read-only access `ScopedLockGuard`s can't be move-assigned to
 		/// @ingroup synchronization
-		auto operator=(ScopedLockGuard&& guard) -> ScopedLockGuard& = delete;
+		auto operator=(ScopedLockGuard&& guard)->ScopedLockGuard& = delete;
 
 	  private:
-		reference m_data;
-		std::shared_ptr<lock_type> m_lock;
+		const_reference m_data;
+		lock_type m_lock;
 	};
 
 	template<typename T>
