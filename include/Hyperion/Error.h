@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic high-level types for communicating recoverable errors
 /// @version 0.1
-/// @date 2021-11-03
+/// @date 202l2-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -45,7 +45,6 @@
 /// @headerfile "Hyperion/Error.h"
 
 namespace hyperion::error {
-	using namespace std::literals::string_literals;
 
 	/// @brief Basic interface for recoverable errors. Error types may provide
 	/// additional functionality beyond this, but this much is required.
@@ -53,13 +52,13 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/Error.h"
 	IGNORE_WEAK_VTABLES_START
 
-	class [[nodiscard]] ErrorBase {
+	class [[nodiscard("An error should not be discarded")]] ErrorBase {
 	  public:
 		constexpr ErrorBase() noexcept = default;
 
 		constexpr ErrorBase(const ErrorBase&) noexcept = default;
 
-		constexpr ErrorBase(ErrorBase&&) noexcept = default;
+		constexpr ErrorBase(ErrorBase &&) noexcept = default;
 
 		constexpr virtual ~ErrorBase() noexcept = default;
 
@@ -95,7 +94,7 @@ namespace hyperion::error {
 	/// @tparam Domain - The `StatusCodeDomain` associated with the this error
 	/// @ingroup error
 	template<StatusCodeDomain Domain = SystemDomain>
-	class [[nodiscard]] Error final : public ErrorBase {
+	class [[nodiscard("An error should not be discarded")]] Error final : public ErrorBase {
 	  public:
 		/// @brief The type used to represent the error (an enum, integer error code,
 		/// etc)
@@ -129,7 +128,7 @@ namespace hyperion::error {
 		///
 		/// @param code - The error code
 		/// @ingroup error
-		constexpr Error(ErrorCode<Domain>&& code) noexcept // NOLINT
+		constexpr Error(ErrorCode<Domain> && code) noexcept // NOLINT
 			: m_error_code(std::move(code)) {
 		}
 
@@ -138,8 +137,8 @@ namespace hyperion::error {
 		/// @param code - The error code
 		/// @ingroup error
 		constexpr Error(const value_type& code) noexcept // NOLINT
-			requires(!StatusCodeEnum<value_type>)
-			: m_error_code(make_error_code<Domain>(code)) {
+		requires(!StatusCodeEnum<value_type>)
+		: m_error_code(make_error_code<Domain>(code)) {
 		}
 
 		/// @brief Constructs an `Error` from the given error code
@@ -147,7 +146,8 @@ namespace hyperion::error {
 		/// @param code - The error code
 		/// @ingroup error
 		constexpr Error(const value_type& code) noexcept // NOLINT
-			requires StatusCodeEnum<value_type> : m_error_code(make_error_code(code)) {
+		requires StatusCodeEnum<value_type>
+		: m_error_code(make_error_code(code)) {
 		}
 
 		/// @brief Copy-constructs an `Error`
@@ -156,7 +156,7 @@ namespace hyperion::error {
 
 		/// @brief Move-constructs an `Error`
 		/// @ingroup error
-		constexpr Error(Error&& error) noexcept = default;
+		constexpr Error(Error && error) noexcept = default;
 
 		/// @brief Destroys this `Error`
 		/// @ingroup error
@@ -319,14 +319,14 @@ namespace hyperion::error {
 
 	  private:
 		template<usize Index, typename T>
-		auto get_impl(T&& t) const noexcept {
+		auto get_impl(T && val) const noexcept {
 
 			static_assert(Index < 2, "Index out of bounds for hyperion::error::Error::get");
 			if constexpr(Index == 0) {
-				return std::forward<T>(t).m_error_code.value();
+				return std::forward<T>(val).m_error_code.value();
 			}
 			else {
-				return std::forward<T>(t).m_error_code.message();
+				return std::forward<T>(val).m_error_code.message();
 			}
 		}
 
@@ -392,7 +392,7 @@ namespace hyperion::error {
 	/// @brief Concept specifying the requirements of a type necessary to be
 	/// guaranteed compatible with Hyperion's error system.
 	///
-	/// Users are encouraged to fulfill this concept for their own error types,
+	/// Users are encouraged, but not required, to fulfill this concept for their own error types,
 	/// particularly when using them with Hyperion's higher-level error-handling
 	/// facilities like `Result<T, E>`
 	/// @ingroup error
@@ -405,12 +405,15 @@ namespace hyperion::error {
 	/// NotErrorType<E>`)
 	/// @ingroup error
 	template<typename E>
-	concept NotErrorType = !ErrorType<E>;
+	concept NotErrorType = !
+	ErrorType<E>;
+
+	IGNORE_WEAK_VTABLES_START
 
 	/// @brief `AnyError` represents a type erased error from any
 	/// `error::StatusCodeDomain`
 	/// @ingroup error
-	class [[nodiscard]] AnyError final : public ErrorBase {
+	class [[nodiscard("An error should not be discarded")]] AnyError final : public ErrorBase {
 	  public:
 		/// @brief Constructs an `AnyError` as an unknown error
 		/// @ingroup error
@@ -434,7 +437,7 @@ namespace hyperion::error {
 		/// @param code - The error code this `AnyError` should represent
 		/// @ingroup error
 		template<StatusCodeDomain Domain>
-		HYPERION_CONSTEXPR_STRINGS AnyError(ErrorCode<Domain>&& code) noexcept // NOLINT
+		HYPERION_CONSTEXPR_STRINGS AnyError(ErrorCode<Domain> && code) noexcept // NOLINT
 			: m_error_code(code.value()), m_message(code.message()) {
 		}
 
@@ -456,7 +459,7 @@ namespace hyperion::error {
 		/// @param error - The error this `AnyError` should represent
 		/// @ingroup error
 		template<StatusCodeDomain Domain>
-		HYPERION_CONSTEXPR_STRINGS AnyError(Error<Domain>&& error) noexcept // NOLINT
+		HYPERION_CONSTEXPR_STRINGS AnyError(Error<Domain> && error) noexcept // NOLINT
 			: m_error_code(error.code().value()), m_message(error.message()) {
 		}
 		/// @brief Copy-constructs an `AnyError` from the given one
@@ -464,7 +467,7 @@ namespace hyperion::error {
 		HYPERION_CONSTEXPR_STRINGS AnyError(const AnyError&) noexcept = default;
 		/// @brief Move-constructs an `AnyError` from the given one
 		/// @ingroup error
-		HYPERION_CONSTEXPR_STRINGS AnyError(AnyError&&) noexcept = default;
+		HYPERION_CONSTEXPR_STRINGS AnyError(AnyError &&) noexcept = default;
 		/// @brief Destroys this `AnyError`
 		/// @ingroup error
 		HYPERION_CONSTEXPR_STRINGS ~AnyError() noexcept final = default;
@@ -490,9 +493,9 @@ namespace hyperion::error {
 		/// @brief Returns the string representation of this `AnyError`
 		/// @return this `AnyError` as a `std::string`
 		/// @ingroup error
-		[[nodiscard]] HYPERION_CONSTEXPR_STRINGS auto
-		to_string() const noexcept -> std::string final {
-
+		[[nodiscard]] HYPERION_CONSTEXPR_STRINGS auto to_string() const noexcept
+			-> std::string final {
+			using namespace std::literals::string_literals;
 			return "Error: "s + m_message + "\n"s;
 		}
 
@@ -511,8 +514,8 @@ namespace hyperion::error {
 		/// @param code - The error code to assign to this
 		/// @ingroup error
 		template<StatusCodeDomain Domain>
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const ErrorCode<Domain>& code) noexcept -> AnyError& {
+		HYPERION_CONSTEXPR_STRINGS auto operator=(const ErrorCode<Domain>& code) noexcept
+			-> AnyError& {
 
 			m_error_code = code.value();
 			m_message = code.message();
@@ -543,8 +546,8 @@ namespace hyperion::error {
 		/// @param error - The error to assign to this
 		/// @ingroup error
 		template<StatusCodeDomain Domain>
-		HYPERION_CONSTEXPR_STRINGS auto
-		operator=(const Error<Domain>& error) noexcept -> AnyError& {
+		HYPERION_CONSTEXPR_STRINGS auto operator=(const Error<Domain>& error) noexcept
+			-> AnyError& {
 
 			m_error_code = error.value();
 			m_message = error.message();
@@ -599,14 +602,14 @@ namespace hyperion::error {
 
 	  private:
 		template<usize Index, typename T>
-		auto get_impl(T&& t) const noexcept {
+		auto get_impl(T && val) const noexcept {
 
 			static_assert(Index < 2, "Index out of bounds for hyperion::error::AnyError::get");
 			if constexpr(Index == 0) {
-				return std::forward<T>(t).m_error_code;
+				return std::forward<T>(val).m_error_code;
 			}
 			else {
-				return std::forward<T>(t).m_message;
+				return std::forward<T>(val).m_message;
 			}
 		}
 
@@ -614,6 +617,8 @@ namespace hyperion::error {
 
 		std::string m_message;
 	};
+
+	IGNORE_WEAK_VTABLES_STOP
 } // namespace hyperion::error
 
 /// @brief Specialize `std::tuple_size` for `error::AnyError`
