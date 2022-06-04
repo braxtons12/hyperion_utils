@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Unit Tests for `Option<T>` and `Result<T, E>`
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2022-05-12
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -29,10 +29,9 @@
 #include <Hyperion/Option.h>
 #include <Hyperion/Result.h>
 
-#if HYPERION_DEFINE_TESTS
 namespace hyperion {
 
-	// NOLINTNEXTLINE(modernize-use-trailing-return-type)
+	// NOLINTNEXTLINE
 	TEST_SUITE("Option") {
 		TEST_CASE("Some") {
 			auto some = Some(5_i32);
@@ -40,14 +39,14 @@ namespace hyperion {
 			CHECK(some.is_some());
 			CHECK_FALSE(some.is_none());
 
-			SUBCASE("as_const") {
-				CHECK_EQ(some.as_const(), 5_i32);
+			SUBCASE("as_cref") {
+				CHECK_EQ(some.as_cref(), 5_i32);
 			}
 
-			SUBCASE("as_mut") {
-				CHECK_EQ(some.as_mut(), 5_i32);
+			SUBCASE("as_ref") {
+				CHECK_EQ(some.as_ref(), 5_i32);
 
-				some.as_mut() = 2_i32;
+				some.as_ref() = 2_i32;
 				CHECK_EQ(some.unwrap(), 2_i32);
 			}
 
@@ -150,11 +149,11 @@ namespace hyperion {
 		CHECK_FALSE(none.is_some());
 		CHECK(none.is_none());
 
-		SUBCASE("as_const") {
+		SUBCASE("as_cref") {
 			// can't test currently because doctest doesn't have an aborts macro
 		}
 
-		SUBCASE("as_mut") {
+		SUBCASE("as_ref") {
 			// can't test currently because doctest doesn't have an aborts macro
 		}
 
@@ -246,9 +245,10 @@ namespace hyperion {
 		}
 	}
 
-	// NOLINTNEXTLINE(modernize-use-trailing-return-type)
+	// NOLINTNEXTLINE
 	TEST_SUITE("Result") {
 		TEST_CASE("Ok") {
+			// NOLINTNEXTLINE(readability-identifier-length)
 			Result<i32> ok = Ok(5_i32);
 
 			SUBCASE("accessors") {
@@ -258,16 +258,16 @@ namespace hyperion {
 				CHECK(static_cast<bool>(ok));
 			}
 
-			SUBCASE("as_const") {
-				CHECK_EQ(ok.as_const(), 5_i32);
+			SUBCASE("as_cref") {
+				CHECK_EQ(ok.as_cref(), 5_i32);
 			}
 
-			SUBCASE("as_mut") {
-				CHECK_EQ(ok.as_mut(), 5_i32);
+			SUBCASE("as_ref") {
+				CHECK_EQ(ok.as_ref(), 5_i32);
 
-				ok.as_mut() = 2_i32;
-				CHECK_EQ(ok.as_mut(), 2_i32);
-				CHECK_EQ(ok.as_const(), 2_i32);
+				ok.as_ref() = 2_i32;
+				CHECK_EQ(ok.as_ref(), 2_i32);
+				CHECK_EQ(ok.as_cref(), 2_i32);
 			}
 
 			SUBCASE("unwrap") {
@@ -319,6 +319,7 @@ namespace hyperion {
 			}
 
 			SUBCASE("map_err") {
+				// NOLINTNEXTLINE(bugprone-exception-escape, readability-identifier-length)
 				auto maybe_ok = ok.map_err([]([[maybe_unused]] const error::SystemError& _) noexcept
 										   -> error::SystemError { return {3}; });
 
@@ -378,11 +379,11 @@ namespace hyperion {
 				CHECK_FALSE(static_cast<bool>(err));
 			}
 
-			SUBCASE("as_const") {
+			SUBCASE("as_cref") {
 				// can't test currently as doctest doesn't support an aborts test
 			}
 
-			SUBCASE("as_mut") {
+			SUBCASE("as_ref") {
 				// can't test currently as doctest doesn't support an aborts test
 			}
 
@@ -437,6 +438,7 @@ namespace hyperion {
 
 			SUBCASE("map_err") {
 				auto maybe_ok
+					// NOLINTNEXTLINE(bugprone-exception-escape, readability-identifier-length)
 					= err.map_err([]([[maybe_unused]] const error::SystemError& _) noexcept
 								  -> error::SystemError { return {3}; });
 
@@ -488,4 +490,3 @@ namespace hyperion {
 		}
 	}
 } // namespace hyperion
-#endif // HYPERION_DEFINE_TESTS
