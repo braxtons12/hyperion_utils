@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Base requirements of a `StatusCodeDomain` and utilities for implementing one
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -91,54 +91,54 @@ namespace hyperion::error {
 	template<typename Domain>
 	concept StatusCodeDomain
 		= requires(Domain domain, Domain domain2, const StatusCode<Domain>& code) {
+			  typename Domain::value_type;
 
-		typename Domain::value_type;
+			  std::constructible_from<Domain, u64>;
+			  std::constructible_from<
+				  Domain,
+				  const char[num_chars_in_uuid]>; // NOLINT(hicpp-avoid-c-arrays,
+												  // modernize-avoid-c-arrays,
+												  // cppcoreguidelines-avoid-c-arrays)
+			  std::constructible_from<
+				  Domain,
+				  const char[num_chars_in_ms_uuid]>; // NOLINT(hicpp-avoid-c-arrays,
+													 // modernize-avoid-c-arrays,
+													 // cppcoreguidelines-avoid-c-arrays)
+			  {
+				  domain.id()
+				  } -> std::same_as<u64>;
+			  {
+				  domain.name()
+				  } -> std::same_as<std::string_view>;
+			  // the return type of message must be implicitly convertible to `std::string` or
+			  // `std::string_view`
+			  {
+				  domain.message(code)
+				  } -> concepts::Stringable;
+			  // the return type of message must be implicitly convertible to `std::string` or
+			  // `std::string_view`
+			  //	{
+			  //		domain.message(value)
+			  //		} -> concepts::Stringable;
+			  {
+				  domain.are_equivalent(code, code)
+				  } -> std::same_as<bool>;
+			  {
+				  domain.is_error(code)
+				  } -> std::same_as<bool>;
+			  {
+				  domain.is_success(code)
+				  } -> std::same_as<bool>;
+			  {
+				  Domain::success_value()
+				  } -> std::same_as<typename Domain::value_type>;
+			  domain == domain2;
+			  domain != domain2;
 
-		std::constructible_from<Domain, u64>;
-		std::constructible_from<Domain,
-								const char[num_chars_in_uuid]>; // NOLINT(hicpp-avoid-c-arrays,
-																// modernize-avoid-c-arrays,
-																// cppcoreguidelines-avoid-c-arrays)
-		std::constructible_from<
-			Domain,
-			const char[num_chars_in_ms_uuid]>; // NOLINT(hicpp-avoid-c-arrays,
-											   // modernize-avoid-c-arrays,
-											   // cppcoreguidelines-avoid-c-arrays)
-		{
-			domain.id()
-			} -> std::same_as<u64>;
-		{
-			domain.name()
-			} -> std::same_as<std::string_view>;
-		// the return type of message must be implicitly convertible to `std::string` or
-		// `std::string_view`
-		{
-			domain.message(code)
-			} -> concepts::Stringable;
-		// the return type of message must be implicitly convertible to `std::string` or
-		// `std::string_view`
-		//	{
-		//		domain.message(value)
-		//		} -> concepts::Stringable;
-		{
-			domain.are_equivalent(code, code)
-			} -> std::same_as<bool>;
-		{
-			domain.is_error(code)
-			} -> std::same_as<bool>;
-		{
-			domain.is_success(code)
-			} -> std::same_as<bool>;
-		{
-			Domain::success_value()
-			} -> std::same_as<typename Domain::value_type>;
-		domain == domain2;
-		domain != domain2;
-
-		{
-			make_status_code_domain<Domain>()
-			} -> std::same_as<Domain>;
-	};
+			  {
+				  make_status_code_domain<Domain>()
+				  } -> std::same_as<Domain>;
+		  };
 
 	/// @brief A `UUIDString` is the string literal representation of a UUID.
 	///
@@ -150,23 +150,24 @@ namespace hyperion::error {
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<typename T>
-	concept UUIDString = std::same_as<T, const char (&)[num_chars_in_uuid]> // NOLINT
-		|| std::same_as<T, const char (&)[num_chars_in_ms_uuid]>;			// NOLINT
+	concept UUIDString = std::same_as<T, const char (&)[num_chars_in_uuid]>		   // NOLINT
+						 || std::same_as<T, const char (&)[num_chars_in_ms_uuid]>; // NOLINT
 
 	namespace detail {
 		/// @brief Parses the semantic numeric value from a character
 		///
-		/// @param c - The character to parse
+		/// @param character - The character to parse
 		/// @return The semantic numerical value of `c`
-		inline constexpr auto parse_byte_from_char(const char c)->u64 {
-			if('0' <= c && c <= '9') {
-				return static_cast<u64>(c - '0');
+		inline constexpr auto parse_byte_from_char(const char character) -> u64 {
+			if('0' <= character && character <= '9') {
+				return static_cast<u64>(character - '0');
 			}
-			else if('a' <= c && c <= 'f') {
-				return static_cast<u64>(10 + c - 'a'); // NOLINT
+			// NOLINTNEXTLINE(readability-else-after-return)
+			else if('a' <= character && character <= 'f') {
+				return static_cast<u64>(10 + character - 'a'); // NOLINT
 			}
-			else if('A' <= c && c <= 'F') {
-				return static_cast<u64>(10 + c - 'A'); // NOLINT
+			else if('A' <= character && character <= 'F') {
+				return static_cast<u64>(10 + character - 'A'); // NOLINT
 			}
 			else {
 				throw "Invalid character in UUID"; // NOLINT
@@ -178,10 +179,12 @@ namespace hyperion::error {
 		/// @param s - The `UUIDString` representing the UUID
 		/// @return The UUID represented as a `u64`
 		template<usize N>
-		inline constexpr auto parse_uuid(
-			const char(&s)[N]) // NOLINT(hicpp-avoid-c-arrays, modernize-avoid-c-arrays,
-							   // cppcoreguidelines-avoid-c-arrays)
-			->u64 requires UUIDString<decltype(s)> {
+		inline constexpr auto
+		parse_uuid(const char (&s)[N]) // NOLINT(hicpp-avoid-c-arrays, modernize-avoid-c-arrays,
+									   // cppcoreguidelines-avoid-c-arrays)
+			-> u64
+		requires UUIDString<decltype(s)>
+		{
 
 			const char* uuid = s;														   // NOLINT
 			if constexpr(std::same_as<decltype(s), const char(&)[num_chars_in_ms_uuid]>) { // NOLINT
@@ -234,7 +237,188 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<usize N>
 	inline constexpr auto parse_uuid_from_string(const char (&uuid)[N]) // NOLINT
-		noexcept -> u64 requires UUIDString<decltype(uuid)> {
+		noexcept -> u64
+	requires UUIDString<decltype(uuid)>
+	{
 		return detail::parse_uuid(uuid);
 	}
+
+	IGNORE_RESERVED_IDENTIFIERS_START
+	IGNORE_UNUSED_MACROS_START
+// NOLINTNEXTLINE (macro, reserved ident)
+#define ___STATUS_CODE_FIRST(...) ___STATUS_CODE_FIRST_IMPL(__VA_ARGS__, ~)
+// NOLINTNEXTLINE (macro, reserved ident)
+#define ___STATUS_CODE_FIRST_IMPL(first, ...) first
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define STATUS_CODE_DOMAIN(Name,                                                                   \
+						   Category,                                                               \
+						   _namespace,                                                             \
+						   ValueType,                                                              \
+						   IsConvertibleToGenericStatusCode,                                       \
+						   uuid_string,                                                            \
+						   name_string,                                                            \
+						   _success_value,                                                         \
+						   unknown_value,                                                          \
+						   message_function,                                                       \
+						   ... /** to_generic_code_function **/)                                   \
+	namespace _namespace {                                                                         \
+		class Name;                                                                                \
+                                                                                                   \
+		class [[nodiscard]] Name {                                                                 \
+		  public:                                                                                  \
+			using value_type = ValueType;                                                          \
+			using Category##StatusCode = hyperion::error::StatusCode</**/ Name /**/>;              \
+			using Category##ErrorCode = hyperion::error::ErrorCode</**/ Name /**/>;                \
+                                                                                                   \
+			static const constexpr char (&UUID)[hyperion::error::num_chars_in_uuid] /** NOLINT **/ \
+				= uuid_string;                                                                     \
+                                                                                                   \
+			static constexpr u64 ID								 /** NOLINT **/                    \
+				= hyperion::error::parse_uuid_from_string(UUID); /** NOLINT **/                    \
+                                                                                                   \
+			constexpr Name() noexcept = default;                                                   \
+			explicit constexpr Name(u64 uuid) noexcept : m_uuid(uuid) { /**NOLINT**/               \
+			}                                                                                      \
+			template<hyperion::error::UUIDString UUID>	  /** NOLINT**/                            \
+			explicit constexpr Name(UUID&& uuid) noexcept /** NOLINT **/                           \
+				: m_uuid(hyperion::error::parse_uuid_from_string(std::forward<UUID>(uuid))) { }    \
+			constexpr Name(const Name&) noexcept = default;                                        \
+			constexpr Name(Name&&) noexcept = default;                                             \
+			constexpr ~/****/ Name() noexcept = default;                                           \
+                                                                                                   \
+			[[nodiscard]] inline constexpr auto id() const noexcept -> u64 { return m_uuid; }      \
+                                                                                                   \
+			[[nodiscard]] inline constexpr auto name() const noexcept -> std::string_view {        \
+				return name_string;                                                                \
+			}                                                                                      \
+                                                                                                   \
+			[[nodiscard]] inline auto                                                              \
+			message(value_type _code) const noexcept -> decltype(message_function(_code)) {        \
+				return message_function(_code);                                                    \
+			}                                                                                      \
+                                                                                                   \
+			[[nodiscard]] inline auto message(const Category##StatusCode& _code) const noexcept    \
+				-> decltype(message_function(std::declval<value_type>())) {                        \
+				return message(_code.code());                                                      \
+			}                                                                                      \
+                                                                                                   \
+			[[nodiscard]] inline constexpr auto is_error(value_type code) const noexcept -> bool { \
+				return code != _success_value;                                                     \
+			}                                                                                      \
+			[[nodiscard]] inline constexpr auto                                                    \
+			is_error(const Category##StatusCode& code) const noexcept -> bool {                    \
+				return is_error(code.code());                                                      \
+			}                                                                                      \
+                                                                                                   \
+			[[nodiscard]] inline constexpr auto                                                    \
+			is_success(value_type code) const noexcept -> bool {                                   \
+				return code == _success_value;                                                     \
+			}                                                                                      \
+                                                                                                   \
+			[[nodiscard]] inline constexpr auto                                                    \
+			is_success(const Category##StatusCode& code) const noexcept -> bool {                  \
+				return is_success(code.code());                                                    \
+			}                                                                                      \
+                                                                                                   \
+			template<typename Domain>                                                              \
+			[[nodiscard]] inline constexpr auto                                                    \
+			are_equivalent(const Category##StatusCode& lhs,                                        \
+						   const hyperion::error::StatusCode<Domain>& rhs) const noexcept          \
+				-> bool {                                                                          \
+				if constexpr(IsConvertibleToGenericStatusCode) {                                   \
+					if constexpr(hyperion::error::ConvertibleToGenericStatusCode<                  \
+									 hyperion::error::StatusCode<Domain>>)                         \
+					{                                                                              \
+						return as_generic_code(lhs) == rhs.as_generic_code();                      \
+					}                                                                              \
+				}                                                                                  \
+                                                                                                   \
+				if(rhs.domain() == *this) {                                                        \
+					const auto lhs_code = lhs.code();                                              \
+					const auto rhs_code = rhs.code();                                              \
+					return lhs_code == rhs_code && lhs_code != unknown_value                       \
+						   && rhs_code != unknown_value;                                           \
+				}                                                                                  \
+                                                                                                   \
+				return false;                                                                      \
+			}                                                                                      \
+                                                                                                   \
+			template<typename U = Category##StatusCode>                                            \
+			requires concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,               \
+									Category##StatusCode>                                          \
+			[[nodiscard]] inline constexpr auto                                                    \
+			as_generic_code(const U& _code) const noexcept -> hyperion::error::GenericStatusCode   \
+				requires(IsConvertibleToGenericStatusCode) {                                       \
+					if constexpr(IsConvertibleToGenericStatusCode) {                               \
+						return ___STATUS_CODE_FIRST(__VA_ARGS__)(_code.code());                    \
+					}                                                                              \
+				}                                                                                  \
+                                                                                                   \
+			[[nodiscard]] static inline constexpr auto success_value() noexcept -> value_type {    \
+				return _success_value;                                                             \
+			}                                                                                      \
+                                                                                                   \
+			template<typename Domain>                                                              \
+			friend constexpr auto                                                                  \
+			operator==(const Name& lhs, const Domain& rhs) noexcept -> bool {                      \
+				return lhs.id() == rhs.id();                                                       \
+			}                                                                                      \
+                                                                                                   \
+			template<typename Domain>                                                              \
+			friend constexpr auto                                                                  \
+			operator!=(const Name& lhs, const Domain& rhs) noexcept -> bool {                      \
+				return lhs.id() != rhs.id();                                                       \
+			}                                                                                      \
+                                                                                                   \
+			constexpr auto operator=(const Name&) noexcept -> Name& = default;                     \
+                                                                                                   \
+			constexpr auto operator=(Name&&) noexcept -> Name& = default;                          \
+                                                                                                   \
+		  private:                                                                                 \
+			u64 m_uuid = ID;                                                                       \
+                                                                                                   \
+			template<typename U = Category##StatusCode>                                            \
+			requires concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,               \
+									Category##StatusCode>                                          \
+			[[nodiscard]] inline constexpr auto                                                    \
+			as_generic_code([[maybe_unused]] const Category##StatusCode& code) const noexcept      \
+				-> hyperion::error::GenericStatusCode                                              \
+				requires(!IsConvertibleToGenericStatusCode) { return {}; }                         \
+		};                                                                                         \
+                                                                                                   \
+		using Category##StatusCode = Name /**/ ::/**/ Category##StatusCode;                        \
+		using Category##ErrorCode = Name /**/ ::/**/ Category##ErrorCode;                          \
+		using Category##Error = hyperion::error::Error</**/ Name /**/>;                            \
+	}                                                                                              \
+                                                                                                   \
+	template<>                                                                                     \
+	[[nodiscard]] inline constexpr auto                                                            \
+		make_status_code_domain<_namespace ::/****/ Name,						   /**NOLINT**/    \
+								const char(&)[hyperion::error::num_chars_in_uuid]> /**NOLINT**/    \
+		(const char(&uuid)[hyperion::error::num_chars_in_uuid]) noexcept		   /**NOLINT**/    \
+			->_namespace ::/***/ Name {                                                            \
+		return _namespace ::/****/ Name(uuid);                                                     \
+	}                                                                                              \
+                                                                                                   \
+	template<>                                                                                     \
+	[[nodiscard]] inline constexpr auto                                                            \
+		make_status_code_domain<_namespace ::/****/ Name,							  /**NOLINT**/ \
+								const char(&)[hyperion::error::num_chars_in_ms_uuid]> /**NOLINT**/ \
+		(const char(&uuid)[hyperion::error::num_chars_in_ms_uuid]) noexcept			  /**NOLINT**/ \
+			->_namespace ::/***/ Name {                                                            \
+		return _namespace ::/****/ Name(uuid);                                                     \
+	}                                                                                              \
+	template<>                                                                                     \
+	inline constexpr auto make_status_code_domain<_namespace ::/****/ Name>() noexcept             \
+		-> _namespace ::/****/ Name {                                                              \
+		return {};                                                                                 \
+	}                                                                                              \
+                                                                                                   \
+	namespace _namespace {                                                                         \
+		static_assert(hyperion::error::StatusCodeDomain<Name>);                                    \
+	}
+
+	IGNORE_UNUSED_MACROS_STOP
+	IGNORE_RESERVED_IDENTIFIERS_STOP
 } // namespace hyperion::error

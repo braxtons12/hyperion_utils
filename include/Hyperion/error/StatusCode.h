@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Types for reporting the result of a fallible operation
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2022-06-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -52,7 +52,7 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/StatusCode.h"
 	template<typename T>
 	struct status_code_enum_info {
-		using domain_type = void;
+		using domain_type [[maybe_unused]] = void;
 		static constexpr bool value = false;
 	};
 
@@ -80,8 +80,8 @@ namespace hyperion::error {
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCode.h"
 	template<typename T>
-	concept StatusCodeEnum = is_status_code_enum_v<T> && std::is_enum_v<T> && StatusCodeDomain<
-		typename is_status_code_enum<T>::domain_type>;
+	concept StatusCodeEnum = is_status_code_enum_v<T> && std::is_enum_v<T>
+							 && StatusCodeDomain<typename is_status_code_enum<T>::domain_type>;
 
 	/// @brief The associated domain type of a `StatusCodeEnum`. Shorthand for
 	/// `is_status_code_enum<T>::domain_type` and `status_code_enum_info<T>::domain_type`
@@ -99,7 +99,7 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/StatusCode.h"
 	template<typename T, typename Domain = status_code_enum_domain<T>>
 	requires StatusCodeEnum<T> && StatusCodeDomain<Domain>
-	using status_code_enum_domain_checked = status_code_enum_domain<T>;
+	using status_code_enum_domain_checked [[maybe_unused]] = status_code_enum_domain<T>;
 } // namespace hyperion::error
 
 #if HYPERION_PLATFORM_COMPILER_MSVC
@@ -135,14 +135,11 @@ namespace hyperion::error {
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCode.h"
 	template<typename Code>
-	concept ConvertibleToGenericStatusCode = requires(const Code& code) {
-		code.domain();
-		StatusCodeDomain<decltype(code.domain())>;
-		std::same_as<StatusCode<decltype(code.domain())>, decltype(code)>;
-		{
-			code.domain().as_generic_code(code)
-			} -> std::same_as<GenericStatusCode>;
-	};
+	concept ConvertibleToGenericStatusCode
+		= requires(const Code& code) {
+			  code.domain();
+			  std::is_function_v<decltype(decltype(code)::domain_type::as_generic_code)>;
+		  };
 
 	IGNORE_PADDING_START
 
@@ -167,6 +164,9 @@ namespace hyperion::error {
 		/// `StatusCodeDomain`
 		/// @ingroup error
 		using value_type = typename Domain::value_type;
+		/// @brief The `domain_type` of a `StatusCode` is its associated `StatusCodeDomain`
+		/// @ingroup error
+		using domain_type = Domain;
 
 		/// @brief Constructs a default `StatusCode`, representing success
 		/// @ingroup error
@@ -202,28 +202,33 @@ namespace hyperion::error {
 
 		/// @brief Copy-constructor
 		/// @ingroup error
-		constexpr StatusCode(const StatusCode&) noexcept requires StatusCodeDomain<Domain>
+		constexpr StatusCode(const StatusCode&) noexcept
+		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-constructor
 		/// @ingroup error
-		constexpr StatusCode(StatusCode &&) noexcept requires StatusCodeDomain<Domain>
+		constexpr StatusCode(StatusCode &&) noexcept
+		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Destructor
 		/// @ingroup error
-		constexpr ~StatusCode() noexcept requires StatusCodeDomain<Domain>
+		constexpr ~StatusCode() noexcept
+		requires StatusCodeDomain<Domain>
 		= default;
 
 		/// @brief Sets this `StatusCode` to represent the given numeric code
 		/// @param code - The numeric code representing the result of an operation
 		/// @ingroup error
-		inline constexpr auto assign(i64 code) noexcept->void requires StatusCodeDomain<Domain> {
+		[[maybe_unused]] inline constexpr auto assign(i64 code) noexcept -> void
+		requires StatusCodeDomain<Domain>
+		{
 			m_code = static_cast<value_type>(code);
 		}
 
 		/// @brief Sets this `StatusCode` to represent the given `StatusCodeEnum`
 		/// @param code - The `StatusCodeEnum` representing the result of an operation
 		/// @ingroup error
-		inline constexpr auto assign(StatusCodeEnum auto code) noexcept->void
+		[[maybe_unused]] inline constexpr auto assign(StatusCodeEnum auto code) noexcept -> void
 			// clang-format off
 			requires StatusCodeDomain<Domain>
 			&& std::same_as<Domain, status_code_enum_domain<decltype(code)>>
@@ -235,7 +240,9 @@ namespace hyperion::error {
 		/// @brief Clears the error (if any) represented by this `StatusCode`, setting it to
 		/// represent success instead
 		/// @ingroup error
-		inline constexpr auto clear() noexcept->void requires StatusCodeDomain<Domain> {
+		[[maybe_unused]] inline constexpr auto clear() noexcept -> void
+		requires StatusCodeDomain<Domain>
+		{
 			m_code = m_domain.success_value();
 		}
 
@@ -245,8 +252,9 @@ namespace hyperion::error {
 		/// it.
 		/// @return The status represented by this `StatusCode`, as an `i64`
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto value()
-			const noexcept->i64 requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto value() const noexcept -> i64
+		requires StatusCodeDomain<Domain>
+		{
 			return static_cast<i64>(m_code);
 		}
 
@@ -258,32 +266,36 @@ namespace hyperion::error {
 		/// are integer types, in cases where an integer is strictly required, `value()` should
 		/// always be preferred to prevent implicit conversions
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto code()
-			const noexcept->value_type requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto code() const noexcept -> value_type
+		requires StatusCodeDomain<Domain>
+		{
 			return m_code;
 		}
 
 		/// @brief Returns the textual message associated with this `StatusCode`
 		/// @return The message associated with the value this `StatusCode` currently represents
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto message()
-			const noexcept requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto message() const noexcept
+		requires StatusCodeDomain<Domain>
+		{
 			return m_domain.message(*this);
 		}
 
 		/// @brief Returns whether this `StatusCode` represents an error
 		/// @return `true` if this represents an error, false otherwise
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto is_error()
-			const noexcept->bool requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto is_error() const noexcept -> bool
+		requires StatusCodeDomain<Domain>
+		{
 			return m_domain.is_error(*this);
 		}
 
 		/// @brief Returns whether this `StatusCode` represents success
 		/// @return `true` if this represents success, false otherwise
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto is_success()
-			const noexcept->bool requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto is_success() const noexcept -> bool
+		requires StatusCodeDomain<Domain>
+		{
 			return m_domain.is_success(*this);
 		}
 
@@ -296,7 +308,7 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain2>
 		[[nodiscard]] inline constexpr auto is_equivalent(const StatusCode<Domain2>& rhs)
-			const noexcept->bool
+			const noexcept -> bool
 			// clang-format off
 			requires StatusCodeDomain<Domain> && StatusCodeDomain<Domain2>
 		{
@@ -309,15 +321,17 @@ namespace hyperion::error {
 		/// @note This member function is disabled if this is not `ConvertibleToGenericStatusCode`
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto as_generic_code() const noexcept
-			->bool requires StatusCodeDomain<Domain> && ConvertibleToGenericStatusCode<StatusCode> {
+		requires StatusCodeDomain<Domain> && ConvertibleToGenericStatusCode<StatusCode>
+		{
 			return m_domain.as_generic_code(*this);
 		}
 
 		/// @brief Returns the `StatusCodeDomain` associated with this
 		/// @return The `StatusCodeDomain` associated with this
 		/// @ingroup error
-		[[nodiscard]] inline constexpr auto domain()
-			const noexcept->const Domain& requires StatusCodeDomain<Domain> {
+		[[nodiscard]] inline constexpr auto domain() const noexcept -> const Domain&
+		requires StatusCodeDomain<Domain>
+		{
 			return m_domain;
 		}
 
@@ -326,8 +340,9 @@ namespace hyperion::error {
 		/// Converts this `StatusCode` to a `bool`. This is equivalent to `is_success()`
 		/// @return this, as a `bool`
 		/// @ingroup error
-		[[nodiscard]] explicit inline constexpr operator bool()
-			const noexcept requires StatusCodeDomain<Domain> {
+		[[nodiscard]] explicit inline constexpr operator bool() const noexcept
+		requires StatusCodeDomain<Domain>
+		{
 			return is_success();
 		}
 
@@ -336,8 +351,9 @@ namespace hyperion::error {
 		/// Converts this `StatusCode` to its `value_type`. This is equivalent to `code()`
 		/// @return this, as its `value_type`
 		/// @ingroup error
-		[[nodiscard]] explicit inline constexpr operator value_type()
-			const noexcept requires StatusCodeDomain<Domain> {
+		[[nodiscard]] explicit inline constexpr operator value_type() const noexcept
+		requires StatusCodeDomain<Domain>
+		{
 			return m_code;
 		}
 
@@ -354,7 +370,7 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain2>
 		friend inline constexpr auto operator==(const StatusCode<Domain>& lhs,
-												const StatusCode<Domain2>& rhs) noexcept->bool
+												const StatusCode<Domain2>& rhs) noexcept -> bool
 			// clang-format off
 			requires StatusCodeDomain<Domain> && StatusCodeDomain<Domain2>
 		{
@@ -375,7 +391,7 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain2>
 		friend inline constexpr auto operator!=(const StatusCode<Domain>& lhs,
-												const StatusCode<Domain2>& rhs) noexcept->bool
+												const StatusCode<Domain2>& rhs) noexcept -> bool
 			// clang-format off
 			requires StatusCodeDomain<Domain> && StatusCodeDomain<Domain2>
 		{
@@ -385,13 +401,13 @@ namespace hyperion::error {
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(
-			const StatusCode& code) noexcept->StatusCode& requires StatusCodeDomain<Domain>
+		constexpr auto operator=(const StatusCode& code) noexcept -> StatusCode&
+		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(
-			StatusCode&&) noexcept->StatusCode& requires StatusCodeDomain<Domain>
+		constexpr auto operator=(StatusCode&&) noexcept -> StatusCode&
+		requires StatusCodeDomain<Domain>
 		= default;
 
 		/// @brief Assigns the value of the `StatusCodeEnum`, `code`, to this as the value it should
@@ -400,7 +416,7 @@ namespace hyperion::error {
 		/// @param code - The `StatusCodeEnum` to assign to this
 		/// @return this, reassigned to represent `code`
 		/// @ingroup error
-		constexpr auto operator=(StatusCodeEnum auto code) noexcept->StatusCode&
+		constexpr auto operator=(StatusCodeEnum auto code) noexcept -> StatusCode&
 			// clang-format off
 			requires StatusCodeDomain<Domain>
 			&& std::same_as<Domain, status_code_enum_domain<decltype(code)>>
@@ -521,7 +537,7 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain2>
 		friend inline constexpr auto operator==(const ErrorCode<Domain>& lhs,
-												const ErrorCode<Domain2>& rhs) noexcept->bool {
+												const ErrorCode<Domain2>& rhs) noexcept -> bool {
 			return lhs.is_equivalent(rhs);
 		}
 
@@ -538,18 +554,19 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain2>
 		friend inline constexpr auto operator!=(const ErrorCode<Domain>& lhs,
-												const ErrorCode<Domain2>& rhs) noexcept->bool {
+												const ErrorCode<Domain2>& rhs) noexcept -> bool {
 			return !lhs.is_equivalent(rhs);
 		}
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(
-			const ErrorCode& code) noexcept->ErrorCode& requires StatusCodeDomain<Domain>
+		constexpr auto operator=(const ErrorCode& code) noexcept -> ErrorCode&
+		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(ErrorCode&&) noexcept->ErrorCode& requires StatusCodeDomain<Domain>
+		constexpr auto operator=(ErrorCode&&) noexcept -> ErrorCode&
+		requires StatusCodeDomain<Domain>
 		= default;
 
 		/// @brief Assigns the value of the `StatusCodeEnum`, `code`, to this as the value it should
@@ -558,12 +575,10 @@ namespace hyperion::error {
 		/// @param code - The `StatusCodeEnum` to assign to this
 		/// @return this, reassigned to represent `code`
 		/// @ingroup error
-		constexpr auto operator=(StatusCodeEnum auto code) noexcept->ErrorCode& // NOLINT
-																				// clang-format off
-			requires StatusCodeDomain<Domain>
-			&& std::same_as<Domain, status_code_enum_domain<decltype(code)>>
+		constexpr auto operator=(StatusCodeEnum auto code) noexcept -> ErrorCode& // NOLINT
+		requires StatusCodeDomain<Domain>
+				 && std::same_as<Domain, status_code_enum_domain<decltype(code)>>
 		{
-			// clang-format on
 			this->m_code = code;
 			if(std::is_constant_evaluated()) {
 				if(this->is_success()) {
