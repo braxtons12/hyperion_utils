@@ -54,11 +54,4 @@ namespace hyperion {
 		noexcept(sink.set_log_level(level));
 	};
 
-	/// @brief Enum indicating whether the sink should style the text when writing it
-	/// @ingroup logging
-	/// @headerfile "Hyperion/logging/SinkType.h"
-	enum class SinkTextStyle : uint8_t {
-		Styled = 0,
-		NotStyled = 1
-	};
 } // namespace hyperion
