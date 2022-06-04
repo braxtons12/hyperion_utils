@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2021-11-14
+/// @date 2022-06-04
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -242,7 +242,7 @@ namespace hyperion::fs {
 		/// @return `Ok(i32)` on success, `Err(error::SystemError)` on failure
 		/// @ingroup filesystem
 		template<typename... Args>
-		[[nodiscard]] inline auto
+		inline auto
 		print(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> Result<i32> {
 			HYPERION_PROFILE_FUNCTION();
 
@@ -254,14 +254,14 @@ namespace hyperion::fs {
 #endif
 			}
 
-			auto str = fmt::format(std::move(format_string), std::forward<Args>(args)...);
-			auto res = fputs(str.c_str(), m_file.get());
-			if(res == EOF) {
+			const auto str = fmt::format(std::move(format_string), std::forward<Args>(args)...);
+			const auto len = str.length();
+			auto res = fwrite(str.c_str(), sizeof(decltype(*(str.c_str()))), len, m_file.get());
+			if(res < len && errno != 0) {
 				return Err(error::SystemError(error::SystemDomain::get_last_error()));
 			}
-			else {
-				return Ok(res);
-			}
+
+			return Ok{static_cast<i32>(res)};
 		}
 
 		/// @brief Prints the formatted string to the file, followed by a newline
@@ -280,13 +280,32 @@ namespace hyperion::fs {
 		/// @return `Ok(i32)` on success, `Err(error::SystemError)` on failure
 		/// @ingroup filesystem
 		template<typename... Args>
-		[[nodiscard]] inline auto
-		println(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		inline auto println(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
 			-> Result<i32> {
 			HYPERION_PROFILE_FUNCTION();
 
-			return print("{}\n",
-						 fmt::format(std::move(format_string), std::forward<Args>(args)...));
+			if(m_options.type == AccessType::Read) {
+#if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
+				return Err(error::SystemError(ERROR_INVALID_FUNCTION));
+#else
+				return Err(error::SystemError(EPERM));
+#endif
+			}
+
+			const auto str = fmt::format(std::move(format_string), std::forward<Args>(args)...);
+			const auto len = str.length();
+			auto res = fwrite(str.c_str(), sizeof(decltype(*(str.c_str()))), len, m_file.get());
+			if(res < len && errno != 0) {
+				return Err(error::SystemError(error::SystemDomain::get_last_error()));
+			}
+
+			res = fwrite("\n", sizeof(char), 1, m_file.get());
+
+			if(res < 1 && errno != 0) {
+				return Err(error::SystemError(error::SystemDomain::get_last_error()));
+			}
+
+			return Ok{static_cast<i32>(res)};
 		}
 
 		/// @brief Reads up to `num_chars` characters from the file
@@ -413,7 +432,7 @@ namespace hyperion::fs {
 	[[nodiscard]] inline auto
 	// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 	File::validate_open_options(OpenOptions options) noexcept -> Result<const char*> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		static constexpr u32 append_binary_mask
 			= ~(AccessModifier::Append | AccessModifier::Binary);
@@ -428,84 +447,67 @@ namespace hyperion::fs {
 			if((options.modifier & append_binary_mask) == 0) {
 				return Ok("a+b");
 			}
-			else {
-				if(options.modifier == AccessModifier::Append) {
-					return Ok("a+");
-				}
-				else {
-					if((options.modifier & truncate_binary_mask) == 0) {
-						return Ok("w+b");
-					}
-					else {
-						if((options.modifier & truncate_fail_mask) == 0) {
-							return Ok("w+x");
-						}
-						else {
-							if((options.modifier & truncate_binary_fail_mask) == 0) {
-								return Ok("w+xb");
-							}
-							else {
-								if(options.modifier == AccessModifier::Truncate) {
-									return Ok("w+");
-								}
-								else {
-									if(options.modifier == AccessModifier::Binary) {
-										return Ok("r+b");
-									}
-									else {
-										if(options.modifier == AccessModifier::None) {
-											return Ok("r+");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+
+			if(options.modifier == AccessModifier::Append) {
+				return Ok("a+");
+			}
+
+			if((options.modifier & truncate_binary_mask) == 0) {
+				return Ok("w+b");
+			}
+
+			if((options.modifier & truncate_fail_mask) == 0) {
+				return Ok("w+x");
+			}
+
+			if((options.modifier & truncate_binary_fail_mask) == 0) {
+				return Ok("w+xb");
+			}
+
+			if(options.modifier == AccessModifier::Truncate) {
+				return Ok("w+");
+			}
+
+			if(options.modifier == AccessModifier::Binary) {
+				return Ok("r+b");
+			}
+
+			if(options.modifier == AccessModifier::None) {
+				return Ok("r+");
 			}
 		}
-		else {
-			if(options.type == AccessType::Read) {
-				if(options.modifier == AccessModifier::Binary) {
-					return Ok("rb");
-				}
-				else {
-					if(options.modifier == AccessModifier::None) {
-						return Ok("r");
-					}
-				}
+		else if(options.type == AccessType::Read) {
+			if(options.modifier == AccessModifier::Binary) {
+				return Ok("rb");
 			}
-			else {
-				if(options.type == AccessType::Write) {
-					if((options.modifier & append_binary_mask) == 0) {
-						return Ok("ab");
-					}
-					else {
-						if(options.modifier == AccessModifier::Append) {
-							return Ok("a");
-						}
-						else {
-							if((options.modifier & truncate_binary_mask) == 0) {
-								return Ok("wb");
-							}
-							else {
-								if((options.modifier & truncate_fail_mask) == 0) {
-									return Ok("wx");
-								}
-								else {
-									if((options.modifier & truncate_binary_fail_mask) == 0) {
-										return Ok("wbx");
-									}
-									else {
-										if(options.modifier == AccessModifier::Truncate) {
-											return Ok("w");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+
+			if(options.modifier == AccessModifier::None) {
+				return Ok("r");
+			}
+		}
+		else { // options.type == AccessType::Write
+			if((options.modifier & append_binary_mask) == 0) {
+				return Ok("ab");
+			}
+
+			if(options.modifier == AccessModifier::Append) {
+				return Ok("a");
+			}
+
+			if((options.modifier & truncate_binary_mask) == 0) {
+				return Ok("wb");
+			}
+
+			if((options.modifier & truncate_fail_mask) == 0) {
+				return Ok("wx");
+			}
+
+			if((options.modifier & truncate_binary_fail_mask) == 0) {
+				return Ok("wbx");
+			}
+
+			if(options.modifier == AccessModifier::Truncate) {
+				return Ok("w");
 			}
 		}
 
@@ -520,33 +522,36 @@ namespace hyperion::fs {
 	File::open(const std::filesystem::path& path, // NOLINT(bugprone-exception-escape)
 			   OpenOptions open_options,
 			   usize buffer_size) noexcept -> Result<File> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		return validate_open_options(open_options)
-			.and_then([&](const char* options) noexcept -> Result<File> {
+			.and_then(
+				[&path, &open_options, &buffer_size](const char* options) noexcept -> Result<File> {
 #if HYPERION_PLATFORM_WINDOWS
-				std::FILE* file = nullptr;
-				ignore(fopen_s(&file, path.string().c_str(), options)); // NOLINT
+					std::FILE* file = nullptr;
+					ignore(fopen_s(&file, path.string().c_str(), options)); // NOLINT
 #else
-				auto* file = std::fopen(path.c_str(), options); // NOLINT
+					auto* file = std::fopen(path.c_str(), options); // NOLINT
 #endif // HYPERION_PLATFORM_WINDOWS
-				if(file != nullptr) {
-					auto buffer = make_unique<buffer_type>(buffer_size);
-					if(std::setvbuf(file, buffer.get(), _IOFBF, buffer_size) != 0) {
+					if(file == nullptr) {
 						return Err(error::SystemError(error::SystemDomain::get_last_error()));
 					}
+
+					auto buffer = make_unique<buffer_type>(buffer_size);
+
+					if(std::setvbuf(file, buffer.get(), _IOFBF, buffer_size) != 0) {
+						ignore(std::fclose(file)); // NOLINT
+						return Err(error::SystemError(error::SystemDomain::get_last_error()));
+					}
+
 					return Ok(File(file, std::move(buffer), open_options));
-				}
-				else {
-					return Err(error::SystemError(error::SystemDomain::get_last_error()));
-				}
-			});
+				});
 	}
 
 	[[nodiscard]] inline auto
 	File::open(const std::filesystem::path& path, // NOLINT(bugprone-exception-escape)
 			   OpenOptions open_options) noexcept -> Result<File> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		return open(path, open_options, DEFAULT_FILE_BUFFER_SIZE);
 	}
@@ -554,13 +559,13 @@ namespace hyperion::fs {
 	[[nodiscard]] inline auto
 	File::open(const std::filesystem::path& path) // NOLINT(bugprone-exception-escape)
 		noexcept -> Result<File> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		return open(path, {}, DEFAULT_FILE_BUFFER_SIZE);
 	}
 
 	[[nodiscard]] inline auto File::read(usize num_chars) noexcept -> Result<std::string> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		if(m_options.type == AccessType::Write) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -571,8 +576,9 @@ namespace hyperion::fs {
 		}
 
 		auto str = std::string(num_chars, 0);
-		auto res = std::fread(str.data(), sizeof(element_type), num_chars, m_file.get());
-		if(res < num_chars && std::ferror(m_file.get()) != 0) {
+		if(std::fread(str.data(), sizeof(element_type), num_chars, m_file.get()) < num_chars
+		   && std::ferror(m_file.get()) != 0)
+		{
 			return Err(error::SystemError(error::SystemDomain::get_last_error()));
 		}
 
@@ -581,7 +587,7 @@ namespace hyperion::fs {
 
 	[[nodiscard]] inline auto
 	File::read_bytes(usize num_bytes) noexcept -> Result<UniquePtr<u8[]>> { // NOLINT
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION();										// NOLINT
 
 		if(m_options.type == AccessType::Write) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -592,8 +598,9 @@ namespace hyperion::fs {
 		}
 
 		auto arr = make_unique<u8[]>(num_bytes); // NOLINT
-		auto res = std::fread(arr.get(), sizeof(u8), num_bytes, m_file.get());
-		if(res < num_bytes && std::ferror(m_file.get()) != 0) {
+		if(std::fread(arr.get(), sizeof(u8), num_bytes, m_file.get()) < num_bytes
+		   && std::ferror(m_file.get()) != 0)
+		{
 			return Err(error::SystemError(error::SystemDomain::get_last_error()));
 		}
 
@@ -601,7 +608,7 @@ namespace hyperion::fs {
 	}
 
 	[[nodiscard]] inline auto File::read_line() noexcept -> Result<std::string> {
-		HYPERION_PROFILE_FUNCTION();
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		if(m_options.type == AccessType::Write || m_options.modifier == AccessModifier::Binary) {
 #if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
@@ -613,30 +620,22 @@ namespace hyperion::fs {
 
 		auto str = std::string();
 
-		auto c = fgetc(m_file.get());
+		auto c = fgetc(m_file.get()); // NOLINT(readability-identifier-length)
 		while(c != '\n') {
 			if(c == EOF) {
 				if(std::ferror(m_file.get()) != 0) {
 					return Err(error::SystemError(error::SystemDomain::get_last_error()));
 				}
-				else {
-					return Ok(std::move(str));
-				}
+
+				return Ok(std::move(str));
 			}
 		}
+
 		return Ok(std::move(str));
 	}
 
 	[[nodiscard]] inline auto File::flush() noexcept -> Result<> {
-		HYPERION_PROFILE_FUNCTION();
-
-		if(m_options.type == AccessType::Read) {
-#if HYPERION_PLATFORM_WINDOWS && !HYPERION_WINDOWS_USES_POSIX_CODES
-			return Err(error::SystemError(ERROR_INVALID_FUNCTION));
-#else
-			return Err(error::SystemError(EPERM));
-#endif
-		}
+		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
 		if(fflush(m_file.get()) != 0) {
 			return Err(error::SystemError(error::SystemDomain::get_last_error()));
