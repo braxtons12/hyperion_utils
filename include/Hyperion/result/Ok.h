@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Ok` wraps the result of a successful operation for implicit conversion into a `Result`
 /// @version 0.1
-/// @date 2021-10-20
+/// @date 2022-06-04
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -28,6 +28,7 @@
 #pragma once
 
 #include <Hyperion/Concepts.h>
+#include <Hyperion/option/None.h>
 
 namespace hyperion {
 
@@ -37,7 +38,7 @@ namespace hyperion {
 	/// @tparam T - The type of the value
 	/// @ingroup result
 	/// @headerfile "Hyperion/result/Ok.h"
-	template<typename T = bool>
+	template<typename T = option::None>
 	struct Ok;
 
 	template<concepts::NotReference T>
@@ -47,16 +48,18 @@ namespace hyperion {
 		/// @param ok - The successful value
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		explicit constexpr Ok(const T& ok) noexcept requires concepts::NoexceptCopyConstructible<T>
-			: m_ok(ok) {
+		explicit constexpr Ok(const T& ok) noexcept // NOLINT(readability-identifier-length)
+		requires concepts::NoexceptCopyConstructible<T>
+		: m_ok(ok) {
 		}
 		/// @brief Constructs an `Ok` from the given T
 		///
 		/// @param ok - The successful value
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		explicit constexpr Ok(T&& ok) noexcept requires concepts::NoexceptMoveConstructible<T>
-			: m_ok(std::move(ok)) {
+		explicit constexpr Ok(T&& ok) noexcept // NOLINT(readability-identifier-length)
+		requires concepts::NoexceptMoveConstructible<T>
+		: m_ok(std::move(ok)) {
 		}
 		/// @brief Constructs an `Ok` from the given T
 		///
@@ -64,9 +67,8 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
 		explicit constexpr Ok(concepts::Convertible<T> auto&& ok) noexcept // NOLINT
-			requires
-			concepts::NotSame<const Ok&, decltype(ok)> && concepts::NotSame<Ok&&, decltype(ok)>
-			: m_ok(std::forward<T>(static_cast<T>(ok))) {
+		requires concepts::NotSame<const Ok&, decltype(ok)> && concepts::NotSame<Ok&&, decltype(ok)>
+		: m_ok(std::forward<T>(static_cast<T>(ok))) {
 		}
 
 		/// @brief Constructs an `Ok` by constructing the `T` in place in it
@@ -82,12 +84,14 @@ namespace hyperion {
 		/// @brief Copy Constructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr Ok(const Ok& ok) noexcept requires concepts::NoexceptCopyConstructible<T>
+		constexpr Ok(const Ok&) noexcept
+		requires concepts::NoexceptCopyConstructible<T>
 		= default;
 		/// @brief Move Constructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr Ok(Ok&& ok) noexcept requires concepts::NoexceptMoveConstructible<T>
+		constexpr Ok(Ok&&) noexcept
+		requires concepts::NoexceptMoveConstructible<T>
 		= default;
 		/// @brief Destructor
 		/// @ingroup result
@@ -101,14 +105,14 @@ namespace hyperion {
 		/// @brief Copy Assignment Operator
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr auto
-		operator=(const Ok& ok) noexcept -> Ok& requires concepts::NoexceptCopyAssignable<T>
+		constexpr auto operator=(const Ok&) noexcept -> Ok&
+		requires concepts::NoexceptCopyAssignable<T>
 		= default;
 		/// @brief Move Assignment Operator
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr auto
-		operator=(Ok&& ok) noexcept -> Ok& requires concepts::NoexceptMoveAssignable<T>
+		constexpr auto operator=(Ok&&) noexcept -> Ok&
+		requires concepts::NoexceptMoveAssignable<T>
 		= default;
 
 		/// @brief The value representing success
@@ -126,14 +130,17 @@ namespace hyperion {
 		/// @param ok - The successful value
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		explicit constexpr Ok(const T& ok) noexcept requires std::is_const_v<T> : m_ok(ok) {
+		explicit constexpr Ok(const T& ok) noexcept // NOLINT(readability-identifier-length)
+		requires std::is_const_v<T>
+		: m_ok(ok) {
 		}
 		/// @brief Constructs an `Ok` from the given T
 		///
 		/// @param ok - The successful value
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		explicit constexpr Ok(T& ok) noexcept : m_ok(ok) {
+		explicit constexpr Ok(T& ok) noexcept // NOLINT(readability-identifier-length)
+			: m_ok(ok) {
 		}
 		/// @brief Constructs an `Ok` from the given T
 		///
@@ -141,19 +148,19 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
 		explicit constexpr Ok(concepts::Convertible<T> auto&& ok) noexcept // NOLINT
-			requires
-			concepts::NotSame<const Ok&, decltype(ok)> && concepts::NotSame<Ok&&, decltype(ok)>
-			: m_ok(std::forward<T>(static_cast<T>(ok))) {
+		requires concepts::NotSame<const Ok&, decltype(ok)> && concepts::NotSame<Ok&&, decltype(ok)>
+		: m_ok(std::forward<T>(static_cast<T>(ok))) {
 		}
 
 		/// @brief Copy Constructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr Ok(const Ok& ok) noexcept = default;
+		constexpr Ok(const Ok&) noexcept = default;
 		/// @brief Move Constructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr Ok(Ok&& ok) noexcept : m_ok(ok.m_ok) {
+		constexpr Ok(Ok&& ok) noexcept // NOLINT(readability-identifier-length)
+			: m_ok(ok.m_ok) {
 		}
 		/// @brief Destructor
 		/// @ingroup result
@@ -166,11 +173,12 @@ namespace hyperion {
 		/// @brief Copy Assignment Operator
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr auto operator=(const Ok& ok) noexcept -> Ok& = default;
+		constexpr auto operator=(const Ok&) noexcept -> Ok& = default;
 		/// @brief Move Assignment Operator
 		/// @ingroup result
 		/// @headerfile "Hyperion/result/Ok.h"
-		constexpr auto operator=(Ok&& ok) noexcept -> Ok& {
+		constexpr auto operator=(Ok&& ok) noexcept // NOLINT(readability-identifier-length)
+			-> Ok& {
 			m_ok = ok.m_ok;
 		}
 

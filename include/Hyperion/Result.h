@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2022-06-04
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -127,7 +127,7 @@ namespace hyperion {
 	/// @tparam E - the type indicating failure in the case of an error
 	/// @ingroup result
 	/// @headerfile "Hyperion/Result.h"
-	template<typename T = bool, typename E = error::SystemError>
+	template<typename T = None, typename E = error::SystemError>
 	class [[nodiscard("Results of fallible operations should not be ignored")]] Result final
 		: private result::ResultData<T, E> {
 	  public:
@@ -252,7 +252,8 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		Result(const hyperion::Err<E>& error) noexcept // NOLINT
-			requires concepts::NoexceptCopyConstructible<E> : ResultData(error.m_error) {
+		requires concepts::NoexceptCopyConstructible<E>
+		: ResultData(error.m_error) {
 		}
 		/// @brief Constructs a `Result` from an `Err`
 		///
@@ -260,7 +261,8 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		Result(hyperion::Err<E> && error) noexcept // NOLINT
-			requires concepts::NoexceptMoveConstructible<E> : ResultData(std::move(error.m_error)) {
+		requires concepts::NoexceptMoveConstructible<E>
+		: ResultData(std::move(error.m_error)) {
 		}
 		/// @brief Constructs a `Result` from an `Ok`
 		///
@@ -268,7 +270,8 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr Result(const hyperion::Ok<T>& ok) noexcept // NOLINT
-			requires concepts::NoexceptCopyConstructible<T> : ResultData(ok.m_ok) {
+		requires concepts::NoexceptCopyConstructible<T>
+		: ResultData(ok.m_ok) {
 		}
 		/// @brief Constructs a `Result` from an `Ok`
 		///
@@ -276,18 +279,19 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr Result(hyperion::Ok<T> && ok) noexcept // NOLINT
-			requires concepts::NoexceptMoveConstructible<T> : ResultData(std::move(ok.m_ok)) {
+		requires concepts::NoexceptMoveConstructible<T>
+		: ResultData(std::move(ok.m_ok)) {
 		}
 		/// @brief Copy Constructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr Result(const Result& result) noexcept(
-			concepts::NoexceptCopyConstructible<
-				ResultData>) requires concepts::CopyConstructible<ResultData>
-			: ResultData(static_cast<const ResultData&>(result))
+			concepts::NoexceptCopyConstructible<ResultData>)
+		requires concepts::CopyConstructible<ResultData>
+		: ResultData(static_cast<const ResultData&>(result))
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			,
-			  m_handled(result.m_handled)
+		  m_handled(result.m_handled)
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -298,13 +302,12 @@ namespace hyperion {
 		/// Moving a `Result` consumes it, leaving a disengaged (valueless) `Result` in its place
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(Result && result) noexcept(
-			concepts::NoexceptMoveConstructible<
-				ResultData>) requires concepts::MoveConstructible<ResultData>
-			: ResultData(static_cast<ResultData&&>(result))
+		constexpr Result(Result && result) noexcept(concepts::NoexceptMoveConstructible<ResultData>)
+		requires concepts::MoveConstructible<ResultData>
+		: ResultData(static_cast<ResultData&&>(result))
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			,
-			  m_handled(result.m_handled)
+		  m_handled(result.m_handled)
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -334,7 +337,7 @@ namespace hyperion {
 		/// @return true if this is `Ok`, otherwise `false`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] constexpr auto is_ok() const noexcept->bool {
+		[[nodiscard]] constexpr auto is_ok() const noexcept -> bool {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -346,7 +349,7 @@ namespace hyperion {
 		/// @return true if this is `Err`, otherwise `false`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto is_err() const noexcept->bool {
+		[[nodiscard]] inline constexpr auto is_err() const noexcept -> bool {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -360,7 +363,7 @@ namespace hyperion {
 		/// @return A reference to the `Ok` value
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto as_mut() noexcept->ok_reference {
+		[[nodiscard]] inline constexpr auto as_ref() noexcept -> ok_reference {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -373,7 +376,7 @@ namespace hyperion {
 				}
 			}
 			else {
-				panic("Result::as_mut called on an Error result, terminating");
+				panic("Result::as_ref called on an Error result, terminating");
 			}
 		}
 
@@ -384,16 +387,15 @@ namespace hyperion {
 		/// @return A const reference to the `Ok` value
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto as_const() const noexcept->ok_const_reference {
+		[[nodiscard]] inline constexpr auto as_cref() const noexcept -> ok_const_reference {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return this->get();
+			if(!is_ok()) {
+				panic("Result::as_cref called on an Error result, terminating");
 			}
-			else {
-				panic("Result::as_const called on an Error result, terminating");
-			}
+
+			return this->get();
 		}
 
 		/// @brief Returns the contained `T`, consuming this `Result`.
@@ -404,17 +406,17 @@ namespace hyperion {
 		/// @return The contained `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap() noexcept
-			->ok_type requires concepts::NoexceptMovable<T> {
+		[[nodiscard]] inline constexpr auto unwrap() noexcept -> ok_type
+		requires concepts::NoexceptMovable<T>
+		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return this->extract();
-			}
-			else {
+			if(!is_ok()) {
 				panic("Result::unwrap called on an Error result, terminating");
 			}
+
+			return this->extract();
 		}
 
 		/// @brief Returns the contained `T` if this is the `Ok` variant, consuming this `Result`.
@@ -426,17 +428,17 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(
-			T & default_value) noexcept->ok_type requires concepts::NotReference<T> {
+		[[nodiscard]] inline constexpr auto unwrap_or(T & default_value) noexcept -> ok_type
+		requires concepts::NotReference<T>
+		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return unwrap();
-			}
-			else {
+			if(!is_ok()) {
 				return std::move(default_value);
 			}
+
+			return unwrap();
 		}
 
 		/// @brief Returns the contained `T` if this is the `Ok` variant, consuming this `Result`.
@@ -448,16 +450,15 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T && default_value) noexcept->ok_type {
+		[[nodiscard]] inline constexpr auto unwrap_or(T && default_value) noexcept -> ok_type {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return unwrap();
-			}
-			else {
+			if(!is_ok()) {
 				return std::move(default_value);
 			}
+
+			return unwrap();
 		}
 
 		/// @brief Returns the contained `T` if this is the `Ok` variant, consuming this `Result`.
@@ -474,16 +475,15 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F>
 		requires concepts::InvocableWithReturn<T, F>
-		[[nodiscard]] inline auto unwrap_or_else(F && default_generator) noexcept->T {
+		[[nodiscard]] inline auto unwrap_or_else(F && default_generator) noexcept -> T {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return unwrap();
-			}
-			else {
+			if(!is_ok()) {
 				return std::forward<F>(default_generator)();
 			}
+
+			return unwrap();
 		}
 
 		/// @brief Returns the contained `T` if this is the `Ok` variant, consuming this `Result`.
@@ -496,17 +496,17 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		template<typename U>
-		requires concepts::Convertible<U, std::string> || concepts::Convertible<U, std::string_view>
-		[[nodiscard]] inline auto expect(U && panic_message) noexcept->ok_type {
+		requires concepts::Convertible<U, std::string>
+				 || concepts::Convertible<U, std::string_view>
+				 [[nodiscard]] inline auto expect(U && panic_message) noexcept -> ok_type {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return unwrap();
-			}
-			else {
+			if(!is_ok()) {
 				panic("{}", std::forward<U>(panic_message));
 			}
+
+			return unwrap();
 		}
 
 		/// @brief Returns the contained `E` if this is the `Err` variant, consuming this `Result`.
@@ -516,17 +516,17 @@ namespace hyperion {
 		/// @return The contained `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_err() noexcept
-			->err_type requires concepts::NoexceptMovable<E> {
+		[[nodiscard]] inline constexpr auto unwrap_err() noexcept -> err_type
+		requires concepts::NoexceptMovable<E>
+		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_err()) {
-				return this->extract_err();
-			}
-			else {
+			if(!is_err()) {
 				panic("Result::unwrap_err called on an Ok result, terminating");
 			}
+
+			return this->extract_err();
 		}
 
 		/// @brief Converts this `Result` into an `Option<T>`, consuming this `Result` and
@@ -538,17 +538,17 @@ namespace hyperion {
 		/// @return `Option<T>`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto ok() noexcept->Option<T>
-		requires concepts::NoexceptMovable<T> {
+		[[nodiscard]] inline constexpr auto ok() noexcept -> Option<T>
+		requires concepts::NoexceptMovable<T>
+		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return Some(this->extract());
-			}
-			else {
+			if(!is_ok()) {
 				return None();
 			}
+
+			return Some(this->extract());
 		}
 
 		/// @brief Converts this `Result` into an `Option<E>`, consuming this `Result` and
@@ -560,17 +560,17 @@ namespace hyperion {
 		/// @return `Option<E>`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto err() noexcept->Option<E>
-		requires concepts::NoexceptMovable<E> {
+		[[nodiscard]] inline constexpr auto err() noexcept -> Option<E>
+		requires concepts::NoexceptMovable<E>
+		{
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_err()) {
-				return Some(this->extract_err());
-			}
-			else {
+			if(!is_err()) {
 				return None();
 			}
+
+			return Some(this->extract_err());
 		}
 
 		/// @brief Maps this `Result` to another one with a potentially different `Ok` type.
@@ -590,20 +590,20 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
 				 typename U = decltype(std::declval<F>()(std::declval<ok_const_reference>()))>
-		requires concepts::InvocableWithReturn<U, F, ok_const_reference> && concepts::
-			NoexceptMovable<U> && concepts::NoexceptCopyable<E>
-		[[nodiscard]] inline auto map(F && map_func) const noexcept->Result<U, E> {
+		requires concepts::InvocableWithReturn<U, F, ok_const_reference>
+				 && concepts::NoexceptMovable<U>
+				 && concepts::NoexceptCopyable<E>
+				 [[nodiscard]] inline auto map(F && map_func) const noexcept -> Result<U, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return hyperion::Ok<U>(std::forward<F>(map_func)(this->get()));
-			}
-			else {
+			if(!is_ok()) {
 				return hyperion::Err<E>(this->get_err());
 			}
+
+			return hyperion::Ok<U>(std::forward<F>(map_func)(this->get()));
 		}
 
 		/// @brief Maps this `Result` to a `U`.
@@ -621,16 +621,15 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F, typename U>
 		requires concepts::InvocableWithReturn<U, F, ok_const_reference>
-		[[nodiscard]] inline auto map_or(F && map_func, U && default_value) const noexcept->U {
+		[[nodiscard]] inline auto map_or(F && map_func, U && default_value) const noexcept -> U {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return std::forward<F>(map_func)(this->get());
-			}
-			else {
+			if(!is_ok()) {
 				return std::forward<U>(default_value);
 			}
+
+			return std::forward<F>(map_func)(this->get());
 		}
 
 		/// @brief Maps this `Result` to a `U`.
@@ -658,20 +657,20 @@ namespace hyperion {
 				 concepts::Invocable G,
 				 typename U = decltype(std::declval<F>()(std::declval<ok_const_reference>())),
 				 typename V = decltype(std::declval<G>()())>
-		requires concepts::Same<U, V> && concepts::InvocableWithReturn<U, F, ok_const_reference>
-		[[nodiscard]] inline auto map_or_else(F && map_func, G && default_generator)
-			const noexcept->U {
+		requires concepts::Same<U, V>
+				 && concepts::InvocableWithReturn<U, F, ok_const_reference>
+				 [[nodiscard]] inline auto map_or_else(F && map_func, G && default_generator)
+					 const noexcept -> U {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return std::forward<F>(map_func)(this->get());
-			}
-			else {
+			if(!is_ok()) {
 				return std::forward<G>(default_generator)();
 			}
+
+			return std::forward<F>(map_func)(this->get());
 		}
 
 		/// @brief Maps this `Result` to a another one, with a potentially different `Error` type.
@@ -690,20 +689,20 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
 				 typename U = decltype(std::declval<F>()(std::declval<err_const_reference>()))>
-		requires concepts::InvocableWithReturn<U, F, err_const_reference> && concepts::
-			NoexceptCopyable<T> && concepts::NoexceptCopyable<E>
-		[[nodiscard]] inline auto map_err(F && map_func) const noexcept->Result<T, U> {
+		requires concepts::InvocableWithReturn<U, F, err_const_reference>
+				 && concepts::NoexceptCopyable<T>
+				 && concepts::NoexceptCopyable<E>
+				 [[nodiscard]] inline auto map_err(F && map_func) const noexcept -> Result<T, U> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_err()) {
-				return hyperion::Err<U>(std::forward<F>(map_func)(this->get_err()));
-			}
-			else {
+			if(!is_err()) {
 				return hyperion::Ok<T>(this->get());
 			}
+
+			return hyperion::Err<U>(std::forward<F>(map_func)(this->get_err()));
 		}
 
 		/// @brief Matches this `Result` to a consuming function, depending on whether it is the
@@ -735,26 +734,58 @@ namespace hyperion {
 			typename ErrFunc,
 			typename R1 = decltype(std::declval<OkFunc>()(std::declval<ok_rvalue_reference>())),
 			typename R2 = decltype(std::declval<ErrFunc>()(std::declval<err_rvalue_reference>()))>
-		requires concepts::Same<R1, R2> && concepts::
-			InvocableWithReturn<R1, OkFunc, ok_rvalue_reference> && concepts::
-				InvocableWithReturn<R2, ErrFunc, err_rvalue_reference> && concepts::NoexceptMovable<
-					T> && concepts::NoexceptMovable<E>
-		inline auto match(OkFunc && ok_func, ErrFunc && err_func) noexcept->R1 {
+		requires concepts::Same<R1, R2>
+				 && concepts::InvocableWithReturn<R1, OkFunc, ok_rvalue_reference>
+				 && concepts::InvocableWithReturn<R2, ErrFunc, err_rvalue_reference>
+				 && concepts::NoexceptMovable<T>
+				 && concepts::NoexceptMovable<E>
+				 inline auto match(OkFunc && ok_func, ErrFunc && err_func) noexcept -> R1 {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return std::forward<OkFunc>(ok_func)(this->extract());
-			}
-			else {
+			if(!is_ok()) {
 				return std::forward<ErrFunc>(err_func)(this->extract_err());
 			}
+
+			return std::forward<OkFunc>(ok_func)(this->extract());
 		}
 
 		/// @brief Continues control flow into `func` if this is the `Ok` variant, otherwise returns
 		/// the `Err` value contained in this. In either case, consumes this `Result`.
 		///
 		/// @tparam F - The type of invocable to call if this is `Ok`
+		/// @tparam R - The type of the `Ok` variant of the `Result` returned by `func`. This is
+		/// deduced. Don't explicitly provide this.
+		/// @param func - The invocable to call if this is `Ok`
+		///
+		/// @return the result of invoking `func` with the contained value, otherwise moves the
+		/// error value into a new `Result`
+		/// @ingroup result
+		/// @headerfile "Hyperion/Result.h"
+		template<typename F,
+				 typename R = decltype(std::declval<F>()(std::declval<ok_rvalue_reference>()))>
+		requires concepts::InvocableWithReturn<R, F, ok_rvalue_reference>
+				 && concepts::NoexceptMovable<T> && concepts::NoexceptMovable<E>
+				 && result::NotResult<R>
+				 [[nodiscard]] inline auto and_then(F && func) noexcept -> Result<R, E> {
+			// the invocable checks above are probably redundant because of the inferred template
+			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
+#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+			m_handled = true;
+#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+			if(!is_ok()) {
+				return hyperion::Err<E>(this->extract_err());
+			}
+
+			return hyperion::Ok<R>(std::forward<F>(func)(this->extract()));
+		}
+
+		/// @brief Continues control flow into `func` if this is the `Ok` variant, otherwise returns
+		/// the `Err` value contained in this. In either case, consumes this `Result`.
+		///
+		/// @tparam F - The type of invocable to call if this is `Ok`
+		/// @tparam V - The `Result` type returned by `func`. This is deduced. Don't explicitly
+		/// provide this.
 		/// @tparam U - The rvalue reference type of the `Ok` variant of the `Result` returned by
 		/// `func`. This is deduced. Don't explicitly provide this.
 		/// @tparam R - The type of the `Ok` variant of the `Result` returned by `func`. This is
@@ -766,24 +797,24 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
-				 typename U = typename decltype(std::declval<F>()(
-					 std::declval<ok_rvalue_reference>()))::ok_rvalue_reference,
+				 typename V = decltype(std::declval<F>()(std::declval<ok_rvalue_reference>())),
+				 typename U = typename V::ok_rvalue_reference,
 				 typename R
 				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableWithReturn<Result<R, E>, F, ok_rvalue_reference> && concepts::
-			NoexceptMovable<T> && concepts::NoexceptMovable<E>
-		[[nodiscard]] inline auto and_then(F && func) noexcept->Result<R, E> {
+		requires concepts::InvocableWithReturn<Result<R, E>, F, ok_rvalue_reference>
+				 && concepts::NoexceptMovable<T> && concepts::NoexceptMovable<E>
+				 && result::IsResult<V>
+				 [[nodiscard]] inline auto and_then(F && func) noexcept -> Result<R, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return std::forward<F>(func)(this->extract());
-			}
-			else {
+			if(!is_ok()) {
 				return hyperion::Err<E>(this->extract_err());
 			}
+
+			return std::forward<F>(func)(this->extract());
 		}
 
 		/// @brief Forwards the value contained in this into a new `Result`, consuming this
@@ -801,16 +832,15 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F>
 		requires concepts::NoexceptMovable<T>
-		[[nodiscard]] inline auto or_else(Result<T, F> && result) const noexcept->Result<T, F> {
+		[[nodiscard]] inline auto or_else(Result<T, F> && result) const noexcept -> Result<T, F> {
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return hyperion::Ok<T>(this->extract());
-			}
-			else {
+			if(!is_ok()) {
 				return std::move(result);
 			}
+
+			return hyperion::Ok<T>(this->extract());
 		}
 
 		/// @brief Forwards the value contained in this into a new `Result`, consuming this
@@ -834,20 +864,20 @@ namespace hyperion {
 					 std::declval<err_rvalue_reference>()))::err_rvalue_reference,
 				 typename R
 				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference> && concepts::
-			NoexceptMovable<T> && concepts::NoexceptMovable<E>
-		[[nodiscard]] inline auto or_else(F && func) noexcept->Result<T, R> {
+		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference>
+				 && concepts::NoexceptMovable<T>
+				 && concepts::NoexceptMovable<E>
+				 [[nodiscard]] inline auto or_else(F && func) noexcept -> Result<T, R> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-			if(is_ok()) {
-				return hyperion::Ok<T>(this->extract());
-			}
-			else {
+			if(!is_ok()) {
 				return std::forward<F>(func)(this->extract_err());
 			}
+
+			return hyperion::Ok<T>(this->extract());
 		}
 
 		/// @brief Boolean conversion operator. Returns true if this is the `Ok` variant
@@ -867,7 +897,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		constexpr auto operator=(const Result& result) noexcept(
 			concepts::NoexceptCopyAssignable<ResultData>)
-			->Result& requires concepts::CopyAssignable<ResultData> {
+			->Result&
+		requires concepts::CopyAssignable<ResultData>
+		{
 			if(this == &result) {
 				return *this;
 			}
@@ -887,7 +919,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		constexpr auto operator=(Result&& result) noexcept(
 			concepts::NoexceptMoveAssignable<ResultData>)
-			->Result& requires concepts::MoveAssignable<ResultData> {
+			->Result&
+		requires concepts::MoveAssignable<ResultData>
+		{
 			if(this == &result) {
 				return *this;
 			}
@@ -902,11 +936,10 @@ namespace hyperion {
 			return *this;
 		}
 
-	  private :
 #if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
-		  /// whether this `Result` has been handled
-		  mutable bool m_handled
-		  = false;
+	  private:
+		/// whether this `Result` has been handled
+		mutable bool m_handled = false;
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 	};
 	IGNORE_PADDING_STOP
