@@ -26,7 +26,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
-			m_write.store(0_u32, std::memory_order_release);
+			m_max_read.store(0_u32, std::memory_order_release);
 		}
 
 		/// @brief Creates a `LockFreeQueue` with (at least) the given initial capacity
@@ -38,7 +38,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
-			m_write.store(0_u32, std::memory_order_release);
+			m_max_read.store(0_u32, std::memory_order_release);
 		}
 
 		/// @brief Constructs a new `LockFreeQueue` with the given initial capacity and
@@ -317,7 +317,7 @@ namespace hyperion {
 		///
 		/// @return The first element
 		[[nodiscard]] inline constexpr auto front() noexcept -> Option<T> {
-			if(m_read >= m_max_read.load(std::memory_order_acquire)) {
+			if(m_read + 1 > m_max_read.load(std::memory_order_acquire)) {
 				return None();
 			}
 
@@ -330,12 +330,12 @@ namespace hyperion {
 		[[nodiscard]] inline constexpr auto pop_front() noexcept -> hyperion::Option<T>
 		requires concepts::NoexceptMoveConstructible<T>
 		{
-			if(m_read >= m_max_read.load(std::memory_order_acquire)) {
+			if(m_read + 1 > m_max_read.load(std::memory_order_acquire)) {
 				return None();
 			}
 
 			const auto read = m_read % m_capacity;
-			m_read++;
+			++m_read;
 			auto ret = Some(std::move(m_buffer[read]));
 			m_prevent_optimization = m_size.fetch_sub(1, std::memory_order_release);
 			return ret;
@@ -385,7 +385,9 @@ namespace hyperion {
 		std::atomic<u32> m_size = 0_u32;
 
 		[[nodiscard]] inline auto get_all() const noexcept -> std::tuple<u32, u32, u32> {
-			return {m_read, m_write.load(std::memory_order_acquire), m_size.load(std::memory_order_acquire)};
+			return {m_read,
+					m_write.load(std::memory_order_acquire),
+					m_size.load(std::memory_order_acquire)};
 		}
 
 		// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
