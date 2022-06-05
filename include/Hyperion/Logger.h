@@ -132,11 +132,13 @@ namespace hyperion {
 
 			HYPERION_PROFILE_FUNCTION();
 
-			[[maybe_unused]] const auto timestamp = create_time_stamp();
+			const auto timestamp = create_time_stamp();
 			const auto entry = fmt::format(std::move(format_string), std::forward<Args>(args)...);
 			const auto tid = thread_id.is_some() ?
-								thread_id.unwrap() :
-								std::hash<std::thread::id>()(std::this_thread::get_id());
+								 thread_id.unwrap() :
+								 std::hash<std::thread::id>()(std::this_thread::get_id());
+			// ignore(thread_id);
+			// ignore(timestamp);
 
 			std::string log_type;
 			if constexpr(Level == LogLevel::MESSAGE) {
@@ -154,13 +156,13 @@ namespace hyperion {
 			else if constexpr(Level == LogLevel::ERROR) {
 				log_type = "ERROR"s;
 			}
+
 			return make_entry<entry_level_t<Level>>(FMT_COMPILE("{0} [Thread ID: {1}] [{2}]: {3}"),
 													timestamp,
 													tid,
 													log_type,
 													entry);
-			//	return make_entry<entry_level_t<Level>>(FMT_COMPILE("[Thread ID: {0}] [{1}]: {2}"),
-			//	                                        id,
+			//	return make_entry<entry_level_t<Level>>(FMT_COMPILE("[{0}]: {1}"),
 			//	                                        log_type,
 			//	                                        entry);
 		}
@@ -332,18 +334,19 @@ namespace hyperion {
 #endif
 
 					ignore(try_read().and_then([this](const auto& message) noexcept -> None {
-						std::ranges::for_each(m_sinks,
-											  [&message](const auto& sink) noexcept
-											  -> void { sink->sink(message); });
+						std::ranges::for_each(
+							m_sinks,
+							[&message](const auto& sink) noexcept -> void { sink->sink(message); });
 						return {};
 					}));
 				}
 				while(try_read().and_then([this](const auto& message) noexcept -> None {
-					std::ranges::for_each(m_sinks,
-										  [&message](const auto& sink) noexcept
-										  -> void { sink->sink(message); });
+					std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
+						sink->sink(message);
+					});
 					return {};
-				})) {
+				}))
+				{
 					// loop until we flush the queue
 				}
 			}
@@ -376,9 +379,9 @@ namespace hyperion {
 
 				{
 					auto sinks_guard = m_sinks.write();
-					std::ranges::for_each(*sinks_guard,
-										  [&message](const auto& sink) noexcept
-										  -> void { sink->sink(message); });
+					std::ranges::for_each(
+						*sinks_guard,
+						[&message](const auto& sink) noexcept -> void { sink->sink(message); });
 				}
 			}
 
@@ -445,9 +448,9 @@ namespace hyperion {
 													   std::forward<Args>(args)...);
 					if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
 						return m_queue.push(std::move(message))
-									   .map_err([]([[maybe_unused]] const QueueError& error) {
-										   return LoggerError(LoggerErrorCategory::QueueingError);
-									   });
+							.map_err([]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
 					}
 					else {
 						m_queue.push(std::move(message));
@@ -513,22 +516,23 @@ namespace hyperion {
 #endif
 
 					ignore(try_read().and_then([this](const auto& message) noexcept -> None {
-						std::ranges::for_each(m_sinks,
-											  [&message](const auto& sink) noexcept
-											  -> void { sink->sink(message); });
+						std::ranges::for_each(
+							m_sinks,
+							[&message](const auto& sink) noexcept -> void { sink->sink(message); });
 						return {};
 					}));
 				}
 				while(try_read().and_then([this](const auto& message) noexcept -> None {
-				  std::ranges::for_each(m_sinks,
-				                        [&message](const auto& sink) noexcept
-					                        -> void { sink->sink(message); });
-				  return {};
-				})) {
+					std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
+						sink->sink(message);
+					});
+					return {};
+				}))
+				{
 					// loop until we flush the queue
 				}
 			}
-			};
+		};
 	} // namespace detail
 
 	/// @brief Hyperion logging type for formatted logging.
