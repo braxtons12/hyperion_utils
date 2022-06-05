@@ -26,6 +26,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
+			m_write.store(0_u32, std::memory_order_release);
 		}
 
 		/// @brief Creates a `LockFreeQueue` with (at least) the given initial capacity
@@ -37,6 +38,7 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
+			m_write.store(0_u32, std::memory_order_release);
 		}
 
 		/// @brief Constructs a new `LockFreeQueue` with the given initial capacity and
@@ -99,7 +101,7 @@ namespace hyperion {
 		~LockFreeQueue() noexcept
 		requires concepts::NoexceptDestructible<T>
 		{
-			std::atomic_thread_fence(std::memory_order_acquire);
+			m_prevent_optimization = m_max_read.load(std::memory_order_acquire);
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::destroy_at(std::addressof(m_buffer[index])); // NOLINT
 			}
@@ -153,7 +155,7 @@ namespace hyperion {
 		inline constexpr auto reserve(u32 new_capacity) noexcept -> void {
 			// we only need to do anything if `new_capacity` is actually larger than `m_capacity`
 			if(new_capacity > m_capacity) {
-				std::atomic_thread_fence(std::memory_order_acquire);
+				m_prevent_optimization = m_max_read.load(std::memory_order_acquire);
 				auto temp = hyperion::allocate_unique<T[],			   // NOLINT
 													  Allocator<T[]>>( // NOLINT
 					m_allocator,
@@ -176,7 +178,7 @@ namespace hyperion {
 
 		/// @brief Erases all elements from the `LockFreeQueue`
 		inline constexpr auto clear() noexcept -> void {
-			std::atomic_thread_fence(std::memory_order_acquire);
+			m_prevent_optimization = m_max_read.load(std::memory_order_acquire);
 			m_buffer = hyperion::allocate_unique<T[]>(m_allocator, m_capacity); // NOLINT
 			set_all(0_u32, 0_u32, 0_i32);
 		}
@@ -199,7 +201,7 @@ namespace hyperion {
 
 			m_buffer[write] = std::forward<U>(value);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 		}
 
 		/// @brief Inserts the given element at the end of the `LockFreeQueue` if the queue is not
@@ -221,7 +223,7 @@ namespace hyperion {
 
 			m_buffer[write] = std::forward<U>(value);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 			return true;
 		}
 
@@ -244,7 +246,7 @@ namespace hyperion {
 
 			m_buffer[write] = std::forward<U>(value);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 		}
 
 		/// @brief Constructs the given element in place at the end of the `LockFreeQueue`
@@ -265,7 +267,7 @@ namespace hyperion {
 
 			m_buffer[write] = T(std::forward<Args>(args)...);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 		}
 
 		/// @brief Constructs the given element in place at the end of the `LockFreeQueue` if the
@@ -286,7 +288,7 @@ namespace hyperion {
 
 			m_buffer[write] = T(std::forward<Args>(args)...);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 			return true;
 		}
 
@@ -308,7 +310,7 @@ namespace hyperion {
 
 			m_buffer[write] = T(std::forward<Args>(args)...);
 
-			ignore(m_max_read.fetch_add(1, std::memory_order_release));
+			m_prevent_optimization = m_max_read.fetch_add(1, std::memory_order_release);
 		}
 
 		/// @brief Returns the first element in the `LockFreeQueue`
@@ -335,21 +337,21 @@ namespace hyperion {
 			const auto read = m_read % m_capacity;
 			m_read++;
 			auto ret = Some(std::move(m_buffer[read]));
-			ignore(m_size.fetch_sub(1, std::memory_order_release));
+			m_prevent_optimization = m_size.fetch_sub(1, std::memory_order_release);
 			return ret;
 		}
 
 		constexpr auto operator=(const LockFreeQueue& buffer) noexcept -> LockFreeQueue&
 		requires concepts::NoexceptCopyConstructible<T>
 		{
-			std::atomic_thread_fence(std::memory_order_acquire);
 			if(this == &buffer) {
 				return *this;
 			}
+			m_prevent_optimization = m_max_read.load(std::memory_order_acquire);
+
 			auto temp = hyperion::allocate_unique<T[]>(m_allocator, buffer.m_capacity); // NOLINT
 			const auto size = buffer.size();
 
-			const auto buf_read = buffer.m_indices.get_read();
 			for(auto index = 0_usize; index < size; ++index) {
 				allocator_traits::construct(m_allocator,
 											std::addressof(temp[index]),
@@ -363,34 +365,35 @@ namespace hyperion {
 		}
 
 		constexpr auto operator=(LockFreeQueue&& buffer) noexcept -> LockFreeQueue& {
+			m_prevent_optimization = m_max_read.load(std::memory_order_acquire);
 			const auto [read, write, size] = buffer.get_all();
 			m_allocator = buffer.m_allocator;
 			m_buffer = std::move(buffer.m_buffer);
 			m_capacity = buffer.m_capacity;
 			buffer.m_buffer = nullptr;
-			buffer.set_all(0_u32, 0_u32, 0_u32);
 			buffer.m_capacity = 0_usize;
+			buffer.set_all(0_u32, 0_u32, 0_u32);
 			set_all(read, write, size);
 			return *this;
 		}
 
 	  private:
+		volatile u32 m_prevent_optimization = 0_u32;
 		u32 m_read = 0_u32;
 		std::atomic<u32> m_write = 0_u32;
 		std::atomic<u32> m_max_read = 0_u32;
 		std::atomic<u32> m_size = 0_u32;
 
 		[[nodiscard]] inline auto get_all() const noexcept -> std::tuple<u32, u32, u32> {
-			return {m_read, m_write.load(), m_size.load()};
+			return {m_read, m_write.load(std::memory_order_acquire), m_size.load(std::memory_order_acquire)};
 		}
 
 		// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 		inline auto set_all(u32 read, u32 write, u32 size) noexcept -> void {
-			std::atomic_thread_fence(std::memory_order_acquire);
 			m_read = read;
-			m_max_read.store(size, std::memory_order_relaxed);
 			m_write.store(write, std::memory_order_relaxed);
-			m_size.store(size, std::memory_order_release);
+			m_size.store(size, std::memory_order_relaxed);
+			m_max_read.store(size, std::memory_order_release);
 		}
 
 		inline auto increment_size() noexcept -> bool {
