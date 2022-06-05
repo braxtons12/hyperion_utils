@@ -26,7 +26,6 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
-			std::atomic_thread_fence(std::memory_order_release);
 		}
 
 		/// @brief Creates a `LockFreeQueue` with (at least) the given initial capacity
@@ -38,7 +37,6 @@ namespace hyperion {
 			for(auto index = 0_usize; index < m_capacity; ++index) {
 				std::construct_at(std::addressof(m_buffer[index])); // NOLINT
 			}
-			std::atomic_thread_fence(std::memory_order_release);
 		}
 
 		/// @brief Constructs a new `LockFreeQueue` with the given initial capacity and
