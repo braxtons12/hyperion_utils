@@ -70,9 +70,8 @@ STATUS_CODE_DOMAIN(
 		if(code == value_type::Success || code == value_type::Unknown) {
 			return make_status_code(static_cast<error::Errno>(code));
 		}
-		else {
-			return make_status_code(error::Errno::Unknown);
-		}
+
+		return make_status_code(error::Errno::Unknown);
 	});
 
 namespace hyperion {

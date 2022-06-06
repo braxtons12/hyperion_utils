@@ -120,10 +120,11 @@ namespace hyperion {
 	template<typename T>
 	concept LoggerPolicyType = requires() {
 		T::threading_policy;
-		concepts::Same<std::remove_cvref_t<decltype(T::threading_policy)>, LogThreadingPolicy>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::threading_policy)>,
+								LogThreadingPolicy>;
 
 		T::async_policy;
-		concepts::Same<std::remove_cvref_t<decltype(T::async_policy)>, LogAsyncPolicy>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::async_policy)>, LogAsyncPolicy>;
 	};
 
 	/// @brief Alias for the default logging policy
@@ -148,7 +149,7 @@ namespace hyperion {
 	template<typename T>
 	concept LoggerLevelType = requires() {
 		T::minimum_level;
-		concepts::Same<std::remove_cvref_t<decltype(T::minimum_level)>, LogLevel>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::minimum_level)>, LogLevel>;
 	};
 
 	/// @brief Alias for the default logging level
@@ -185,16 +186,17 @@ namespace hyperion {
 	template<typename T>
 	concept LoggerParametersType = requires() {
 		T::threading_policy;
-		concepts::Same<std::remove_cvref_t<decltype(T::threading_policy)>, LogThreadingPolicy>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::threading_policy)>,
+								LogThreadingPolicy>;
 
 		T::async_policy;
-		concepts::Same<std::remove_cvref_t<decltype(T::async_policy)>, LogAsyncPolicy>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::async_policy)>, LogAsyncPolicy>;
 
 		T::minimum_level;
-		concepts::Same<std::remove_cvref_t<decltype(T::minimum_level)>, LogLevel>;
+		requires concepts::Same<std::remove_cvref_t<decltype(T::minimum_level)>, LogLevel>;
 
 		T::queue_size;
-		concepts::Integral<std::remove_cvref_t<decltype(T::queue_size)>>;
+		requires concepts::Integral<std::remove_cvref_t<decltype(T::queue_size)>>;
 	};
 
 	/// @brief Alias for the default logging configuration parameters

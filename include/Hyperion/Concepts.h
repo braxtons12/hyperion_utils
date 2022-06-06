@@ -674,7 +674,7 @@ namespace hyperion::concepts {
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
 	concept Allocatable = requires(Allocator alloc) {
 		// clang-format off
-		concepts::Same<std::decay_t<U>,typename std::allocator_traits<Allocator>::value_type> ||
+		requires concepts::Same<std::decay_t<U>,typename std::allocator_traits<Allocator>::value_type> ||
 			concepts::Derived<typename std::allocator_traits<Allocator>::value_type, U>;
 		// clang-format on
 		std::allocator_traits<Allocator>::allocate(alloc, 1_usize);

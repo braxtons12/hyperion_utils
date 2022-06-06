@@ -237,6 +237,7 @@ else ()
 		INTERFACE
 		-Wno-c++20-compat
 		-Wno-terminate
+		-Wno-extra-semi
 		)
 	target_compile_options(HyperionUtilsTest
 		PRIVATE
@@ -247,6 +248,7 @@ else ()
 		-Werror
 		-Wno-c++20-compat
 		-Wno-terminate
+		-Wno-extra-semi
 		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
 		PRIVATE
@@ -257,6 +259,7 @@ else ()
 		-Werror
 		-Wno-c++20-compat
 		-Wno-terminate
+		-Wno-extra-semi
 		)
 endif ()
 
@@ -275,13 +278,15 @@ target_include_directories(HyperionUtilsLoggerBenchmark PUBLIC
 target_compile_definitions(HyperionUtils INTERFACE DOCTEST_CONFIG_DISABLE)
 target_compile_definitions(HyperionUtilsLoggerBenchmark PUBLIC DOCTEST_CONFIG_DISABLE)
 
-if (APPLE AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
-	target_compile_options(HyperionUtilsTest PRIVATE -mcpu=apple-a14 -mtune=native)
-	target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -mcpu=apple-a14 -mtune=native)
-else ()
-	target_compile_options(HyperionUtilsTest PRIVATE -march=native -mtune=native)
-	target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -march=native -mtune=native)
-endif ()
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+	if (APPLE AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
+		target_compile_options(HyperionUtilsTest PRIVATE -mcpu=apple-a14 -mtune=native)
+		target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -mcpu=apple-a14 -mtune=native)
+	else ()
+		target_compile_options(HyperionUtilsTest PRIVATE -march=native -mtune=native)
+		target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -march=native -mtune=native)
+	endif ()
+endif()
 
 if (HYPERION_TRACY_ENABLE)
 	SET(TRACY Tracy::TracyClient)

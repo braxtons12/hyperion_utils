@@ -93,9 +93,9 @@ namespace hyperion::error {
 	#endif // HYPERION_SYSTEM_STATUS_CODE_DOMAIN
 #else
 	#ifndef HYPERION_SYSTEM_STATUS_CODE_DOMAIN
-		#error HYPERION_SYSTEM_STATUS_CODE_DOMAIN MUST be defined to your system's status code \
-domain prior to including "Hyperion/error/SystemDomain" \
-(directly or transitively) when defined(HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX)
+		#error "HYPERION_SYSTEM_STATUS_CODE_DOMAIN MUST be defined to your system's status code \
+domain prior to including \"Hyperion/error/SystemDomain\" \
+(directly or transitively) when defined(HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX)"
 	#endif // HYPERION_SYSTEM_STATUS_CODE_DOMAIN
 #endif	   // !HYPERION_PLATFORM_WINDOWS
 

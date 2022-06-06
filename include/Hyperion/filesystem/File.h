@@ -385,48 +385,48 @@ namespace hyperion::fs {
 	inline constexpr auto
 	operator|(const File::AccessModifier& lhs, const File::AccessModifier& rhs) noexcept -> u32 {
 
-		return static_cast<const u32>(lhs) | static_cast<const u32>(rhs);
+		return static_cast<u32>(lhs) | static_cast<u32>(rhs);
 	}
 
 	inline constexpr auto operator|(const File::AccessModifier& lhs, u32 rhs) noexcept -> u32 {
 
-		return static_cast<const u32>(lhs) | rhs;
+		return static_cast<u32>(lhs) | rhs;
 	}
 
 	inline constexpr auto operator|(u32 lhs, const File::AccessModifier& rhs) noexcept -> u32 {
 
-		return lhs | static_cast<const u32>(rhs);
+		return lhs | static_cast<u32>(rhs);
 	}
 
 	inline constexpr auto
 	operator&(const File::AccessModifier& lhs, const File::AccessModifier& rhs) noexcept -> u32 {
 
-		return static_cast<const u32>(lhs) & static_cast<const u32>(rhs);
+		return static_cast<u32>(lhs) & static_cast<u32>(rhs);
 	}
 
 	inline constexpr auto operator&(const File::AccessModifier& lhs, u32 rhs) noexcept -> u32 {
 
-		return static_cast<const u32>(lhs) & rhs;
+		return static_cast<u32>(lhs) & rhs;
 	}
 
 	inline constexpr auto operator&(u32 lhs, const File::AccessModifier& rhs) noexcept -> u32 {
 
-		return lhs & static_cast<const u32>(rhs);
+		return lhs & static_cast<u32>(rhs);
 	}
 
 	inline constexpr auto operator~(const File::AccessModifier& mod) noexcept -> u32 {
 
-		return ~static_cast<const u32>(mod);
+		return ~static_cast<u32>(mod);
 	}
 
 	inline constexpr auto operator==(const File::AccessModifier& lhs, u32 rhs) noexcept -> bool {
 
-		return static_cast<const u32>(lhs) == rhs;
+		return static_cast<u32>(lhs) == rhs;
 	}
 
 	inline constexpr auto operator==(u32 lhs, const File::AccessModifier& rhs) noexcept -> bool {
 
-		return lhs == static_cast<const u32>(rhs);
+		return lhs == static_cast<u32>(rhs);
 	}
 
 	[[nodiscard]] inline auto

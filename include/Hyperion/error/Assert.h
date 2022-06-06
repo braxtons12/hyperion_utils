@@ -27,7 +27,6 @@
 #pragma once
 
 #include <Hyperion/HyperionDef.h>
-#include <cassert>
 
 #if HYPERION_HAS_SOURCE_LOCATION
 	#include <source_location>
@@ -38,138 +37,78 @@
 namespace std { // NOLINT
 	using source_location = std::experimental::source_location;
 } // namespace std
+#else
+	#error "Hyperion requires std::source_location"
 #endif // HYPERION_HAS_SOURCE_LOCATION
 
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/FmtIO.h>
+#include <Hyperion/Ignore.h>
 #include <Hyperion/Platform.h>
 #include <Hyperion/error/Backtrace.h>
+#include <cassert>
 
 namespace hyperion::error {
 
 	IGNORE_UNUSED_MACROS_START
 
 #if HYPERION_PLATFORM_DEBUG
-
-	#if HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
-
+	/// @def hyperion_assert(condition, format_string, ...)
 	/// @brief Triggers an assertion, printing the formatted error message along with detailed
-	/// source code location information of where the error occurred
+	/// source code location information of where the error occurred and a backtrace
 	///
 	/// Formats the error message via the given `format_string` and `format_args`, prepended with
-	/// the source code location in the format "[file:line:column: function]: message"
+	/// the source code location and followed by a backtrace in the format:
+	/// "Assertion triggered at [file_nam:line:column: function_name]: assertion_message
+	/// Backtrace:
+	/// backtrace"
 	///
-	/// @tparam Args - The types of the arguments to format into the error message
-	///
+	/// @param condition - The condition to check
 	/// @param format_string - The format string for generating the formatted error message
-	/// @param location - The source code location the error occurred
-	/// @param format_args - The arguments to format into the error message
+	/// @param ... - The (possible/optional) arguments to format into the error message
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/Assert.h"
 	/// @note Only enabled in Debug builds
-	template<typename... Args>
-	[[noreturn]] inline constexpr auto hyperion_assert(fmt::format_string<Args...>&& format_string,
-													   const std::source_location location,
-													   Args&&... format_args) noexcept -> void {
-		eprintln("Assertion triggered at [{}:{}:{}: {}]: {}\bBacktrace:\n{}",
-				 location.file_name(),
-				 location.line(),
-				 location.column(),
-				 location.function_name(),
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...),
-				 hyperion::backtrace());
-		assert(false);
-		std::terminate();
-	}
+	#define hyperion_assert(condition, format_string, ...) /** NOLINT(   		   **/          \
+		/** cppcoreguidelines-macro-usage,                                         **/     \
+		/** bugprone-reserved-identifier, cert-dcl37-c,                            **/     \
+		/** cert-dcl51-cpp)                                                        **/     \
+		[&]() {                                                                            \
+			if(!(condition)) {                                                             \
+				const auto location = std::source_location::current();                     \
+				eprintln("Assertion triggered at [{}:{}:{}: {}]: {}\bBacktrace:\n{}",      \
+						 location.file_name(),                                             \
+						 location.line(),                                                  \
+						 location.column(),                                                \
+						 location.function_name(),                                         \
+						 fmt::format(std::move(format_string) __VA_OPT__(, ) __VA_ARGS__), \
+						 hyperion::backtrace());                                           \
+				assert(condition);                                                         \
+			}                                                                              \
+		}()
+#else // HYPERION_PLATFORM_DEBUG
 
-	IGNORE_RESERVED_IDENTIFIERS_START
-		#define __HYPERION_ASSERT(condition, format_string, ...) /** NOLINT(   		   **/    \
-			/** cppcoreguidelines-macro-usage,                                         **/ \
-			/** bugprone-reserved-identifier, cert-dcl37-c,                            **/ \
-			/** cert-dcl51-cpp)                                                        **/ \
-			[&]() {                                                                        \
-				if(!(condition)) {                                                         \
-					hyperion::error::hyperion_assert(format_string,                        \
-													 std::source_location::current()       \
-														 __VA_OPT__(, ) __VA_ARGS__);      \
-				}                                                                          \
-			}()
-
-	#else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
-
-	/// @brief Triggers an assertion, printing the formatted error message along with
-	/// source code location information of where the error occurred
-	///
-	/// Formats the error message via the given `format_string` and `format_args`, prepended with
-	/// the source code location in the format "[file:line]: message"
-	///
-	/// @tparam Args - The types of the arguments to format into the error message
-	/// @tparam N - The size of the file name, in characters
-	///
-	/// @param format_string - The format string for generating the formatted error message
-	/// @param file - The name of the source code file the error occurred in
-	/// @param line - The line in the source code file the error occurred at
-	/// @param format_args - The arguments to format into the error message
-	/// @ingroup error
-	/// @headerfile "Hyperion/error/Assert.h"
-	/// @note Only enabled in Debug builds
-	template<typename... Args, size_t N>
-	[[noreturn]] inline constexpr auto hyperion_assert(fmt::format_string<Args...>&& format_string,
-													   const char (&file)[N], // NOLINT
-													   i64 line,
-													   Args&&... format_args) noexcept -> void {
-		eprintln("Assertion triggered at [{}:{}]: {}\nBacktrace:\n{}",
-				 file, // NOLINT
-				 line,
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...),
-				 hyperion::backtrace());
-		assert(false); // NOLINT
-		std::terminate();
-	}
-
-	IGNORE_RESERVED_IDENTIFIERS_START
-		#define __HYPERION_ASSERT(condition, format_string, ...) /** NOLINT(                   **/ \
-			/** cppcoreguidelines-macro-usage,                                                 **/ \
-			/** bugprone-reserved-identifier, cert-dcl37-c,                                    **/ \
-			/** cert-dcl51-cpp)                                                                **/ \
-			[&]() {                                                                                \
-				if(!(condition)) {                                                                 \
-					hyperion::error::hyperion_assert(format_string,                                \
-													 __FILE__,                                     \
-													 __LINE__ __VA_OPT__(, ) __VA_ARGS__);         \
-				}                                                                                  \
-			}()
-	IGNORE_RESERVED_IDENTIFIERS_STOP
-
-	#endif // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
-
-#else														 // HYPERION_PLATFORM_DEBUG
-
-	IGNORE_RESERVED_IDENTIFIERS_START
-	#define __HYPERION_ASSERT(condition, format_string, ...) /** NOLINT(                       **/ \
-															 /** cppcoreguidelines-macro-usage,**/ \
-															 /** bugprone-reserved-identifier, **/ \
-															 /** cert-dcl37-c,		           **/     \
-															 /** cert-dcl51-cpp) 			   **/
-
-	IGNORE_RESERVED_IDENTIFIERS_STOP
-
+	#define hyperion_assert(condition, format_string, ...) /** NOLINT(                       **/ \
+														   /** cppcoreguidelines-macro-usage,**/ \
+														   /** bugprone-reserved-identifier, **/ \
+														   /** cert-dcl37-c,		           **/     \
+														   /** cert-dcl51-cpp) 			   **/         \
+		hyperion::ignore(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
 #endif // HYPERION_PLATFORM_DEBUG
 
 /// @def HYPERION_ASSERT(condition, format_string, ...)
-/// @brief Conditionally triggers an assertion, printing the formatted error message along
-/// with source code location information of where the error occurred
+/// @brief Conditionally triggers an assertion, printing the formatted error message along with
+/// detailed source code location information of where the error occurred and a backtrace
 ///
-/// Formats the error message via the given `format_string` and `format_args`, prepended
-/// with the source code location information.
-///
-/// If `std::source_location` is available, the assertion message will be in the format
-/// "[file:line:column: function]: message".
-/// Otherwise, it will be in the format "[file:line]: message"
+/// Formats the error message via the given `format_string` and `format_args`, prepended with
+/// the source code location and followed by a backtrace in the format:
+/// "Assertion triggered at [file_nam:line:column: function_name]: assertion_message
+/// Backtrace:
+/// backtrace"
 ///
 /// @param condition - The assertion condition. Fires the assertion if `false`
 /// @param format_string - The format string for generating the formatted error message
-/// @param ... - The arguments to format into the error message
+/// @param ... - The (possible/optional) arguments to format into the error message
 /// @ingroup error
 /// @headerfile "Hyperion/error/Assert.h"
 /// @note Only enabled in Debug builds
@@ -178,7 +117,7 @@ namespace hyperion::error {
 #define HYPERION_ASSERT(condition, /** NOLINT(cppcoreguidelines-macro-usage)**/ \
 						format_string,                                          \
 						...)                                                    \
-	__HYPERION_ASSERT(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
+	hyperion_assert(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
 
 	IGNORE_UNUSED_MACROS_STOP
 } // namespace hyperion::error

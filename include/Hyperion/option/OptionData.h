@@ -61,17 +61,17 @@ namespace hyperion::option {
 
 		constexpr OptionData() noexcept : m_none() {
 		}
+		// NOLINTNEXTLINE(readability-identifier-length)
 		explicit constexpr OptionData(const_reference t) noexcept(
-			concepts::NoexceptCopyConstructible<storage_type>)
-		requires concepts::CopyConstructible<storage_type>
-		: m_some(t),
-		  m_is_some(true) {
+			concepts::NoexceptCopyConstructible<storage_type>) requires
+			concepts::CopyConstructible<storage_type> : m_some(t),
+														m_is_some(true) {
 		}
+		// NOLINTNEXTLINE(readability-identifier-length)
 		explicit constexpr OptionData(rvalue_reference t) noexcept(
-			concepts::NoexceptMoveConstructible<storage_type>)
-		requires concepts::MoveConstructible<storage_type>
-		: m_some(std::move(t)),
-		  m_is_some(true) {
+			concepts::NoexceptMoveConstructible<storage_type>) requires
+			concepts::MoveConstructible<storage_type> : m_some(std::move(t)),
+														m_is_some(true) {
 		}
 		/// @brief Constructs an `OptionData` by constructing the `T` in place in it
 		/// @tparam Args - The types of the arguments to pass to `T`'s constructor
@@ -87,9 +87,8 @@ namespace hyperion::option {
 		explicit constexpr OptionData(None&& n) noexcept : m_none(n) {
 		}
 		constexpr OptionData(const OptionData& data) noexcept(
-			concepts::NoexceptCopyConstructible<storage_type>)
-		requires concepts::CopyConstructible<storage_type>
-		{
+			concepts::NoexceptCopyConstructible<storage_type>) requires
+			concepts::CopyConstructible<storage_type> {
 			if(data.m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				std::construct_at(std::addressof(m_some), data.m_some);
@@ -97,9 +96,8 @@ namespace hyperion::option {
 			}
 		}
 		constexpr OptionData(OptionData&& data) noexcept(
-			concepts::NoexceptMoveConstructible<storage_type>)
-		requires concepts::MoveConstructible<storage_type>
-		{
+			concepts::NoexceptMoveConstructible<storage_type>) requires
+			concepts::MoveConstructible<storage_type> {
 			if(data.m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				std::construct_at(std::addressof(m_some), std::move(data.m_some));
@@ -110,9 +108,8 @@ namespace hyperion::option {
 		template<typename U>
 		requires concepts::Same<storage_type, std::remove_const_t<std::remove_reference_t<U>>>
 		constexpr OptionData(const OptionData<U>& data) // NOLINT
-			noexcept(concepts::NoexceptCopyConstructible<storage_type>)
-		requires concepts::CopyConstructible<storage_type> && concepts::Reference<U>
-		{
+			noexcept(concepts::NoexceptCopyConstructible<storage_type>) requires
+			concepts::CopyConstructible<storage_type> && concepts::Reference<U> {
 			if(data.m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				std::construct_at(std::addressof(m_some), data.get());
@@ -147,18 +144,15 @@ namespace hyperion::option {
 
 		/// @brief Extracts the contained data out of this
 		[[nodiscard]] inline constexpr auto
-		extract() noexcept(concepts::NoexceptMovable<storage_type>) -> type
-		requires concepts::Movable<storage_type>
-		{
+		extract() noexcept(concepts::NoexceptMovable<storage_type>)
+			-> type requires concepts::Movable<storage_type> {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			return std::move(m_some);
 		}
 
 		constexpr auto
 		operator=(const OptionData& data) noexcept(concepts::NoexceptCopyable<storage_type>)
-			-> OptionData&
-		requires concepts::Copyable<storage_type>
-		{
+			-> OptionData& requires concepts::Copyable<storage_type> {
 			if(this == &data) {
 				return *this;
 			}
@@ -201,9 +195,7 @@ namespace hyperion::option {
 		}
 		constexpr auto
 		operator=(OptionData&& data) noexcept(concepts::NoexceptMovable<storage_type>)
-			-> OptionData&
-		requires concepts::Movable<storage_type>
-		{
+			-> OptionData& requires concepts::Movable<storage_type> {
 			if(this == &data) {
 				return *this;
 			}
@@ -222,10 +214,9 @@ namespace hyperion::option {
 			return *this;
 		}
 		constexpr auto
+		// NOLINTNEXTLINE(readability-identifier-length)
 		operator=(const_reference t) noexcept(concepts::NoexceptCopyable<storage_type>)
-			-> OptionData&
-		requires concepts::Copyable<storage_type>
-		{
+			-> OptionData& requires concepts::Copyable<storage_type> {
 			if(m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				m_some = t;
@@ -238,10 +229,9 @@ namespace hyperion::option {
 			return *this;
 		}
 		constexpr auto
+		// NOLINTNEXTLINE(readability-identifier-length)
 		operator=(rvalue_reference t) noexcept(concepts::NoexceptMovable<storage_type>)
-			-> OptionData&
-		requires concepts::Movable<storage_type>
-		{
+			-> OptionData& requires concepts::Movable<storage_type> {
 			if constexpr(std::is_trivially_copy_assignable_v<T>) {
 				if(m_is_some) {
 					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
@@ -307,17 +297,22 @@ namespace hyperion::option {
 		};
 
 		bool m_is_some = false;
-		;
 
 		constexpr OptionData() noexcept : m_none() {
 		}
+		// clang-format off
+		// NOLINTNEXTLINE(readability-identifier-length)
 		explicit constexpr OptionData(const_reference t) noexcept
-		requires std::is_const_v<std::remove_reference_t<T>>
-		: m_some(ref(t)),
-		  m_is_some(true) {
+			requires std::is_const_v<std::remove_reference_t<T>>
+			: m_some(ref(t)),
+			  m_is_some(true) {
 		}
+		// clang-format on
+
+		// NOLINTNEXTLINE(readability-identifier-length)
 		explicit constexpr OptionData(reference t) noexcept : m_some(ref(t)), m_is_some(true) {
 		}
+		// NOLINTNEXTLINE(readability-identifier-length)
 		explicit constexpr OptionData(None n) noexcept : m_none(n) {
 		}
 		constexpr OptionData(const OptionData& data) noexcept {
@@ -408,10 +403,9 @@ namespace hyperion::option {
 		}
 
 		constexpr auto
+		// NOLINTNEXTLINE(readability-identifier-length)
 		operator=(const_reference t) noexcept(concepts::NoexceptCopyable<storage_type>)
-			-> OptionData&
-		requires concepts::Copyable<storage_type>
-		{
+			-> OptionData& requires concepts::Copyable<storage_type> {
 			if(m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				m_some = ref(t);
@@ -424,10 +418,9 @@ namespace hyperion::option {
 			return *this;
 		}
 		constexpr auto
+		// NOLINTNEXTLINE(readability-identifier-length)
 		operator=(rvalue_reference t) noexcept(concepts::NoexceptMovable<storage_type>)
-			-> OptionData&
-		requires concepts::Movable<storage_type>
-		{
+			-> OptionData& requires concepts::Movable<storage_type> {
 			if constexpr(std::is_trivially_copy_assignable_v<T>) {
 				if(m_is_some) {
 					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
@@ -475,6 +468,7 @@ namespace hyperion::option {
 
 	  private:
 		template<typename U>
+		// NOLINTNEXTLINE(readability-identifier-length)
 		[[nodiscard]] static inline constexpr auto ref(U&& u) noexcept {
 			if constexpr(std::is_const_v<T>) {
 				return std::cref(std::forward<U>(u));
