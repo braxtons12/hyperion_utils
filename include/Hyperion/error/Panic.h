@@ -182,7 +182,7 @@ namespace hyperion::error {
 											  Args&&... format_args) noexcept -> void {
 
 		const auto message
-			= fmt::format("panic occurred at [{}:{}]: {}\nbacktrace:\n{}",
+			= fmt::format("panic occurred at [{}:{}]: {}\nBacktrace:\n{}",
 						  file, // nolint
 						  line,
 						  fmt::format(std::move(format_string), std::forward<args>(format_args)...),
