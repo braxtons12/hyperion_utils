@@ -3,7 +3,7 @@
 /// @brief Provides various macro definitions for things like compiler-specific attributes,
 /// feature enablement, and warning suppression
 /// @version 0.1
-/// @date 2021-11-14
+/// @date 2022-06-06
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -52,30 +52,40 @@
 	#define HYPERION_NO_UNIQUE_ADDRESS [[no_unique_address]]
 #endif
 
-/// @def HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+/// @def HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 /// @brief Whether Hyperion will use `std::experimental::source_location` if `<source_location>`
 /// is not yet available for the given compiler. This defaults to true when using libstdc++
 /// (gcc's std lib). To disable it, define it to false prior to including any Hyperion headers
 /// @ingroup defines
 /// @headerfile "Hyperion/HyperionDef.h"
-#ifndef HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
-	#if HYPERION_PLATFORM_STD_LIB_LIBSTDCPP
-		#define HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION true
-	#else // !HYPERION_PLATFORM_COMPILER_GCC
-		#define HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION false
-	#endif // HYPERION_PLATFORM_STD_LIB_LIBSTDCPP
+#ifndef HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
+	#if __has_include(<experimental/source_location>)
+		#define HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION true
+	#else // !__has_include(<experimental/source_location>)
+		#define HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION false
+	#endif // __has_include(<experimental/source_location>)
 #endif
 
 /// @def HYPERION_HAS_SOURCE_LOCATION
 /// @brief if `<source_location>` is available, this will be defined as true, otherwise it will be
 /// false. If this is false, `std::source_location` may be aliased as
-/// `std::experimental::source_location` if `HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION` is true,
+/// `std::experimental::source_location` if `HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION` is true,
 /// otherwise, features relying on `std::source_location` will revert to macros using `__FILE__` and
 /// `__LINE__` instead
 /// @ingroup defines
 /// @headerfile "Hyperion/HyperionDef.h"
-#if(defined(__cpp_lib_source_location) && __cpp_lib_source_location >= 201907)
-	#define HYPERION_HAS_SOURCE_LOCATION true
+#if __has_include(<source_location>)
+	#if HYPERION_PLATFORM_COMPILER_GCC || HYPERION_PLATFORM_COMPILER_CLANG
+		#if __has_builtin(__builtin_source_location)
+			#define HYPERION_HAS_SOURCE_LOCATION true
+		#elif HYPERION_PLATFORM_STD_LIB_LIBCPP
+			#define HYPERION_HAS_SOURCE_LOCATION true
+		#else
+			#define HYPERION_HAS_SOURCE_LOCATION false
+		#endif
+	#else // MSVC
+		#define HYPERION_HAS_SOURCE_LOCATION true
+	#endif
 #else
 	#define HYPERION_HAS_SOURCE_LOCATION false
 #endif // (defined(__cpp_lib_source_location) && __cpp_lib_source_location >= 201907)
@@ -561,6 +571,36 @@ IGNORE_UNUSED_MACROS_START
 	// NOLINTNEXTLINE
 	#define IGNORE_RESERVED_IDENTIFIERS_STOP \
 		_Pragma("warning( pop )")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_IDENTIFIERS_STOP
+#endif
+
+/// @def IGNORE_RESERVED_MACRO_IDENTIFIERS_START
+/// @brief Use to temporarily disable warnings using reserved macro identifiers.
+/// Make sure to pair with `IGNORE_RESERVED_MACRO_IDENTIFIERS_STOP` to properly scope the
+/// area where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_MACRO_IDENTIFIERS_START \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wreserved-macro-identifier\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_IDENTIFIERS_START
+#endif
+
+/// @def IGNORE_RESERVED_MACRO_IDENTIFIERS_STOP
+/// @brief Use to re-enable warnings for using reserved macro identifiers after having previously
+/// used `IGNORE_RESERVED_MACRO_IDENTIFIERS_START`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+	// NOLINTNEXTLINE
+	#define IGNORE_RESERVED_MACRO_IDENTIFIERS_STOP \
+		_Pragma("GCC diagnostic pop")
 #else
 	// NOLINTNEXTLINE
 	#define IGNORE_RESERVED_IDENTIFIERS_STOP

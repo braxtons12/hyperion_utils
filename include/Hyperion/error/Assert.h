@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic run-time assert facilities with formatted error messages
 /// @version 0.1
-/// @date 2021-10-22
+/// @date 2022-06-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -31,7 +31,7 @@
 
 #if HYPERION_HAS_SOURCE_LOCATION
 	#include <source_location>
-#elif HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+#elif HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 	// if we're using the experimental source location on an older GCC, alias it to the main std
 	// namespace
 	#include <experimental/source_location>
@@ -43,6 +43,7 @@ namespace std { // NOLINT
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/FmtIO.h>
 #include <Hyperion/Platform.h>
+#include <Hyperion/error/Backtrace.h>
 
 namespace hyperion::error {
 
@@ -50,7 +51,7 @@ namespace hyperion::error {
 
 #if HYPERION_PLATFORM_DEBUG
 
-	#if HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+	#if HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 
 	/// @brief Triggers an assertion, printing the formatted error message along with detailed
 	/// source code location information of where the error occurred
@@ -70,12 +71,13 @@ namespace hyperion::error {
 	[[noreturn]] inline constexpr auto hyperion_assert(fmt::format_string<Args...>&& format_string,
 													   const std::source_location location,
 													   Args&&... format_args) noexcept -> void {
-		eprintln("Assertion triggered at [{}:{}:{}: {}]: {}",
+		eprintln("Assertion triggered at [{}:{}:{}: {}]: {}\bBacktrace:\n{}",
 				 location.file_name(),
 				 location.line(),
 				 location.column(),
 				 location.function_name(),
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...));
+				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...),
+				 hyperion::backtrace());
 		assert(false);
 		std::terminate();
 	}
@@ -93,7 +95,7 @@ namespace hyperion::error {
 				}                                                                          \
 			}()
 
-	#else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+	#else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 
 	/// @brief Triggers an assertion, printing the formatted error message along with
 	/// source code location information of where the error occurred
@@ -116,10 +118,11 @@ namespace hyperion::error {
 													   const char (&file)[N], // NOLINT
 													   i64 line,
 													   Args&&... format_args) noexcept -> void {
-		eprintln("Assertion triggered at [{}:{}]: {}",
+		eprintln("Assertion triggered at [{}:{}]: {}\nBacktrace:\n{}",
 				 file, // NOLINT
 				 line,
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...));
+				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...),
+				 hyperion::backtrace());
 		assert(false); // NOLINT
 		std::terminate();
 	}
@@ -138,7 +141,7 @@ namespace hyperion::error {
 			}()
 	IGNORE_RESERVED_IDENTIFIERS_STOP
 
-	#endif // HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+	#endif // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 
 #else														 // HYPERION_PLATFORM_DEBUG
 

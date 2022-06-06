@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Runtime termination facilities
 /// @version 0.1
-/// @date 2021-11-02
+/// @date 2022-06-06
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -31,8 +31,10 @@
 
 #if HYPERION_HAS_SOURCE_LOCATION
 	#include <source_location>
-#elif HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+#elif HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 	#include <experimental/source_location>
+// if we're using the experimental source location on an older GCC, alias it to the main std
+// namespace
 namespace std { // NOLINT
 	using source_location = std::experimental::source_location;
 } // namespace std
@@ -41,80 +43,74 @@ namespace std { // NOLINT
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/FmtIO.h>
 #include <Hyperion/Ignore.h>
+#include <Hyperion/error/Backtrace.h>
+#include <atomic>
 
 namespace hyperion::error {
-	IGNORE_UNUSED_MACROS_START
-
-/// @def HYPERION_USES_CUSTOM_PANIC_HANDLER
-/// @brief Configures Hyperion to use a custom panic handler if `true`
-///
-/// A panic handler is a function which is hooked in to the panic process and replaces the
-/// default panic behavior.
-///
-/// By default, Hyperion doesn't use a panic handler and instead simply prints the panic message
-/// and aborts. However, `HYPERION_USES_CUSTOM_PANIC_HANDLER` can be defined to `true` to inform
-/// the library that a custom panic handler function will be provided and should be used. This
-/// allows for custom behavior prior to aborting the process (eg, for showing an error window
-/// popup in a graphical application before terminating).
-///
-/// In this case, `HYPERION_USES_CUSTOM_PANIC_HANDLER`
-/// should be defined to `true` prior to including any Hyperion headers, and
-/// `hyperion::error::Panic::handler` should be defined to the custom panic handler function in
-/// __**exactly ONE (1)**__ translation unit. The panic handler function should take the
-/// signature of:
-///
-/// @code {.cpp}
-/// auto function_name(const std::string& panic_message) noexcept -> void;
-/// @endcode
-/// @ingroup error
-/// @note even with a custom handler, a panic will still abort the process. The handler will
-/// just be called before process termination
-#ifndef HYPERION_USES_CUSTOM_PANIC_HANDLER
-	/// @def HYPERION_USES_CUSTOM_PANIC_HANDLER
-	/// @brief Configures Hyperion to use a custom panic handler if `true`
+	/// @brief Panic manages the active panic handler called when a panic occurs
 	///
-	/// A panic handler is a function which is hooked in to the panic process and replaces the
-	/// default panic behavior.
-	///
-	/// By default, Hyperion doesn't use a panic handler and instead simply prints the panic message
-	/// and aborts. However, `HYPERION_USES_CUSTOM_PANIC_HANDLER` can be defined to `true` to inform
-	/// the library that a custom panic handler function will be provided and should be used. This
-	/// allows for custom behavior prior to aborting the process (eg, for showing an error window
-	/// popup in a graphical application before terminating).
-	///
-	/// In this case, `HYPERION_USES_CUSTOM_PANIC_HANDLER`
-	/// should be defined to `true` prior to including any Hyperion headers, and
-	/// `hyperion::error::Panic::handler` should be defined to the custom panic handler function in
-	/// __**exactly ONE (1)**__ translation unit. The panic handler function should take the
-	/// signature of:
-	///
+	/// # Example
 	/// @code {.cpp}
-	/// auto function_name(const std::string& panic_message) noexcept -> void;
+	/// 	#include <Hyperion/Utils.h>
+	/// static auto my_panic_handler(const std::string& panic_message) noexcept -> void {
+	/// 	// do something w/ `panic_message`
+	///		// we leave it up to the handler to do something appropriate after handling the message
+	/// 	// this should usually be to terminate the process
+	///		std::terminate();
+	/// }
+	///
+	/// int main(int argc, char** argv) {
+	///		hyperion::Panic::set_handler(&my_panic_handler);
+	///
+	/// 	// the full panic message w/ source location and backtrace will be passed to
+	///		// `my_panic_handler`
+	///		panic("My Panic Message!");
+	/// }
 	/// @endcode
 	/// @ingroup error
-	/// @note even with a custom handler, a panic will still abort the process. The handler will
-	/// just be called before process termination
-	#define HYPERION_USES_CUSTOM_PANIC_HANDLER false // NOLINT(cppcoreguidelines-macro-usage)
-#endif												 // HYPERION_USES_CUSTOM_PANIC_HANDLER
+	/// @headerfile "Hyperion/error/Panic.h"
+	class Panic {
+	  public:
+		using handler_type = void (*)(const std::string& panic_message) noexcept;
+		static inline auto set_handler(handler_type panic_handler) noexcept -> void {
+			handler.store(panic_handler, std::memory_order_seq_cst);
+		}
 
-#if HYPERION_USES_CUSTOM_PANIC_HANDLER
-	// wrap the panic handler global in a struct to avoid any possible (admittedly unlikely) ADL
-	// issues
-	struct Panic {
-		/// @brief The custom panic handler to use if `HYPERION_USES_CUSTOM_PANIC_HANDLER` is
-		/// defined to true.
+		[[nodiscard]] static inline auto get_handler() noexcept -> handler_type {
+			return handler.load(std::memory_order_seq_cst);
+		}
+
+		[[nodiscard]] static inline auto get_default_handler() noexcept -> handler_type {
+			return &default_handler;
+		}
+
+	  private:
+		/// @brief The custom panic handler to use, if any.
 		///
 		/// This should be defined in __**exactly ONE (1)**__ translation unit, and can only be
 		/// defined when `HYPERION_USES_CUSTOM_PANIC_HANDLER` has been defined to `true` prior to
 		/// including any Hyperion headers
 		/// @ingroup error
 		/// @headerfile "Hyperion/error/Panic.h"
-		static void (*const handler)( // NOLINT (non-const globals)
-			const std::string& message) noexcept;
-	};
-#endif // HYPERION_USES_CUSTOM_PANIC_HANDLER
+		static std::atomic<handler_type> handler; // NOLINT
 
-#if HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+		[[noreturn]] static inline auto
+		default_handler(const std::string& message) noexcept -> void {
+			eprintln("{}", message);
+#if HYPERION_PLATFORM_DEBUG
+			assert(false); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+						   // hicpp-no-array-decay)
+#else					   // HYPERION_PLATFORM_DEBUG
+			std::terminate();
+#endif					   // HYPERION_PLATFORM_DEBUG
+		}
+	};
+
+	std::atomic<Panic::handler_type> Panic::handler = get_default_handler(); // NOLINT
+
+	IGNORE_UNUSED_MACROS_START
+
+#if HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 
 	IGNORE_INVALID_NORETURN_START
 
@@ -132,32 +128,25 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/Panic.h"
 	template<typename... Args>
 	[[noreturn]] inline constexpr auto(panic)(fmt::format_string<Args...>&& format_string,
-											  const std::source_location location,
+											  std::source_location location,
 											  Args&&... format_args) noexcept -> void {
 
-	#if HYPERION_USES_CUSTOM_PANIC_HANDLER
-		Panic::handler(
-			fmt::format("Panic occured at [{}:{}:{}:{}]: {}",
-						location.file_name(),
-						location.line(),
-						location.column(),
-						location.function_name(),
-						fmt::format(std::move(format_string), std::forward<Args>(format_args)...)));
-		std::terminate();
-	#else // HYPERION_USES_CUSTOM_PANIC_HANDLER
-		eprintln("Panic occurred at [{}:{}:{}: {}]: {}",
-				 location.file_name(),
-				 location.line(),
-				 location.column(),
-				 location.function_name(),
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...));
-		#if HYPERION_PLATFORM_DEBUG
-		assert(false); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,
-					   // hicpp-no-array-decay)
-		#else  // HYPERION_PLATFORM_DEBUG
-		std::terminate();
-		#endif // HYPERION_PLATFORM_DEBUG
-	#endif	   // HYPERION_USES_CUSTOM_PANIC_HANDLER
+		const auto message
+			= fmt::format("Panic occurred at [{}:{}:{}:{}]: {}\nBacktrace:\n {}",
+						  location.file_name(),
+						  location.line(),
+						  location.column(),
+						  location.function_name(),
+						  fmt::format(std::move(format_string), std::forward<Args>(format_args)...),
+						  hyperion::backtrace());
+
+		auto handler = Panic::get_handler();
+		if(handler == nullptr) {
+			Panic::get_default_handler()(message);
+		}
+		else {
+			handler(message);
+		}
 	}
 
 	IGNORE_INVALID_NORETURN_STOP
@@ -171,7 +160,7 @@ namespace hyperion::error {
 								 std::source_location::current() __VA_OPT__(, ) __VA_ARGS__)
 	IGNORE_RESERVED_IDENTIFIERS_STOP
 
-#else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+#else // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 	IGNORE_INVALID_NORETURN_START
 
 	/// @brief Invokes a panic with the given message
@@ -192,24 +181,19 @@ namespace hyperion::error {
 											  i64 line,
 											  Args&&... format_args) noexcept -> void {
 
-	#if HYPERION_USES_CUSTOM_PANIC_HANDLER
-		Panic::handler(
-			fmt::format("Panic occurred at [{}:{}]: {}",
-						file, // NOLINT
-						line,
-						fmt::format(std::move(format_string), std::forward<Args>(format_args)...)));
-		std::terminate();
-	#else // HYPERION_USES_CUSTOM_PANIC_HANDLER
-		eprintln("Panic occurred at [{}:{}]: {}",
-				 file, // NOLINT
-				 line,
-				 fmt::format(std::move(format_string), std::forward<Args>(format_args)...));
-		#if HYPERION_PLATFORM_DEBUG
-		assert(false);
-		#else									 // HYPERION_PLATFORM_DEBUG
-		std::terminate();
-		#endif									 // HYPERION_PLATFORM_DEBUG
-	#endif										 // HYPERION_USES_CUSTOM_PANIC_HANDLER
+		const auto message
+			= fmt::format("panic occurred at [{}:{}]: {}\nbacktrace:\n{}",
+						  file, // nolint
+						  line,
+						  fmt::format(std::move(format_string), std::forward<args>(format_args)...),
+						  hyperion::backtrace());
+		auto handler = Panic::get_handler();
+		if(handler == nullptr) {
+			Panic::get_default_handler()(message);
+		}
+		else {
+			handler(message);
+		}
 	}
 
 	IGNORE_INVALID_NORETURN_STOP
@@ -223,7 +207,7 @@ namespace hyperion::error {
 		(hyperion::error::panic)(format_string, __FILE__, __LINE__ __VA_OPT__(, ) __VA_ARGS__)
 	IGNORE_RESERVED_IDENTIFIERS_STOP
 
-#endif // HYPERION_HAS_SOURCE_LOCATION || HYPERION_USE_EXPERIMENTAL_SOURCE_LOCATION
+#endif // HYPERION_HAS_SOURCE_LOCATION || HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 
 /// @brief Invokes a panic with the formatted error message
 ///
