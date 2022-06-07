@@ -3,10 +3,10 @@
 /// @brief Provides various macro definitions for things like compiler-specific attributes,
 /// feature enablement, and warning suppression
 /// @version 0.1
-/// @date 2022-06-06
+/// @date 2022-06-07
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,15 @@
 #pragma once
 
 #include <Hyperion/Platform.h>
+#include <Hyperion/Ignore.h>
 #include <version>
+
+#define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
+#define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
+#define DOCTEST_CONFIG_USE_STD_HEADERS
+#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
+#include <doctest/doctest.h>
+
 
 /// @def HYPERION_NO_UNIQUE_ADDRESS
 /// @brief Platform-dependent, conditional [[no_unique_address]] to account for:
@@ -883,4 +891,206 @@ IGNORE_UNUSED_MACROS_START
 #endif
 
 // clang-format on
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define TEST_SUITE(...)                                \
+	IGNORE_RESERVED_IDENTIFIERS_START                  \
+	IGNORE_UNUSED_TEMPLATES_START                      \
+	DOCTEST_TEST_SUITE(__VA_ARGS__)                    \
+	/** NOLINT(modernize-use-trailing-return-type) **/ \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define TEST_CASE(...)                \
+	IGNORE_RESERVED_IDENTIFIERS_START \
+	IGNORE_UNUSED_TEMPLATES_START     \
+	/** NOLINTNEXTLINE **/            \
+	DOCTEST_TEST_CASE(__VA_ARGS__)    \
+	/** NOLINT **/                    \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define SUBCASE(...)                  \
+	IGNORE_RESERVED_IDENTIFIERS_START \
+	IGNORE_UNUSED_TEMPLATES_START     \
+	/** NOLINTNEXTLINE **/            \
+	DOCTEST_SUBCASE(__VA_ARGS__)      \
+	/** NOLINT **/                    \
+	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+
+#if !defined(DOCTEST_CONFIG_DISABLE)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK(...)                                                                             \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK(__VA_ARGS__) \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_FALSE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_FALSE( \
+			__VA_ARGS__)                                                                     \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_EQ(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_EQ( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_NE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_NE( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GT(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GT( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LT(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LT( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GE( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LE( \
+			__VA_ARGS__)                                                                  \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE( \
+			__VA_ARGS__)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_FALSE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_FALSE( \
+			__VA_ARGS__)                                                                       \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_EQ(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_EQ( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_NE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_NE( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GT(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GT( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LT(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LT( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GE( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LE(...)                                                                 \
+		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LE( \
+			__VA_ARGS__)                                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
+
+#else
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK(...)		   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_FALSE(...)   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_EQ(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_NE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_GE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define CHECK_LE(...)	   hyperion::ignore(__VA_ARGS__)
+
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_FALSE(...) hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_EQ(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_NE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LT(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_GE(...)	   hyperion::ignore(__VA_ARGS__)
+	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define REQUIRE_LE(...)	   hyperion::ignore(__VA_ARGS__)
+#endif // !defined(DOCTEST_CONFIG_DISABLE)
+
+#ifdef TRACY_ENABLE
+
+IGNORE_RESERVED_IDENTIFIERS_START
+IGNORE_OLD_STYLE_CASTS_START
+IGNORE_PADDING_START
+IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_START
+	#include <Tracy.hpp>
+IGNORE_SUGGEST_DESTRUCTOR_OVERRIDE_STOP
+IGNORE_PADDING_STOP
+IGNORE_OLD_STYLE_CASTS_STOP
+IGNORE_RESERVED_IDENTIFIERS_STOP
+
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PLATFORM_PROFILING_ENABLED true
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_FUNCTION()                                                           \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		ZoneScoped /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,                \
+					   hicpp-no-array-decay) **/                                                  \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_START_FRAME(name)                                                    \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMarkStart(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,      \
+								 hicpp-no-array-decay) **/                                        \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_END_FRAME(name)                                                      \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMarkEnd(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,        \
+							   hicpp-no-array-decay) **/                                          \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_MARK_FRAME()                                                         \
+		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
+		IGNORE_OLD_STYLE_CASTS_START                                                              \
+		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
+		FrameMark /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,                 \
+					  hicpp-no-array-decay) **/                                                   \
+			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
+#else
+/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PLATFORM_PROFILING_ENABLED false
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_FUNCTION()
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_START_FRAME(name)
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_END_FRAME(name)
+	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+	#define HYPERION_PROFILE_MARK_FRAME()
+#endif
+
 IGNORE_UNUSED_MACROS_STOP
