@@ -157,7 +157,7 @@ add_executable(HyperionUtilsLoggerBenchmark
 	)
 
 if(MSVC)
-    target_sources(HyperionUtils INTERFACE ${EXPORTS})
+	target_sources(HyperionUtils INTERFACE ${EXPORTS})
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
@@ -171,26 +171,26 @@ endif ()
 
 if (MSVC)
 	target_compile_options(HyperionUtils
-            INTERFACE
-            /Zc:preprocessor
-            /permissive-
-            /Zc:rvalueCast
-            /wd5104
-            )
+		INTERFACE
+		/Zc:preprocessor
+		/permissive-
+		/Zc:rvalueCast
+		/wd5104
+		)
 	target_compile_options(HyperionUtilsTest
-            PRIVATE
-            /WX
-            /W4
-            /MP
-            /sdl
-            )
+		PRIVATE
+		/WX
+		/W4
+		/MP
+		/sdl
+		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
-            PRIVATE
-            /WX
-            /W4
-            /MP
-            /sdl
-            )
+		PRIVATE
+		/WX
+		/W4
+		/MP
+		/sdl
+		)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	target_compile_options(HyperionUtils
 		INTERFACE
@@ -256,7 +256,6 @@ target_include_directories(HyperionUtils INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
 
-target_compile_definitions(HyperionUtils INTERFACE DOCTEST_CONFIG_DISABLE)
 target_compile_definitions(HyperionUtilsLoggerBenchmark PUBLIC DOCTEST_CONFIG_DISABLE)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -353,10 +352,10 @@ target_link_libraries(HyperionUtils INTERFACE
 	${HYPERION_UTILS_LINK_LIBS}
 	)
 target_link_libraries(HyperionUtilsTest PRIVATE
-    HyperionUtils
+	HyperionUtils
 	)
 target_link_libraries(HyperionUtilsLoggerBenchmark PRIVATE
-    HyperionUtils
+	HyperionUtils
 	)
 #target_compile_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)
 #target_link_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)
