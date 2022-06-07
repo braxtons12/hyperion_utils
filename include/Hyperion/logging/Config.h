@@ -108,6 +108,11 @@ namespace hyperion {
 	template<LogThreadingPolicy ThreadingPolicy = LogThreadingPolicy::SingleThreaded,
 			 LogAsyncPolicy AsyncPolicy = LogAsyncPolicy::DropWhenFull>
 	struct LoggerPolicy {
+		static_assert(!(ThreadingPolicy == LogThreadingPolicy::MultiThreadedAsync
+						&& AsyncPolicy == LogAsyncPolicy::OverwriteWhenFull),
+					  "LogAsyncPolicy::OverwriteWhenFull is not currently supported when using "
+					  "LogThreadingPolicy::MultiThreadedAsync (OverwriteWhenFull is not currently "
+					  "supported with multi-threaded asynchronous loggers)");
 		static constexpr LogThreadingPolicy threading_policy = ThreadingPolicy;
 		static constexpr LogAsyncPolicy async_policy = AsyncPolicy;
 	};
@@ -125,6 +130,9 @@ namespace hyperion {
 
 		T::async_policy;
 		requires concepts::Same<std::remove_cvref_t<decltype(T::async_policy)>, LogAsyncPolicy>;
+
+		requires !(T::threading_policy == LogThreadingPolicy::MultiThreadedAsync
+				   && T::async_policy == LogAsyncPolicy::OverwriteWhenFull);
 	};
 
 	/// @brief Alias for the default logging policy
