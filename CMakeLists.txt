@@ -209,7 +209,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 		)
 	target_compile_options(HyperionUtilsTest
 		PRIVATE
-		-std=c++20
 		-Wall
 		-Wextra
 		-Wpedantic
@@ -218,7 +217,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
 		PRIVATE
-		-std=c++20
 		-Wall
 		-Wextra
 		-Wpedantic
@@ -234,7 +232,6 @@ else ()
 		)
 	target_compile_options(HyperionUtilsTest
 		PRIVATE
-		-std=c++20
 		-Wall
 		-Wextra
 		-Wpedantic
@@ -242,7 +239,6 @@ else ()
 		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
 		PRIVATE
-		-std=c++20
 		-Wall
 		-Wextra
 		-Wpedantic
