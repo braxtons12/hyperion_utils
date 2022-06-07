@@ -46,26 +46,26 @@ IGNORE_UNUSED_MACROS_START
 IGNORE_RESERVED_IDENTIFIERS_START
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_SUITE(...)                         \
+#define TEST_SUITE(...)                                \
 	IGNORE_RESERVED_IDENTIFIERS_START                  \
 	IGNORE_UNUSED_TEMPLATES_START                      \
-	DOCTEST_TEST_SUITE(__VA_ARGS__)                     \
+	DOCTEST_TEST_SUITE(__VA_ARGS__)                    \
 	/** NOLINT(modernize-use-trailing-return-type) **/ \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_CASE(...)         \
+#define TEST_CASE(...)                \
 	IGNORE_RESERVED_IDENTIFIERS_START \
 	IGNORE_UNUSED_TEMPLATES_START     \
 	/** NOLINTNEXTLINE **/            \
-	DOCTEST_TEST_CASE(__VA_ARGS__)     \
+	DOCTEST_TEST_CASE(__VA_ARGS__)    \
 	/** NOLINT **/                    \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define SUBCASE(...)           \
+#define SUBCASE(...)                  \
 	IGNORE_RESERVED_IDENTIFIERS_START \
 	IGNORE_UNUSED_TEMPLATES_START     \
 	/** NOLINTNEXTLINE **/            \
-	DOCTEST_SUBCASE(__VA_ARGS__)       \
+	DOCTEST_SUBCASE(__VA_ARGS__)      \
 	/** NOLINT **/                    \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
@@ -345,11 +345,13 @@ namespace hyperion {
 						  "Invalid Literal: Requested type is not a valid numeric literal type");
 		}
 
+		IGNORE_PADDING_START
 		template<typename T>
 		struct literal_pair {
 			literal_status status = literal_status::Valid;
 			T value = T(0);
 		};
+		IGNORE_PADDING_START
 
 		IGNORE_UNUSED_TEMPLATES_START
 		template<typename Type, char... Chars, usize N = sizeof...(Chars)>
@@ -363,8 +365,8 @@ namespace hyperion {
 				Type sum = 0;
 				const auto& str = literal.array;
 
-				bool found_decimal = false;
-				[[maybe_unused]] usize decimal_index = 0;
+				[[maybe_unused]] bool found_decimal = false;
+				[[maybe_unused]] usize power_of_ten = 1;
 				for(auto& digit : str) {
 					if constexpr(std::is_floating_point_v<Type>) {
 						if((digit < '0' || digit > '9') && digit != '\'' && digit != '.') {
@@ -378,15 +380,15 @@ namespace hyperion {
 					}
 
 					if constexpr(std::is_floating_point_v<Type>) {
-						if(digit >= '0' && digit <= '9' && !found_decimal) {
+						if(digit >= '0' && digit <= '9') {
 							sum = sum * 10 + static_cast<Type>(digit - '0'); // NOLINT
+							if(found_decimal) {
+								power_of_ten *= 10; // NOLINT
+							}
 						}
 						else if(digit == '.') {
 							found_decimal = true;
-							++decimal_index;
-							break;
 						}
-						++decimal_index;
 					}
 					else {
 						if(digit >= '0' && digit <= '9') {
@@ -396,24 +398,8 @@ namespace hyperion {
 				}
 
 				if constexpr(std::is_floating_point_v<Type>) {
-					if(found_decimal) {
-						usize decimal_sum = 0;
-						usize power_of_ten = 1;
-						for(auto index = decimal_index; index < str.size(); ++index) {
-							const auto& digit = str[index]; // NOLINT
-
-							if(digit == '.') {
-								return {.status = literal_status::InvalidCharacterSequence};
-							}
-
-							if(digit >= '0' && digit <= '9') {
-								decimal_sum
-									= decimal_sum * 10 + static_cast<usize>(digit - '0'); // NOLINT
-								power_of_ten *= 10;										  // NOLINT
-							}
-						}
-
-						sum += static_cast<Type>(decimal_sum) / static_cast<Type>(power_of_ten);
+					if(found_decimal && power_of_ten != 1) {
+						sum = static_cast<Type>(sum) / static_cast<Type>(power_of_ten);
 					}
 				}
 
@@ -599,15 +585,21 @@ namespace hyperion {
 		static_assert(static_cast<i64>(-64'123'456) == -64'123'456_i64,
 					  "i64 literal operator broken!");
 
+		static inline constexpr auto acceptable_deviation
+			= static_cast<fmax>(0.000000000001261213356);
 		// NOLINTNEXTLINE
-		static_assert(static_cast<fmax>(64.12) == 64.12_fmax, "fmax literal operator broken!");
+		static_assert(static_cast<fmax>(64.123456789) - 64.123456789_fmax < acceptable_deviation,
+					  "fmax literal operator broken!");
 		// NOLINTNEXTLINE
-		static_assert(static_cast<fmax>(64'000) == 64'000_fmax, "fmax literal operator broken!");
+		static_assert(static_cast<fmax>(64'000) - 64'000_fmax < acceptable_deviation,
+					  "fmax literal operator broken!");
 		// NOLINTNEXTLINE
-		static_assert(static_cast<fmax>(64'000.12345) == 64'000.12345_fmax,
-		              "fmax literal operator broken!");
+		static_assert(static_cast<fmax>(64'000.123456789) - 64'000.123456789_fmax
+						  < acceptable_deviation,
+					  "fmax literal operator broken!");
 		// NOLINTNEXTLINE
-		static_assert(static_cast<fmax>(-64'000.12345) == -64'000.12345_fmax,
+		static_assert(static_cast<fmax>(-64'000.123456789) - -64'000.123456789_fmax
+						  < acceptable_deviation,
 					  "fmax literal operator broken!");
 
 #if HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
