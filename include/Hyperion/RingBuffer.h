@@ -1109,13 +1109,13 @@ namespace hyperion {
 		};
 
 		static const constexpr usize DEFAULT_CAPACITY_INTERNAL = DEFAULT_CAPACITY + 1;
-		[[no_unique_address]] Allocator<T> m_allocator = Allocator<T>();
+		[[HYPERION_NO_UNIQUE_ADDRESS]] Allocator<T> m_allocator = Allocator<T>();
 		unique_pointer m_buffer
 			= allocate_unique<T[]>(m_allocator, DEFAULT_CAPACITY_INTERNAL); // NOLINT
 		usize m_write_index = 0_usize;
 		usize m_start_index = 0_usize;
 		usize m_capacity = DEFAULT_CAPACITY_INTERNAL;
-		[[no_unique_address]] ConstructedChecker<T, Allocator> m_constructed
+		[[HYPERION_NO_UNIQUE_ADDRESS]] ConstructedChecker<T, Allocator> m_constructed
 			= ConstructedChecker<T, Allocator>(DEFAULT_CAPACITY_INTERNAL, m_allocator);
 
 		/// @brief Converts the given `RingBuffer` index into the corresponding index into then
@@ -1511,7 +1511,7 @@ namespace hyperion {
 			auto operator=(TestClass&&) noexcept -> TestClass& = default;
 
 			// NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions))
-			operator i32() noexcept {
+			operator i32() const noexcept {
 				return *m_ptr;
 			}
 
@@ -1891,5 +1891,4 @@ namespace hyperion {
 			}
 		}
 	}
-
 } // namespace hyperion

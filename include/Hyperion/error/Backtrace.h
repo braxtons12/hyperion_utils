@@ -60,12 +60,12 @@ namespace hyperion {
 template<>
 struct fmt::formatter<hyperion::backtrace> {
 	// NOLINTNEXTLINE(readability-convert-member-functions-to-static)
-	inline constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+	[[nodiscard]] inline constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
 		return ctx.begin();
 	}
 
 	template<typename FormatContext>
-	inline auto
+	[[nodiscard]] inline auto
 	format(const hyperion::backtrace& trace, FormatContext& ctx) -> decltype(ctx.out()) {
 		return fmt::format_to(ctx.out(), "{}", to_string(trace));
 	}

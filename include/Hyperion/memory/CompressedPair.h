@@ -3,7 +3,7 @@
 /// @brief This file includes an
 /// [Empty Base Class Optimized](https://en.cppreference.com/w/cpp/language/ebo) pair type
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-06-06
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -115,15 +115,15 @@ namespace hyperion {
 		template<typename T_, typename U_>
 			constexpr CompressedPair(T_&& t, U_&& u) // NOLINT(readability-identifier-length)
 			noexcept(
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, T_>&&
 					concepts::NoexceptConstructibleFrom<
 						EmptyBaseClass<U>,
-						decltype(u)>) requires(concepts::
+						U_>) requires(concepts::
 												   ConstructibleFrom<
 													   T,
-													   decltype(t)> || concepts::Convertible<decltype(t), T>)
+													   T_> || concepts::Convertible<T_, T>)
 			&& (concepts::ConstructibleFrom<U,
-											decltype(u)> || concepts::Convertible<decltype(u), U>)
+											U_> || concepts::Convertible<U_, U>)
 			: EmptyBaseClass<T>(std::forward<T_>(t)),
 		EmptyBaseClass<U>(std::forward<U_>(u)) {
 		}
@@ -144,9 +144,9 @@ namespace hyperion {
 		template<typename U_>
 		constexpr CompressedPair(UnInitTag<T> t, U_&& u) // NOLINT(readability-identifier-length)
 			noexcept(
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
-			concepts::ConstructibleFrom<U, decltype(u)> : EmptyBaseClass<T>(t),
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, UnInitTag<T>>&&
+					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, U_>) requires
+			concepts::ConstructibleFrom<U, U_> : EmptyBaseClass<T>(t),
 														  EmptyBaseClass<U>(std::forward<U_>(u)) {
 		}
 		/// @brief Constructs a `CompressedPair` from the pair of arguments.
@@ -166,8 +166,8 @@ namespace hyperion {
 		template<typename T_>
 		constexpr CompressedPair(T_&& t, UnInitTag<U> u) // NOLINT(readability-identifier-length)
 			noexcept(
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, T_>&&
+					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, UnInitTag<U>>) requires
 			concepts::ConstructibleFrom<T, T_> || concepts::Convertible<T_, T>
 			: EmptyBaseClass<T>(std::forward<T_>(t)),
 			  EmptyBaseClass<U>(u) {
@@ -179,8 +179,8 @@ namespace hyperion {
 		/// @ingroup memory
 		constexpr CompressedPair(UnInitTag<T> t, // NOLINT(readability-identifier-length)
 								 UnInitTag<U> u) // NOLINT(readability-identifier-length)
-			noexcept(concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-						 concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>)
+			noexcept(concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, UnInitTag<T>>&&
+						 concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, UnInitTag<U>>)
 			: EmptyBaseClass<T>(t), EmptyBaseClass<U>(u) {
 		}
 		/// @brief Constructs a `CompressedPair` from the pair of arguments.
@@ -201,9 +201,9 @@ namespace hyperion {
 		constexpr CompressedPair(DefaultInitTag<T> t, // NOLINT(readability-identifier-length)
 								 U_&& u)			  // NOLINT(readability-identifier-length)
 			noexcept(
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
-			concepts::ConstructibleFrom<U, decltype(u)> : EmptyBaseClass<T>(t),
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, DefaultInitTag<T>>&&
+					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, U_>) requires
+			concepts::ConstructibleFrom<U, U_> : EmptyBaseClass<T>(t),
 														  EmptyBaseClass<U>(std::forward<U_>(u)) {
 		}
 		/// @brief Constructs a `CompressedPair` from the pair of arguments.
@@ -224,8 +224,8 @@ namespace hyperion {
 		constexpr CompressedPair(T_&& t,			  // NOLINT(readability-identifier-length)
 								 DefaultInitTag<U> u) // NOLINT(readability-identifier-length)
 			noexcept(
-				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>) requires
+				concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, T_>&&
+					concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, DefaultInitTag<U>>) requires
 			concepts::ConstructibleFrom<T, T_> || concepts::Convertible<T_, T>
 			: EmptyBaseClass<T>(std::forward<T_>(t)),
 			  EmptyBaseClass<U>(u) {
@@ -237,8 +237,8 @@ namespace hyperion {
 		/// @ingroup memory
 		constexpr CompressedPair(DefaultInitTag<T> t, // NOLINT(readability-identifier-length)
 								 DefaultInitTag<U> u) // NOLINT(readability-identifier-length)
-			noexcept(concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, decltype(t)>&&
-						 concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, decltype(u)>)
+			noexcept(concepts::NoexceptConstructibleFrom<EmptyBaseClass<T>, DefaultInitTag<T>>&&
+						 concepts::NoexceptConstructibleFrom<EmptyBaseClass<U>, DefaultInitTag<U>>)
 			: EmptyBaseClass<T>(t), EmptyBaseClass<U>(u) {
 		}
 		/// @brief Copy-Constructs a `CompressedPair` from the given one

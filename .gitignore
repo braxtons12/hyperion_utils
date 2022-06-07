@@ -19,3 +19,6 @@ Doxyfile-mcss
 /cmake-build-release-gcc-profile/
 /cmake-build-debug-gcc/
 /cmake-build-debug-gcc-coverage/
+/cmake-build-debug-visual-studio/
+/cmake-build-release-visual-studio/
+/cmake-build-release-visual-studio-profile/

@@ -3,7 +3,7 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-06-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -988,7 +988,7 @@ namespace hyperion {
 		/// construct an `AllocatorAwareDeleter` from it
 		/// @ingroup memory
 		explicit constexpr AllocatorAwareDeleter(const Allocator& alloc) noexcept
-		requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)>
+		requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
 		: m_allocator(alloc) {
 		}
 		/// @brief Copy-Constructs an `AllocatorAwareDeleter` from the given one
@@ -1046,7 +1046,7 @@ namespace hyperion {
 		= default;
 
 	  private:
-		[[no_unique_address]] Alloc m_allocator;
+		[[HYPERION_NO_UNIQUE_ADDRESS]] Alloc m_allocator;
 	};
 
 	template<typename T, typename Allocator>
@@ -1062,9 +1062,11 @@ namespace hyperion {
 		requires concepts::NoexceptDefaultConstructible<Alloc>
 		: m_allocator() {
 		}
-		explicit constexpr AllocatorAwareDeleter(const Allocator& alloc) noexcept
-		requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)>
-		: m_allocator(alloc) {
+		explicit constexpr AllocatorAwareDeleter(const Allocator& alloc,
+												 usize num_elements) noexcept
+		requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
+		: m_allocator(alloc),
+		  m_num_elements(num_elements) {
 		}
 		constexpr AllocatorAwareDeleter(const AllocatorAwareDeleter&) noexcept
 		requires concepts::NoexceptCopyConstructible<Alloc>
@@ -1077,7 +1079,7 @@ namespace hyperion {
 		inline constexpr auto operator()(pointer ptr) const noexcept {
 			Alloc allocator = m_allocator;
 
-			Traits::deallocate(allocator, ptr, 1);
+			Traits::deallocate(allocator, ptr, m_num_elements);
 		}
 
 		constexpr auto operator=(const AllocatorAwareDeleter&) noexcept -> AllocatorAwareDeleter&
@@ -1088,7 +1090,8 @@ namespace hyperion {
 		= default;
 
 	  private:
-		[[no_unique_address]] Alloc m_allocator;
+		[[HYPERION_NO_UNIQUE_ADDRESS]] Alloc m_allocator;
+		usize m_num_elements = 1_usize;
 	};
 	IGNORE_PADDING_STOP
 
@@ -1134,7 +1137,7 @@ namespace hyperion {
 				[[nodiscard]] inline constexpr auto allocate_unique(const Allocator& alloc,
 																	Args&&... args) noexcept
 				-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
-				requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)>
+				requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
 	{
 		using Traits = std::allocator_traits<Alloc>;
 		using Deleter = AllocatorAwareDeleter<T, Alloc>;
@@ -1190,7 +1193,7 @@ namespace hyperion {
 				[[nodiscard]] inline constexpr auto
 				allocate_unique(const Allocator& alloc, usize num_elements) noexcept
 				-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
-				requires concepts::NoexceptConstructibleFrom<Alloc, decltype(alloc)>
+				requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
 	{
 		using Traits = std::allocator_traits<Alloc>;
 		using Deleter = AllocatorAwareDeleter<ElementType[], Alloc>; // NOLINT (c arrays)
@@ -1200,7 +1203,7 @@ namespace hyperion {
 		// NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 		return UniquePtr<ElementType[], Deleter>( // NOLINT (arrays)
 			Traits::allocate(allocator, num_elements),
-			Deleter(allocator));
+			Deleter(allocator, num_elements));
 	}
 
 	// NOLINTNEXTLINE

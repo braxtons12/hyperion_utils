@@ -409,7 +409,7 @@ namespace hyperion {
 			return true;
 		}
 
-		[[no_unique_address]] Allocator<T> m_allocator = Allocator<T>();
+		[[HYPERION_NO_UNIQUE_ADDRESS]] Allocator<T> m_allocator = Allocator<T>();
 		unique_pointer m_buffer = hyperion::allocate_unique<T[]>(m_allocator, // NOLINT
 																 DEFAULT_CAPACITY);
 		u32 m_capacity = DEFAULT_CAPACITY;

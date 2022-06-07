@@ -41,11 +41,20 @@ IGNORE_CONSTANT_CONDITIONAL_EXPRESSIONS_START
 IGNORE_DEPRECATED_DECLARATIONS_START
 IGNORE_SWITCH_MISSING_ENUM_VALUES_START
 
+#if HYPERION_PLATFORM_COMPILER_MSVC
+_Pragma("warning( push )")
+_Pragma("warning( disable : 4189 )")
+#endif // HYPERION_PLATFORM_COMPILER_MSVC
+
 #include <fmt/chrono.h>
 #include <fmt/color.h>
 #include <fmt/compile.h>
 #include <fmt/format.h>
 #include <fmt/os.h>
+
+#if HYPERION_PLATFORM_COMPILER_MSVC
+_Pragma("warning( pop )")
+#endif // HYPERION_PLATFORM_COMPILER_MSVC
 
 IGNORE_SWITCH_MISSING_ENUM_VALUES_STOP
 IGNORE_DEPRECATED_DECLARATIONS_STOP

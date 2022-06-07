@@ -6,10 +6,6 @@ project(HyperionUtils VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
-if(NOT ${CMAKE_CXX_STANDARD})
-	set(CMAKE_CXX_STANDARD 20)
-endif()
-
 #############################################################################
 # Import Microsoft GSL Implementation
 #############################################################################
@@ -77,7 +73,7 @@ FetchContent_MakeAvailable(boost)
 #############################################################################
 FetchContent_Declare(doctest
 	GIT_REPOSITORY "https://github.com/doctest/doctest"
-	GIT_TAG "v2.4.8"
+	GIT_TAG "origin/dev"
 	)
 
 FetchContent_MakeAvailable(doctest)
@@ -160,6 +156,10 @@ add_executable(HyperionUtilsLoggerBenchmark
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/benchmark.cpp"
 	)
 
+if(MSVC)
+    target_sources(HyperionUtils INTERFACE ${EXPORTS})
+endif()
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
 		SET(CMAKE_CXX_CLANG_TIDY clang-tidy)
@@ -170,9 +170,27 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "cl
 endif ()
 
 if (MSVC)
-	target_compile_options(HyperionUtils INTERFACE /Zc:preprocessor /permissive- /Zc:rvalueCast)
-	target_compile_options(HyperionUtilsTest PRIVATE /WX /W4 /std:c++latest /Zc:preprocessor /permissive- /Zc:rvalueCast /MP /sdl)
-	target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE /WX /W4 /std:c++latest /Zc:preprocessor /permissive- /Zc:rvalueCast /MP /sdl)
+	target_compile_options(HyperionUtils
+            INTERFACE
+            /Zc:preprocessor
+            /permissive-
+            /Zc:rvalueCast
+            /wd5104
+            )
+	target_compile_options(HyperionUtilsTest
+            PRIVATE
+            /WX
+            /W4
+            /MP
+            /sdl
+            )
+	target_compile_options(HyperionUtilsLoggerBenchmark
+            PRIVATE
+            /WX
+            /W4
+            /MP
+            /sdl
+            )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	target_compile_options(HyperionUtils
 		INTERFACE
@@ -197,18 +215,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 		-Wpedantic
 		-Weverything
 		-Werror
-		-Wno-c++98-compat
-		-Wno-c++98-compat-pedantic
-		-Wno-c++98-c++11-c++14-compat-pedantic
-		-Wno-c++20-compat
-		-Wno-gnu-zero-variadic-macro-arguments
-		-Wno-undefined-func-template
-		-Wno-ctad-maybe-unsupported
-		-Wno-global-constructors
-		-Wno-exit-time-destructors
-		-Wno-extra-semi
-		-Wno-extra-semi-stmt
-		-Wno-unused-local-typedef
 		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
 		PRIVATE
@@ -218,19 +224,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 		-Wpedantic
 		-Weverything
 		-Werror
-		-Wno-c++98-compat
-		-Wno-c++98-compat-pedantic
-		-Wno-c++98-c++11-c++14-compat-pedantic
-		-Wno-c++20-compat
-		-Wno-gnu-zero-variadic-macro-arguments
-		-Wno-undefined-func-template
-		-Wno-ctad-maybe-unsupported
-		-Wno-global-constructors
-		-Wno-exit-time-destructors
-		-Wno-extra-semi-stmt
-		-Wno-extra-semi
-		-Wno-keyword-macro
-		-Wno-unused-local-typedef
 		)
 else ()
 	target_compile_options(HyperionUtils
@@ -246,9 +239,6 @@ else ()
 		-Wextra
 		-Wpedantic
 		-Werror
-		-Wno-c++20-compat
-		-Wno-terminate
-		-Wno-extra-semi
 		)
 	target_compile_options(HyperionUtilsLoggerBenchmark
 		PRIVATE
@@ -257,21 +247,12 @@ else ()
 		-Wextra
 		-Wpedantic
 		-Werror
-		-Wno-c++20-compat
-		-Wno-terminate
-		-Wno-extra-semi
 		)
 endif ()
 
+target_compile_features(HyperionUtils INTERFACE "cxx_std_20")
+
 target_include_directories(HyperionUtils INTERFACE
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	)
-
-target_include_directories(HyperionUtilsTest PUBLIC
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	)
-
-target_include_directories(HyperionUtilsLoggerBenchmark PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"
 	)
 
@@ -282,7 +263,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
 	if (APPLE AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
 		target_compile_options(HyperionUtilsTest PRIVATE -mcpu=apple-a14 -mtune=native)
 		target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -mcpu=apple-a14 -mtune=native)
-	else ()
+	elseif(NOT MSVC)
 		target_compile_options(HyperionUtilsTest PRIVATE -march=native -mtune=native)
 		target_compile_options(HyperionUtilsLoggerBenchmark PRIVATE -march=native -mtune=native)
 	endif ()
@@ -367,21 +348,15 @@ endif ()
 target_compile_definitions(HyperionUtils INTERFACE
 	${HYPERION_UTILS_COMPILE_DEFINITIONS}
 	)
-target_compile_definitions(HyperionUtilsTest PRIVATE
-	${HYPERION_UTILS_COMPILE_DEFINITIONS}
-	)
-target_compile_definitions(HyperionUtilsLoggerBenchmark PRIVATE
-	${HYPERION_UTILS_COMPILE_DEFINITIONS}
-	)
 
 target_link_libraries(HyperionUtils INTERFACE
 	${HYPERION_UTILS_LINK_LIBS}
 	)
 target_link_libraries(HyperionUtilsTest PRIVATE
-	${HYPERION_UTILS_LINK_LIBS}
+    HyperionUtils
 	)
 target_link_libraries(HyperionUtilsLoggerBenchmark PRIVATE
-	${HYPERION_UTILS_LINK_LIBS}
+    HyperionUtils
 	)
 #target_compile_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)
 #target_link_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)

@@ -29,6 +29,15 @@
 #include <Hyperion/HyperionDef.h>
 
 #if HYPERION_HAS_SOURCE_LOCATION
+	#if HYPERION_PLATFORM_COMPILER_CLANG && HYPERION_PLATFORM_WINDOWS && !defined(__cpp_consteval)
+IGNORE_RESERVED_IDENTIFIERS_START
+IGNORE_RESERVED_MACRO_IDENTIFIERS_START
+		// NOLINTNEXTLINE
+		#define __cpp_consteval 201811L
+IGNORE_RESERVED_MACRO_IDENTIFIERS_STOP
+IGNORE_RESERVED_IDENTIFIERS_STOP
+	#endif
+
 	#include <source_location>
 #elif HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
 	#include <experimental/source_location>
@@ -131,6 +140,7 @@ namespace hyperion::error {
 	  private:
 		static std::atomic<handler_type> handler; // NOLINT
 
+		IGNORE_INVALID_NORETURN_START
 		[[noreturn]] static inline auto
 		default_handler(const std::string& panic_message,
 						const std::source_location& location,
@@ -151,6 +161,7 @@ namespace hyperion::error {
 			std::terminate();
 #endif					   // HYPERION_PLATFORM_DEBUG
 		}
+		IGNORE_INVALID_NORETURN_STOP
 	};
 
 	std::atomic<Panic::handler_type> Panic::handler = get_default_handler(); // NOLINT

@@ -28,6 +28,7 @@
 
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/Ignore.h>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -45,27 +46,27 @@ IGNORE_UNUSED_MACROS_START
 IGNORE_RESERVED_IDENTIFIERS_START
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_SUITE(decorators)                         \
+#define TEST_SUITE(...)                         \
 	IGNORE_RESERVED_IDENTIFIERS_START                  \
 	IGNORE_UNUSED_TEMPLATES_START                      \
-	DOCTEST_TEST_SUITE(decorators)                     \
+	DOCTEST_TEST_SUITE(__VA_ARGS__)                     \
 	/** NOLINT(modernize-use-trailing-return-type) **/ \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_CASE(decorators)                                                  \
-	IGNORE_RESERVED_IDENTIFIERS_START                                          \
-	IGNORE_UNUSED_TEMPLATES_START                                              \
-	/** NOLINTNEXTLINE **/ \
-	DOCTEST_TEST_CASE(decorators)                                              \
-	/** NOLINT **/         \
+#define TEST_CASE(...)         \
+	IGNORE_RESERVED_IDENTIFIERS_START \
+	IGNORE_UNUSED_TEMPLATES_START     \
+	/** NOLINTNEXTLINE **/            \
+	DOCTEST_TEST_CASE(__VA_ARGS__)     \
+	/** NOLINT **/                    \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define SUBCASE(decorators)                                                    \
-	IGNORE_RESERVED_IDENTIFIERS_START                                          \
-	IGNORE_UNUSED_TEMPLATES_START                                              \
-	/** NOLINTNEXTLINE **/ \
-	DOCTEST_SUBCASE(decorators)                                                \
-	/** NOLINT **/         \
+#define SUBCASE(...)           \
+	IGNORE_RESERVED_IDENTIFIERS_START \
+	IGNORE_UNUSED_TEMPLATES_START     \
+	/** NOLINTNEXTLINE **/            \
+	DOCTEST_SUBCASE(__VA_ARGS__)       \
+	/** NOLINT **/                    \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
 #if !defined(DOCTEST_CONFIG_DISABLE)
@@ -322,29 +323,108 @@ namespace hyperion {
 	using fmax = long double;
 
 	namespace detail {
+		template<char... Chars>
+		struct string_literal {
+			std::array<char, sizeof...(Chars)> array = {Chars...};
+		};
 
-		static inline constexpr umax ten = 10U;
+		enum class literal_status : u8 {
+			Valid = 0,
+			OutOfRange,
+			InvalidCharacterSequence,
+			InvalidLiteralType,
+		};
 
-		template<umax Sum = 0U, char... Chars>
-		struct literal_parser : std::integral_constant<umax, 0U> { };
+		template<literal_status status>
+		static constexpr auto check_literal_status() noexcept -> void {
+			static_assert(status != detail::literal_status::OutOfRange,
+						  "Invalid Literal: Literal out of numeric range for type");
+			static_assert(status != detail::literal_status::InvalidCharacterSequence,
+						  "Invalid Literal: Literal contains invalid character sequence for type");
+			static_assert(status != detail::literal_status::InvalidLiteralType,
+						  "Invalid Literal: Requested type is not a valid numeric literal type");
+		}
 
-		template<umax Sum, char Head, char... Chars>
-		requires((Head >= '0' && Head <= '9') || Head == '\'')
-		struct literal_parser<Sum, Head, Chars...>
-			: std::integral_constant<
-				  umax,
-				  literal_parser<Head == '\'' ? Sum : Sum * ten + static_cast<umax>(Head - '0'),
-								 Chars...>::value> { };
+		template<typename T>
+		struct literal_pair {
+			literal_status status = literal_status::Valid;
+			T value = T(0);
+		};
 
-		template<umax Sum>
-		struct literal_parser<Sum> : std::integral_constant<umax, Sum> { };
+		IGNORE_UNUSED_TEMPLATES_START
+		template<typename Type, char... Chars, usize N = sizeof...(Chars)>
+		[[nodiscard]] static consteval auto
+		// NOLINTNEXTLINE(readability-function-cognitive-complexity)
+		parse_literal(string_literal<Chars...> literal) noexcept -> literal_pair<Type> {
+			if constexpr(!(std::is_integral_v<Type> || std::is_floating_point_v<Type>)) {
+				return {.status = literal_status::InvalidLiteralType};
+			}
+			else {
+				Type sum = 0;
+				const auto& str = literal.array;
 
-		template<umax Sum, char... Chars>
-		static inline constexpr umax literal_parser_v = literal_parser<Sum, Chars...>::value;
+				bool found_decimal = false;
+				[[maybe_unused]] usize decimal_index = 0;
+				for(auto& digit : str) {
+					if constexpr(std::is_floating_point_v<Type>) {
+						if((digit < '0' || digit > '9') && digit != '\'' && digit != '.') {
+							return {.status = literal_status::InvalidCharacterSequence};
+						}
+					}
+					else {
+						if((digit < '0' || digit > '9') && digit != '\'') {
+							return {.status = literal_status::InvalidCharacterSequence};
+						}
+					}
 
-		template<umax Value, typename Type>
-		concept ValidLiteral
-			= std::is_integral_v<Type> && (Value <= std::numeric_limits<Type>::max());
+					if constexpr(std::is_floating_point_v<Type>) {
+						if(digit >= '0' && digit <= '9' && !found_decimal) {
+							sum = sum * 10 + static_cast<Type>(digit - '0'); // NOLINT
+						}
+						else if(digit == '.') {
+							found_decimal = true;
+							++decimal_index;
+							break;
+						}
+						++decimal_index;
+					}
+					else {
+						if(digit >= '0' && digit <= '9') {
+							sum = sum * 10 + static_cast<Type>(digit - '0'); // NOLINT
+						}
+					}
+				}
+
+				if constexpr(std::is_floating_point_v<Type>) {
+					if(found_decimal) {
+						usize decimal_sum = 0;
+						usize power_of_ten = 1;
+						for(auto index = decimal_index; index < str.size(); ++index) {
+							const auto& digit = str[index]; // NOLINT
+
+							if(digit == '.') {
+								return {.status = literal_status::InvalidCharacterSequence};
+							}
+
+							if(digit >= '0' && digit <= '9') {
+								decimal_sum
+									= decimal_sum * 10 + static_cast<usize>(digit - '0'); // NOLINT
+								power_of_ten *= 10;										  // NOLINT
+							}
+						}
+
+						sum += static_cast<Type>(decimal_sum) / static_cast<Type>(power_of_ten);
+					}
+				}
+
+				if(sum > std::numeric_limits<Type>::max()) {
+					return {.status = literal_status::OutOfRange};
+				}
+
+				return {.status = literal_status::Valid, .value = sum};
+			}
+		}
+		IGNORE_UNUSED_TEMPLATES_STOP
 	} // namespace detail
 
 	IGNORE_UNUSED_TEMPLATES_START
@@ -352,132 +432,187 @@ namespace hyperion {
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, byte>
 	[[nodiscard]] static inline constexpr auto operator""_byte() noexcept -> byte { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<byte>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `u8`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u8>
 	[[nodiscard]] static inline constexpr auto operator""_u8() noexcept -> u8 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<u8>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `u16`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u16>
 	[[nodiscard]] static inline constexpr auto operator""_u16() noexcept -> u16 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<u16>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `u32`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u32>
 	[[nodiscard]] static inline constexpr auto operator""_u32() noexcept -> u32 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<u32>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `u64`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, u64>
 	[[nodiscard]] static inline constexpr auto operator""_u64() noexcept -> u64 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<u64>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `usize`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, usize>
 	[[nodiscard]] static inline constexpr auto operator""_usize() noexcept -> usize { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<usize>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `umax`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, umax>
 	[[nodiscard]] static inline constexpr auto operator""_umax() noexcept -> umax { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<umax>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `i8`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i8>
 	[[nodiscard]] static inline constexpr auto operator""_i8() noexcept -> i8 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<i8>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `i16`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i16>
 	[[nodiscard]] static inline constexpr auto operator""_i16() noexcept -> i16 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<i16>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `i32`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i32>
 	[[nodiscard]] static inline constexpr auto operator""_i32() noexcept -> i32 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<i32>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `i64`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, i64>
 	[[nodiscard]] static inline constexpr auto operator""_i64() noexcept -> i64 { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<i64>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `imax`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
-	requires detail::ValidLiteral<detail::literal_parser_v<0U, Chars...>, imax>
 	[[nodiscard]] static inline constexpr auto operator""_imax() noexcept -> imax { // NOLINT
-		return detail::literal_parser_v<0U, Chars...>;
+		constexpr auto parsed = detail::parse_literal<imax>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
-	IGNORE_UNUSED_TEMPLATES_STOP
 
-	IGNORE_UNUSED_FUNCTIONS_START
 	/// @brief user defined literal for `f32`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] static inline constexpr auto operator""_f32(long double val) noexcept -> f32 {
-		return static_cast<f32>(val);
+	template<char... Chars>
+	[[nodiscard]] static inline constexpr auto operator""_f32() noexcept -> f32 { // NOLINT
+		constexpr auto parsed = detail::parse_literal<f32>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `f64`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] static inline constexpr auto operator""_f64(long double val) noexcept -> f64 {
-		return static_cast<f64>(val);
+	template<char... Chars>
+	[[nodiscard]] static inline constexpr auto operator""_f64() noexcept -> f64 { // NOLINT
+		constexpr auto parsed = detail::parse_literal<f64>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
 
 	/// @brief user defined literal for `fmax`
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	[[nodiscard]] static inline constexpr auto operator""_fmax(long double val) noexcept -> fmax {
-		return static_cast<fmax>(val);
+	template<char... Chars>
+	[[nodiscard]] static inline constexpr auto operator""_fmax() noexcept -> fmax { // NOLINT
+		constexpr auto parsed = detail::parse_literal<fmax>(detail::string_literal<Chars...>());
+		detail::check_literal_status<parsed.status>();
+		return parsed.value;
 	}
-	IGNORE_UNUSED_FUNCTIONS_STOP
+
+	IGNORE_UNUSED_TEMPLATES_STOP
+
+	namespace literal_tests {
+#if HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
+		_Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wfloat-equal\"")
+#endif // HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
+	   // clang-format off
+
+		// NOLINTNEXTLINE
+		static_assert(static_cast<usize>(64) == 64_usize, "usize literal operator broken!");
+		// NOLINTNEXTLINE
+		static_assert(static_cast<usize>(64'000) == 64'000_usize, "usize literal operator broken!");
+		// NOLINTNEXTLINE
+		static_assert(static_cast<usize>(64'123'456) == 64'123'456_usize,
+					  "usize literal operator broken!");
+		// clang-format on
+
+		// NOLINTNEXTLINE
+		static_assert(static_cast<i64>(-64'123'456) == -64'123'456_i64,
+					  "i64 literal operator broken!");
+
+		// NOLINTNEXTLINE
+		static_assert(static_cast<fmax>(64.12) == 64.12_fmax, "fmax literal operator broken!");
+		// NOLINTNEXTLINE
+		static_assert(static_cast<fmax>(64'000) == 64'000_fmax, "fmax literal operator broken!");
+		// NOLINTNEXTLINE
+		static_assert(static_cast<fmax>(64'000.12345) == 64'000.12345_fmax,
+		              "fmax literal operator broken!");
+		// NOLINTNEXTLINE
+		static_assert(static_cast<fmax>(-64'000.12345) == -64'000.12345_fmax,
+					  "fmax literal operator broken!");
+
+#if HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
+		_Pragma("GCC diagnostic pop")
+#endif // HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
+	}  // namespace literal_tests
 
 } // namespace hyperion

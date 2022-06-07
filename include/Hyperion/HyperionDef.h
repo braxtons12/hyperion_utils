@@ -45,11 +45,11 @@
 /// @ingroup defines
 /// @headerfile "Hyperion/HyperionDef.h"
 #if HYPERION_PLATFORM_COMPILER_MSVC
-	#define HYPERION_NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
+	#define HYPERION_NO_UNIQUE_ADDRESS msvc::no_unique_address
 #elif HYPERION_PLATFORM_WINDOWS && HYPERION_PLATFORM_COMPILER_CLANG
 	#define HYPERION_NO_UNIQUE_ADDRESS
 #else
-	#define HYPERION_NO_UNIQUE_ADDRESS [[no_unique_address]]
+	#define HYPERION_NO_UNIQUE_ADDRESS no_unique_address
 #endif
 
 /// @def HYPERION_HAS_EXPERIMENTAL_SOURCE_LOCATION
@@ -75,7 +75,8 @@
 /// @ingroup defines
 /// @headerfile "Hyperion/HyperionDef.h"
 #if __has_include(<source_location>)
-	#if HYPERION_PLATFORM_COMPILER_GCC || HYPERION_PLATFORM_COMPILER_CLANG
+	#if HYPERION_PLATFORM_COMPILER_GCC \
+		|| (HYPERION_PLATFORM_COMPILER_CLANG && !HYPERION_PLATFORM_WINDOWS)
 		#if __has_builtin(__builtin_source_location)
 			#define HYPERION_HAS_SOURCE_LOCATION true
 		#elif HYPERION_PLATFORM_STD_LIB_LIBCPP

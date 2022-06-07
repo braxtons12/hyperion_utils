@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-06-06
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -90,7 +90,7 @@ namespace hyperion::fs {
 		/// @ingroup filesystem
 		static constexpr usize DEFAULT_FILE_BUFFER_SIZE
 			// try to squeeze a little more perf out on Windows with a large cache
-			= HYPERION_PLATFORM_WINDOWS ? 4_usize * BUFSIZ : BUFSIZ;
+			= HYPERION_PLATFORM_WINDOWS ? 8192_usize : BUFSIZ;
 
 		using element_type = char;
 		using buffer_type = element_type[]; // NOLINT (c-arrays)

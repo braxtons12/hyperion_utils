@@ -110,7 +110,7 @@ namespace hyperion {
 							   now.tm_sec);
 		}
 
-		static inline auto
+		[[nodiscard]] static inline auto
 		create_default_sinks() noexcept -> Sinks { // NOLINT(bugprone-exception-escape)
 			HYPERION_PROFILE_FUNCTION();
 			auto file = FileSink::create_file();
@@ -427,14 +427,10 @@ namespace hyperion {
 			}
 			LogBase(const LogBase&) = delete;
 			LogBase(LogBase&&) = delete;
-#if HYPERION_HAS_JTHREAD
-			~LogBase() noexcept = default;
-#else
 			~LogBase() noexcept {
 				request_thread_stop();
 				m_logging_thread.join();
 			}
-#endif
 
 			template<LogLevel Level, typename... Args>
 			[[maybe_unused]] inline auto log(Option<usize> thread_id,
@@ -492,16 +488,18 @@ namespace hyperion {
 			std::atomic_bool m_exit_flag = false;
 #endif
 			detail::thread m_logging_thread;
-#if !HYPERION_HAS_JTHREAD
+
 			inline auto request_thread_stop() noexcept -> void {
+#if !HYPERION_HAS_JTHREAD
 				m_exit_flag.store(true);
-			}
+#else
+				m_logging_thread.request_stop();
 #endif
+			}
 
 			inline auto try_read() noexcept -> Result<Entry, QueueError> {
 				HYPERION_PROFILE_FUNCTION();
-				auto res = m_queue.read();
-				return res;
+				return m_queue.read();
 			}
 
 #if HYPERION_HAS_JTHREAD
