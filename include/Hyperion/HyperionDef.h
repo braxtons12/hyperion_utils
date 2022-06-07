@@ -35,8 +35,8 @@
 /// @}
 #pragma once
 
-#include <Hyperion/Platform.h>
 #include <Hyperion/Ignore.h>
+#include <Hyperion/Platform.h>
 #include <version>
 
 #define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
@@ -44,7 +44,6 @@
 #define DOCTEST_CONFIG_USE_STD_HEADERS
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 #include <doctest/doctest.h>
-
 
 /// @def HYPERION_NO_UNIQUE_ADDRESS
 /// @brief Platform-dependent, conditional [[no_unique_address]] to account for:
@@ -892,146 +891,300 @@ IGNORE_UNUSED_MACROS_START
 
 // clang-format on
 
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_SUITE(...)                                \
-	IGNORE_RESERVED_IDENTIFIERS_START                  \
-	IGNORE_UNUSED_TEMPLATES_START                      \
-	DOCTEST_TEST_SUITE(__VA_ARGS__)                    \
-	/** NOLINT(modernize-use-trailing-return-type) **/ \
+/// @brief Use to define a doctest test suite.
+/// Usage is identical to `DOCTEST_TEST_SUITE()`, this just ignores particular warnings coming from
+/// doctest.
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#define TEST_SUITE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+	IGNORE_RESERVED_IDENTIFIERS_START                                 \
+	IGNORE_UNUSED_TEMPLATES_START                                     \
+	DOCTEST_TEST_SUITE(__VA_ARGS__)                                   \
+	/** NOLINT(modernize-use-trailing-return-type) **/                \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define TEST_CASE(...)                \
-	IGNORE_RESERVED_IDENTIFIERS_START \
-	IGNORE_UNUSED_TEMPLATES_START     \
-	/** NOLINTNEXTLINE **/            \
-	DOCTEST_TEST_CASE(__VA_ARGS__)    \
-	/** NOLINT **/                    \
+/// @brief Use to define a doctest test case.
+/// Usage is identical to `DOCTEST_TEST_CASE()`, this just ignores particular warnings coming from
+/// doctest.
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#define TEST_CASE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+	IGNORE_RESERVED_IDENTIFIERS_START                                \
+	IGNORE_UNUSED_TEMPLATES_START                                    \
+	/** NOLINTNEXTLINE **/                                           \
+	DOCTEST_TEST_CASE(__VA_ARGS__)                                   \
+	/** NOLINT **/                                                   \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define SUBCASE(...)                  \
-	IGNORE_RESERVED_IDENTIFIERS_START \
-	IGNORE_UNUSED_TEMPLATES_START     \
-	/** NOLINTNEXTLINE **/            \
-	DOCTEST_SUBCASE(__VA_ARGS__)      \
-	/** NOLINT **/                    \
+/// @brief Use to define a doctest test subcase.
+/// Usage is identical to `DOCTEST_SUBCASE()`, this just ignores particular warnings coming from
+/// doctest.
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#define SUBCASE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+	IGNORE_RESERVED_IDENTIFIERS_START                              \
+	IGNORE_UNUSED_TEMPLATES_START                                  \
+	/** NOLINTNEXTLINE **/                                         \
+	DOCTEST_SUBCASE(__VA_ARGS__)                                   \
+	/** NOLINT **/                                                 \
 	IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
 #if !defined(DOCTEST_CONFIG_DISABLE)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK(...)                                                                             \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK()`, this just ignores particular warnings coming from
+	/// doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                               \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK(__VA_ARGS__) \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_FALSE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_FALSE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_FALSE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_FALSE( \
 			__VA_ARGS__)                                                                     \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_EQ(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_EQ()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_EQ(...) /** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_EQ( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_NE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_NE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_NE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_NE( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_GT(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_GT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_GT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GT( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_LT(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_LT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_LT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LT( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_GE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_GE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_GE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_GE( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_LE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_LE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_LE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_LE( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE()`, this just ignores particular warnings coming from
+	/// doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE( \
 			__VA_ARGS__)                                                                 \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_FALSE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_FALSE()`, this just ignores particular warnings
+	/// coming from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_FALSE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_FALSE( \
 			__VA_ARGS__)                                                                       \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_EQ(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_EQ()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_EQ(...) /** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_EQ( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_NE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_NE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_NE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_NE( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_GT(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_GT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_GT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GT( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_LT(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_LT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_LT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LT( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_GE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_GE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_GE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_GE( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_LE(...)                                                                 \
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_LE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_LE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_LE( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
 
 #else
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK(...)		   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_FALSE(...)   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_EQ(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_NE(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_GT(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_LT(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_GE(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define CHECK_LE(...)	   hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK()`, this just ignores particular warnings coming from
+	/// doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK(...)		 /** NOLINT(cppcoreguidelines-macro-usage) **/ hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_FALSE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_FALSE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_EQ()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_EQ(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_NE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_NE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_GT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_GT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_LT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_LT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_GE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_GE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_CHECK_LE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define CHECK_LE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
 
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_FALSE(...) hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_EQ(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_NE(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_GT(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_LT(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_GE(...)	   hyperion::ignore(__VA_ARGS__)
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define REQUIRE_LE(...)	   hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE()`, this just ignores particular warnings coming from
+	/// doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE(...)	   /** NOLINT(cppcoreguidelines-macro-usage) **/ hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_FALSE()`, this just ignores particular warnings
+	/// coming from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_FALSE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_EQ()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_EQ(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_NE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_NE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_GT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_GT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_LT()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_LT(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_GE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_GE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
+	/// @brief Use to do a doctest test assertion.
+	/// Usage is identical to `DOCTEST_REQUIRE_LE()`, this just ignores particular warnings coming
+	/// from doctest.
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define REQUIRE_LE(...) /** NOLINT(cppcoreguidelines-macro-usage) **/ \
+		hyperion::ignore(__VA_ARGS__)
 #endif // !defined(DOCTEST_CONFIG_DISABLE)
 
 #ifdef TRACY_ENABLE
@@ -1046,34 +1199,46 @@ IGNORE_PADDING_STOP
 IGNORE_OLD_STYLE_CASTS_STOP
 IGNORE_RESERVED_IDENTIFIERS_STOP
 
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PLATFORM_PROFILING_ENABLED true
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_FUNCTION()                                                           \
+	/// @brief Indicates whether Tracy profiling is enabled for this build
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PLATFORM_PROFILING_ENABLED /** NOLINT(cppcoreguidelines-macro-usage) **/ true
+	/// @brief Profiles the containing scope with Tracy in builds where Tracy profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_FUNCTION() /** NOLINT(cppcoreguidelines-macro-usage) **/             \
 		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
 		IGNORE_OLD_STYLE_CASTS_START                                                              \
 		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
 		ZoneScoped /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,                \
 					   hicpp-no-array-decay) **/                                                  \
 			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_START_FRAME(name)                                                    \
+	/// @brief Starts a profiling frame with the given name with Tracy in builds where Tracy
+	/// profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_START_FRAME(name) /** NOLINT(cppcoreguidelines-macro-usage) **/      \
 		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
 		IGNORE_OLD_STYLE_CASTS_START                                                              \
 		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
 		FrameMarkStart(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,      \
 								 hicpp-no-array-decay) **/                                        \
 			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_END_FRAME(name)                                                      \
+	/// @brief Ends the profiling frame with the given name with Tracy in builds where Tracy
+	/// profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_END_FRAME(name) /** NOLINT(cppcoreguidelines-macro-usage) **/        \
 		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
 		IGNORE_OLD_STYLE_CASTS_START                                                              \
 		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
 		FrameMarkEnd(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,        \
 							   hicpp-no-array-decay) **/                                          \
 			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_MARK_FRAME()                                                         \
+	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_MARK_FRAME() /** NOLINT(cppcoreguidelines-macro-usage) **/           \
 		IGNORE_RESERVED_IDENTIFIERS_START                                                         \
 		IGNORE_OLD_STYLE_CASTS_START                                                              \
 		/** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay, hicpp-no-array-decay) **/ \
@@ -1081,16 +1246,28 @@ IGNORE_RESERVED_IDENTIFIERS_STOP
 					  hicpp-no-array-decay) **/                                                   \
 			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
 #else
-/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PLATFORM_PROFILING_ENABLED false
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_FUNCTION()
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_START_FRAME(name)
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_END_FRAME(name)
-	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_PROFILE_MARK_FRAME()
+	/// @brief Indicates whether Tracy profiling is enabled for this build
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PLATFORM_PROFILING_ENABLED /** NOLINT(cppcoreguidelines-macro-usage) **/ false
+	/// @brief Profiles the containing scope with Tracy in builds where Tracy profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_FUNCTION()			/** NOLINT(cppcoreguidelines-macro-usage) **/
+	/// @brief Starts a profiling frame with the given name with Tracy in builds where Tracy
+	/// profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_START_FRAME(name)	/** NOLINT(cppcoreguidelines-macro-usage) **/
+	/// @brief Ends the profiling frame with the given name with Tracy in builds where Tracy
+	/// profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_END_FRAME(name)	/** NOLINT(cppcoreguidelines-macro-usage) **/
+	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is enabled
+	/// @ingroup defines
+	/// @headerfile "Hyperion/HyperionDef.h"
+	#define HYPERION_PROFILE_MARK_FRAME()		/** NOLINT(cppcoreguidelines-macro-usage) **/
 #endif
 
 IGNORE_UNUSED_MACROS_STOP

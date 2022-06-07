@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Main file implementation for Hyperion's tests
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-06-07
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
