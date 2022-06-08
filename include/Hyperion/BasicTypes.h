@@ -35,7 +35,17 @@
 #include <type_traits>
 
 ///	@defgroup basic_types BasicTypes
-/// Type aliases for builtin types and user-defined literal operators for them
+/// Hyperion provides type aliases for fixed-width integer and floating point types,
+/// as well as the platform native size-type, byte, and maximum-width integer and floating point
+/// types. It also provides user-defined literals for each that support numeric separators
+/// (eg "12'345") and provide bounds checking to ensure a literal is not out of the range of its
+/// associated type.
+///
+/// # Example
+/// @code {.cpp}
+/// using hyperion::operator""_f32;
+/// const auto my_f32 = 12'345.6789_f32;
+/// @endcode
 /// @headerfile "Hyperion/BasicTypes.h"
 
 namespace hyperion {
@@ -87,10 +97,10 @@ namespace hyperion {
 	/// @headerfile "Hyperion/BasicTypes.h"
 	using imax = intmax_t;
 
-	/// @brief `u8` is a single-byte unsigned integer
+	/// @brief `byte` is a single-byte unsigned integer
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
-	using byte = u8;
+	using byte = unsigned char;
 
 	/// @brief `f32` is a single-precision (32-bit) floating point number
 	/// @ingroup basic_types
@@ -198,6 +208,12 @@ namespace hyperion {
 
 	IGNORE_UNUSED_TEMPLATES_START
 	/// @brief user defined literal for `byte`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_byte;
+	/// const auto my_byte = 12'345_byte;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -208,6 +224,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `u8`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_u8;
+	/// const auto my_u8 = 12'345_u8;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -218,6 +240,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `u16`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_u16;
+	/// const auto my_u16 = 12'345_16;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -228,6 +256,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `u32`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_u32;
+	/// const auto my_u32 = 12'345_u32;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -238,6 +272,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `u64`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_u64;
+	/// const auto my_u64 = 12'345_u64;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -248,6 +288,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `usize`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_usize;
+	/// const auto my_usize = 12'345_usize;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -258,6 +304,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `umax`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_umax;
+	/// const auto my_umax = 12'345_umax;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -268,6 +320,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `i8`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_i8;
+	/// const auto my_i8 = 12'345_i8;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -278,6 +336,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `i16`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_i16;
+	/// const auto my_i16 = 12'345_i16;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -288,6 +352,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `i32`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_i32;
+	/// const auto my_i32 = 12'345_i32;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -298,6 +368,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `i64`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_i64;
+	/// const auto my_i64 = 12'345_i64;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -308,6 +384,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `imax`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_imax;
+	/// const auto my_imax = 12'345_imax;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -318,6 +400,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `f32`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_f32;
+	/// const auto my_f32 = 12'345.6789_f32;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -328,6 +416,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `f64`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_f64;
+	/// const auto my_f64 = 12'345.6789_f64;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>
@@ -338,6 +432,12 @@ namespace hyperion {
 	}
 
 	/// @brief user defined literal for `fmax`
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using hyperion::operator""_fmax;
+	/// const auto my_fmax = 12'345.6789_fmax;
+	/// @endcode
 	/// @ingroup basic_types
 	/// @headerfile "Hyperion/BasicTypes.h"
 	template<char... Chars>

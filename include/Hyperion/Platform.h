@@ -327,3 +327,4 @@
 	/// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 	#define HYPERION_PLATFORM_CACHE_LINE_SIZE 128
 #endif
+
