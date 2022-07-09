@@ -859,6 +859,36 @@ IGNORE_UNUSED_MACROS_START
 	#define IGNORE_CONSTRUCTOR_SHADOW_FIELDS_STOP
 #endif
 
+/// @def IGNORE_FLOAT_EQUALITY_START
+/// @brief Use to temporarily disable warnings for checking for floating point equality
+/// Make sure to pair with `IGNORE_FLOAT_EQUALITY_STOP` to properly scope the
+/// area where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+		// NOLINTNEXTLINE
+		#define IGNORE_FLOAT_EQUALITY_START \
+			_Pragma("GCC diagnostic push") \
+			_Pragma("GCC diagnostic ignored \"-Wfloat-equal\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_FLOAT_EQUALITY_START
+#endif
+
+/// @def IGNORE_FLOAT_EQUALITY_STOP
+/// @brief Use to re-enable warnings for checking for floating point equality
+/// after having previously used `IGNORE_FLOAT_EQUALITY_STOP`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+		// NOLINTNEXTLINE
+		#define IGNORE_FLOAT_EQUALITY_STOP \
+			_Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_FLOAT_EQUALITY_STOP
+#endif
+
 /// @def IGNORE_COMMA_MISUSE_START
 /// @brief Use to temporarily disable warnings for comma operator misuse
 /// Make sure to pair with `IGNORE_COMMA_MISUSE_STOP` to properly scope the
