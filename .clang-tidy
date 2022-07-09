@@ -1,6 +1,6 @@
 ---
-Checks: 'cert-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,google-*,misc-*,modernize-*,performance-*,portability-*,readability-*,bugprone-*,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-google-readability-casting'
-WarningsAsErrors: 'cert-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,google-*,misc-*,modernize-*,performance-*,portability-*,readability-*,bugprone-*,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-google-readability-casting'
+Checks: 'cert-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,google-*,misc-*,modernize-*,performance-*,portability-*,readability-*,bugprone-*,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-google-readability-casting,-clang-analyzer-optin.cplusplus.UninitializedObject'
+WarningsAsErrors: 'cert-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,hicpp-*,google-*,misc-*,modernize-*,performance-*,portability-*,readability-*,bugprone-*,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-google-readability-casting,-clang-analyzer-optin.cplusplus.UninitializedObject'
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: true
 FormatStyle: none

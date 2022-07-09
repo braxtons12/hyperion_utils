@@ -25,7 +25,7 @@ FetchContent_MakeAvailable(GSL)
 #############################################################################
 FetchContent_Declare(fmt
 	GIT_REPOSITORY "https://github.com/fmtlib/fmt"
-	GIT_TAG "8.1.1"
+	GIT_TAG "9.0.0"
 	)
 
 FetchContent_MakeAvailable(fmt)
@@ -93,7 +93,6 @@ FetchContent_Declare(tracy
 FetchContent_MakeAvailable(tracy)
 #############################################################################
 #############################################################################
-
 
 set(HYPERION_UTILS_EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/ChangeDetector.h"
@@ -163,6 +162,9 @@ add_executable(HyperionUtilsTest
 add_executable(HyperionUtilsLoggerBenchmark
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/benchmark.cpp"
 	)
+
+set_target_properties(HyperionUtilsTest PROPERTIES EXCLUDE_FROM_ALL TRUE)
+set_target_properties(HyperionUtilsLoggerBenchmark PROPERTIES EXCLUDE_FROM_ALL TRUE)
 
 target_sources(HyperionUtils PRIVATE ${HYPERION_UTILS_SOURCES})
 ##### We add includes to sources sets because it helps with `#include` lookup for some tooling #####
