@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Wrap Boost::stacktrace and provide fmtlib formatter for it
 /// @version 0.1
-/// @date 2022-06-05
+/// @date 2022-06-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,8 +27,8 @@
 
 #pragma once
 
-#include <Hyperion/Format.h>
 #include <Hyperion/HyperionDef.h>
+#include <Hyperion/Fmt.h>
 
 #if HYPERION_PLATFORM_COMPILER_CLANG
 _Pragma("GCC diagnostic push")
@@ -54,9 +54,30 @@ _Pragma("GCC diagnostic pop")
 #endif
 
 namespace hyperion {
+	/// @brief `backtrace` provides a full backtrace of the current call stack it its point of
+	/// construction
+	///
+	/// Example:
+	/// @code {.cpp}
+	/// #include <Hyperion/FmtIO.h>
+	/// #include <Hyperion/error/Backtrace.h>
+	///
+	/// auto function_that_may_terminate() -> void {
+	/// 	if(get_my_special_value() != 42) {
+	/// 		println("Special value was bad!\n Backtrace: {}\nTerminating",
+	/// 				hyperion::backtrace());
+	/// 	}
+	/// }
+	/// @endcode
+	/// @ingroup hyperion::error
+	/// @headerfile "Hyperion/error/Backtrace.h"
 	using backtrace = boost::stacktrace::stacktrace;
 } // namespace hyperion
 
+/// @brief Specialize `fmt::formatter` for `hyperion::backtrace` so it can be used with fmtlib
+/// formatting functions
+/// @ingroup hyperion::error
+/// @headerfile "Hyperion/error/Backtrace.h"
 template<>
 struct fmt::formatter<hyperion::backtrace> {
 	// NOLINTNEXTLINE(readability-convert-member-functions-to-static)

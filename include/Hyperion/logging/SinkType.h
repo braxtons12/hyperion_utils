@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Requirements for a `SinkType`
 /// @version 0.1
-/// @date 2021-10-29
+/// @date 2022-06-15
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -28,13 +28,13 @@
 #include <Hyperion/logging/Config.h>
 #include <Hyperion/logging/Entry.h>
 
-namespace hyperion {
+namespace hyperion::logging {
 	/// @brief Requirements for what constitutes a logging sink type
 	/// @ingroup logging
 	/// @headerfile "Hyperion/logging/SinkType.h"
 	template<typename Sink>
 	concept SinkType
-		= requires(Sink sink, const Entry& entry_lval, Entry&& entry_rval, LogLevel level) {
+		= requires(Sink sink, const Entry& entry_lval, Entry&& entry_rval, Level level) {
 		{
 			sink.sink_entry(entry_lval)
 			} -> concepts::Same<void>;
@@ -46,7 +46,7 @@ namespace hyperion {
 		noexcept(sink.sink_entry(entry_rval));
 		{
 			sink.get_log_level()
-			} -> concepts::Same<LogLevel>;
+			} -> concepts::Same<Level>;
 		noexcept(sink.get_log_level());
 		{
 			sink.set_log_level(level)
@@ -54,4 +54,4 @@ namespace hyperion {
 		noexcept(sink.set_log_level(level));
 	};
 
-} // namespace hyperion
+} // namespace hyperion::logging

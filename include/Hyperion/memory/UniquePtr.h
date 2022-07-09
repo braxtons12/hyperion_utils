@@ -3,10 +3,10 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2022-06-05
+/// @date 2022-07-09
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -126,6 +126,7 @@ namespace hyperion {
 		requires concepts::Convertible<U*, T*>
 		constexpr auto
 		operator=([[maybe_unused]] const DefaultDeleter<U>& deleter) noexcept -> DefaultDeleter& {
+			return *this;
 			// deleters have no state, so this is a no-op
 		}
 		template<typename U>
@@ -133,6 +134,7 @@ namespace hyperion {
 		constexpr auto
 		operator=([[maybe_unused]] DefaultDeleter<U>&& deleter) noexcept -> DefaultDeleter& {
 			// deleters have no state, so this is a no-op
+			return *this;
 		}
 	};
 

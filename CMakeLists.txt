@@ -6,6 +6,8 @@ project(HyperionUtils VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
+set(CMAKE_CXX_STANDARD 20)
+
 #############################################################################
 # Import Microsoft GSL Implementation
 #############################################################################
@@ -93,7 +95,7 @@ FetchContent_MakeAvailable(tracy)
 #############################################################################
 
 
-set(EXPORTS
+set(HYPERION_UTILS_EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/ChangeDetector.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Concepts.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/error/Assert.h"
@@ -109,7 +111,7 @@ set(EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Error.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/filesystem/File.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Filesystem.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Format.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Fmt.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/HyperionDef.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Ignore.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/logging/Queue.h"
@@ -144,8 +146,14 @@ set(EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/TypeTraits.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Utils.h"
 	)
+set(HYPERION_UTILS_SOURCES
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/error/Panic.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/filesystem/File.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/Logger.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/logging/Sink.cpp"
+	)
 
-add_library(HyperionUtils INTERFACE)
+add_library(HyperionUtils STATIC)
 add_library(Hyperion::Utils ALIAS HyperionUtils)
 
 add_executable(HyperionUtilsTest
@@ -156,9 +164,12 @@ add_executable(HyperionUtilsLoggerBenchmark
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/benchmark.cpp"
 	)
 
-if(MSVC)
-	target_sources(HyperionUtils INTERFACE ${EXPORTS})
-endif()
+target_sources(HyperionUtils PRIVATE ${HYPERION_UTILS_SOURCES})
+##### We add includes to sources sets because it helps with `#include` lookup for some tooling #####
+target_sources(HyperionUtils PUBLIC ${HYPERION_UTILS_EXPORTS})
+target_include_directories(HyperionUtils PUBLIC
+	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	if (NOT DEFINED CMAKE_CXX_CLANG_TIDY)
@@ -171,7 +182,7 @@ endif ()
 
 if (MSVC)
 	target_compile_options(HyperionUtils
-		INTERFACE
+		PUBLIC
 		/Zc:preprocessor
 		/permissive-
 		/Zc:rvalueCast
@@ -193,7 +204,7 @@ if (MSVC)
 		)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "clang")
 	target_compile_options(HyperionUtils
-		INTERFACE
+		PUBLIC
 		-Wno-c++98-compat
 		-Wno-c++98-compat-pedantic
 		-Wno-c++98-c++11-c++14-compat-pedantic
@@ -225,7 +236,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
 		)
 else ()
 	target_compile_options(HyperionUtils
-		INTERFACE
+		PUBLIC
 		-Wno-c++20-compat
 		-Wno-terminate
 		-Wno-extra-semi
@@ -246,12 +257,9 @@ else ()
 		)
 endif ()
 
-target_compile_features(HyperionUtils INTERFACE "cxx_std_20")
+target_compile_features(HyperionUtils PUBLIC cxx_std_20)
 
-target_include_directories(HyperionUtils INTERFACE
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	)
-
+target_compile_definitions(HyperionUtils PRIVATE DOCTEST_CONFIG_DISABLE)
 target_compile_definitions(HyperionUtilsLoggerBenchmark PUBLIC DOCTEST_CONFIG_DISABLE)
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -267,12 +275,6 @@ endif()
 if (HYPERION_TRACY_ENABLE)
 	SET(TRACY Tracy::TracyClient)
 endif ()
-
-##### We add includes to sources sets because it helps with `#include` lookup for some tooling #####
-
-#target_sources(HyperionUtils INTERFACE
-#        ${EXPORTS}
-#        )
 
 if (WIN32 OR MSVC)
 	SET(HYPERION_UTILS_COMPILE_DEFINITIONS
@@ -340,19 +342,24 @@ else ()
 		)
 endif ()
 
-target_compile_definitions(HyperionUtils INTERFACE
+target_compile_definitions(HyperionUtils PUBLIC
 	${HYPERION_UTILS_COMPILE_DEFINITIONS}
 	)
 
-target_link_libraries(HyperionUtils INTERFACE
+target_link_libraries(HyperionUtils PUBLIC
 	${HYPERION_UTILS_LINK_LIBS}
 	)
+
 target_link_libraries(HyperionUtilsTest PRIVATE
 	HyperionUtils
 	)
+include("cmake/doctest_force_link_static_lib_in_target.cmake")
+doctest_force_link_static_lib_in_target(HyperionUtilsTest HyperionUtils)
+
 target_link_libraries(HyperionUtilsLoggerBenchmark PRIVATE
 	HyperionUtils
 	)
+
 #target_compile_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)
 #target_link_options(HyperionUtilsLoggerBenchmark PUBLIC -fsanitize=thread)
 #target_compile_options(HyperionUtilsTest PUBLIC -fsanitize=thread)
@@ -381,7 +388,7 @@ configure_file(${MCSS_DOXYFILE_IN} ${MCSS_DOXYFILE_OUT} @ONLY)
 file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
 
 add_custom_command(OUTPUT ${DOXYGEN_HTML}
-	DEPENDS ${EXPORTS} ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+	DEPENDS ${HYPERION_UTILS_EXPORTS} ${CMAKE_CURRENT_SOURCE_DIR}/README.md
 	COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/third-party/m.css/documentation/doxygen.py ${MCSS_CONF_PY} --debug
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN} ${MCSS_DOXYFILE_OUT} ${MCSS_DOXYFILE_IN}

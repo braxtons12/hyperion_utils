@@ -164,8 +164,6 @@ namespace hyperion::error {
 		IGNORE_INVALID_NORETURN_STOP
 	};
 
-	std::atomic<Panic::handler_type> Panic::handler = get_default_handler(); // NOLINT
-
 	IGNORE_UNUSED_MACROS_START
 
 	IGNORE_INVALID_NORETURN_START

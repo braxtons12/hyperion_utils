@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Provides basic logging sink implementations
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-07-09
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -26,8 +26,8 @@
 /// IN THE SOFTWARE.
 #pragma once
 
+#include <Hyperion/Fmt.h>
 #include <Hyperion/FmtIO.h>
-#include <Hyperion/Format.h>
 #include <Hyperion/Ignore.h>
 #include <Hyperion/Result.h>
 #include <Hyperion/filesystem/File.h>
@@ -39,7 +39,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace hyperion {
+namespace hyperion::logging {
 	IGNORE_WEAK_VTABLES_START
 
 	class SinkBase {
@@ -51,8 +51,8 @@ namespace hyperion {
 
 		virtual constexpr auto sink(const Entry& entry) noexcept -> void = 0;
 		virtual constexpr auto sink(Entry&& entry) noexcept -> void = 0;
-		[[nodiscard]] virtual constexpr auto get_log_level() const noexcept -> LogLevel = 0;
-		virtual constexpr auto set_log_level(LogLevel level) noexcept -> void = 0;
+		[[nodiscard]] virtual constexpr auto get_log_level() const noexcept -> Level = 0;
+		virtual constexpr auto set_log_level(Level level) noexcept -> void = 0;
 
 		auto operator=(const SinkBase&) noexcept -> SinkBase& = default;
 		auto operator=(SinkBase&&) noexcept -> SinkBase& = default;
@@ -82,7 +82,7 @@ namespace hyperion {
 		FileSink() noexcept = delete;
 		/// @brief Constructs a `FileSink` that will write to the given file
 		///
-		/// Constructs a `FileSink` with the default `LogLevel` (`LogLevel::MESSAGE`) that will sink
+		/// Constructs a `FileSink` with the default `Level` (`Level::MESSAGE`) that will sink
 		/// logging entries at or above that level to the given `fs::File`
 		///
 		/// @param file - The file to write entries to
@@ -92,14 +92,14 @@ namespace hyperion {
 		}
 		/// @brief Constructs a `FileSink` that will write to the given file
 		///
-		/// Constructs a `FileSink` that will sink logging entries at or above the given `LogLevel`
+		/// Constructs a `FileSink` that will sink logging entries at or above the given `Level`
 		/// to the given `fs::File`
 		///
 		/// @param file - The file to write entries to
 		/// @param level - The to configure this sink for
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		constexpr FileSink(fs::File&& file, LogLevel level) noexcept
+		constexpr FileSink(fs::File&& file, Level level) noexcept
 			: m_file(std::move(file)), m_log_level(level) {
 		}
 		/// @brief Deleted copy constructor
@@ -117,47 +117,37 @@ namespace hyperion {
 
 		/// @brief Sinks the given entry, writing it to the file associated with this
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to the
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to the
 		/// file. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(const Entry& entry) noexcept -> void override {
-			if(entry.level() >= m_log_level) {
-				auto res = m_file.println("{}", entry.entry());
-				ignore(res.is_ok());
-			}
-		}
+		auto sink(const Entry& entry) noexcept -> void override;
 
 		/// @brief Sinks the given entry, writing it to the file associated with this
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to the
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to the
 		/// file. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(Entry&& entry) noexcept -> void override {
-			if(entry.level() >= m_log_level) {
-				auto res = m_file.println("{}", entry.entry());
-				ignore(res.is_ok());
-			}
-		}
+		auto sink(Entry&& entry) noexcept -> void override;
 
-		/// @brief Returns the currently configured `LogLevel` for this sink
+		/// @brief Returns the currently configured `Level` for this sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		[[nodiscard]] inline auto get_log_level() const noexcept -> LogLevel override {
+		[[nodiscard]] inline auto get_log_level() const noexcept -> Level override {
 			return m_log_level;
 		}
 
-		/// @brief Sets the configured `LogLevel` for this sink to the given one
+		/// @brief Sets the configured `Level` for this sink to the given one
 		///
-		/// @param level - The `LogLevel` to configure this sink to
+		/// @param level - The `Level` to configure this sink to
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto set_log_level(LogLevel level) noexcept -> void override {
+		inline auto set_log_level(Level level) noexcept -> void override {
 			m_log_level = level;
 		}
 
@@ -183,26 +173,10 @@ namespace hyperion {
 		/// @return The `fs::File` on success, `error::SystemError` on error
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		[[nodiscard]] static inline auto
+		[[nodiscard]] static auto
 		create_file(const std::string& root_file_name = DEFAULT_FILE_NAME, // NOLINT
 					const std::string& subdirectory_name = DEFAULT_FILE_SUBDIRECTORY)
-			-> Result<fs::File> {
-			return get_temp_directory()
-				.and_then([&subdirectory_name](std::filesystem::path temp_directory)
-							  -> Result<std::filesystem::path> {
-					temp_directory.append(subdirectory_name);
-					return create_directory(temp_directory);
-				})
-				.and_then(
-					[&root_file_name](std::filesystem::path file_directory) -> Result<fs::File> {
-						using namespace std::literals::string_literals;
-
-						const auto time_string = create_time_stamp();
-						file_directory.append(time_string + " "s + root_file_name);
-						file_directory.replace_extension("log"s);
-						return fs::File::open(file_directory);
-					});
-		}
+			noexcept -> Result<fs::File>;
 
 		/// @brief Deleted copy-assignment operator
 		/// @ingroup logging
@@ -215,68 +189,7 @@ namespace hyperion {
 
 	  private:
 		fs::File m_file;
-		LogLevel m_log_level = LogLevel::MESSAGE;
-
-		/// @brief Returns the system temporary files directory
-		///
-		/// # Errors
-		/// Returns an error if accessing the temporary files directory fails
-		///
-		/// @return The `std::filesystem::path` to the temporary files directory on success,
-		/// `FileCreationError` on error
-		[[nodiscard]] static inline auto get_temp_directory() -> Result<std::filesystem::path> {
-			std::error_code err_code;
-			auto temp_dir = std::filesystem::temp_directory_path(err_code);
-
-			if(err_code.value() != 0) {
-				return Err(error::SystemError(
-					static_cast<error::SystemError::value_type>(err_code.value())));
-			}
-
-			return Ok(temp_dir);
-		}
-
-		/// @brief Creates the subdirectory for the given absolute subdirectory path
-		///
-		/// # Errors
-		/// Returns an error if creating the subdirectory fails
-		///
-		/// @param subdirectory_path - The absolute path for the subdirectory
-		///
-		/// @return The given `std::filesystem::path` to the subdirectory on success,
-		/// `FileCreationError` on error
-		[[nodiscard]] static inline auto
-		create_directory(const std::filesystem::path& subdirectory_path)
-			-> Result<std::filesystem::path> {
-			std::error_code err_code;
-			std::filesystem::create_directory(subdirectory_path, err_code);
-
-			if(err_code.value() != 0) {
-				return Err(error::SystemError(
-					static_cast<error::SystemError::value_type>(err_code.value())));
-			}
-
-			return Ok(subdirectory_path);
-		}
-
-		/// @brief Creates a time stamp in the format
-		/// [Year-Month-Day|Hour-Minute-Second] for the current local time
-		///
-		/// @return The time stamp
-		[[nodiscard]] static inline auto create_time_stamp() -> std::string {
-			HYPERION_PROFILE_FUNCTION();
-			const auto now = fmt::gmtime(
-				std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
-			const auto years = 1900 + now.tm_year;
-			const auto months = 1 + now.tm_mon;
-			return fmt::format(FMT_COMPILE("[{:#04}-{:#02}-{:#02}={:#02}-{:#02}-{:#02}]"),
-							   years,
-							   months,
-							   now.tm_mday,
-							   now.tm_hour,
-							   now.tm_min,
-							   now.tm_sec);
-		}
+		Level m_log_level = Level::MESSAGE;
 	};
 
 	/// @brief Basic logging sink that writes to `stdout`
@@ -288,16 +201,16 @@ namespace hyperion {
 	class StdoutSink final : public SinkBase {
 	  public:
 		/// @brief Constructs a `StdoutSink` that will log entries at or above the default
-		/// `LogLevel` (`LogLevel::ERROR`)
+		/// `Level` (`Level::ERROR`)
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
 		constexpr StdoutSink() noexcept = default;
-		/// @brief Constructs a `StdoutSink` that will log entries at or above the given `LogLevel`
+		/// @brief Constructs a `StdoutSink` that will log entries at or above the given `Level`
 		///
-		/// @param level - The `LogLevel` to configure this sink for
+		/// @param level - The `Level` to configure this sink for
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		explicit constexpr StdoutSink(LogLevel level) noexcept : m_log_level(level) {
+		explicit constexpr StdoutSink(Level level) noexcept : m_log_level(level) {
 		}
 		/// @brief Copy constructor
 		/// @ingroup logging
@@ -314,55 +227,37 @@ namespace hyperion {
 
 		/// @brief Sinks the given entry, writing it to `stdout`
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to
 		/// `stdout`. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(const Entry& entry) noexcept -> void final {
-			if(entry.level() >= m_log_level) {
-				if constexpr(Style == SinkTextStyle::Styled) {
-					println(entry.style(), "{}", entry.entry());
-				}
-				else {
-					println("{}", entry.entry());
-				}
-			}
-		}
+		auto sink(const Entry& entry) noexcept -> void final;
 
 		/// @brief Sinks the given entry, writing it to `stdout`
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to
 		/// `stdout`. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(Entry&& entry) noexcept -> void final {
-			if(entry.level() >= m_log_level) {
-				if constexpr(Style == SinkTextStyle::Styled) {
-					println(entry.style(), "{}", entry.entry());
-				}
-				else {
-					println("{}", entry.entry());
-				}
-			}
-		}
+		auto sink(Entry&& entry) noexcept -> void final;
 
-		/// @brief Returns the currently configured `LogLevel` for this sink
+		/// @brief Returns the currently configured `Level` for this sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		[[nodiscard]] inline auto get_log_level() const noexcept -> LogLevel final {
+		[[nodiscard]] inline auto get_log_level() const noexcept -> Level final {
 			return m_log_level;
 		}
 
-		/// @brief Sets the configured `LogLevel` for this sink to the given one
+		/// @brief Sets the configured `Level` for this sink to the given one
 		///
-		/// @param level - The `LogLevel` to configure this sink to
+		/// @param level - The `Level` to configure this sink to
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto set_log_level(LogLevel level) noexcept -> void final {
+		inline auto set_log_level(Level level) noexcept -> void final {
 			m_log_level = level;
 		}
 
@@ -376,7 +271,7 @@ namespace hyperion {
 		constexpr auto operator=(StdoutSink&& sink) noexcept -> StdoutSink& = default;
 
 	  private:
-		LogLevel m_log_level = LogLevel::ERROR;
+		Level m_log_level = Level::ERROR;
 	};
 
 	/// @brief Basic logging sink that writes to `stderr`
@@ -388,16 +283,16 @@ namespace hyperion {
 	class StderrSink final : public SinkBase {
 	  public:
 		/// @brief Constructs a `StderrSink` that will log entries at or above the default
-		/// `LogLevel` (`LogLevel::ERROR`)
+		/// `Level` (`Level::ERROR`)
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
 		constexpr StderrSink() noexcept = default;
-		/// @brief Constructs a `StderrSink` that will log entries at or above the given `LogLevel`
+		/// @brief Constructs a `StderrSink` that will log entries at or above the given `Level`
 		///
-		/// @param level - The `LogLevel` to configure this sink for
+		/// @param level - The `Level` to configure this sink for
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		explicit constexpr StderrSink(LogLevel level) noexcept : m_log_level(level) {
+		explicit constexpr StderrSink(Level level) noexcept : m_log_level(level) {
 		}
 		/// @brief Copy constructor
 		/// @ingroup logging
@@ -414,55 +309,37 @@ namespace hyperion {
 
 		/// @brief Sinks the given entry, writing it to `stderr`
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to
 		/// `stderr`. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(const Entry& entry) noexcept -> void final {
-			if(entry.level() >= m_log_level) {
-				if constexpr(Style == SinkTextStyle::Styled) {
-					eprintln(entry.style(), "{}", entry.entry());
-				}
-				else {
-					eprintln("{}", entry.entry());
-				}
-			}
-		}
+		auto sink(const Entry& entry) noexcept -> void final;
 
 		/// @brief Sinks the given entry, writing it to `stderr`
 		///
-		/// Sinks the given entry if it is at or above the configured `LogLevel`, writing it to
+		/// Sinks the given entry if it is at or above the configured `Level`, writing it to
 		/// `stderr`. Otherwise, does nothing
 		///
 		/// @param entry - The entry to sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto sink(Entry&& entry) noexcept -> void final {
-			if(entry.level() >= m_log_level) {
-				if constexpr(Style == SinkTextStyle::Styled) {
-					eprintln(entry.style(), "{}", entry.entry());
-				}
-				else {
-					eprintln("{}", entry.entry());
-				}
-			}
-		}
+		auto sink(Entry&& entry) noexcept -> void final;
 
-		/// @brief Returns the currently configured `LogLevel` for this sink
+		/// @brief Returns the currently configured `Level` for this sink
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		[[nodiscard]] inline auto get_log_level() const noexcept -> LogLevel final {
+		[[nodiscard]] inline auto get_log_level() const noexcept -> Level final {
 			return m_log_level;
 		}
 
-		/// @brief Sets the configured `LogLevel` for this sink to the given one
+		/// @brief Sets the configured `Level` for this sink to the given one
 		///
-		/// @param level - The `LogLevel` to configure this sink to
+		/// @param level - The `Level` to configure this sink to
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
-		inline auto set_log_level(LogLevel level) noexcept -> void final {
+		inline auto set_log_level(Level level) noexcept -> void final {
 			m_log_level = level;
 		}
 
@@ -476,7 +353,7 @@ namespace hyperion {
 		constexpr auto operator=(StderrSink&& sink) noexcept -> StderrSink& = default;
 
 	  private:
-		LogLevel m_log_level = LogLevel::INFO;
+		Level m_log_level = Level::INFO;
 	};
 	IGNORE_PADDING_STOP
 
@@ -493,9 +370,8 @@ namespace hyperion {
 	/// @ingroup logging
 	/// @headerfile "Hyperion/logging/Sink.h"
 	template<typename T, typename... Args>
-	requires concepts::Derived<T, SinkBase>
-			 && concepts::ConstructibleFrom<T, Args...>
-			 inline auto make_sink(Args&&... args) noexcept -> hyperion::UniquePtr<SinkBase> {
+	requires concepts::Derived<T, SinkBase> && concepts::ConstructibleFrom<T, Args...>
+	inline auto make_sink(Args&&... args) noexcept -> hyperion::UniquePtr<SinkBase> {
 		return hyperion::make_unique<T>(std::forward<Args>(args)...);
 	}
 
@@ -561,10 +437,8 @@ namespace hyperion {
 		/// @ingroup logging
 		/// @headerfile "Hyperion/logging/Sink.h"
 		template<typename T, typename... Args>
-		requires concepts::Derived<T, SinkBase>
-				 && concepts::ConstructibleFrom<T, Args...>
-				 inline auto
-				 emplace_back(Args&&... args) noexcept -> hyperion::UniquePtr<SinkBase>& {
+		requires concepts::Derived<T, SinkBase> && concepts::ConstructibleFrom<T, Args...>
+		inline auto emplace_back(Args&&... args) noexcept -> hyperion::UniquePtr<SinkBase>& {
 			return m_sinks.emplace_back(make_sink<T>(std::forward<Args>(args)...));
 		}
 
@@ -796,4 +670,4 @@ namespace hyperion {
 			= std::vector<hyperion::UniquePtr<SinkBase>>();
 	};
 
-} // namespace hyperion
+} // namespace hyperion::logging

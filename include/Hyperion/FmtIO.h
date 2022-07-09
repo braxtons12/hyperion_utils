@@ -32,7 +32,7 @@
 /// @}
 #pragma once
 
-#include <Hyperion/Format.h>
+#include <Hyperion/Fmt.h>
 
 namespace hyperion {
 

@@ -1,8 +1,33 @@
+/// @file Logger.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Hyperion logging facilities.
-///
 /// Hyperion's logging facilities are robust and composable.
-/// Behavioral (Policy) configuration is configurable at compile time with via template parameters,
-/// and output configuration is configurable by supplying the desired `Sink`s on creation
+/// Behavioral (Policy) configuration is configurable at compile time via template parameters,
+/// and output configuration is configurable by supplying the desired `hyperion::logging::Sink`s
+/// at construction time.
+/// @version 0.1
+/// @date 2022-07-09
+///
+/// MIT License
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all
+/// copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
 #pragma once
 
 #include <Hyperion/BasicTypes.h>
@@ -21,6 +46,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <semaphore>
 #include <system_error>
 #include <thread>
 
@@ -34,7 +60,7 @@ namespace hyperion {
 		QueueingError = 1,
 		/// @brief the requested log level for the entry is
 		/// lower than the minimum level for the logger
-		LogLevelError = 2,
+		LevelError = 2,
 		LoggerNotInitialized = 3,
 		Unknown = -1
 	};
@@ -58,7 +84,7 @@ STATUS_CODE_DOMAIN(
 		else if(code == value_type::QueueingError) {
 			return "Logger failed to queue log entry.";
 		}
-		else if(code == value_type::LogLevelError) {
+		else if(code == value_type::LevelError) {
 			return "Requested log level for entry is lower than minimum level configured for "
 				   "logger.";
 		}
@@ -81,7 +107,7 @@ namespace hyperion {
 		static constexpr bool value = true;
 	};
 
-	using QueueError = LoggingQueueError;
+	using QueueError = logging::QueueError;
 
 	IGNORE_PADDING_START
 
@@ -92,150 +118,631 @@ namespace hyperion {
 		using thread = std::thread;
 #endif
 
-		IGNORE_UNNEEDED_INTERNAL_DECL_START
-		[[nodiscard]] static inline auto create_time_stamp() noexcept -> std::string {
-			HYPERION_PROFILE_FUNCTION();
-			//	return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H:%M:%S}]"),
-			//	                   fmt::gmtime(std::time(nullptr)));
-			const auto now = fmt::gmtime(
-				std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
-			const auto years = 1900 + now.tm_year;
-			const auto months = 1 + now.tm_mon;
-			return fmt::format(FMT_COMPILE("[{:#04}-{:#02}-{:#02}|{:#02}:{:#02}:{:#02}]"),
-							   years,
-							   months,
-							   now.tm_mday,
-							   now.tm_hour,
-							   now.tm_min,
-							   now.tm_sec);
-		}
-
-		[[nodiscard]] static inline auto
-		create_default_sinks() noexcept -> Sinks { // NOLINT(bugprone-exception-escape)
-			HYPERION_PROFILE_FUNCTION();
-			auto file = FileSink::create_file();
-			auto file_sink = make_sink<FileSink>(file.expect("Failed to create default log file"));
-			auto stdout_sink = make_sink<StdoutSink<>>();
-			auto stderr_sink = make_sink<StderrSink<>>();
-			return Sinks({std::move(file_sink), std::move(stdout_sink), std::move(stderr_sink)});
-		}
-		IGNORE_UNNEEDED_INTERNAL_DECL_STOP
-
-		IGNORE_UNUSED_TEMPLATES_START
-		template<LogLevel Level, typename... Args>
-		static inline auto
-		format_entry(Option<usize> thread_id, // NOLINT(bugprone-exception-escape)
-					 fmt::format_string<Args...>&& format_string,
-					 Args&&... args) noexcept -> Entry {
-			using namespace std::string_literals;
-
-			HYPERION_PROFILE_FUNCTION();
-
-			const auto timestamp = create_time_stamp();
-			const auto entry = fmt::format(std::move(format_string), std::forward<Args>(args)...);
-			const auto tid = thread_id.is_some() ?
-								 thread_id.unwrap() :
-								 std::hash<std::thread::id>()(std::this_thread::get_id());
-			// ignore(thread_id);
-			// ignore(timestamp);
-
-			std::string log_type;
-			if constexpr(Level == LogLevel::MESSAGE) {
-				log_type = "MESSAGE"s;
-			}
-			else if constexpr(Level == LogLevel::TRACE) {
-				log_type = "TRACE"s;
-			}
-			else if constexpr(Level == LogLevel::INFO) {
-				log_type = "INFO"s;
-			}
-			else if constexpr(Level == LogLevel::WARN) {
-				log_type = "WARN"s;
-			}
-			else if constexpr(Level == LogLevel::ERROR) {
-				log_type = "ERROR"s;
-			}
-
-			return make_entry<entry_level_t<Level>>(FMT_COMPILE("{0} [Thread ID: {1}] [{2}]: {3}"),
-													timestamp,
-													tid,
-													log_type,
-													entry);
-			//	return make_entry<entry_level_t<Level>>(FMT_COMPILE("[{0}]: {1}"),
-			//	                                        log_type,
-			//	                                        entry);
-		}
-		IGNORE_UNUSED_TEMPLATES_STOP
-
-		template<LogLevel MinimumLevel = DefaultLogParameters::minimum_level,
-				 LogThreadingPolicy ThreadingPolicy = DefaultLogParameters::threading_policy,
-				 LogAsyncPolicy AsyncPolicy = DefaultLogParameters::async_policy,
-				 usize QueueSize = DefaultLogParameters::queue_size>
-		class LogBase;
-
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
-		class LogBase<MinimumLevel, LogThreadingPolicy::SingleThreaded, AsyncPolicy, QueueSize> {
+		class ILogger {
 		  public:
-			[[maybe_unused]] static constexpr auto THREADING_POLICY
-				= LogThreadingPolicy::SingleThreaded;
-			static constexpr auto ASYNC_POLICY = AsyncPolicy;
-			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
+			ILogger() noexcept = default;
+			ILogger(const ILogger&) noexcept = default;
+			ILogger(ILogger&&) noexcept = default;
+			virtual ~ILogger() noexcept = default;
 
-			LogBase() : LogBase(create_default_sinks()) {
-			}
-			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)) {
-			}
-			LogBase(const LogBase&) = delete;
-			LogBase(LogBase&&) noexcept = default;
-			~LogBase() noexcept = default;
-
-			template<LogLevel Level, typename... Args>
+			template<logging::Level Level, typename... Args>
 			inline auto log(Option<usize> thread_id,
 							fmt::format_string<Args...>&& format_string,
-							Args&&... args) noexcept -> void {
+							Args&&... args) noexcept -> Result<None, LoggerError> {
 				HYPERION_PROFILE_FUNCTION();
-				const auto message = format_entry<Level>(std::move(thread_id),
-														 std::move(format_string),
-														 std::forward<Args>(args)...);
-
-				std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
-					sink->sink(message);
-				});
+				return log(format_entry<Level>(std::move(thread_id),
+											   std::move(format_string),
+											   std::forward<Args>(args)...));
 			}
 
-			template<LogLevel, typename... Args>
-			inline auto
-			log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			template<logging::Level, typename... Args>
+			inline auto log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+				-> Result<None, LoggerError> {
 				HYPERION_PROFILE_FUNCTION();
 				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
-			[[maybe_unused]] inline auto flush() const noexcept -> void {
-				// intentionally does nothing
+			auto operator=(const ILogger&) noexcept -> ILogger& = default;
+			auto operator=(ILogger&&) noexcept -> ILogger& = default;
+
+		  protected:
+			virtual auto log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> = 0;
+			virtual auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> = 0;
+
+			[[nodiscard]] static inline auto
+			create_default_sinks() noexcept -> logging::Sinks { // NOLINT(bugprone-exception-escape)
+				HYPERION_PROFILE_FUNCTION();
+				auto file = logging::FileSink::create_file();
+				auto file_sink = logging::make_sink<logging::FileSink>(
+					file.expect("Failed to create default log file"));
+				auto stderr_sink = logging::make_sink<logging::StderrSink<>>();
+				return logging::Sinks({std::move(file_sink), std::move(stderr_sink)});
 			}
+
+		  private:
+			template<logging::Level Level, typename... Args>
+			static inline auto
+			format_entry(Option<usize> thread_id, // NOLINT(bugprone-exception-escape)
+						 fmt::format_string<Args...>&& format_string,
+						 Args&&... args) noexcept -> logging::Entry {
+				using namespace std::string_literals;
+
+				HYPERION_PROFILE_FUNCTION();
+
+				const auto timestamp = create_time_stamp();
+				const auto entry
+					= fmt::format(std::move(format_string), std::forward<Args>(args)...);
+				const auto tid = thread_id.is_some() ?
+									 thread_id.unwrap() :
+									 std::hash<std::thread::id>()(std::this_thread::get_id());
+				// ignore(thread_id);
+				// ignore(timestamp);
+
+				std::string log_type;
+				if constexpr(Level == logging::Level::MESSAGE) {
+					log_type = "MESSAGE"s;
+				}
+				else if constexpr(Level == logging::Level::TRACE) {
+					log_type = "TRACE"s;
+				}
+				else if constexpr(Level == logging::Level::INFO) {
+					log_type = "INFO"s;
+				}
+				else if constexpr(Level == logging::Level::WARN) {
+					log_type = "WARN"s;
+				}
+				else if constexpr(Level == logging::Level::ERROR) {
+					log_type = "ERROR"s;
+				}
+
+				return logging::make_entry<logging::entry_level_t<Level>>(
+					FMT_COMPILE("{0} [Thread ID: {1}] [{2}]: {3}"),
+					timestamp,
+					tid,
+					log_type,
+					entry);
+				//	return make_entry<entry_level_t<Level>>(FMT_COMPILE("[{0}]: {1}"),
+				//	                                        log_type,
+				//	                                        entry);
+			}
+
+			[[nodiscard]] static inline auto create_time_stamp() noexcept -> std::string {
+				HYPERION_PROFILE_FUNCTION();
+				//	return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H:%M:%S}]"),
+				//	                   fmt::gmtime(std::time(nullptr)));
+				const auto now = fmt::gmtime(
+					std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()));
+				const auto years = 1900 + now.tm_year;
+				const auto months = 1 + now.tm_mon;
+				return fmt::format(FMT_COMPILE("[{:#04}-{:#02}-{:#02}|{:#02}:{:#02}:{:#02}]"),
+								   years,
+								   months,
+								   now.tm_mday,
+								   now.tm_hour,
+								   now.tm_min,
+								   now.tm_sec);
+			}
+		};
+
+		template<logging::Level MinimumLevel = logging::DefaultParameters::minimum_level,
+				 logging::ThreadingPolicy ThreadingPolicy
+				 = logging::DefaultParameters::threading_policy,
+				 logging::AsyncPolicy AsyncPolicy = logging::DefaultParameters::async_policy,
+				 usize QueueSize = logging::DefaultParameters::queue_size>
+		class LogBase;
+	} // namespace detail
+
+	/// @brief Hyperion logging type for formatted logging.
+	/// Uses fmtlib/fmt for entry formatting and stylizing
+	///
+	/// @tparam LogParameters - The parameters for how this logger should operate
+	template<logging::ParametersType LogParameters = logging::DefaultParameters>
+	class Logger final : public detail::LogBase<LogParameters::minimum_level,
+												LogParameters::threading_policy,
+												LogParameters::async_policy,
+												LogParameters::queue_size> {
+	  public:
+		[[maybe_unused]] static constexpr logging::ThreadingPolicy THREADING_POLICY
+			= LogParameters::threading_policy;
+		[[maybe_unused]] static constexpr logging::AsyncPolicy ASYNC_POLICY
+			= LogParameters::async_policy;
+		[[maybe_unused]] static constexpr logging::Level MINIMUM_LEVEL
+			= LogParameters::minimum_level;
+		[[maybe_unused]] static constexpr usize QUEUE_SIZE = LogParameters::queue_size;
+		using LogBase = detail::LogBase<LogParameters::minimum_level,
+										LogParameters::threading_policy,
+										LogParameters::async_policy,
+										LogParameters::queue_size>;
+
+		Logger() = default;
+		explicit Logger(logging::Sinks&& sinks) noexcept : LogBase(std::move(sinks)) {
+		}
+		Logger(const Logger& logger) noexcept = delete;
+		Logger(Logger&& logger) noexcept = default;
+
+		~Logger() noexcept final = default;
+
+		template<typename... Args>
+		inline auto message(const Option<usize>& thread_id,
+							fmt::format_string<Args...>&& format_string,
+							Args&&... args) noexcept -> void {
+			ignore(this->template log<logging::Level::MESSAGE>(thread_id,
+															   std::move(format_string),
+															   std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto
+		message(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			ignore(message(None(), std::move(format_string), std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto trace(const Option<usize>& thread_id,
+						  fmt::format_string<Args...>&& format_string,
+						  Args&&... args) noexcept -> void {
+			ignore(this->template log<logging::Level::TRACE>(thread_id,
+															 std::move(format_string),
+															 std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto
+		trace(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			ignore(trace(None(), std::move(format_string), std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto info(const Option<usize>& thread_id,
+						 fmt::format_string<Args...>&& format_string,
+						 Args&&... args) noexcept -> void {
+			ignore(this->template log<logging::Level::INFO>(thread_id,
+															std::move(format_string),
+															std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto
+		info(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			ignore(info(None(), std::move(format_string), std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto warn(const Option<usize>& thread_id,
+						 fmt::format_string<Args...>&& format_string,
+						 Args&&... args) noexcept -> void {
+			ignore(this->template log<logging::Level::WARN>(thread_id,
+															std::move(format_string),
+															std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto
+		warn(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			ignore(warn(None(), std::move(format_string), std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto error(const Option<usize>& thread_id,
+						  fmt::format_string<Args...>&& format_string,
+						  Args&&... args) noexcept -> void {
+			ignore(this->template log<logging::Level::ERROR>(thread_id,
+															 std::move(format_string),
+															 std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto
+		error(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+			ignore(error(None(), std::move(format_string), std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		inline auto message_checked(const Option<usize>& thread_id,
+									fmt::format_string<Args...>&& format_string,
+									Args&&... args) noexcept {
+			return this->template log<logging::Level::MESSAGE>(thread_id,
+															   std::move(format_string),
+															   std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto
+		message_checked(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return message(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto trace_checked(const Option<usize>& thread_id,
+								  fmt::format_string<Args...>&& format_string,
+								  Args&&... args) noexcept {
+			return this->template log<logging::Level::TRACE>(thread_id,
+															 std::move(format_string),
+															 std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto
+		trace_checked(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return trace(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto info_checked(const Option<usize>& thread_id,
+								 fmt::format_string<Args...>&& format_string,
+								 Args&&... args) noexcept {
+			return this->template log<logging::Level::INFO>(thread_id,
+															std::move(format_string),
+															std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto
+		info_checked(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return info(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto warn_checked(const Option<usize>& thread_id,
+								 fmt::format_string<Args...>&& format_string,
+								 Args&&... args) noexcept {
+			return this->template log<logging::Level::WARN>(thread_id,
+															std::move(format_string),
+															std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto
+		warn_checked(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return warn(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto error_checked(const Option<usize>& thread_id,
+								  fmt::format_string<Args...>&& format_string,
+								  Args&&... args) noexcept {
+			return this->template log<logging::Level::ERROR>(thread_id,
+															 std::move(format_string),
+															 std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		inline auto
+		error_checked(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return error(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		auto operator=(const Logger& logger) noexcept -> Logger& = delete;
+		auto operator=(Logger&& logger) noexcept -> Logger& = default;
+	};
+	IGNORE_PADDING_STOP
+
+	struct GlobalLog {
+		static UniquePtr<detail::ILogger> GLOBAL_LOGGER; // NOLINT
+
+		[[nodiscard]] static inline auto
+		get_global_logger() noexcept -> Result<detail::ILogger*, LoggerError> {
+			if(GLOBAL_LOGGER == nullptr) {
+				return Err(LoggerError(LoggerErrorCategory::LoggerNotInitialized));
+			}
+			return Ok(GLOBAL_LOGGER.get());
+		}
+
+		template<logging::ParametersType Parameters>
+		[[maybe_unused]] static inline auto
+		set_global_logger(hyperion::UniquePtr<Logger<Parameters>>&& logger) noexcept -> void {
+			GLOBAL_LOGGER = std::move(logger);
+		}
+
+		template<typename... Args>
+		static inline auto MESSAGE(const Option<usize>& thread_id,
+								   fmt::format_string<Args...>&& format_string,
+								   Args&&... args) noexcept -> Result<None, LoggerError> {
+			return get_global_logger().and_then(
+				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
+					auto* logger) mutable noexcept {
+					return logger->template log<logging::Level::MESSAGE>(thread_id,
+																		 std::move(format_string),
+																		 _args...);
+				});
+		}
+
+		template<typename... Args>
+		static inline auto
+		MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		static inline auto TRACE(const Option<usize>& thread_id,
+								 fmt::format_string<Args...>&& format_string,
+								 Args&&... args) noexcept -> Result<None, LoggerError> {
+			return get_global_logger().and_then(
+				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
+					auto* logger) mutable noexcept {
+					return logger->template log<logging::Level::TRACE>(thread_id,
+																	   std::move(format_string),
+																	   _args...);
+				});
+		}
+
+		template<typename... Args>
+		static inline auto
+		TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		static inline auto INFO(const Option<usize>& thread_id,
+								fmt::format_string<Args...>&& format_string,
+								Args&&... args) noexcept -> Result<None, LoggerError> {
+			return get_global_logger().and_then(
+				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
+					auto* logger) mutable noexcept {
+					return logger->template log<logging::Level::INFO>(thread_id,
+																	  std::move(format_string),
+																	  _args...);
+				});
+		}
+
+		template<typename... Args>
+		static inline auto
+		INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return INFO(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		static inline auto WARN(const Option<usize>& thread_id,
+								fmt::format_string<Args...>&& format_string,
+								Args&&... args) noexcept -> Result<None, LoggerError> {
+			return get_global_logger().and_then(
+				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
+					auto* logger) mutable noexcept {
+					return logger->template log<logging::Level::WARN>(thread_id,
+																	  std::move(format_string),
+																	  _args...);
+				});
+		}
+
+		template<typename... Args>
+		static inline auto
+		WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return WARN(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+
+		template<typename... Args>
+		static inline auto ERROR(const Option<usize>& thread_id,
+								 fmt::format_string<Args...>&& format_string,
+								 Args&&... args) noexcept -> Result<None, LoggerError> {
+			return get_global_logger().and_then(
+				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
+					auto* logger) mutable noexcept {
+					return logger->template log<logging::Level::ERROR>(thread_id,
+																	   std::move(format_string),
+																	   _args...);
+				});
+		}
+
+		template<typename... Args>
+		static inline auto
+		ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
+			return ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
+		}
+	};
+
+	IGNORE_UNUSED_TEMPLATES_START
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto MESSAGE(const Option<usize>& thread_id,
+												fmt::format_string<Args...>&& format_string,
+												Args&&... args) noexcept -> void {
+		ignore(
+			GlobalLog::MESSAGE(thread_id, std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+		ignore(GlobalLog::MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto TRACE(const Option<usize>& thread_id,
+											  fmt::format_string<Args...>&& format_string,
+											  Args&&... args) noexcept -> void {
+		ignore(GlobalLog::TRACE(thread_id, std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+		ignore(GlobalLog::TRACE(None(), std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto INFO(const Option<usize>& thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept -> void {
+		ignore(GlobalLog::INFO(thread_id, std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+		ignore(GlobalLog::INFO(None(), std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto WARN(const Option<usize>& thread_id,
+											 fmt::format_string<Args...>&& format_string,
+											 Args&&... args) noexcept -> void {
+		ignore(GlobalLog::WARN(thread_id, std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+		ignore(GlobalLog::WARN(None(), std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto ERROR(const Option<usize>& thread_id,
+											  fmt::format_string<Args...>&& format_string,
+											  Args&&... args) noexcept -> void {
+		ignore(GlobalLog::ERROR(thread_id, std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
+		ignore(GlobalLog::ERROR(None(), std::move(format_string), std::forward<Args>(args)...));
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	MESSAGE_CHECKED(const Option<usize>& thread_id,
+					fmt::format_string<Args...>&& format_string,
+					Args&&... args) noexcept -> Result<None, LoggerError> {
+		return GlobalLog::MESSAGE(thread_id, std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	MESSAGE_CHECKED(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		-> Result<None, LoggerError> {
+		return GlobalLog::MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	TRACE_CHECKED(const Option<usize>& thread_id,
+				  fmt::format_string<Args...>&& format_string,
+				  Args&&... args) noexcept -> Result<None, LoggerError> {
+		return GlobalLog::TRACE(thread_id, std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	TRACE_CHECKED(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		-> Result<None, LoggerError> {
+		return GlobalLog::TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	INFO_CHECKED(const Option<usize>& thread_id,
+				 fmt::format_string<Args...>&& format_string,
+				 Args&&... args) noexcept -> Result<None, LoggerError> {
+		return GlobalLog::INFO(thread_id, std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	INFO_CHECKED(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		-> Result<None, LoggerError> {
+		return GlobalLog::INFO(None(), std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	WARN_CHECKED(const Option<usize>& thread_id,
+				 fmt::format_string<Args...>&& format_string,
+				 Args&&... args) noexcept -> Result<None, LoggerError> {
+		return GlobalLog::WARN(thread_id, std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	WARN_CHECKED(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		-> Result<None, LoggerError> {
+		return GlobalLog::WARN(None(), std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	ERROR_CHECKED(const Option<usize>& thread_id,
+				  fmt::format_string<Args...>&& format_string,
+				  Args&&... args) noexcept -> Result<None, LoggerError> {
+		return GlobalLog::ERROR(thread_id, std::move(format_string), std::forward<Args>(args)...);
+	}
+
+	template<typename... Args>
+	[[maybe_unused]] static inline auto
+	ERROR_CHECKED(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept
+		-> Result<None, LoggerError> {
+		return GlobalLog::ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
+	}
+	IGNORE_UNUSED_TEMPLATES_STOP
+
+	namespace detail {
+		template<logging::Level MinimumLevel, logging::AsyncPolicy AsyncPolicy, usize QueueSize>
+		class LogBase<MinimumLevel,
+					  logging::ThreadingPolicy::SingleThreaded,
+					  AsyncPolicy,
+					  QueueSize> : public detail::ILogger {
+		  public:
+			[[maybe_unused]] static constexpr auto THREADING_POLICY
+				= logging::ThreadingPolicy::SingleThreaded;
+			static constexpr auto ASYNC_POLICY = AsyncPolicy;
+			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
+
+			LogBase() : LogBase(detail::ILogger::create_default_sinks()) {
+			}
+			explicit LogBase(logging::Sinks&& sinks) noexcept : m_sinks(std::move(sinks)) {
+			}
+			LogBase(const LogBase&) = delete;
+			LogBase(LogBase&&) noexcept = default;
+			~LogBase() noexcept override = default;
 
 			auto operator=(const LogBase&) -> LogBase& = delete;
 			auto operator=(LogBase&&) noexcept -> LogBase& = default;
 
+		  protected:
+			inline auto
+			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					std::ranges::for_each(m_sinks, [&entry](const auto& sink) noexcept -> void {
+						sink->sink(entry);
+					});
+				}
+
+				return Ok();
+			}
+
+			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					std::ranges::for_each(
+						m_sinks,
+						[_entry = std::move(entry)](const auto& sink) noexcept -> void {
+							sink->sink(_entry);
+						});
+				}
+
+				return Ok();
+			}
+
 		  private:
-			Sinks m_sinks;
+			logging::Sinks m_sinks;
 		};
 
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
+		template<logging::Level MinimumLevel, logging::AsyncPolicy AsyncPolicy, usize QueueSize>
 		class LogBase<MinimumLevel,
-					  LogThreadingPolicy::SingleThreadedAsync,
+					  logging::ThreadingPolicy::SingleThreadedAsync,
 					  AsyncPolicy,
-					  QueueSize> {
+					  QueueSize> : public detail::ILogger {
 		  public:
 			[[maybe_unused]] static constexpr auto THREADING_POLICY
-				= LogThreadingPolicy::SingleThreadedAsync;
+				= logging::ThreadingPolicy::SingleThreadedAsync;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 			static constexpr usize QUEUE_SIZE = QueueSize;
 
-			LogBase() : LogBase(create_default_sinks()) {
+			LogBase() : LogBase(detail::ILogger::create_default_sinks()) {
 			}
-			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)), m_queue() {
+			explicit LogBase(logging::Sinks&& sinks) noexcept
+				: m_sinks(std::move(sinks)), m_queue() {
 #if HYPERION_HAS_JTHREAD
 				m_logging_thread = detail::thread(
 					[this](const std::stop_token& token) { message_thread_function(token); });
@@ -245,79 +752,87 @@ namespace hyperion {
 			}
 			LogBase(const LogBase&) = delete;
 			LogBase(LogBase&&) = delete;
-#if HYPERION_HAS_JTHREAD
-			~LogBase() noexcept = default;
-#else
-			~LogBase() noexcept {
+			~LogBase() noexcept override {
 				request_thread_stop();
 				m_logging_thread.join();
-			}
-#endif
-
-			template<LogLevel Level, typename... Args>
-			[[maybe_unused]] inline auto log(Option<usize> thread_id,
-											 fmt::format_string<Args...>&& format_string,
-											 Args&&... args) noexcept {
-				HYPERION_PROFILE_FUNCTION();
-				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
-					auto message = format_entry<Level>(std::move(thread_id),
-													   std::move(format_string),
-													   std::forward<Args>(args)...);
-					if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-						return m_queue.push(std::move(message))
-							.map_err([]([[maybe_unused]] const QueueError& error) {
-								return LoggerError(LoggerErrorCategory::QueueingError);
-							});
-					}
-					else {
-						m_queue.push(std::move(message));
-					}
-				}
-				else {
-					ignore(format_string, std::forward<Args>(args)...);
-					return Err(LoggerError(make_error_code(LoggerErrorCategory::LogLevelError)));
-				}
-			}
-
-			template<LogLevel, typename... Args>
-			inline auto log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-				HYPERION_PROFILE_FUNCTION();
-				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
 			auto operator=(const LogBase&) -> LogBase& = delete;
 			auto operator=(LogBase&&) -> LogBase& = delete;
 
-		  private:
-			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
-				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-					return QueuePolicy::ErrWhenFull;
+		  protected:
+			inline auto
+			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					m_signal.release(1);
+					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+						return m_queue.push(entry).map_err(
+							[]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
+					}
+					else {
+						m_queue.push(entry);
+					}
 				}
-				else if constexpr(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
-					return QueuePolicy::OverwriteWhenFull;
+
+				return Ok();
+			}
+
+			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					m_signal.release(1);
+					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+						return m_queue.push(std::move(entry))
+							.map_err([]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
+					}
+					else {
+						m_queue.push(std::move(entry));
+					}
+				}
+
+				return Ok();
+			}
+
+		  private:
+			[[nodiscard]] static inline consteval auto
+			get_queue_policy() noexcept -> logging::QueuePolicy {
+				if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+					return logging::QueuePolicy::ErrWhenFull;
+				}
+				else if constexpr(ASYNC_POLICY == logging::AsyncPolicy::OverwriteWhenFull) {
+					return logging::QueuePolicy::OverwriteWhenFull;
 				}
 				else {
-					return QueuePolicy::BlockWhenFull;
+					return logging::QueuePolicy::BlockWhenFull;
 				}
 			}
 
-			using Queue = LoggingQueue<Entry, get_queue_policy(), QUEUE_SIZE>;
+			using Queue = logging::Queue<logging::Entry, get_queue_policy(), QUEUE_SIZE>;
 
-			Sinks m_sinks;
+			logging::Sinks m_sinks;
 			Queue m_queue;
+			std::counting_semaphore<QUEUE_SIZE> m_signal = std::counting_semaphore<QUEUE_SIZE>(0);
 
 #if !HYPERION_HAS_JTHREAD
 			std::atomic_bool m_exit_flag = false;
 #endif
 			detail::thread m_logging_thread;
 
-#if !HYPERION_HAS_JTHREAD
 			inline auto request_thread_stop() noexcept -> void {
+#if !HYPERION_HAS_JTHREAD
 				m_exit_flag.store(true);
-			}
+#else
+				m_logging_thread.request_stop();
 #endif
+				m_signal.release(1);
+			}
 
-			inline auto try_read() noexcept -> Result<Entry, QueueError> {
+			inline auto try_read() noexcept -> Result<logging::Entry, QueueError> {
 				HYPERION_PROFILE_FUNCTION();
 				return m_queue.read();
 			}
@@ -338,6 +853,9 @@ namespace hyperion {
 							[&message](const auto& sink) noexcept -> void { sink->sink(message); });
 						return {};
 					}));
+					// waiting for the semaphore __after__ we attempt the read can reduce latency
+					// under extreme contention
+					m_signal.acquire();
 				}
 				while(try_read().and_then([this](const auto& message) noexcept -> None {
 					std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
@@ -351,73 +869,74 @@ namespace hyperion {
 			}
 		};
 
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
-		class LogBase<MinimumLevel, LogThreadingPolicy::MultiThreaded, AsyncPolicy, QueueSize> {
+		template<logging::Level MinimumLevel, logging::AsyncPolicy AsyncPolicy, usize QueueSize>
+		class LogBase<MinimumLevel, logging::ThreadingPolicy::MultiThreaded, AsyncPolicy, QueueSize>
+			: public detail::ILogger {
 		  public:
 			[[maybe_unused]] static constexpr auto THREADING_POLICY
-				= LogThreadingPolicy::MultiThreaded;
+				= logging::ThreadingPolicy::MultiThreaded;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 
-			LogBase() : LogBase(create_default_sinks()) {
+			LogBase() : LogBase(detail::ILogger::create_default_sinks()) {
 			}
-			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)) {
+			explicit LogBase(logging::Sinks&& sinks) noexcept : m_sinks(std::move(sinks)) {
 			}
 			LogBase(const LogBase&) = delete;
 			LogBase(LogBase&&) noexcept = default;
-			~LogBase() noexcept = default;
-
-			template<LogLevel Level, typename... Args>
-			inline auto log(Option<usize> thread_id,
-							fmt::format_string<Args...>&& format_string,
-							Args&&... args) noexcept -> void {
-				HYPERION_PROFILE_FUNCTION();
-				const auto message = format_entry<Level>(std::move(thread_id),
-														 std::move(format_string),
-														 std::forward<Args>(args)...);
-
-				{
-					auto sinks_guard = m_sinks.write();
-					std::ranges::for_each(
-						*sinks_guard,
-						[&message](const auto& sink) noexcept -> void { sink->sink(message); });
-				}
-			}
-
-			template<LogLevel, typename... Args>
-			inline auto
-			log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept -> void {
-				HYPERION_PROFILE_FUNCTION();
-				return log(None(), std::move(format_string), std::forward<Args>(args)...);
-			}
-
-			[[maybe_unused]] [[maybe_unused]] [[maybe_unused]] inline auto
-			flush() const noexcept -> void {
-				// intentionally does nothing
-			}
+			~LogBase() noexcept override = default;
 
 			auto operator=(const LogBase&) -> LogBase& = delete;
 			auto operator=(LogBase&&) noexcept -> LogBase& = default;
 
+		  protected:
+			inline auto
+			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					auto sinks_guard = m_sinks.write();
+					std::ranges::for_each(
+						*sinks_guard,
+						[&entry](const auto& sink) noexcept -> void { sink->sink(entry); });
+				}
+
+				return Ok();
+			}
+
+			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					auto sinks_guard = m_sinks.write();
+					std::ranges::for_each(
+						*sinks_guard,
+						[_entry = std::move(entry)](const auto& sink) noexcept -> void {
+							sink->sink(_entry);
+						});
+				}
+
+				return Ok();
+			}
+
 		  private:
-			ReadWriteLock<Sinks> m_sinks;
+			ReadWriteLock<logging::Sinks> m_sinks;
 		};
 
-		template<LogLevel MinimumLevel, LogAsyncPolicy AsyncPolicy, usize QueueSize>
+		template<logging::Level MinimumLevel, logging::AsyncPolicy AsyncPolicy, usize QueueSize>
 		class LogBase<MinimumLevel,
-					  LogThreadingPolicy::MultiThreadedAsync,
+					  logging::ThreadingPolicy::MultiThreadedAsync,
 					  AsyncPolicy,
-					  QueueSize> {
+					  QueueSize> : public detail::ILogger {
 		  public:
 			[[maybe_unused]] static constexpr auto THREADING_POLICY
-				= LogThreadingPolicy::MultiThreadedAsync;
+				= logging::ThreadingPolicy::MultiThreadedAsync;
 			static constexpr auto ASYNC_POLICY = AsyncPolicy;
 			static constexpr auto MINIMUM_LEVEL = MinimumLevel;
 			static constexpr usize QUEUE_SIZE = QueueSize;
 
-			LogBase() : LogBase(create_default_sinks()) {
+			LogBase() : LogBase(detail::ILogger::create_default_sinks()) {
 			}
-			explicit LogBase(Sinks&& sinks) noexcept : m_sinks(std::move(sinks)), m_queue() {
+			explicit LogBase(logging::Sinks&& sinks) noexcept
+				: m_sinks(std::move(sinks)), m_queue() {
 #if HYPERION_HAS_JTHREAD
 				m_logging_thread = detail::thread(
 					[this](const std::stop_token& token) { message_thread_function(token); });
@@ -427,62 +946,69 @@ namespace hyperion {
 			}
 			LogBase(const LogBase&) = delete;
 			LogBase(LogBase&&) = delete;
-			~LogBase() noexcept {
+			~LogBase() noexcept override {
 				request_thread_stop();
 				m_logging_thread.join();
-			}
-
-			template<LogLevel Level, typename... Args>
-			[[maybe_unused]] inline auto log(Option<usize> thread_id,
-											 fmt::format_string<Args...>&& format_string,
-											 Args&&... args) noexcept {
-				HYPERION_PROFILE_FUNCTION();
-				if constexpr(Level >= MINIMUM_LEVEL && MINIMUM_LEVEL != LogLevel::DISABLED) {
-					auto message = format_entry<Level>(std::move(thread_id),
-													   std::move(format_string),
-													   std::forward<Args>(args)...);
-					if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-						return m_queue.push(std::move(message))
-							.map_err([]([[maybe_unused]] const QueueError& error) {
-								return LoggerError(LoggerErrorCategory::QueueingError);
-							});
-					}
-					else {
-						m_queue.push(std::move(message));
-					}
-				}
-				else {
-					ignore(format_string, std::forward<Args>(args)...);
-					return Err(LoggerError(make_error_code(LoggerErrorCategory::LogLevelError)));
-				}
-			}
-
-			template<LogLevel, typename... Args>
-			inline auto log(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-				HYPERION_PROFILE_FUNCTION();
-				return log(None(), std::move(format_string), std::forward<Args>(args)...);
 			}
 
 			auto operator=(const LogBase&) -> LogBase& = delete;
 			auto operator=(LogBase&& logger) -> LogBase& = delete;
 
-		  private:
-			[[nodiscard]] static inline consteval auto get_queue_policy() noexcept -> QueuePolicy {
-				if constexpr(ASYNC_POLICY == LogAsyncPolicy::DropWhenFull) {
-					return QueuePolicy::ErrWhenFull;
+		  protected:
+			inline auto
+			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+						return m_queue.push(entry).map_err(
+							[]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
+					}
+					else {
+						m_queue.push(entry);
+					}
 				}
-				else if constexpr(ASYNC_POLICY == LogAsyncPolicy::OverwriteWhenFull) {
-					return QueuePolicy::OverwriteWhenFull;
+
+				return Ok();
+			}
+
+			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+				HYPERION_PROFILE_FUNCTION();
+				if(entry.level() > MINIMUM_LEVEL) {
+					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+						return m_queue.push(std::move(entry))
+							.map_err([]([[maybe_unused]] const QueueError& error) {
+								return LoggerError(LoggerErrorCategory::QueueingError);
+							});
+					}
+					else {
+						m_queue.push(std::move(entry));
+					}
+				}
+
+				return Ok();
+			}
+
+		  private:
+			[[nodiscard]] static inline consteval auto
+			get_queue_policy() noexcept -> logging::QueuePolicy {
+				if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
+					return logging::QueuePolicy::ErrWhenFull;
+				}
+				else if constexpr(ASYNC_POLICY == logging::AsyncPolicy::OverwriteWhenFull) {
+					return logging::QueuePolicy::OverwriteWhenFull;
 				}
 				else {
-					return QueuePolicy::BlockWhenFull;
+					return logging::QueuePolicy::BlockWhenFull;
 				}
 			}
 
-			using Queue = LoggingQueue<Entry, get_queue_policy(), QUEUE_SIZE>;
+			using Queue = logging::Queue<logging::Entry, get_queue_policy(), QUEUE_SIZE>;
 
-			Sinks m_sinks;
+			logging::Sinks m_sinks;
 			Queue m_queue;
+			std::counting_semaphore<QUEUE_SIZE> m_signal = std::counting_semaphore<QUEUE_SIZE>(0);
 
 #if !HYPERION_HAS_JTHREAD
 			std::atomic_bool m_exit_flag = false;
@@ -495,9 +1021,10 @@ namespace hyperion {
 #else
 				m_logging_thread.request_stop();
 #endif
+				m_signal.release(1);
 			}
 
-			inline auto try_read() noexcept -> Result<Entry, QueueError> {
+			inline auto try_read() noexcept -> Result<logging::Entry, QueueError> {
 				HYPERION_PROFILE_FUNCTION();
 				return m_queue.read();
 			}
@@ -518,6 +1045,9 @@ namespace hyperion {
 							[&message](const auto& sink) noexcept -> void { sink->sink(message); });
 						return {};
 					}));
+					// waiting for the semaphore __after__ we attempt the read can reduce latency
+					// under extreme contention
+					m_signal.acquire();
 				}
 				while(try_read().and_then([this](const auto& message) noexcept -> None {
 					std::ranges::for_each(m_sinks, [&message](const auto& sink) noexcept -> void {
@@ -531,276 +1061,4 @@ namespace hyperion {
 			}
 		};
 	} // namespace detail
-
-	/// @brief Hyperion logging type for formatted logging.
-	/// Uses fmtlib/fmt for entry formatting and stylizing
-	///
-	/// @tparam LogParameters - The parameters for how this logger should operate
-	template<LoggerParametersType LogParameters = DefaultLogParameters>
-	class Logger : public detail::LogBase<LogParameters::minimum_level,
-										  LogParameters::threading_policy,
-										  LogParameters::async_policy,
-										  LogParameters::queue_size> {
-	  public:
-		[[maybe_unused]] static constexpr LogThreadingPolicy THREADING_POLICY
-			= LogParameters::threading_policy;
-		[[maybe_unused]] static constexpr LogAsyncPolicy ASYNC_POLICY = LogParameters::async_policy;
-		[[maybe_unused]] static constexpr LogLevel MINIMUM_LEVEL = LogParameters::minimum_level;
-		[[maybe_unused]] static constexpr usize QUEUE_SIZE = LogParameters::queue_size;
-		using LogBase = detail::LogBase<LogParameters::minimum_level,
-										LogParameters::threading_policy,
-										LogParameters::async_policy,
-										LogParameters::queue_size>;
-
-		Logger() = default;
-		explicit Logger(Sinks&& sinks) noexcept : LogBase(std::move(sinks)) {
-		}
-		Logger(const Logger& logger) noexcept = delete;
-		Logger(Logger&& logger) noexcept = default;
-
-		~Logger() noexcept = default;
-
-		template<typename... Args>
-		inline auto message(const Option<usize>& thread_id,
-							fmt::format_string<Args...>&& format_string,
-							Args&&... args) noexcept {
-			return this->template log<LogLevel::MESSAGE>(thread_id,
-														 std::move(format_string),
-														 std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto message(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return message(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto trace(const Option<usize>& thread_id,
-						  fmt::format_string<Args...>&& format_string,
-						  Args&&... args) noexcept {
-			return this->template log<LogLevel::TRACE>(thread_id,
-													   std::move(format_string),
-													   std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto trace(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return trace(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto info(const Option<usize>& thread_id,
-						 fmt::format_string<Args...>&& format_string,
-						 Args&&... args) noexcept {
-			return this->template log<LogLevel::INFO>(thread_id,
-													  std::move(format_string),
-													  std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto info(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return info(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto warn(const Option<usize>& thread_id,
-						 fmt::format_string<Args...>&& format_string,
-						 Args&&... args) noexcept {
-			return this->template log<LogLevel::WARN>(thread_id,
-													  std::move(format_string),
-													  std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto warn(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return warn(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto error(const Option<usize>& thread_id,
-						  fmt::format_string<Args...>&& format_string,
-						  Args&&... args) noexcept {
-			return this->template log<LogLevel::ERROR>(thread_id,
-													   std::move(format_string),
-													   std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		inline auto error(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return error(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		auto operator=(const Logger& logger) noexcept -> Logger& = delete;
-		auto operator=(Logger&& logger) noexcept -> Logger& = default;
-	};
-	IGNORE_PADDING_STOP
-
-	IGNORE_UNUSED_TEMPLATES_START
-
-#ifndef HYPERION_LOG_GLOBAL_LOGGER_PARAMETERS
-	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-	#define HYPERION_LOG_GLOBAL_LOGGER_PARAMETERS DefaultLogParameters
-#endif
-
-	struct GlobalLog {
-		using Parameters = HYPERION_LOG_GLOBAL_LOGGER_PARAMETERS;
-		static UniquePtr<Logger<Parameters>> GLOBAL_LOGGER; // NOLINT
-
-		[[nodiscard]] static inline auto
-		get_global_logger() noexcept -> Result<Logger<Parameters>*, LoggerError> {
-			if(GLOBAL_LOGGER == nullptr) {
-				return Err(LoggerError(LoggerErrorCategory::LoggerNotInitialized));
-			}
-			return Ok(GLOBAL_LOGGER.get());
-		}
-
-		[[maybe_unused]] static inline auto
-		set_global_logger(hyperion::UniquePtr<Logger<Parameters>>&& logger) noexcept -> void {
-			GLOBAL_LOGGER = std::move(logger);
-		}
-
-		template<typename... Args>
-		static inline auto MESSAGE(const Option<usize>& thread_id,
-								   fmt::format_string<Args...>&& format_string,
-								   Args&&... args) noexcept {
-			return get_global_logger()
-				.expect("Global Logger not initialized!")
-				->message(thread_id, std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto
-		MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto TRACE(const Option<usize>& thread_id,
-								 fmt::format_string<Args...>&& format_string,
-								 Args&&... args) noexcept {
-			return get_global_logger()
-				.expect("Global Logger not initialized!")
-				->trace(thread_id, std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto
-		TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto INFO(const Option<usize>& thread_id,
-								fmt::format_string<Args...>&& format_string,
-								Args&&... args) noexcept {
-			return get_global_logger()
-				.expect("Global Logger not initialized!")
-				->info(thread_id, std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto
-		INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return INFO(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto WARN(const Option<usize>& thread_id,
-								fmt::format_string<Args...>&& format_string,
-								Args&&... args) noexcept {
-			return get_global_logger()
-				.expect("Global Logger not initialized!")
-				->warn(thread_id, std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto
-		WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return WARN(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto ERROR(const Option<usize>& thread_id,
-								 fmt::format_string<Args...>&& format_string,
-								 Args&&... args) noexcept {
-			return get_global_logger()
-				.expect("Global Logger not initialized!")
-				->error(thread_id, std::move(format_string), std::forward<Args>(args)...);
-		}
-
-		template<typename... Args>
-		static inline auto
-		ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-			return ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
-		}
-	};
-
-	UniquePtr<Logger<GlobalLog::Parameters>> GlobalLog::GLOBAL_LOGGER = nullptr; // NOLINT
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto MESSAGE(const Option<usize>& thread_id,
-												fmt::format_string<Args...>&& format_string,
-												Args&&... args) noexcept {
-		return GlobalLog::MESSAGE(thread_id, std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto
-	MESSAGE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-		return GlobalLog::MESSAGE(None(), std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto TRACE(const Option<usize>& thread_id,
-											  fmt::format_string<Args...>&& format_string,
-											  Args&&... args) noexcept {
-		return GlobalLog::TRACE(thread_id, std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto
-	TRACE(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-		return GlobalLog::TRACE(None(), std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto INFO(const Option<usize>& thread_id,
-											 fmt::format_string<Args...>&& format_string,
-											 Args&&... args) noexcept {
-		return GlobalLog::INFO(thread_id, std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto
-	INFO(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-		return GlobalLog::INFO(None(), std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto WARN(const Option<usize>& thread_id,
-											 fmt::format_string<Args...>&& format_string,
-											 Args&&... args) noexcept {
-		return GlobalLog::WARN(thread_id, std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto
-	WARN(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-		return GlobalLog::WARN(None(), std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto ERROR(const Option<usize>& thread_id,
-											  fmt::format_string<Args...>&& format_string,
-											  Args&&... args) noexcept {
-		return GlobalLog::ERROR(thread_id, std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	template<typename... Args>
-	[[maybe_unused]] static inline auto
-	ERROR(fmt::format_string<Args...>&& format_string, Args&&... args) noexcept {
-		return GlobalLog::ERROR(None(), std::move(format_string), std::forward<Args>(args)...);
-	}
-
-	IGNORE_UNUSED_TEMPLATES_STOP
 } // namespace hyperion
