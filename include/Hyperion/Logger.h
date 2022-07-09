@@ -438,13 +438,14 @@ namespace hyperion {
 		static inline auto MESSAGE(const Option<usize>& thread_id,
 								   fmt::format_string<Args...>&& format_string,
 								   Args&&... args) noexcept -> Result<None, LoggerError> {
-			return get_global_logger().and_then(
-				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
-					auto* logger) mutable noexcept {
-					return logger->template log<logging::Level::MESSAGE>(thread_id,
-																		 std::move(format_string),
-																		 _args...);
-				});
+			return get_global_logger().and_then([&thread_id,
+												 &format_string,
+												 ... _args = std::forward<Args>(args)](
+													auto* logger) mutable noexcept {
+				return logger->template log<logging::Level::MESSAGE>(thread_id,
+																	 std::move(format_string),
+																	 std::forward<Args>(_args)...);
+			});
 		}
 
 		template<typename... Args>
@@ -457,13 +458,14 @@ namespace hyperion {
 		static inline auto TRACE(const Option<usize>& thread_id,
 								 fmt::format_string<Args...>&& format_string,
 								 Args&&... args) noexcept -> Result<None, LoggerError> {
-			return get_global_logger().and_then(
-				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
-					auto* logger) mutable noexcept {
-					return logger->template log<logging::Level::TRACE>(thread_id,
-																	   std::move(format_string),
-																	   _args...);
-				});
+			return get_global_logger().and_then([&thread_id,
+												 &format_string,
+												 ... _args = std::forward<Args>(args)](
+													auto* logger) mutable noexcept {
+				return logger->template log<logging::Level::TRACE>(thread_id,
+																   std::move(format_string),
+																   std::forward<Args>(_args)...);
+			});
 		}
 
 		template<typename... Args>
@@ -481,7 +483,7 @@ namespace hyperion {
 					auto* logger) mutable noexcept {
 					return logger->template log<logging::Level::INFO>(thread_id,
 																	  std::move(format_string),
-																	  _args...);
+																	  std::forward<Args>(_args)...);
 				});
 		}
 
@@ -500,7 +502,7 @@ namespace hyperion {
 					auto* logger) mutable noexcept {
 					return logger->template log<logging::Level::WARN>(thread_id,
 																	  std::move(format_string),
-																	  _args...);
+																	  std::forward<Args>(_args)...);
 				});
 		}
 
@@ -514,13 +516,14 @@ namespace hyperion {
 		static inline auto ERROR(const Option<usize>& thread_id,
 								 fmt::format_string<Args...>&& format_string,
 								 Args&&... args) noexcept -> Result<None, LoggerError> {
-			return get_global_logger().and_then(
-				[&thread_id, &format_string, ... _args = std::forward<Args>(args)](
-					auto* logger) mutable noexcept {
-					return logger->template log<logging::Level::ERROR>(thread_id,
-																	   std::move(format_string),
-																	   _args...);
-				});
+			return get_global_logger().and_then([&thread_id,
+												 &format_string,
+												 ... _args = std::forward<Args>(args)](
+													auto* logger) mutable noexcept {
+				return logger->template log<logging::Level::ERROR>(thread_id,
+																   std::move(format_string),
+																   std::forward<Args>(_args)...);
+			});
 		}
 
 		template<typename... Args>
