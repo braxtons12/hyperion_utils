@@ -684,8 +684,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = std::remove_all_extents_t<T>>
-	concept Deletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
-						&& (std::is_array_v<T> ?
+	concept Deletable = (std::is_array_v<T> ?
 								requires(U * arr) {
 									delete[] arr; // NOLINT
 								} :
@@ -697,8 +696,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = std::remove_all_extents_t<T>>
-	concept NoexceptDeletable = sizeof(U) > 0 && !std::is_void_v<U> // NOLINT
-								&& (std::is_array_v<T> ?
+	concept NoexceptDeletable = Deletable<T> && (std::is_array_v<T> ?
 										requires(U * arr) {
 											noexcept(delete[] arr); // NOLINT
 										} :
