@@ -136,6 +136,7 @@ namespace hyperion::fs {
 		return open(path, {}, DEFAULT_FILE_BUFFER_SIZE);
 	}
 
+	// NOLINTNEXTLINE(bugprone-exception-escape)
 	[[nodiscard]] auto File::read(usize num_chars) noexcept -> Result<std::string> {
 		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
@@ -197,6 +198,7 @@ namespace hyperion::fs {
 		return Ok(std::move(arr));
 	}
 
+	// NOLINTNEXTLINE(bugprone-exception-escape)
 	[[nodiscard]] auto File::read_line() noexcept -> Result<std::string> {
 		HYPERION_PROFILE_FUNCTION(); // NOLINT
 
