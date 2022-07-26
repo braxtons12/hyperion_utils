@@ -3,10 +3,10 @@
 /// @brief `StatusCodeDomain` supporting platform-implementation-specific values of `errno` in
 /// addition to those __required__ by POSIX
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2022-07-22
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -53,7 +53,7 @@ namespace hyperion::error {
 		static const constexpr char(&UUID)[num_chars_in_uuid] // NOLINT
 			= "4a6a9b0f-c335-473e-bc42-d23974a25bb0";
 
-		static constexpr u64 ID = parse_uuid_from_string(UUID);
+		static constexpr u64 ID = parse_uuid_from_string(UUID); // NOLINT
 
 		/// @brief Constructs a `PosixDomain` with the default UUID
 		/// @ingroup error
@@ -382,11 +382,12 @@ namespace hyperion::error {
 /// @ingroup error
 template<>
 [[nodiscard]] inline constexpr auto
-// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
 make_status_code_domain<hyperion::error::PosixDomain, hyperion::u64>(hyperion::u64&& uuid) noexcept
 	-> hyperion::error::PosixDomain {
 	return hyperion::error::PosixDomain(uuid);
 }
+// clang-format off
 
 /// @brief Specialize `make_status_code_domain` for `PosixDomain` and a `UUIDString`.
 /// Creates a `PosixDomain` with a custom UUID.
@@ -404,13 +405,15 @@ make_status_code_domain<hyperion::error::PosixDomain, hyperion::u64>(hyperion::u
 /// @ingroup error
 template<>
 [[nodiscard]] inline constexpr auto
-	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
 	make_status_code_domain<hyperion::error::PosixDomain,
 							const char (&)[hyperion::error::num_chars_in_uuid]> // NOLINT
 	(const char (&uuid)[hyperion::error::num_chars_in_uuid]) noexcept			// NOLINT
 	-> hyperion::error::PosixDomain {
+	// clang-format on
 	return hyperion::error::PosixDomain(uuid);
 }
+// clang-format off
 
 /// @brief Specialize `make_status_code_domain` for `PosixDomain` and an MS-style `UUIDString`.
 /// Creates a `PosixDomain` with a custom UUID.
@@ -428,11 +431,12 @@ template<>
 /// @ingroup error
 template<>
 [[nodiscard]] inline constexpr auto
-	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
+// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
 	make_status_code_domain<hyperion::error::PosixDomain,
 							const char (&)[hyperion::error::num_chars_in_ms_uuid]> // NOLINT
 	(const char (&uuid)[hyperion::error::num_chars_in_ms_uuid]) noexcept		   // NOLINT
 	-> hyperion::error::PosixDomain {
+	// clang-format on
 	return hyperion::error::PosixDomain(uuid);
 }
 

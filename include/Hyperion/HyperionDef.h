@@ -3,7 +3,7 @@
 /// @brief Provides various macro definitions for things like compiler-specific attributes,
 /// feature enablement, and warning suppression
 /// @version 0.1
-/// @date 2022-06-07
+/// @date 2022-07-22
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -38,6 +38,8 @@
 #include <Hyperion/Ignore.h>
 #include <Hyperion/Platform.h>
 #include <version>
+
+IGNORE_UNUSED_MACROS_START
 
 #define DOCTEST_CONFIG_NO_SHORT_MACRO_NAMES
 #define DOCTEST_CONFIG_NO_COMPARISON_WARNING_SUPPRESSION
@@ -84,7 +86,7 @@
 #if __has_include(<source_location>)
 	#if HYPERION_PLATFORM_COMPILER_GCC \
 		|| (HYPERION_PLATFORM_COMPILER_CLANG && !HYPERION_PLATFORM_WINDOWS)
-		#if __has_builtin(__builtin_source_location)
+		#if __has_builtin(__builtin_source_location) // NOLINT(readability-redundant-preprocessor)
 			#define HYPERION_HAS_SOURCE_LOCATION true
 		#elif HYPERION_PLATFORM_STD_LIB_LIBCPP
 			#define HYPERION_HAS_SOURCE_LOCATION true
@@ -151,7 +153,7 @@
 /// @ingroup defines
 /// @headerfile "Hyperion/HyperionDef.h"
 #if HYPERION_PLATFORM_COMPILER_CLANG || HYPERION_PLATFORM_COMPILER_GCC
-	#define HYPERION_UNREACHABLE() __builtin_unreachable()
+	#define HYPERION_UNREACHABLE() __builtin_unreachable() // NOLINT(cppcoreguidelines-macro-usage
 #elif HYPERION_PLATFORM_COMPILER_MSVC
 	#define HYPERION_UNREACHABLE() __assume(false);
 #else
@@ -173,36 +175,6 @@
 	#define HYPERION_HAS_TYPE_PACK_ELEMENT false
 #endif
 // clang-format off
-
-/// @def IGNORE_UNUSED_MACROS_START
-/// @brief Use to temporarily disable warnings for unused macros.
-/// Make sure to pair with `IGNORE_UNUSED_MACROS_STOP` to properly scope the area where the warning
-/// is ignored
-/// @ingroup defines
-/// @headerfile "Hyperion/HyperionDef.h"
-#if !HYPERION_PLATFORM_COMPILER_MSVC
-	// NOLINTNEXTLINE
-	#define IGNORE_UNUSED_MACROS_START \
-		_Pragma("GCC diagnostic push")\
-		_Pragma("GCC diagnostic ignored \"-Wunused-macros\"")
-#else
-	// NOLINTNEXTLINE
-	#define IGNORE_UNUSED_MACROS_START
-#endif
-
-/// @def IGNORE_UNUSED_MACROS_STOP
-/// @brief Use to re-enable warnings for unused macros after having previously used
-/// `IGNORE_UNUSED_MACROS_START`
-/// @ingroup defines
-/// @headerfile "Hyperion/HyperionDef.h"
-#if !HYPERION_PLATFORM_COMPILER_MSVC
-	// NOLINTNEXTLINE
-	#define IGNORE_UNUSED_MACROS_STOP \
-		_Pragma("GCC diagnostic pop")
-#else
-	// NOLINTNEXTLINE
-	#define IGNORE_UNUSED_MACROS_STOP
-#endif
 
 IGNORE_UNUSED_MACROS_START
 
@@ -980,7 +952,8 @@ IGNORE_UNUSED_MACROS_START
 	/// from doctest.
 	/// @ingroup defines
 	/// @headerfile "Hyperion/HyperionDef.h"
-	#define CHECK_EQ(...) /** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
+	#define CHECK_EQ(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
+						  /** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_CHECK_EQ( \
 			__VA_ARGS__)                                                                  \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
@@ -1053,7 +1026,8 @@ IGNORE_UNUSED_MACROS_START
 	/// from doctest.
 	/// @ingroup defines
 	/// @headerfile "Hyperion/HyperionDef.h"
-	#define REQUIRE_EQ(...) /** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
+	#define REQUIRE_EQ(...) /** NOLINT(cppcoreguidelines-macro-usage) **/                   \
+							/** NOLINTNEXTLINE(cppcoreguidelines-macro-usage) **/           \
 		IGNORE_RESERVED_IDENTIFIERS_START IGNORE_UNUSED_TEMPLATES_START DOCTEST_REQUIRE_EQ( \
 			__VA_ARGS__)                                                                    \
 		IGNORE_RESERVED_IDENTIFIERS_STOP IGNORE_UNUSED_TEMPLATES_STOP
@@ -1265,7 +1239,8 @@ IGNORE_RESERVED_IDENTIFIERS_STOP
 		FrameMarkEnd(name) /** NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,        \
 							   hicpp-no-array-decay) **/                                          \
 			IGNORE_OLD_STYLE_CASTS_STOP IGNORE_RESERVED_IDENTIFIERS_STOP
-	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is enabled
+	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is
+	/// enabled
 	/// @ingroup defines
 	/// @headerfile "Hyperion/HyperionDef.h"
 	#define HYPERION_PROFILE_MARK_FRAME() /** NOLINT(cppcoreguidelines-macro-usage) **/           \
@@ -1294,7 +1269,8 @@ IGNORE_RESERVED_IDENTIFIERS_STOP
 	/// @ingroup defines
 	/// @headerfile "Hyperion/HyperionDef.h"
 	#define HYPERION_PROFILE_END_FRAME(name)	/** NOLINT(cppcoreguidelines-macro-usage) **/
-	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is enabled
+	/// @brief Marks the end of a profiling frame with Tracy in builds where Tracy profiling is
+	/// enabled
 	/// @ingroup defines
 	/// @headerfile "Hyperion/HyperionDef.h"
 	#define HYPERION_PROFILE_MARK_FRAME()		/** NOLINT(cppcoreguidelines-macro-usage) **/

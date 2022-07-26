@@ -39,6 +39,36 @@
 
 #include <bit>
 
+/// @def IGNORE_UNUSED_MACROS_START
+/// @brief Use to temporarily disable warnings for unused macros.
+/// Make sure to pair with `IGNORE_UNUSED_MACROS_STOP` to properly scope the area where the warning
+/// is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/Platform.h"
+#if !((defined(__MSC_VER) || defined(_MSC_VER)) && !defined(__clang__))
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MACROS_START \
+		_Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wunused-macros\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MACROS_START
+#endif
+
+/// @def IGNORE_UNUSED_MACROS_STOP
+/// @brief Use to re-enable warnings for unused macros after having previously used
+/// `IGNORE_UNUSED_MACROS_START`
+/// @ingroup defines
+/// @headerfile "Hyperion/Platform.h"
+#if !((defined(__MSC_VER) || defined(_MSC_VER)) && !defined(__clang__))
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MACROS_STOP _Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_MACROS_STOP
+#endif
+
+IGNORE_UNUSED_MACROS_START
+
 /// @def HYPERION_PLATFORM_WINDOWS
 /// @brief Whether the compiled-for platform is WINDOWS
 /// @ingroup platform
@@ -141,7 +171,7 @@
 /// @brief Whether the current compiler is GCC
 /// @ingroup platform
 /// @headerfile "Hyperion/Platform.h"
-#if defined(__MSC_VER) || defined(_MSC_VER) && !HYPERION_PLATFORM_COMPILER_CLANG
+#if (defined(__MSC_VER) || defined(_MSC_VER)) && !HYPERION_PLATFORM_COMPILER_CLANG
 	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 	#define HYPERION_PLATFORM_COMPILER_MSVC true
 #else
@@ -328,3 +358,4 @@
 	#define HYPERION_PLATFORM_CACHE_LINE_SIZE 128
 #endif
 
+IGNORE_UNUSED_MACROS_STOP

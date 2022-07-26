@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2022-06-05
+/// @date 2022-07-22
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -82,9 +82,14 @@
 	#define HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED false
 #endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 
+#ifndef HYPERION_RESULT
+	#define HYPERION_RESULT
+
 namespace hyperion {
+	#ifndef HYPERION_OPTION
 	template<typename T>
 	class Option;
+	#endif // HYPERION_OPTION
 
 	using option::None;
 
@@ -285,14 +290,14 @@ namespace hyperion {
 			concepts::NoexceptCopyConstructible<
 				ResultData>) requires concepts::CopyConstructible<ResultData>
 			: ResultData(static_cast<const ResultData&>(result))
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			,
 			  m_handled(result.m_handled)
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		{
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			result.m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		}
 		/// @brief Move Constructor
 		/// Moving a `Result` consumes it, leaving a disengaged (valueless) `Result` in its place
@@ -302,17 +307,17 @@ namespace hyperion {
 			concepts::NoexceptMoveConstructible<
 				ResultData>) requires concepts::MoveConstructible<ResultData>
 			: ResultData(static_cast<ResultData&&>(result))
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			,
 			  m_handled(result.m_handled)
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		{
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			result.m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			static_cast<ResultData&>(result) = ResultData(None());
 		}
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 		/// @brief Destructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
@@ -322,12 +327,12 @@ namespace hyperion {
 				panic("Unhandled Result that must be handled being destroyed, terminating");
 			}
 		}
-#else
+	#else
 		/// @brief Destructor
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr ~Result() noexcept(concepts::NoexceptDestructible<ResultData>) = default;
-#endif
+	#endif
 
 		/// @brief Returns whether this `Result` is the `Ok` variant
 		///
@@ -335,9 +340,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] constexpr auto is_ok() const noexcept->bool {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			return this->has_ok();
 		}
 
@@ -347,9 +352,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto is_err() const noexcept->bool {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			return this->has_err();
 		}
 
@@ -361,9 +366,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto as_ref() noexcept->ok_reference {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				panic("Result::as_ref called on an Error result, terminating");
 			}
@@ -384,9 +389,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto as_cref() const noexcept->ok_const_reference {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				panic("Result::as_cref called on an Error result, terminating");
 			}
@@ -404,9 +409,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap() noexcept
 			->ok_type requires concepts::NoexceptMovable<T> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				panic("Result::unwrap called on an Error result, terminating");
 			}
@@ -425,9 +430,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap_or(
 			T & default_value) noexcept->ok_type requires concepts::NotReference<T> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::move(default_value);
 			}
@@ -445,9 +450,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap_or(T && default_value) noexcept->ok_type {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::move(default_value);
 			}
@@ -470,9 +475,9 @@ namespace hyperion {
 		template<typename F>
 		requires concepts::InvocableWithReturn<T, F>
 		[[nodiscard]] inline auto unwrap_or_else(F && default_generator) noexcept->T {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::forward<F>(default_generator)();
 			}
@@ -492,9 +497,9 @@ namespace hyperion {
 		template<typename U>
 		requires concepts::Convertible<U, std::string> || concepts::Convertible<U, std::string_view>
 		[[nodiscard]] inline auto expect(U && panic_message) noexcept->ok_type {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				panic("{}", std::forward<U>(panic_message));
 			}
@@ -511,9 +516,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap_err() noexcept
 			->err_type requires concepts::NoexceptMovable<E> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_err()) {
 				panic("Result::unwrap_err called on an Ok result, terminating");
 			}
@@ -532,9 +537,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto ok() noexcept->Option<T>
 		requires concepts::NoexceptMovable<T> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return None();
 			}
@@ -553,9 +558,9 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto err() noexcept->Option<E>
 		requires concepts::NoexceptMovable<E> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_err()) {
 				return None();
 			}
@@ -585,9 +590,9 @@ namespace hyperion {
 		[[nodiscard]] inline auto map(F && map_func) const noexcept->Result<U, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return hyperion::Err<E>(this->get_err());
 			}
@@ -611,9 +616,9 @@ namespace hyperion {
 		template<typename F, typename U>
 		requires concepts::InvocableWithReturn<U, F, ok_const_reference>
 		[[nodiscard]] inline auto map_or(F && map_func, U && default_value) const noexcept->U {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::forward<U>(default_value);
 			}
@@ -651,9 +656,9 @@ namespace hyperion {
 			const noexcept->U {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::forward<G>(default_generator)();
 			}
@@ -682,9 +687,9 @@ namespace hyperion {
 		[[nodiscard]] inline auto map_err(F && map_func) const noexcept->Result<T, U> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_err()) {
 				return hyperion::Ok<T>(this->get());
 			}
@@ -726,9 +731,9 @@ namespace hyperion {
 				InvocableWithReturn<R2, ErrFunc, err_rvalue_reference> && concepts::NoexceptMovable<
 					T> && concepts::NoexceptMovable<E>
 		inline auto match(OkFunc && ok_func, ErrFunc && err_func) noexcept->R1 {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::forward<ErrFunc>(err_func)(this->extract_err());
 			}
@@ -755,9 +760,9 @@ namespace hyperion {
 		[[nodiscard]] inline auto and_then(F && func) noexcept->Result<R, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return hyperion::Err<E>(this->extract_err());
 			}
@@ -791,9 +796,9 @@ namespace hyperion {
 		[[nodiscard]] inline auto and_then(F && func) noexcept->Result<R, E> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return hyperion::Err<E>(this->extract_err());
 			}
@@ -817,9 +822,9 @@ namespace hyperion {
 		template<typename F>
 		requires concepts::NoexceptMovable<T>
 		[[nodiscard]] inline auto or_else(Result<T, F> && result) const noexcept->Result<T, F> {
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::move(result);
 			}
@@ -853,9 +858,9 @@ namespace hyperion {
 		[[nodiscard]] inline auto or_else(F && func) noexcept->Result<T, R> {
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			if(!is_ok()) {
 				return std::forward<F>(func)(this->extract_err());
 			}
@@ -869,9 +874,9 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr operator bool() const noexcept { // NOLINT
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			return is_ok();
 		}
 
@@ -887,10 +892,10 @@ namespace hyperion {
 
 			ResultData::operator=(static_cast<const ResultData&>(result));
 
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			this->m_handled = result.m_handled;
 			result.m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			return *this;
 		}
 
@@ -907,19 +912,21 @@ namespace hyperion {
 
 			ResultData::operator=(static_cast<ResultData&&>(result));
 
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			this->m_handled = result.m_handled;
 			result.m_handled = true;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			static_cast<ResultData&>(result) = ResultData(None());
 			return *this;
 		}
 
-#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 	  private:
 		/// whether this `Result` has been handled
 		mutable bool m_handled = false;
-#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
+	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 	};
 	IGNORE_PADDING_STOP
 } // namespace hyperion
+
+#endif // HYPERION_RESULT

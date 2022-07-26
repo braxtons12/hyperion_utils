@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Logging entry types
 /// @version 0.1
-/// @date 2022-06-15
+/// @date 2022-07-22
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -495,7 +495,8 @@ namespace hyperion::logging {
 		///
 		/// @return the log level associated with this entry
 		/// @ingroup logging
-		[[nodiscard]] inline constexpr auto level() const noexcept -> Level {
+		[[nodiscard]] inline constexpr auto level() // NOLINT(bugprone-exception-escape)
+			const noexcept -> Level {
 			return std::visit([](const auto& entry) { return entry.level(); },
 							  *static_cast<const rep*>(this));
 		}
@@ -504,7 +505,8 @@ namespace hyperion::logging {
 		///
 		/// @return the text style of this entry
 		/// @ingroup logging
-		[[nodiscard]] inline constexpr auto style() const noexcept -> fmt::text_style {
+		[[nodiscard]] inline constexpr auto style() // NOLINT(bugprone-exception-escape)
+			const noexcept -> fmt::text_style {
 			return std::visit([](const auto& entry) { return entry.style(); },
 							  *static_cast<const rep*>(this));
 		}
@@ -513,12 +515,14 @@ namespace hyperion::logging {
 		///
 		/// @return the text of this entry
 		/// @ingroup logging
-		[[nodiscard]] inline auto entry() const noexcept -> std::string_view {
+		[[nodiscard]] inline auto entry() // NOLINT(bugprone-exception-escape)
+			const noexcept -> std::string_view {
 			return std::visit([](const auto& entry) { return entry.entry(); },
 							  *static_cast<const rep*>(this));
 		}
 
-		/// @brief Returns whether this entry is currently valid (it has not been made "valueless-by-exception")
+		/// @brief Returns whether this entry is currently valid (it has not been made
+		/// "valueless-by-exception")
 		///
 		/// @return whether the entry is valid
 		/// @ingroup logging

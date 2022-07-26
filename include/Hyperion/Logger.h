@@ -6,7 +6,7 @@
 /// and output configuration is configurable by supplying the desired `hyperion::logging::Sink`s
 /// at construction time.
 /// @version 0.1
-/// @date 2022-07-09
+/// @date 2022-07-22
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -206,7 +206,8 @@ namespace hyperion {
 				//	                                        entry);
 			}
 
-			[[nodiscard]] static inline auto create_time_stamp() noexcept -> std::string {
+			[[nodiscard]] static inline auto
+				create_time_stamp() noexcept -> std::string { // NOLINT(bugprone-exception-escape)
 				HYPERION_PROFILE_FUNCTION();
 				//	return fmt::format(FMT_COMPILE("[{:%Y-%m-%d|%H:%M:%S}]"),
 				//	                   fmt::gmtime(std::time(nullptr)));
@@ -701,8 +702,9 @@ namespace hyperion {
 			auto operator=(LogBase&&) noexcept -> LogBase& = default;
 
 		  protected:
-			inline auto
-			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(const logging::Entry& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					std::ranges::for_each(m_sinks, [&entry](const auto& sink) noexcept -> void {
@@ -713,7 +715,9 @@ namespace hyperion {
 				return Ok();
 			}
 
-			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(logging::Entry&& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					std::ranges::for_each(
@@ -764,8 +768,9 @@ namespace hyperion {
 			auto operator=(LogBase&&) -> LogBase& = delete;
 
 		  protected:
-			inline auto
-			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(const logging::Entry& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					m_signal.release(1);
@@ -783,7 +788,9 @@ namespace hyperion {
 				return Ok();
 			}
 
-			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(logging::Entry&& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					m_signal.release(1);
@@ -893,8 +900,9 @@ namespace hyperion {
 			auto operator=(LogBase&&) noexcept -> LogBase& = default;
 
 		  protected:
-			inline auto
-			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(const logging::Entry& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					auto sinks_guard = m_sinks.write();
@@ -906,7 +914,9 @@ namespace hyperion {
 				return Ok();
 			}
 
-			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(logging::Entry&& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					auto sinks_guard = m_sinks.write();
@@ -958,8 +968,9 @@ namespace hyperion {
 			auto operator=(LogBase&& logger) -> LogBase& = delete;
 
 		  protected:
-			inline auto
-			log(const logging::Entry& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(const logging::Entry& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {
@@ -976,7 +987,9 @@ namespace hyperion {
 				return Ok();
 			}
 
-			inline auto log(logging::Entry&& entry) noexcept -> Result<None, LoggerError> final {
+			inline auto log(logging::Entry&& entry) // NOLINT(bugprone-exception-escape)
+				noexcept -> Result<None, LoggerError> final {
+
 				HYPERION_PROFILE_FUNCTION();
 				if(entry.level() > MINIMUM_LEVEL) {
 					if constexpr(ASYNC_POLICY == logging::AsyncPolicy::DropWhenFull) {

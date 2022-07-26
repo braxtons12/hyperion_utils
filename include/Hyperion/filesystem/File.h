@@ -34,6 +34,8 @@
 #include <cstdio>
 #include <filesystem>
 
+IGNORE_UNUSED_MACROS_START
+
 #ifdef HYPERION_PLATFORM_WINDOWS
 	#ifndef ERROR_INVALID_PARAMETER
 	// Define the Windows error code `ERROR_INVALID_PARAMETER` if it isn't already
@@ -44,6 +46,8 @@
 		#define ERROR_INVALID_FUNCTION 0x00000001 // NOLINT(cppcoreguidelines-macro-usage)
 	#endif										  // ERROR_INVALID_FUNCTION
 #endif
+
+IGNORE_UNUSED_MACROS_STOP
 
 namespace hyperion::fs {
 
@@ -296,7 +300,7 @@ namespace hyperion::fs {
 		template<usize NumBytes>
 		[[nodiscard]] inline auto
 		write_bytes(const byte (&bytes)[NumBytes]) noexcept -> Result<i32> { // NOLINT
-			write_bytes(NumBytes, bytes);
+			return write_bytes(NumBytes, bytes);
 		}
 
 		/// @brief Writes `num_bytes` bytes from `bytes` to the file

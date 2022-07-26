@@ -47,11 +47,11 @@ auto main([[maybe_unused]] i32 argc, [[maybe_unused]] char** argv) -> i32 { // N
 	auto file_sink = logging::FileSink::create_file()
 						 .and_then(logging::make_sink<logging::FileSink, fs::File&&>)
 						 .expect("Failed to create test file!");
-	auto stdout_sink = logging::make_sink<logging::StdoutSink<>>();
+	//	auto stdout_sink = logging::make_sink<logging::StdoutSink<>>();
 	// auto stderr_sink = logging::make_sink<logging::StderrSink<>>();
 	auto sinks = logging::Sinks();
 	sinks.push_back(std::move(file_sink));
-	sinks.push_back(std::move(stdout_sink));
+	//	sinks.push_back(std::move(stdout_sink));
 	auto logger = hyperion::make_unique<Logger<Parameters>>(std::move(sinks));
 	hyperion::GlobalLog::set_global_logger(std::move(logger));
 

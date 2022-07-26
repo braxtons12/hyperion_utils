@@ -95,7 +95,7 @@ namespace hyperion::type_traits {
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U = T>
-	inline static constexpr auto equality_comparable_v = equality_comparable<T, U>::value;
+	static inline constexpr auto equality_comparable_v = equality_comparable<T, U>::value;
 
 	/// @brief Type Trait to determine if type `T` is inequality comparable with type `U`,
 	/// where `U` defaults to `T`
@@ -124,7 +124,7 @@ namespace hyperion::type_traits {
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U = T>
-	inline static constexpr auto inequality_comparable_v = inequality_comparable<T, U>::value;
+	static inline constexpr auto inequality_comparable_v = inequality_comparable<T, U>::value;
 
 	namespace detail {
 		/// @brief Alternative declval implementation
@@ -132,6 +132,7 @@ namespace hyperion::type_traits {
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
 		requires std::is_default_constructible_v<U>
+		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto declval([[maybe_unused]] int i) noexcept -> U {
 			return U();
 		}
@@ -140,6 +141,7 @@ namespace hyperion::type_traits {
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
 		requires std::is_default_constructible_v<U>
+		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto declval([[maybe_unused]] long i) noexcept -> U { // NOLINT
 			return U();
 		}
@@ -181,7 +183,7 @@ namespace hyperion::type_traits {
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename... Args>
-	inline static constexpr auto is_constexpr_constructible(Args&&... args) noexcept -> bool {
+	static inline constexpr auto is_constexpr_constructible(Args&&... args) noexcept -> bool {
 		if constexpr(std::is_constructible_v<T, Args...>) {
 			std::ignore = T(std::forward<Args>(args)...);
 			return std::is_constant_evaluated();
@@ -205,8 +207,10 @@ namespace hyperion::type_traits {
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U>
-	inline static constexpr auto is_constexpr_assignable(U u) noexcept -> bool {
+	// NOLINTNEXTLINE(readability-identifier-length)
+	static inline constexpr auto is_constexpr_assignable(U u) noexcept -> bool {
 		if constexpr(std::is_assignable_v<T, U>) {
+			// NOLINTNEXTLINE(readability-identifier-length)
 			[[maybe_unused]] T t = u;
 			return std::is_constant_evaluated();
 		}

@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Concept requiring a type has a `static constexpr` member variable `value`
 /// @version 0.1
-/// @date 2021-10-28
+/// @date 2022-07-22
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -26,17 +26,19 @@
 /// IN THE SOFTWARE.
 #pragma once
 
+#include <concepts>
+
+namespace hyperion::mpl::detail {
+	template<typename T, T value>
+	using is_static_constexpr_value_impl = T;
+
+	template<typename T>
+	concept HasStaticConstexprValue
+		= std::same_as < detail::is_static_constexpr_value_impl<decltype(T::value), T::value>,
+	decltype(T::value) > ;
+} // namespace hyperion::mpl::detail
+
 namespace hyperion::mpl {
-	namespace detail {
-		template<typename T, T value>
-		using is_static_constexpr_value_impl = T;
-
-		template<typename T>
-		concept HasStaticConstexprValue
-			= std::same_as < detail::is_static_constexpr_value_impl<decltype(T::value), T::value>,
-		decltype(T::value) > ;
-	} // namespace detail
-
 	/// @brief Concept that requires T is a type with a `static constexpr` member variable named
 	/// `value`
 	/// @ingroup mpl
@@ -44,6 +46,6 @@ namespace hyperion::mpl {
 	template<typename T>
 	concept HasValue = requires() {
 		T::value;
-	}
-	&&detail::HasStaticConstexprValue<T>;
+		requires detail::HasStaticConstexprValue<T>;
+	};
 } // namespace hyperion::mpl
