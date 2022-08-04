@@ -457,6 +457,36 @@ IGNORE_UNUSED_MACROS_START
 		_Pragma("warning( pop )")
 #endif
 
+/// @def IGNORE_UNUSED_VALUES_START
+/// @brief Use to temporarily disable warnings for unused variables
+/// Make sure to pair with `IGNORE_UNUSED_VALUES_STOP` to properly scope the
+/// area where the warning is ignored
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_VALUES_START \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wunused-value\"")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_VALUES_START
+#endif
+
+/// @def IGNORE_UNUSED_VALUES_STOP
+/// @brief Use to re-enable warnings for unused variables after having previously used
+/// `IGNORE_UNUSED_VALUES_START`
+/// @ingroup defines
+/// @headerfile "Hyperion/HyperionDef.h"
+#if HYPERION_PLATFORM_COMPILER_CLANG
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_VALUES_STOP \
+		_Pragma("GCC diagnostic pop")
+#else
+	// NOLINTNEXTLINE
+	#define IGNORE_UNUSED_VALUES_STOP
+#endif
+
 /// @def IGNORE_UNUSED_VARIABLES_START
 /// @brief Use to temporarily disable warnings for unused variables
 /// Make sure to pair with `IGNORE_UNUSED_VARIABLES_STOP` to properly scope the

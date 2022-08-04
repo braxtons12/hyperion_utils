@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Aliases for and additions to the C++20 standard concepts library
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-07-29
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -27,7 +27,7 @@
 #pragma once
 
 #include <Hyperion/TypeTraits.h>
-#include <Hyperion/mpl/ForAll.h>
+#include <Hyperion/mpl/Functions.h>
 #include <Hyperion/mpl/List.h>
 #include <concepts>
 #include <type_traits>
@@ -222,7 +222,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllCopyConstructible
-		= mpl::for_all_types_v<std::is_copy_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_copy_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is copy
 	/// constructible
@@ -230,7 +230,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyCopyConstructible
-		= mpl::for_all_types_v<std::is_trivially_copy_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_copy_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is copy assignable
 	/// @ingroup concepts
@@ -249,7 +249,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
-	concept AllCopyAssignable = mpl::for_all_types_v<std::is_copy_assignable, std::true_type, List>;
+	concept AllCopyAssignable = mpl::all_types_satisfy_v<std::is_copy_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is copy
 	/// assignable
@@ -257,7 +257,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyCopyAssignable
-		= mpl::for_all_types_v<std::is_trivially_copy_assignable, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_copy_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is noexcept copy constructible
 	/// @ingroup concepts
@@ -271,7 +271,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptCopyConstructible
-		= mpl::for_all_types_v<std::is_nothrow_copy_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_copy_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is noexcept copy assignable
 	/// @ingroup concepts
@@ -285,7 +285,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptCopyAssignable
-		= mpl::for_all_types_v<std::is_nothrow_copy_assignable, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_copy_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is move constructible
 	/// @ingroup concepts
@@ -311,7 +311,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllMoveConstructible
-		= mpl::for_all_types_v<std::is_move_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_move_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is move
 	/// constructible
@@ -319,7 +319,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyMoveConstructible
-		= mpl::for_all_types_v<std::is_trivially_move_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_move_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is move assignable
 	/// @ingroup concepts
@@ -344,7 +344,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
-	concept AllMoveAssignable = mpl::for_all_types_v<std::is_move_assignable, std::true_type, List>;
+	concept AllMoveAssignable = mpl::all_types_satisfy_v<std::is_move_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is move
 	/// assignable
@@ -352,7 +352,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyMoveAssignable
-		= mpl::for_all_types_v<std::is_trivially_move_assignable, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_move_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is assignable from `U`
 	/// @ingroup concepts
@@ -378,7 +378,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptMoveConstructible
-		= mpl::for_all_types_v<std::is_nothrow_move_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_move_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is noexcept move assignable
 	/// @ingroup concepts
@@ -392,7 +392,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptMoveAssignable
-		= mpl::for_all_types_v<std::is_nothrow_move_assignable, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_move_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is destructible
 	/// @ingroup concepts
@@ -418,7 +418,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyDestructible
-		= mpl::for_all_types_v<std::is_trivially_destructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_destructible, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is nothrow
 	/// destructible
@@ -426,7 +426,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptDestructible
-		= mpl::for_all_types_v<std::is_nothrow_destructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, List>;
 
 	/// @brief Concept that requires that `T` is move constructible and move assignable
 	/// @ingroup concepts
@@ -506,7 +506,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllDefaultConstructible
-		= mpl::for_all_types_v<std::is_default_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_default_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List` is trivially default
 	/// constructible
@@ -514,7 +514,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllTriviallyDefaultConstructible
-		= mpl::for_all_types_v<std::is_trivially_default_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_trivially_default_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List` is nothrow default
 	/// constructible
@@ -522,7 +522,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
 	concept AllNoexceptDefaultConstructible
-		= mpl::for_all_types_v<std::is_nothrow_default_constructible, std::true_type, List>;
+		= mpl::all_types_satisfy_v<std::is_nothrow_default_constructible, std::true_type, List>;
 
 	/// @brief Concept that requires `T` is __NOT__ default constructible
 	/// @ingroup concepts

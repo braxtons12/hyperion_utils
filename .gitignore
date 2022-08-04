@@ -22,3 +22,4 @@ Doxyfile-mcss
 /cmake-build-debug-visual-studio/
 /cmake-build-release-visual-studio/
 /cmake-build-release-visual-studio-profile/
+/.xmake/

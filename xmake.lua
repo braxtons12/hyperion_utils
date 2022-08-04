@@ -20,6 +20,13 @@ add_requires("conan::boost/1.79.0", {
 	},
     system = false
 })
+add_requires("conan::hana/1.79.0", {
+    alias = "hana",
+    configs = {
+        languages = "cxx20"
+    },
+    system = false
+})
 add_requires("conan::tracy/0.8.2.1", { alias = "tracy", system = false, configs = {languages = "cxx20"}})
 
 add_rules("mode.debug", "mode.release")
@@ -131,10 +138,14 @@ local hyperion_utils_memory_headers = {
 }
 local hyperion_utils_mpl_headers = {
 	"$(projectdir)/include/Hyperion/mpl/CallWithIndex.h",
-	"$(projectdir)/include/Hyperion/mpl/ForAll.h",
+	"$(projectdir)/include/Hyperion/mpl/Functions.h",
 	"$(projectdir)/include/Hyperion/mpl/HasValue.h",
+	"$(projectdir)/include/Hyperion/mpl/Identity.h",
 	"$(projectdir)/include/Hyperion/mpl/Index.h",
 	"$(projectdir)/include/Hyperion/mpl/List.h",
+}
+local hyperion_utils_enum_headers = {
+	"$(projectdir)/include/Hyperion/enum/detail.h",
 }
 local hyperion_utils_option_headers = {
 	"$(projectdir)/include/Hyperion/option/None.h",
@@ -154,6 +165,7 @@ local hyperion_utils_main_headers = {
 	"$(projectdir)/include/Hyperion/BasicTypes.h",
 	"$(projectdir)/include/Hyperion/ChangeDetector.h",
 	"$(projectdir)/include/Hyperion/Concepts.h",
+	"$(projectdir)/include/Hyperion/Enum.h",
 	"$(projectdir)/include/Hyperion/Error.h",
 	"$(projectdir)/include/Hyperion/Filesystem.h",
 	"$(projectdir)/include/Hyperion/Fmt.h",
@@ -190,11 +202,12 @@ target("HyperionUtils")
 	add_headerfiles(hyperion_utils_logging_headers, { prefixdir = "Hyperion/logging" })
 	add_headerfiles(hyperion_utils_memory_headers, { prefixdir = "Hyperion/memory" })
 	add_headerfiles(hyperion_utils_mpl_headers, { prefixdir = "Hyperion/mpl" })
+	add_headerfiles(hyperion_utils_enum_headers, { prefixdir = "Hyperion/enum" })
 	add_headerfiles(hyperion_utils_option_headers, { prefixdir = "Hyperion/option" })
 	add_headerfiles(hyperion_utils_result_headers, { prefixdir = "Hyperion/result" })
 	add_headerfiles(hyperion_utils_sync_headers, { prefixdir = "Hyperion/synchronization" })
 	add_files(hyperion_utils_sources)
-	add_packages("boost", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
 	add_defines("DOCTEST_CONFIG_DISABLE")
 	set_default(true)
 	add_options("hyperion_tracy_enable")
@@ -210,7 +223,7 @@ target("HyperionUtilsTest")
 	add_includedirs("$(projectdir)/include", { public = false })
 	add_files(hyperion_utils_sources)
 	add_files("src/doctest_main.cpp")
-	add_packages("boost", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
 	set_default(false)
 	on_config(function(target)
 		setup_compile_flags(target)
@@ -223,7 +236,7 @@ target("HyperionUtilsBenchmark")
 	add_includedirs("$(projectdir)/include", { public = false })
 	add_files(hyperion_utils_sources)
 	add_files("src/benchmark.cpp")
-	add_packages("boost", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
 	add_defines("DOCTEST_CONFIG_DISABLE")
 	set_default(false)
 	on_config(function(target)
@@ -248,6 +261,7 @@ target("clang-tidy")
 					  + #hyperion_utils_logging_headers
 					  + #hyperion_utils_memory_headers
 					  + #hyperion_utils_mpl_headers
+					  + #hyperion_utils_enum_headers
 					  + #hyperion_utils_option_headers
 					  + #hyperion_utils_result_headers
 					  + #hyperion_utils_sync_headers
@@ -262,6 +276,7 @@ target("clang-tidy")
 	add_files(hyperion_utils_logging_headers, { prefixdir = "Hyperion/logging", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_memory_headers, { prefixdir = "Hyperion/memory", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_mpl_headers, { prefixdir = "Hyperion/mpl", rule = "clang-tidy-source" })
+	add_files(hyperion_utils_enum_headers, { prefixdir = "Hyperion/enum", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_option_headers, { prefixdir = "Hyperion/option", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_result_headers, { prefixdir = "Hyperion/result", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_sync_headers, { prefixdir = "Hyperion/synchronization", rule = "clang-tidy-source" })

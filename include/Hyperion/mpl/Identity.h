@@ -1,6 +1,6 @@
-/// @file Index.h
+/// @file Identity.h
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
-/// @brief basic meta-programming index type
+/// @brief Type trait returning the type given to it
 /// @version 0.1
 /// @date 2022-07-29
 ///
@@ -26,33 +26,12 @@
 /// IN THE SOFTWARE.
 #pragma once
 
-#include <Hyperion/BasicTypes.h>
-
 namespace hyperion::mpl {
+	template<typename T>
+	struct identity {
+		using type = T;
+	};
 
-	/// @brief Basic meta-programming index type
-	///
-	/// @tparam N - The index
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/Index.h"
-	template<usize N>
-	struct index : std::integral_constant<usize, N> { };
-
-	/// @brief Value of `mpl::index`
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/Index.h"
-	template<usize N>
-	static inline constexpr usize index_v = index<N>::value;
-
-	template<usize LHS, usize RHS>
-	struct less_than : std::conditional_t<(LHS < RHS), std::true_type, std::false_type> { };
-
-	template<usize LHS, usize RHS>
-	static inline constexpr auto less_than_v = LHS < RHS;
-
-	template<usize LHS, usize RHS>
-	struct greater_than : std::conditional_t<(LHS > RHS), std::true_type, std::false_type> { };
-
-	template<usize LHS, usize RHS>
-	static inline constexpr auto greater_than_v = LHS > RHS;
+	template<typename T>
+	using identity_t = typename identity<T>::type;
 } // namespace hyperion::mpl

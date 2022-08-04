@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Concept requiring a type has a `static constexpr` member variable `value`
 /// @version 0.1
-/// @date 2022-07-22
+/// @date 2022-07-29
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -26,6 +26,7 @@
 /// IN THE SOFTWARE.
 #pragma once
 
+#include <Hyperion/BasicTypes.h>
 #include <concepts>
 
 namespace hyperion::mpl::detail {
@@ -48,4 +49,25 @@ namespace hyperion::mpl {
 		T::value;
 		requires detail::HasStaticConstexprValue<T>;
 	};
+
+	namespace detail::test {
+		struct HasValueTest1 { };
+
+		struct HasValueTest2 {
+			usize value;
+		};
+
+		struct HasValueTest3 {
+			static usize value; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+		};
+
+		struct HasValueTest4 {
+			static constexpr usize value = 0;
+		};
+
+		static_assert(!HasValue<HasValueTest1>, "HasValueTest1 failing");
+		static_assert(!HasValue<HasValueTest2>, "HasValueTest2 failing");
+		static_assert(!HasValue<HasValueTest3>, "HasValueTest3 failing");
+		static_assert(HasValue<HasValueTest4>, "HasValueTest4 failing");
+	} // namespace detail::test
 } // namespace hyperion::mpl

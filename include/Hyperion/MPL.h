@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief A minimal template meta-programming library
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2022-07-29
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,8 @@
 #include <Hyperion/Concepts.h>
 #include <Hyperion/TypeTraits.h>
 #include <Hyperion/mpl/CallWithIndex.h>
-#include <Hyperion/mpl/ForAll.h>
+#include <Hyperion/mpl/Functions.h>
 #include <Hyperion/mpl/Index.h>
 #include <Hyperion/mpl/List.h>
+#include <Hyperion/mpl/Identity.h>
+#include <Hyperion/mpl/HasValue.h>

@@ -33,6 +33,7 @@
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/ChangeDetector.h>
 #include <Hyperion/Concepts.h>
+#include <Hyperion/Enum.h>
 #include <Hyperion/Error.h>
 #include <Hyperion/FmtIO.h>
 #include <Hyperion/HyperionDef.h>

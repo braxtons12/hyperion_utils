@@ -87,7 +87,7 @@ FetchContent_MakeAvailable(doctest)
 #############################################################################
 FetchContent_Declare(tracy
 	GIT_REPOSITORY "https://github.com/wolfpld/tracy"
-	GIT_TAG "origin/master"
+    GIT_TAG "v0.8.2"
 	)
 
 FetchContent_MakeAvailable(tracy)
@@ -97,6 +97,8 @@ FetchContent_MakeAvailable(tracy)
 set(HYPERION_UTILS_EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/ChangeDetector.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Concepts.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/enum/detail.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Enum.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/error/Assert.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/error/Backtrace.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/error/GenericDomain.h"
@@ -123,8 +125,9 @@ set(HYPERION_UTILS_EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/memory/UniquePtr.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Memory.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/CallWithIndex.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/ForAll.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/Functions.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/HasValue.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/Identity.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/Index.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/mpl/List.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/MPL.h"

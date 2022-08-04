@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Meta-programming facilities for working with a list of types
 /// @version 0.1
-/// @date 2021-10-29
+/// @date 2022-07-29
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -29,111 +29,139 @@
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/HyperionDef.h>
 
+#include "boost/hana/fwd/type.hpp"
+
+IGNORE_UNUSED_VALUES_START
+#include <boost/hana.hpp>
+IGNORE_UNUSED_VALUES_STOP
+
 namespace hyperion::mpl {
+
+	namespace hana = boost::hana;
+
+	IGNORE_UNUSED_VALUES_START
 
 	/// @brief Basic meta-programming type list
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename... T>
-	struct list { };
+	struct list {
+	};
 
 	namespace detail {
-		template<typename T, typename... Types>
-		struct contains_impl : std::true_type { };
+		template<typename List>
+		struct size_impl;
 
-		template<typename T, typename Head, typename... Types>
-		struct contains_impl<T, Head, Types...> : std::conditional_t<std::is_same_v<T, Head>,
-																	 std::true_type,
-																	 contains_impl<T, Types...>> {
+		template<template<typename...> typename List, typename... Types>
+		struct size_impl<List<Types...>> : public std::integral_constant<usize, sizeof...(Types)> {
 		};
-
-		template<typename T>
-		struct contains_impl<T> : std::false_type { };
-
-		static_assert(contains_impl<u8, u16, u8, u64>::value,
-					  "mpl::contains implementation failing");
-		static_assert(!contains_impl<u32, u16, u8, u64>::value,
-					  "mpl::contains implementation failing");
-
-		template<typename T, typename List>
-		struct contains_list_impl;
-
-		// clang-format off
-
-		template<typename T, template<typename...> typename List, typename... Types>
-		struct contains_list_impl<T, List<Types...>> : contains_impl<T, Types...> { };
-
-		// clang-format on
 	} // namespace detail
 
-	/// @brief Used to determine if the given `mpl::list`, `List`, contains the type `T`
+	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
 	///
-	/// @tparam T - The type to search for
-	/// @tparam List - The `mpl::list` to search in
+	/// @tparam List - The `mpl::list` to query the size of
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename T, typename List>
-	struct contains : detail::contains_list_impl<T, List> { };
+	template<typename List>
+	struct size : detail::size_impl<List> {
+	};
 
-	/// @brief Value of `mpl::contains`. Used to determine if the given `mpl::list`, `List`,
-	/// contains the given type `T`
+	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
+	///
+	/// @tparam List - The `mpl::list` to query the size of
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename T, typename List>
-	inline static constexpr auto contains_v = contains<T, List>::value;
+	template<typename List>
+	static inline constexpr auto size_v = size<List>::value;
 
-	namespace detail {
-		struct not_found { };
+	// clang-format off
+    namespace detail {
+        template<usize N, typename List>
+        struct at_unrolled;
 
-		template<usize I, usize Current, usize Size, typename... Types>
-		struct at_impl {
-			static_assert(I < Size);
-		};
-
-		template<usize I, usize Current, usize Size, typename Head, typename... Types>
-		struct at_impl<I, Current, Size, Head, Types...> {
-			static_assert(I < Size);
 #if HYPERION_HAS_TYPE_PACK_ELEMENT
-			using type = __type_pack_element<I, Head, Types...>;
+        template<usize N, template<typename...> typename List, typename... Types>
+        struct at_unrolled<N, List<Types...>> {
+            using type = __type_pack_element<N, Types...>;
+        };
 #else
-			using type = std::conditional_t<I == Current,
-											Head,
-											typename at_impl<I, Current + 1, Size, Types...>::type>;
-#endif
-		};
+        template<usize N, template<typename...> typename List, typename First>
+        requires (N == 0_usize)
+        struct at_unrolled<N, List<First>> {
+            using type = First;
+        };
 
-		/// we should never reach this case, as the static_assert in the other specializations
-		/// should trigger before hand
-		template<usize I, usize Current, usize Size>
-		struct at_impl<I, Current, Size> {
-			static_assert(I < Size);
-			using type = not_found;
-		};
+        template<usize N, template<typename...> typename List, typename First, typename Second>
+        requires (N <= 1_usize)
+        struct at_unrolled<N, List<First, Second>> {
+            using type = std::conditional_t<N == 0_usize, First, Second>;
+        };
 
-		template<>
-		struct at_impl<0, 0, 0> {
-			using type = not_found;
-		};
+        template<usize N,
+                 template<typename...> typename List,
+                 typename First,
+                 typename Second,
+                 typename Third>
+        requires (N <= 2_usize)
+        struct at_unrolled<N, List<First, Second, Third>> {
+            using type = std::conditional_t<N == 0_usize,
+                                            First,
+                                            std::conditional_t<N == 1_usize, Second, Third>>;
+        };
 
-		static_assert(std::is_same_v<u8, at_impl<0, 0, 4, u8, u16, u32, u64>::type>,
-					  "mpl::at implementation failing");
-		static_assert(std::is_same_v<u16, at_impl<1, 0, 4, u8, u16, u32, u64>::type>,
-					  "mpl::at implementation failing");
-		static_assert(std::is_same_v<u32, at_impl<2, 0, 4, u8, u16, u32, u64>::type>,
-					  "mpl::at implementation failing");
-		static_assert(std::is_same_v<u64, at_impl<3, 0, 4, u8, u16, u32, u64>::type>,
-					  "mpl::at implementation failing");
+        template<usize N,
+                 template<typename...> typename List,
+                 typename First,
+                 typename Second,
+                 typename Third,
+                 typename Fourth>
+        requires (N <= 3_usize)
+        struct at_unrolled<N, List<First, Second, Third, Fourth>> {
+            using type = std::conditional_t<N == 0_usize,
+                                            First,
+                                            std::conditional_t<N == 1_usize,
+                                                               Second,
+                                                               std::conditional_t<N == 2_usize,
+                                                                                  Third,
+                                                                                  Fourth>>>;
+        };
 
-		template<usize I, typename List>
-		struct at_list_impl;
+        template<usize N,
+                 template<typename...> typename List,
+                 typename First,
+                 typename Second,
+                 typename Third,
+                 typename Fourth,
+                 typename Fifth>
+        requires (N <= 4_usize)
+        struct at_unrolled<N, List<First, Second, Third, Fourth, Fifth>> {
+            using type = std::conditional_t<N == 0_usize,
+                                            First,
+                                            std::conditional_t<N == 1_usize,
+                                                               Second,
+                                                               std::conditional_t<N == 2_usize,
+                                                                                  Third,
+                                                                                  std::conditional_t<N == 3_usize,
+                                                                                                     Fourth,
+                                                                                                     Fifth>>>>;
+        };
 
-		// clang-format off
+#endif // HYPERION_HAS_TYPE_PACK_ELEMENT
+       
+        template<usize N, usize Current, typename List>
+        struct at_impl;
 
-		template<usize I, template<typename...> typename List, typename... Types>
-		struct at_list_impl<I, List<Types...>> : at_impl<I, 0, sizeof...(Types), Types...> { };
-
-		// clang-format on
-	} // namespace detail
+        template<usize N, usize Current, template<typename...> typename List, typename Head, typename... Types>
+        struct at_impl<N, Current, List<Head, Types...>> {
+#if HYPERION_HAS_TYPE_PACK_ELEMENT
+            using type = __type_pack_element<N, Head, Types...>;
+#else
+            using type = std::conditional_t<N == Current,
+                                            Head,
+                                            typename at_impl<N, Current + 1_usize, List<Types...>>::type>;
+#endif //HYPERION_HAS_TYPE_PACK_ELEMENT
+        };
+    } // namespace detail
 
 	/// @brief Used to find the `N`th type in the `mpl::list`, `List`
 	///
@@ -142,10 +170,18 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<usize N, typename List>
-	struct at : detail::at_list_impl<N, List> { };
+    requires (N < size_v<List>)
+	struct at {
+        private:
+            static inline constexpr auto size = size_v<List>;
+        public:
+        using type = std::conditional_t<size <= 5_usize,
+                                        typename detail::at_unrolled<N, List>::type,
+                                        typename detail::at_impl<N, 0_usize, List>::type>;
+    };
+	// clang-format on
 
-	/// @brief Alias to `mpl::at<N, List>::type`. Used to get the `N`th type in the `mpl::list`,
-	/// `List`
+	/// @brief Used to find the `N`th type in the `mpl::list`, `List`
 	///
 	/// @tparam N - The index into the list
 	/// @tparam List - The `mpl::list` to get a type from
@@ -158,6 +194,174 @@ namespace hyperion::mpl {
 				  "mpl::at implementation failing");
 	static_assert(std::is_same_v<u64, at_t<3, list<u8, u16, u32, u64>>>,
 				  "mpl::at implementation failing");
+
+	/// @brief Used to get the first type in the `mpl::list`, `List`
+	///
+	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename List>
+	struct first : at<0, List> { };
+
+	/// @brief Alias to `mpl::first::type`. Used to get the first type in the `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename List>
+	using first_t = typename first<List>::type;
+
+	static_assert(std::is_same_v<first_t<list<u8, u16, u32>>, u8>,
+				  "mpl::first implementation failing");
+	static_assert(std::is_same_v<first_t<list<u32, u16, u8>>, u32>,
+				  "mpl::first implementation failing");
+
+	/// @brief Used to get the last type in the `mpl::list`, `List`
+	///
+	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename List>
+	struct last : at<mpl::size_v<List> >= 1_usize ? mpl::size_v<List> - 1_usize : 0_usize, List> {
+	};
+
+	/// @brief Alias to `mpl::last::type`. Used to get the last type in the `mpl::list`, `List`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename List>
+	using last_t = typename last<List>::type;
+
+	static_assert(std::is_same_v<last_t<list<u8, u16, u32>>, u32>,
+				  "mpl::last implementation failing");
+	static_assert(std::is_same_v<last_t<list<u32, u16, u8>>, u8>,
+				  "mpl::last implementation failing");
+
+	namespace detail {
+		template<typename T, typename List>
+		struct contains_unrolled;
+		;
+
+		// clang-format off
+
+		template<typename T, typename List>
+		requires(mpl::size_v<List> == 1_usize)
+        struct contains_unrolled<T, List>
+			: std::conditional_t <std::is_same_v<T, mpl::first_t<List>>, std::true_type, std::false_type> {
+			// clang-format on
+		};
+
+		// clang-format off
+
+		template<typename T, typename List>
+		requires(mpl::size_v<List> == 2_usize)
+        struct contains_unrolled<T, List>
+            : std::conditional_t<
+				  std::is_same_v<T, mpl::at_t<0_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<1_usize, List>>,
+				  std::true_type,
+				  std::false_type> {
+			// clang-format on
+		};
+
+		// clang-format off
+
+		template<typename T, typename List>
+		requires(mpl::size_v<List> == 3_usize)
+        struct contains_unrolled<T, List>
+            : std::conditional_t<
+				  std::is_same_v<T, mpl::at_t<0_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<1_usize, List>>
+				  || std::is_same_v<T, mpl::at_t<2_usize, List>>,
+				  std::true_type,
+				  std::false_type> {
+			// clang-format on
+		};
+
+		// clang-format off
+
+		template<typename T, typename List>
+		requires(mpl::size_v<List> == 4_usize)
+        struct contains_unrolled<T, List>
+            : std::conditional_t<
+				  std::is_same_v<T, mpl::at_t<0_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<1_usize, List>>
+				  || std::is_same_v<T, mpl::at_t<2_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<3_usize, List>>,
+				  std::true_type,
+				  std::false_type> {
+			// clang-format on
+		};
+
+		// clang-format off
+
+		template<typename T, typename List>
+		requires(mpl::size_v<List> == 5_usize)
+        struct contains_unrolled<T, List>
+            : std::conditional_t<
+				  std::is_same_v<T, mpl::at_t<0_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<1_usize, List>>
+				  || std::is_same_v<T, mpl::at_t<2_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<3_usize, List>>
+                  || std::is_same_v<T, mpl::at_t<4_usize, List>>,
+				  std::true_type,
+				  std::false_type> {
+			// clang-format on
+		};
+
+		// clang-format off
+
+		template<typename T, typename... Types>
+		requires(mpl::size_v<mpl::list<Types...>> >= 6_usize)
+        struct contains_impl : public std::true_type {
+			// clang-format on
+		};
+
+		template<typename T, typename Head, typename... Types>
+		struct contains_impl<T, Head, Types...> : std::conditional_t<std::is_same_v<T, Head>,
+																	 std::true_type,
+																	 contains_impl<T, Types...>> {
+		};
+
+		template<typename T>
+		struct contains_impl<T> : std::false_type { };
+
+		template<typename T, typename List>
+		struct contains_list;
+
+		// clang-format off
+
+		template<typename T, template<typename...> typename List, typename... Types>
+        requires (mpl::size_v<List<Types...>> <= 5_usize)
+		struct contains_list<T, List<Types...>> : contains_unrolled<T, List<Types...>> {
+        };
+
+		template<typename T, template<typename...> typename List, typename... Types>
+        requires (mpl::size_v<List<Types...>> >= 6_usize)
+		struct contains_list<T, List<Types...>> : contains_impl<T, Types...> {
+        };
+
+		// clang-format on
+
+		static_assert(contains_list<u8, mpl::list<u8, u16, u8, u64>>::value,
+					  "mpl::contains implementation failing");
+		static_assert(!contains_list<u32, mpl::list<u16, u8, u64>>::value,
+					  "mpl::contains implementation failing");
+
+	} // namespace detail
+
+	/// @brief Used to determine if the given `mpl::list`, `List`, contains the type `T`
+	///
+	/// @tparam T - The type to search for
+	/// @tparam List - The `mpl::list` to search in
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename T, typename List>
+	struct contains : detail::contains_list<T, List> { };
+
+	/// @brief Value of `mpl::contains`. Used to determine if the given `mpl::list`, `List`,
+	/// contains the given type `T`
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/List.h"
+	template<typename T, typename List>
+	static inline constexpr auto contains_v = contains<T, List>::value;
 
 	namespace detail {
 		template<usize N, typename T, typename... Types>
@@ -255,7 +459,7 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
-	inline static constexpr usize max_size_of_v = max_size_of<List>::value;
+	static inline constexpr usize max_size_of_v = max_size_of<List>::value;
 
 	namespace detail {
 		template<usize Instances, typename T, typename... Types>
@@ -300,51 +504,30 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
-	inline static constexpr usize instances_of_v = instances_of<T, List>::value;
-
-	/// @brief Used to get the first type in the `mpl::list`, `List`
-	///
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename List>
-	struct first : at<0, List> { };
-
-	/// @brief Alias to `mpl::first::type`. Used to get the first type in the `mpl::list`, `List`
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename List>
-	using first_t = typename first<List>::type;
-
-	static_assert(std::is_same_v<first_t<list<u8, u16, u32>>, u8>,
-				  "mpl::first implementation failing");
-	static_assert(std::is_same_v<first_t<list<u32, u16, u8>>, u32>,
-				  "mpl::first implementation failing");
+	static inline constexpr usize instances_of_v = instances_of<T, List>::value;
 
 	namespace detail {
-		template<typename... Types>
-		struct size_impl : std::integral_constant<usize, sizeof...(Types)> { };
+		// template<template<typename> typename T,
+		//		 template<typename... Elements>
+		//		 typename List,
+		//		 typename... Elements>
+		// static inline constexpr auto apply_to_list([[maybe_unused]] List<Elements...>&& list)
+		// noexcept { 	return mpl::list<T<Elements>...>{};
+		// }
 
-		template<typename List>
-		struct size_list_impl;
+		template<template<typename...> typename T,
+				 template<typename... Elements>
+				 typename List,
+				 typename... Elements>
+		static inline constexpr auto
+		apply_to_list([[maybe_unused]] List<Elements...>&& list) noexcept {
+			return mpl::list<T<Elements>...>{};
+		}
 
-		template<template<typename...> typename List, typename... Types>
-		struct size_list_impl<List<Types...>> : size_impl<Types...> { };
 	} // namespace detail
 
-	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
-	///
-	/// @tparam List - The `mpl::list` to query the size of
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename List>
-	struct size : detail::size_list_impl<List> { };
+	template<template<typename...> typename T, typename List>
+	using apply_to_list = decltype(detail::apply_to_list<T>(std::declval<List>()));
 
-	/// @brief The value of `mpl::size<List>`. Used to determine the number of elements in the
-	/// `mpl::list`, `List`
-	/// @ingroup mpl
-	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename List>
-	inline static constexpr usize size_v = size<List>::value;
-
+	IGNORE_UNUSED_VALUES_STOP
 } // namespace hyperion::mpl
