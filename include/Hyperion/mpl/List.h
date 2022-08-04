@@ -29,8 +29,6 @@
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/HyperionDef.h>
 
-#include "boost/hana/fwd/type.hpp"
-
 IGNORE_UNUSED_VALUES_START
 #include <boost/hana.hpp>
 IGNORE_UNUSED_VALUES_STOP
@@ -45,8 +43,8 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename... T>
-	struct list {
-	};
+    struct list {
+    };
 
 	namespace detail {
 		template<typename List>
@@ -160,6 +158,11 @@ namespace hyperion::mpl {
                                             Head,
                                             typename at_impl<N, Current + 1_usize, List<Types...>>::type>;
 #endif //HYPERION_HAS_TYPE_PACK_ELEMENT
+        };
+
+        template<usize N, usize Current, template<typename...> typename List>
+        struct at_impl<N, Current, List<>> {
+            using type = void;
         };
     } // namespace detail
 
