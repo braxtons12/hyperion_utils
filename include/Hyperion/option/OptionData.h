@@ -106,13 +106,22 @@ namespace hyperion::option {
 			}
 		}
 		template<typename U>
-		requires concepts::Same<storage_type, std::remove_const_t<std::remove_reference_t<U>>>
+		requires concepts::ConstructibleFrom<storage_type, U> && concepts::NotSame<storage_type, U>
 		constexpr OptionData(const OptionData<U>& data) // NOLINT
-			noexcept(concepts::NoexceptCopyConstructible<storage_type>) requires
-			concepts::CopyConstructible<storage_type> && concepts::Reference<U> {
+			noexcept(concepts::NoexceptCopyConstructible<storage_type>) {
 			if(data.m_is_some) {
 				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 				std::construct_at(std::addressof(m_some), data.get());
+				m_is_some = true;
+			}
+		}
+		template<typename U>
+		requires concepts::ConstructibleFrom<storage_type, U> && concepts::NotSame<storage_type, U>
+		constexpr OptionData(OptionData<U>&& data) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<storage_type>) {
+			if(data.m_is_some) {
+				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+				std::construct_at(std::addressof(m_some), data.extract());
 				m_is_some = true;
 			}
 		}
@@ -170,11 +179,30 @@ namespace hyperion::option {
 			return *this;
 		}
 		// clang-format off
+        
+        template<typename U>
+        constexpr auto operator=(const U& data)
+            noexcept (std::is_nothrow_assignable_v<storage_type, decltype(data)>)
+            -> OptionData&
+            requires std::is_assignable_v<storage_type, decltype(data)>
+        {
+            if(m_is_some) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+                m_some = data;
+            }
+            else {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+                std::construct_at(std::addressof(m_some), data);
+                m_is_some = true;
+            }
+
+            return *this;
+        }
 
 
 		template<typename U>
 		requires concepts::Same<storage_type, std::remove_reference_t<U>>
-		constexpr auto operator=(const OptionData& data)
+		constexpr auto operator=(const OptionData<U>& data)
 			noexcept(concepts::NoexceptCopyable<storage_type>)
 			-> OptionData&
 			requires concepts::Copyable<storage_type> && concepts::Reference<U>
@@ -193,6 +221,7 @@ namespace hyperion::option {
 			}
 			return *this;
 		}
+
 		constexpr auto
 		operator=(OptionData&& data) noexcept(concepts::NoexceptMovable<storage_type>)
 			-> OptionData& requires concepts::Movable<storage_type> {

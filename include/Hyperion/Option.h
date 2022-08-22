@@ -185,6 +185,17 @@ namespace hyperion {
 			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
 			: OptionData(static_cast<const OptionData&>(option)) {
 		}
+		/// @brief Copy Constructor
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
+		template<typename U>
+		requires concepts::ConstructibleFrom<T, U> && concepts::NotSame<T, U>
+		constexpr Option(const Option<U>& option) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<T>) {
+			if(option.is_some()) {
+				static_cast<OptionData&>(*this) = option.as_cref();
+			}
+		}
 		/// @brief Move Constructor
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
@@ -193,16 +204,15 @@ namespace hyperion {
 			: OptionData(static_cast<OptionData&&>(option)) {
 			option = None();
 		}
-		/// @brief Move Constructor
+		/// @brief Copy Constructor
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
-		requires concepts::Same<T, std::remove_const_t<std::remove_reference_t<U>>>
-		constexpr Option(const Option<U>& option) // NOLINT
-			noexcept(concepts::NoexceptCopyConstructible<T>) requires
-			concepts::CopyConstructible<T> && concepts::Reference<U> {
+		requires concepts::ConstructibleFrom<T, U> && concepts::NotSame<T, U>
+		constexpr Option(Option<U>&& option) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<T>) {
 			if(option.is_some()) {
-				static_cast<OptionData&>(*this) = option.as_cref();
+				static_cast<OptionData&>(*this) = option.unwrap();
 			}
 		}
 
@@ -712,12 +722,22 @@ namespace hyperion {
 
 		// clang-format off
 
+        template<typename U>
+        constexpr auto operator=(const U& data)
+            noexcept(std::is_nothrow_assignable_v<T, decltype(data)>)
+            -> Option&
+            requires std::is_assignable_v<T, decltype(data)>
+        {
+            OptionData::operator=(data);
+            return *this;
+        }
+
 		/// @brief Copy assignment operator
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
 		requires concepts::Same<T, std::remove_reference_t<U>>
-		constexpr auto operator=(const Option& option) noexcept(concepts::NoexceptCopyAssignable<T>)
+		constexpr auto operator=(const Option<U>& option) noexcept(concepts::NoexceptCopyAssignable<T>)
 			-> Option&
 			requires concepts::CopyAssignable<T> && concepts::Reference<U>
 		{
