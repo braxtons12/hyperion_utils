@@ -3,7 +3,7 @@
 /// @brief meta-programming functions to determine if a given meta-condition matches the desired
 /// value for various sets of arguments
 /// @version 0.1
-/// @date 2022-07-29
+/// @date 2022-08-07
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -33,62 +33,6 @@
 
 namespace hyperion::mpl {
 
-	namespace detail {
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 typename... Types>
-		struct any_type_satisfies_impl : std::false_type { };
-
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 typename Head,
-				 typename... Types>
-		requires mpl::HasValue<RequirementType> && mpl::HasValue<ConditionType<Head>>
-		struct any_type_satisfies_impl<ConditionType, RequirementType, Head, Types...>
-			: std::conditional_t<
-				  ConditionType<Head>::value == RequirementType::value,
-				  std::true_type,
-				  any_type_satisfies_impl<ConditionType, RequirementType, Types...>> {
-		};
-
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 typename Head,
-				 typename... Types>
-		struct any_type_satisfies_impl<ConditionType, RequirementType, Head, Types...>
-			: std::conditional_t<
-				  std::is_same_v<ConditionType<Head>, RequirementType>,
-				  std::true_type,
-				  any_type_satisfies_impl<ConditionType, RequirementType, Types...>> { };
-
-		template<template<typename> typename ConditionType, typename RequirementType>
-		struct any_type_satisfies_impl<ConditionType, RequirementType> : std::false_type { };
-
-		template<template<typename> typename ConditionType, typename RequirementType, typename List>
-		struct any_type_satisfies_list;
-
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 template<typename...>
-				 typename List,
-				 typename... Types>
-		struct any_type_satisfies_list<ConditionType, RequirementType, List<Types...>>
-			: any_type_satisfies_impl<ConditionType, RequirementType, Types...> { };
-
-		static_assert(any_type_satisfies_list<std::is_integral,
-											  std::true_type,
-											  mpl::list<u8, u32, f32>>::value,
-					  "any_type_satisfies failing");
-		static_assert(any_type_satisfies_list<std::is_floating_point,
-											  std::true_type,
-											  mpl::list<u8, u32, f32>>::value,
-					  "any_type_satisfies failing");
-		static_assert(!any_type_satisfies_list<std::is_floating_point,
-											   std::true_type,
-											   mpl::list<u8, u32, i32>>::value,
-					  "any_type_satisfies failing");
-	} // namespace detail
-
 	/// @brief Meta-programming function to determine that at least one `Type` in the `mpl::list`,
 	/// `List`, satisfies that the value of `ConditionType<Type>` equals the value of
 	/// `RequirementType`.
@@ -111,9 +55,17 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
-	struct any_type_satisfies
-		: detail::any_type_satisfies_list<ConditionType, RequirementType, List> {
-	};
+	static inline constexpr auto any_type_satisfies(List list) {
+		return hana::integral_c<bool, [list]() noexcept {
+			auto satisfied = false;
+			hana::for_each(list, [&satisfied](auto val) noexcept {
+				satisfied = satisfied
+							|| (RequirementType::value
+								== ConditionType<typename decltype(val)::type>::value);
+			});
+			return satisfied;
+		}()>;
+	}
 
 	/// @brief Value of Meta-programming function `any_type_satisfies`. Used to determine that at
 	/// least one type "Type" in the `mpl::list`, `List`, satisfies that the value of
@@ -125,149 +77,39 @@ namespace hyperion::mpl {
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr auto any_type_satisfies_v
-		= any_type_satisfies<ConditionType, RequirementType, List>::value;
+		= decltype(any_type_satisfies<ConditionType, RequirementType>(List{}))::value;
+
+	static_assert(any_type_satisfies_v<std::is_integral, std::true_type, list<u8, f32, f64>>,
+				  "mpl::any_type_satisfies implementation failing");
+	static_assert(
+		!any_type_satisfies_v<std::is_floating_point, std::true_type, list<u8, i32, usize>>,
+		"mpl::any_type_satisfies implementation failing");
 
 	namespace detail {
 		template<template<typename, typename...> typename ConditionType,
 				 typename RequirementType,
 				 typename CheckList,
-				 typename ArgumentList>
-		struct any_type_satisfies_with_arg_list_impl : std::false_type { };
-
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
 				 template<typename...>
-				 typename CheckList,
-				 template<typename...>
-				 typename ArgumentList,
-				 typename... CheckTypes,
-				 typename... ArgumentTypes>
-		struct any_type_satisfies_with_arg_list_impl<ConditionType,
-													 RequirementType,
-													 CheckList<CheckTypes...>,
-													 ArgumentList<ArgumentTypes...>>
-			: std::false_type { };
+				 typename ArgList,
+				 typename... Args>
+		static inline constexpr auto
+		any_type_satisfies_with_arg_list(CheckList list,
+										 [[maybe_unused]] ArgList<Args...> arglist) noexcept {
+			constexpr auto satisfies = [](auto val) noexcept {
+				return RequirementType::value
+					   == ConditionType<typename decltype(val)::type, Args...>::value;
+			};
 
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 template<typename...>
-				 typename CheckList,
-				 template<typename...>
-				 typename ArgumentList,
-				 typename Head,
-				 typename... CheckTypes,
-				 typename... ArgumentTypes>
-		requires mpl::HasValue<ConditionType<Head, ArgumentTypes...>> && mpl::HasValue<
-			RequirementType>
-		struct any_type_satisfies_with_arg_list_impl<ConditionType,
-													 RequirementType,
-													 CheckList<Head, CheckTypes...>,
-													 ArgumentList<ArgumentTypes...>>
-			: std::conditional_t<
-				  ConditionType<Head, ArgumentTypes...>::value == RequirementType::value,
-				  std::true_type,
-				  any_type_satisfies_with_arg_list_impl<ConditionType,
-														RequirementType,
-														CheckList<CheckTypes...>,
-														ArgumentList<ArgumentTypes...>>> {
-		};
-
-		// clang-format off
-
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 template<typename...>
-				 typename CheckList,
-				 template<typename...>
-				 typename ArgumentList,
-				 typename Head,
-				 typename... CheckTypes,
-				 typename... ArgumentTypes>
-		requires(!mpl::HasValue<ConditionType<Head, ArgumentTypes...>>)
-        struct any_type_satisfies_with_arg_list_impl<ConditionType,
-												  RequirementType,
-												  CheckList<Head, CheckTypes...>,
-												  ArgumentList<ArgumentTypes...>>
-			// clang-format on
-			: std::conditional_t<
-				  std::is_same_v<ConditionType<Head, ArgumentTypes...>, RequirementType>,
-				  std::true_type,
-				  any_type_satisfies_with_arg_list_impl<ConditionType,
-														RequirementType,
-														CheckList<CheckTypes...>,
-														ArgumentList<ArgumentTypes...>>> {
-		};
-
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 template<typename...>
-				 typename CheckList,
-				 template<typename...>
-				 typename ArgumentList,
-				 typename... ArgumentTypes>
-		struct any_type_satisfies_with_arg_list_impl<ConditionType,
-													 RequirementType,
-													 CheckList<>,
-													 ArgumentList<ArgumentTypes...>>
-			: std::false_type { };
-
-		template<typename T>
-		struct atswal_val {
-			explicit atswal_val(T _val) : val(_val){};
-			T val;
-		};
-
-		struct atswal1 {
-			explicit atswal1(atswal_val<u8> _value) : value(_value.val) {
-			}
-			u8 value;
-		};
-
-		struct atswal2 {
-			explicit atswal2(atswal_val<f32> _value) : value(_value.val) {
-			}
-			f32 value;
-		};
-
-		struct atswal3 {
-			explicit atswal3(atswal_val<u32> _value) : value(_value.val) {
-			}
-			u32 value;
-		};
-
-		static_assert(any_type_satisfies_with_arg_list_impl<std::is_constructible,
-															std::true_type,
-															mpl::list<atswal1, atswal2, atswal3>,
-															mpl::list<atswal_val<u8>>>::value,
-					  "any_type_satisfies_with_arg_list failing");
-		static_assert(any_type_satisfies_with_arg_list_impl<std::is_constructible,
-															std::true_type,
-															mpl::list<atswal1, atswal2, atswal3>,
-															mpl::list<atswal_val<u32>>>::value,
-					  "any_type_satisfies_with_arg_list failing");
-		static_assert(any_type_satisfies_with_arg_list_impl<std::is_constructible,
-															std::true_type,
-															mpl::list<atswal1, atswal2, atswal3>,
-															mpl::list<atswal_val<f32>>>::value,
-					  "any_type_satisfies_with_arg_list failing");
-		static_assert(!any_type_satisfies_with_arg_list_impl<std::is_constructible,
-															 std::true_type,
-															 mpl::list<atswal1, atswal2, atswal3>,
-															 mpl::list<atswal_val<u16>>>::value,
-					  "any_type_satisfies_with_arg_list failing");
-		static_assert(!any_type_satisfies_with_arg_list_impl<std::is_constructible,
-															 std::true_type,
-															 mpl::list<atswal1, atswal2, atswal3>,
-															 mpl::list<atswal_val<i16>>>::value,
-					  "any_type_satisfies_with_arg_list failing");
+			return hana::integral_c<bool, hana::any_of(list, satisfies)>;
+		}
 	} // namespace detail
 
 	/// @brief Meta-programming function to determine that, given the `mpl::list` `CheckList`,
 	/// containing types `CheckTypes...`, and the `mpl::list` `ArgumentList`, containing types
-	/// `ArgumentTypes...`, at least one type, `Type`, in the `CheckList` satisfies that the value of
-	/// `ConditionType<Type, ArgumentTypes...>` equals the value of `RequirementType`, where
-	/// `RequirementType` is a type that `ConditionType` will compared against.
-	/// For example:
+	/// `ArgumentTypes...`, at least one type, `Type`, in the `CheckList` satisfies that the
+	/// value of `ConditionType<Type, ArgumentTypes...>` equals the value of `RequirementType`,
+	/// where `RequirementType` is a type that `ConditionType` will compared against. For
+	/// example:
 	///
 	/// @code {.cpp}
 	/// static_assert(
@@ -278,101 +120,74 @@ namespace hyperion::mpl {
 	///     >::value);
 	/// @endcode
 	///
-	/// will check that `std::is_constructible<T, u8>::value` is true for at least one of `T` equal
-	/// `u64` and/or `umax`
+	/// will check that `std::is_constructible<T, u8>::value` is true for at least one of `T`
+	/// equal `u64` and/or `umax`
 	///
 	/// @tparam ConditionType - The condition to check for each
 	/// combination of `<Evaluatee, Type>`
 	/// @tparam RequirementType - The required value of `ConditionType`
 	/// @tparam CheckList - The `mpl::list` of each type to check `ConditionType` for
-	/// @tparam ArgumentList - The `mpl::list` of argument types to use as the additional arguments
-	/// for `ConditionType`
-    /// @ingroup mpl
+	/// @tparam ArgList - The `mpl::list` of argument types to use as the additional
+	/// arguments for `ConditionType`
+	/// @ingroup mpl
 	template<template<typename, typename...> typename ConditionType,
 			 typename RequirementType,
 			 typename CheckList,
-			 typename ArgumentList>
-	struct any_type_satisfies_with_arg_list
-		: detail::any_type_satisfies_with_arg_list_impl<ConditionType,
-														RequirementType,
-														CheckList,
-														ArgumentList> { };
+			 typename ArgList>
+	static inline constexpr auto
+	any_type_satisfies_with_arg_list(CheckList _list, [[maybe_unused]] ArgList arglist) noexcept
+		-> bool {
+		constexpr auto satisfies = [arglist](auto val) noexcept {
+			constexpr auto satisfies_impl = [](auto... vals) {
+				return RequirementType::value
+					   == ConditionType<typename decltype(val)::type,
+										typename decltype(vals)::type...>::value;
+			};
 
-	/// @brief Value of Meta-programming function `any_type_satisfies_with_arg_list`. Used to check
-    /// that, given the `mpl::list` `CheckList`, containing types `CheckTypes...`, and the
-    /// `mpl::list` `ArgumentList`, containing types `ArgumentTypes...`, at least one type, `Type`,
-    /// in the `CheckList` satisfies that the value of `ConditionType<Type, ArgumentTypes...>`
-    /// equals the value of `RequirementType`.
-    ///
+			return hana::unpack(arglist, satisfies_impl);
+		};
+
+		return hana::any_of(_list, satisfies);
+	}
+
+	/// @brief Value of Meta-programming function `any_type_satisfies_with_arg_list`. Used to
+	/// check that, given the `mpl::list` `CheckList`, containing types `CheckTypes...`, and the
+	/// `mpl::list` `ArgumentList`, containing types `ArgumentTypes...`, at least one type,
+	/// `Type`, in the `CheckList` satisfies that the value of `ConditionType<Type,
+	/// ArgumentTypes...>` equals the value of `RequirementType`.
+	///
 	/// @tparam ConditionType - The condition to check for each
 	/// combination of `<Evaluatee, Type>`
 	/// @tparam RequirementType - The required value of `ConditionType`
 	/// @tparam CheckList - The `mpl::list` of each type to check `ConditionType` for
-	/// @tparam ArgumentList - The `mpl::list` of argument types to use as the additional arguments
-	/// for `ConditionType`
-    /// @ingroup mpl
+	/// @tparam ArgList - The `mpl::list` of argument types to use as the additional
+	/// arguments for `ConditionType`
+	/// @ingroup mpl
 	template<template<typename, typename...> typename ConditionType,
 			 typename RequirementType,
 			 typename CheckList,
-			 typename ArgumentList>
+			 typename ArgList>
 	static inline constexpr auto any_type_satisfies_with_arg_list_v
-		= any_type_satisfies_with_arg_list<ConditionType,
-										   RequirementType,
-										   CheckList,
-										   ArgumentList>::value;
+		= any_type_satisfies_with_arg_list<ConditionType, RequirementType>(CheckList{}, ArgList{});
 
 	namespace detail {
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 typename... Types>
-		struct all_types_satisfy_impl : std::true_type { };
+		class atswal_test {
+		  public:
+			atswal_test(i32, f32);
+			i32 first;
+			f32 second;
+		};
 
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 typename Head,
-				 typename... Types>
-		struct all_types_satisfy_impl<ConditionType, RequirementType, Head, Types...>
-			: std::conditional_t<
-				  !(std::is_same_v<
-						ConditionType<Head>,
-						RequirementType> || ConditionType<Head>::value == RequirementType::value),
-				  std::false_type,
-				  all_types_satisfy_impl<ConditionType, RequirementType, Types...>> { };
-
-		template<template<typename> typename ConditionType, typename RequirementType>
-		struct all_types_satisfy_impl<ConditionType, RequirementType> : std::true_type { };
-
-		namespace test {
-			static_assert(all_types_satisfy_impl<std::is_trivially_destructible,
-											 std::true_type,
-											 u8,
-											 u16,
-											 u32,
-											 u64>::value,
-						  "mpl::for_all implementation failing");
-			static_assert(!all_types_satisfy_impl<std::is_trivially_destructible,
-											  std::true_type,
-											  u8,
-											  u16,
-											  std::string,
-											  u64>::value,
-						  "mpl::for_all implementation failing");
-		} // namespace test
-
-		template<template<typename> typename ConditionType, typename RequirementType, typename List>
-		struct all_types_satisfy_list_impl;
-
-		// clang-format off
-
-		template<template<typename> typename ConditionType,
-				 typename RequirementType,
-				 template<typename...>
-				 typename List,
-				 typename... Types>
-		struct all_types_satisfy_list_impl<ConditionType, RequirementType, List<Types...>>
-			: all_types_satisfy_impl<ConditionType, RequirementType, Types...> { };
-
-		// clang-format on
+		static_assert(any_type_satisfies_with_arg_list_v<std::is_constructible,
+														 std::true_type,
+														 list<f32, usize, atswal_test>,
+														 list<i32, f32>>,
+					  "mpl::any_type_satisfies_with_arg_list implementation failing");
+		static_assert(!any_type_satisfies_with_arg_list_v<std::is_constructible,
+														  std::true_type,
+														  list<f32, usize>,
+														  list<i32, f32>>,
+					  "mpl::any_type_satisfies_with_arg_list implementation failing");
 	} // namespace detail
 
 	/// @brief Meta-programming function to determine that every type `Type` in the `mpl::list`,
@@ -381,7 +196,8 @@ namespace hyperion::mpl {
 	/// For example:
 	///
 	/// @code {.cpp}
-	/// all_types_satisfy<std::is_trivially_destructible, std::true_type, mpl::list<u8, u16, u32>>;
+	/// all_types_satisfy<std::is_trivially_destructible, std::true_type, mpl::list<u8, u16,
+	/// u32>>;
 	/// @endcode
 	///
 	/// Checks that `std::is_trivially_destructible<T>` is true for each of `T` equal to `u8`,
@@ -394,101 +210,34 @@ namespace hyperion::mpl {
 	/// @headerfile "Hyperion/mpl/ForAll.h"
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
-	struct all_types_satisfy : detail::all_types_satisfy_list_impl<ConditionType, RequirementType, List> {
-	};
+	static inline constexpr auto all_types_satisfy(List list) noexcept {
+		return hana::integral_c<bool, [list]() noexcept {
+			auto satisfied = true;
+			hana::for_each(list, [&satisfied](auto val) noexcept {
+				satisfied = satisfied
+							&& (RequirementType::value
+								== ConditionType<typename decltype(val)::type>::value);
+			});
+			return satisfied;
+		}()>;
+	}
 
 	/// @brief Value of Meta-programming function `for_all`. Used to determine that every type
-	/// "Type" in the `mpl::list`, `List`, satisfies that the value of `ConditionType<Type>` equals
-	/// the value of `RequirementType`
+	/// "Type" in the `mpl::list`, `List`, satisfies that the value of `ConditionType<Type>`
+	/// equals the value of `RequirementType`
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr bool all_types_satisfy_v
-		= all_types_satisfy<ConditionType, RequirementType, List>::value;
+		= decltype(all_types_satisfy<ConditionType, RequirementType>(List{}))::value;
 
-	namespace detail {
-		template<template<template<typename, typename...> typename ConditionType,
-						  typename RequirementType,
-						  typename Evaluatee,
-						  typename... Types>
-				 typename MetaFunction,
-				 template<typename, typename...>
-				 typename ConditionType,
-				 typename RequirementType,
-				 typename Evaluatee,
-				 typename... Types>
-		struct for_parameters_in_list_captured_impl
-			: public MetaFunction<ConditionType, RequirementType, Evaluatee, Types...> { };
+	static_assert(
+		all_types_satisfy_v<std::is_default_constructible, std::true_type, list<u8, u32, f32>>,
+		"mpl::all_types_satisfy implementation failing");
+	static_assert(!all_types_satisfy_v<std::is_integral, std::true_type, list<u8, u32, f32>>,
+				  "mpl::all_types_satisfy implementation failing");
 
-		template<template<template<typename, typename...> typename ConditionType,
-						  typename RequirementType,
-						  typename Evaluatee,
-						  typename... Types>
-				 typename MetaFunction,
-				 template<typename, typename...>
-				 typename ConditionType,
-				 typename RequirementType,
-				 typename Evaluatee,
-				 typename List>
-		struct for_parameters_in_list_impl;
-
-		template<template<template<typename, typename...> typename ConditionType,
-						  typename RequirementType,
-						  typename Evaluatee,
-						  typename... Types>
-				 typename MetaFunction,
-				 template<typename, typename...>
-				 typename ConditionType,
-				 typename RequirementType,
-				 typename Evaluatee,
-				 template<typename...>
-				 typename List,
-				 typename... Types>
-		struct for_parameters_in_list_impl<MetaFunction,
-										   ConditionType,
-										   RequirementType,
-										   Evaluatee,
-										   List<Types...>>
-			: public for_parameters_in_list_captured_impl<MetaFunction,
-														  ConditionType,
-														  RequirementType,
-														  Evaluatee,
-														  Types...> { };
-
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 typename Evaluatee,
-				 typename... Types>
-		struct for_all_parameters_in_list_impl
-			: public std::conditional_t<
-				  std::is_same_v<
-					  ConditionType<Evaluatee, Types...>,
-					  RequirementType> || ConditionType<Evaluatee, Types...>::value == RequirementType::value,
-				  std::true_type,
-				  std::false_type> { };
-
-		template<typename T>
-		struct is_true : std::conditional_t<T::value, std::true_type, std::false_type> { };
-
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 typename Evaluatee,
-				 template<typename...>
-				 typename Lists,
-				 typename... List>
-		struct all_lists_satisfy_for_type_impl
-			: public all_types_satisfy<
-				  detail::is_true,
-				  std::true_type,
-				  mpl::list<for_parameters_in_list_impl<detail::for_all_parameters_in_list_impl,
-														ConditionType,
-														RequirementType,
-														Evaluatee,
-														List>...>> { };
-
-	} // namespace detail
-
-	/// @brief Meta-programming function to determine that for every list of types, `Types...` in
-	/// `Lists`, the value of `ConditionType<Evaluatee, Types...>` is equal to the value of
+	/// @brief Meta-programming function to determine that for every list of types, `Types...`
+	/// in `Lists`, the value of `ConditionType<Evaluatee, Types...>` is equal to the value of
 	/// `RequirementType`
 	///
 	/// For example:
@@ -497,8 +246,8 @@ namespace hyperion::mpl {
 	/// 	mpl::list<mpl::list<usize, char>, mpl::list<const char*, usize>>>;
 	/// @endcode
 	///
-	/// will check that `std::is_constructible<std::string, Types...>::value` is true for `Types...`
-	/// equal to the list `usize, char` and equal to the list `const char*, usize`.
+	/// will check that `std::is_constructible<std::string, Types...>::value` is true for
+	/// `Types...` equal to the list `usize, char` and equal to the list `const char*, usize`.
 	///
 	/// @tparam ConditionType - The condition to check for each
 	/// combination of `<Evaluatee, Types...>`
@@ -510,29 +259,29 @@ namespace hyperion::mpl {
 			 HasValue RequirementType,
 			 typename Evaluatee,
 			 typename Lists>
-	struct all_lists_satisfy_for_type;
+	static inline constexpr auto all_lists_satisfy_for_type(Lists lists) noexcept {
+		return hana::integral_c<bool, [lists]() noexcept {
+			auto satisfied = true;
+			hana::for_each(lists, [&satisfied](auto list) noexcept {
+				constexpr auto satisfies = [](auto... types) noexcept {
+					return RequirementType::value
+						   == ConditionType<Evaluatee, typename decltype(types)::type...>::value;
+				};
 
-	template<template<typename, typename...> typename ConditionType,
-			 HasValue RequirementType,
-			 typename Evaluatee,
-			 template<typename...>
-			 typename List,
-			 typename... Lists>
-	requires HasValue<ConditionType<Evaluatee, mpl::first_t<mpl::first_t<List<Lists...>>>>>
-	struct all_lists_satisfy_for_type<ConditionType, RequirementType, Evaluatee, List<Lists...>>
-		: detail::all_lists_satisfy_for_type_impl<ConditionType,
-											   RequirementType,
-											   Evaluatee,
-											   List,
-											   Lists...> {
-	};
+				using list_t = typename decltype(list)::type;
+				satisfied = satisfied && hana::unpack(list_t{}, satisfies);
+			});
+			return satisfied;
+		}()>;
+	}
 
 	template<template<typename, typename...> typename ConditionType,
 			 HasValue RequirementType,
 			 typename Evaluatee,
 			 typename Lists>
 	static inline constexpr bool all_lists_satisfy_for_type_v
-		= all_lists_satisfy_for_type<ConditionType, RequirementType, Evaluatee, Lists>::value;
+		= decltype(all_lists_satisfy_for_type<ConditionType, RequirementType, Evaluatee>(
+			Lists{}))::value;
 
 	namespace detail::test {
 		struct AllListsSatisfyTest1 {
@@ -544,28 +293,40 @@ namespace hyperion::mpl {
 			}
 		};
 
+		struct AllListsSatisfyTest2 {
+			// NOLINTNEXTLINE
+			AllListsSatisfyTest2(u8) {
+			}
+			// NOLINTNEXTLINE
+			AllListsSatisfyTest2(f32) {
+			}
+			// NOLINTNEXTLINE
+			AllListsSatisfyTest2(i64) {
+			}
+		};
+
 		static_assert(all_lists_satisfy_for_type_v<std::is_constructible,
-												std::true_type,
-												AllListsSatisfyTest1,
-												mpl::list<mpl::list<u8, u8, u8, u8>,
-														  mpl::list<u16, u16, u16, u16>,
-														  mpl::list<u32, u32, u32, u32>>>,
+												   std::true_type,
+												   AllListsSatisfyTest1,
+												   mpl::list<mpl::list<u8, u8, u8, u8>,
+															 mpl::list<u16, u16, u16, u16>,
+															 mpl::list<u32, u32, u32, u32>>>,
 					  "all_lists_satisfy_for_type failing");
 
 		static_assert(!all_lists_satisfy_for_type_v<std::is_constructible,
-												 std::true_type,
-												 AllListsSatisfyTest1,
-												 mpl::list<mpl::list<u8, u8, u32, u32>,
-														   mpl::list<u16, u16, u16, u16>,
-														   mpl::list<u32, u32, u8, u8>>>,
+													std::true_type,
+													AllListsSatisfyTest1,
+													mpl::list<mpl::list<u8, u8, u32, u32>,
+															  mpl::list<u16, u16, u16, u16>,
+															  mpl::list<u32, u32, u8, u8>>>,
 					  "all_lists_satisfy_for_type failing");
 
 		static_assert(!all_lists_satisfy_for_type_v<std::is_constructible,
-												 std::true_type,
-												 AllListsSatisfyTest1,
-												 mpl::list<mpl::list<i8, i8, i8, i8>,
-														   mpl::list<i16, i16, i16, i16>,
-														   mpl::list<i32, i32, i32, i32>>>,
+													std::true_type,
+													AllListsSatisfyTest1,
+													mpl::list<mpl::list<i8, i8, i8, i8>,
+															  mpl::list<i16, i16, i16, i16>,
+															  mpl::list<i32, i32, i32, i32>>>,
 					  "all_lists_satisfy_for_type failing");
 
 		static_assert(all_lists_satisfy_for_type_v<
@@ -574,5 +335,11 @@ namespace hyperion::mpl {
 						  std::string,
 						  mpl::list<mpl::list<usize, char>, mpl::list<const char*, usize>>>,
 					  "all_lists_satisfy_for_type failing");
+
+		static_assert(all_lists_satisfy_for_type_v < std::is_constructible,
+					  std::true_type,
+					  AllListsSatisfyTest2,
+					  mpl::apply_to_list<mpl::list, mpl::list<u8, f32, i64>>>,
+					  "mpl::all_lists_satisfy_for_type implementation failing");
 	} // namespace detail::test
 } // namespace hyperion::mpl

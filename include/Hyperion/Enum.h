@@ -1,3 +1,30 @@
+/// @file Enum.h
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief An alternative to std::variant with improved compile time and runtime performance and
+/// additional features
+/// @version 0.1
+/// @date 2022-08-21
+///
+/// MIT License
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to
+/// deal in the Software without restriction, including without limitation the
+/// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+/// sell copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+/// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+/// IN THE SOFTWARE.
 #pragma once
 
 #include <Hyperion/HyperionDef.h>
@@ -40,50 +67,65 @@ namespace hyperion {
 		using size_type = typename tags::size_type;
 		static constexpr auto SIZE = static_cast<size_type>(tags::SIZE);
 
-		template<usize Index>
+		template<usize Index, std::enable_if_t<(Index < SIZE), bool> = true>
 		using variant = typename tags::template variant<Index>;
 
         template<typename T>
+        requires mpl::contains_v<T, list>
         static inline constexpr auto variant_index = mpl::index_of_v<T, list>;
 
 	  private:
-		size_type m_current_index = SIZE + static_cast<size_type>(1);
+		size_type m_current_index = SIZE;
 
 		template<usize Index, typename... Args>
-		static inline consteval auto check_constructible() noexcept -> bool {
-			using arg_list = mpl::list<Args...>;
+        requires (Index < SIZE)
+		static inline consteval auto check_constructible() noexcept -> std::pair<bool, usize> {
 			using current = variant<Index>;
-			using next_variant = variant<Index + 1_usize>;
-			using first = mpl::first_t<arg_list>;
+
+            constexpr auto constructible = concepts::ConstructibleFrom<current, Args...>;
+
+            if constexpr(constructible) {
+                return {true, Index};
+            }
 
 			if constexpr(Index + 1_usize < SIZE) {
+			    using next_variant = variant<Index + 1_usize>;
 				if constexpr(!concepts::Same<next_variant, detail::None>) {
-					if constexpr(SIZE == 1_usize) {
-						return concepts::Same<
-								   current,
-								   first> || concepts::ConstructibleFrom<current, Args...>;
-					}
-
-					return concepts::ConstructibleFrom<
-							   current,
-							   Args...> || check_constructible<Index + 1_usize, Args...>();
+					return check_constructible<Index + 1_usize, Args...>();
 				}
 			}
 
-			if constexpr(SIZE == 1_usize) {
-				return concepts::Same<current,
-									  first> || concepts::ConstructibleFrom<current, Args...>;
+			return {false, SIZE};
+		}
+
+		template<usize Index, typename Arg>
+        requires (Index < SIZE)
+		static inline consteval auto check_assignable() noexcept -> std::pair<bool, usize> {
+			using current = variant<Index>;
+
+            constexpr auto assignable = concepts::Assignable<current, Arg>;
+
+            if constexpr(assignable) {
+                return {true, Index};
+            }
+
+			if constexpr(Index + 1_usize < SIZE) {
+                using next_variant = variant<Index + 1_usize>;
+				if constexpr(!concepts::Same<next_variant, detail::None>) {
+					return check_assignable<Index + 1_usize, Arg>();
+				}
 			}
 
-			return concepts::ConstructibleFrom<current, Args...>;
+			return {false, SIZE};
 		}
 
 	  public:
 		// default-constructs as the first variant
-		constexpr Enum() noexcept(concepts::NoexceptDefaultConstructible<variant<0>>) requires
-			concepts::DefaultConstructible<variant<0>> {
+		constexpr Enum() noexcept(concepts::NoexceptDefaultConstructible<variant<0>>)
+            requires concepts::DefaultConstructible<variant<0>>
+        {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-			construct<0_usize>();
+			construct<0_usize, true>();
 			set_index(0_usize);
 		}
 
@@ -95,9 +137,9 @@ namespace hyperion {
 				                                             std::true_type,
 				                                             list,
 				                                             mpl::list<T>>)
-            requires(check_constructible<0, decltype(value)>())
+            requires(check_constructible<0, decltype(value)>().first)
         {
-			construct<0_usize>(std::forward<T>(value));
+			construct<check_constructible<0, decltype(value)>().second, true>(std::forward<T>(value));
 		}
 
 		// constructs the variant indicated by `T` from `args...`
@@ -119,7 +161,10 @@ namespace hyperion {
 			if(!value.is_valueless()) {
 				const auto idx = value.get_index();
 				mpl::call_with_index<SIZE>(idx, [this, &value](auto index) noexcept {
-                    this->construct<0_usize>(value.get_with_index(index));
+                    this->template construct<
+                          check_constructible<0_usize,
+                                              decltype(value.get_with_index(index))>().second, true>(
+                            value.get_with_index(index));
 				});
 			}
 		}
@@ -132,35 +177,54 @@ namespace hyperion {
 			if(!value.is_valueless()) {
 				const auto idx = value.get_index();
 				mpl::call_with_index<SIZE>(idx, [this, &value](auto index) noexcept {
-					this->construct<0_usize>(std::move(value).get_with_index(index));
+                    this->template construct<
+                          check_constructible<0_usize,
+                                              decltype(std::move(value).get_with_index(index))>().second, true>(
+                            std::move(value).get_with_index(index));
 				});
 			}
 		}
 
-		constexpr ~Enum() noexcept(
-			mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>) requires
-			mpl::all_types_satisfy_v<std::is_destructible, std::true_type, list> {
-            if constexpr(!mpl::all_types_satisfy_v<std::is_trivially_destructible,
-                                                   std::true_type,
+// work around for clang not-yet supporting multiple destructors
+#if HYPERION_PLATFORM_COMPILER_CLANG
+        constexpr ~Enum()
+            noexcept(mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
+        {
+            if constexpr(mpl::any_type_satisfies_v<std::is_trivially_destructible,
+                                                   std::false_type,
                                                    list>)
             {
-                destruct<0_usize>(get_index());
+                destruct(get_index());
             }
-			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-			std::construct_at(std::addressof(this->m_none));
+        }
+#else
+
+        // destructor to use if __any__ type in `list` is __not__ trivially destructible
+		constexpr ~Enum()
+            noexcept(mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
+            requires(mpl::any_type_satisfies_v<std::is_trivially_destructible, std::false_type, list>)
+		{
+            destruct(get_index());
 		}
+        // destructor to use if all types in `list` are trivially destructible
+        // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
+        constexpr ~Enum() noexcept = default;
+#endif
+
 
 		constexpr auto operator=(const Enum& value) noexcept(
 			mpl::all_types_satisfy_v<std::is_nothrow_copy_constructible, std::true_type, list>)
 			-> Enum& requires
-			mpl::all_types_satisfy_v<std::is_copy_constructible, std::true_type, list> {
+			mpl::all_types_satisfy_v<std::is_copy_assignable, std::true_type, list> {
 			if(this == &value) {
 				return *this;
 			}
 
 			const auto idx = value.get_index();
 			mpl::call_with_index<SIZE>(idx, [this, &value](auto index) noexcept {
-				this->assign<0_usize>(value.get_with_index(index));
+				this->template assign<check_assignable<0_usize,
+                                              decltype(value.get_with_index(index))>().second, true>(
+                      value.get_with_index(index));
 			});
 
 			return *this;
@@ -176,9 +240,27 @@ namespace hyperion {
 
 			const auto idx = value.get_index();
 			mpl::call_with_index<SIZE>(idx, [this, val = std::move(value)](auto index) noexcept {
-				this->assign<0_usize>(std::move(val).get_with_index(index));
+				this->template assign<check_assignable<0_usize,
+                                              decltype(std::move(val).get_with_index(index))>().second, true>(
+                      std::move(val).get_with_index(index));
 			});
 
+			return *this;
+		}
+
+		template<typename T>
+		requires mpl::any_type_satisfies_with_arg_list_v<std::is_assignable,
+														 std::true_type,
+														 list,
+														 mpl::list<T>>
+        // NOLINTNEXTLINE
+		constexpr auto operator=(T&& value) noexcept(
+			mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_assignable,
+													std::true_type,
+													list,
+													mpl::list<T>>) -> Enum& requires concepts::NotSame<std::remove_cvref_t<decltype(value)>, Enum> {
+			this->template assign<check_assignable<0_usize, decltype(value)>().second, true>(
+                    std::forward<T>(value));
 			return *this;
 		}
 
@@ -187,7 +269,7 @@ namespace hyperion {
         constexpr auto emplace(Args&& ...args)
             noexcept(concepts::NoexceptConstructibleFrom<variant<N>, Args...>) -> void {
             if(!is_valueless()) {
-                destruct<0_usize>(get_index());
+                destruct(get_index());
             }
 
             construct<N, true>(std::forward<Args>(args)...);
@@ -198,25 +280,11 @@ namespace hyperion {
         constexpr auto emplace(Args&& ...args)
             noexcept(concepts::NoexceptConstructibleFrom<T, Args...>) -> void {
             if(!is_valueless()) {
-                destruct<0_usize>(get_index());
+                destruct(get_index());
             }
 
             construct<variant_index<T>, true>(std::forward<Args>(args)...);
         }
-
-		template<typename T>
-		requires mpl::any_type_satisfies_with_arg_list_v<std::is_assignable,
-														 std::true_type,
-														 list,
-														 mpl::list<T>>
-		constexpr auto operator=(T&& value) noexcept(
-			mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_assignable,
-													std::true_type,
-													list,
-													mpl::list<T>>) -> Enum& {
-			assign<0_usize>(std::forward<T>(value));
-			return *this;
-		}
 
 		[[nodiscard]] inline constexpr auto get_index() const noexcept -> size_type {
 			return m_current_index;
@@ -246,7 +314,7 @@ namespace hyperion {
         }
 
         [[nodiscard]] inline constexpr auto is_valueless() const noexcept -> bool {
-            return m_current_index > SIZE;
+            return m_current_index == SIZE;
         }
 
       private:
@@ -313,16 +381,19 @@ namespace hyperion {
                         });
 		}
 
-
+      private:
+        template<typename T>
+        using make_list_of_lists = mpl::apply_to_list<mpl::list, T>;
+      public:
 		template<typename... F>
 		requires (mpl::all_lists_satisfy_for_type_v<std::is_invocable,
 												   std::true_type,
 												   decltype(Overload{std::declval<F>()...}),
-												   mpl::apply_to_list<mpl::list, list>>
+												   make_list_of_lists<list>>
                  || mpl::all_lists_satisfy_for_type_v<std::is_invocable,
                                                       std::true_type,
 												      decltype(Overload{std::declval<F>()...}),
-                                                      mpl::apply_to_list<mpl::list, list_as_const_ref>>)
+                                                      make_list_of_lists<list_as_const_ref>>)
 		[[nodiscard]] inline constexpr auto match(F&& ...functions) const
             noexcept(mpl::all_lists_satisfy_for_type_v<std::is_nothrow_invocable,
 											           std::true_type,
@@ -386,7 +457,7 @@ namespace hyperion {
 
         template<usize N>
         requires(N < SIZE)
-        [[nodiscard]] inline constexpr auto get() const& noexcept {
+        [[nodiscard]] inline constexpr auto get() const& noexcept -> const_reference<variant<N>> {
             if(!is_variant<N>()) {
                 panic("get<{}>() called on variant when it currently holds variant {}",
                       N,
@@ -398,7 +469,7 @@ namespace hyperion {
 
         template<usize N>
         requires(N < SIZE)
-        [[nodiscard]] inline constexpr auto get() && noexcept {
+        [[nodiscard]] inline constexpr auto get() && noexcept -> rvalue_reference<variant<N>> {
             if(!is_variant<N>()) {
                 panic("get<{}>() called on variant when it currently holds variant {}",
                       N,
@@ -410,7 +481,7 @@ namespace hyperion {
 
         template<usize N>
         requires(N < SIZE)
-        [[nodiscard]] inline constexpr auto get() const&& noexcept {
+        [[nodiscard]] inline constexpr auto get() const&& noexcept -> const_rvalue_reference<variant<N>> {
             if(!is_variant<N>()) {
                 panic("get<{}>() called on variant when it currently holds variant {}",
                       N,
@@ -422,7 +493,7 @@ namespace hyperion {
 
 		template<typename T>
 		requires mpl::contains_v<T, list>
-		[[nodiscard]] inline constexpr auto get() & noexcept {
+		[[nodiscard]] inline constexpr auto get() & noexcept -> reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
                       variant_index<T>,
@@ -434,7 +505,7 @@ namespace hyperion {
 
 		template<typename T>
 		requires mpl::contains_v<T, list>
-		[[nodiscard]] inline constexpr auto get() const& noexcept {
+		[[nodiscard]] inline constexpr auto get() const& noexcept -> const_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
                       variant_index<T>,
@@ -446,7 +517,7 @@ namespace hyperion {
 
 		template<typename T>
 		requires mpl::contains_v<T, list>
-		[[nodiscard]] inline constexpr auto get() && noexcept {
+		[[nodiscard]] inline constexpr auto get() && noexcept -> rvalue_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
                       variant_index<T>,
@@ -458,7 +529,7 @@ namespace hyperion {
 
 		template<typename T>
 		requires mpl::contains_v<T, list>
-		[[nodiscard]] inline constexpr auto get() const&& noexcept {
+		[[nodiscard]] inline constexpr auto get() const&& noexcept -> const_rvalue_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
                       variant_index<T>,
@@ -521,7 +592,7 @@ namespace hyperion {
 														std::add_lvalue_reference_t<T>>;
 
 		template<typename T, typename U>
-		using get_ret = std::conditional_t<std::is_const_v<U>,
+		using get_ret = std::conditional_t<std::is_const_v<std::remove_reference_t<U>>,
 										   get_correct_ref_qual<std::add_const_t<T>, U>,
 										   get_correct_ref_qual<T, U>>;
 
@@ -565,7 +636,8 @@ namespace hyperion {
 
 		template<typename T, typename Union>
 		requires mpl::contains_v<T, list>
-		[[nodiscard]] static inline constexpr auto get_impl(Union&& self) noexcept {
+		[[nodiscard]] static inline constexpr auto
+        get_impl(Union&& self) noexcept -> get_ret<T, decltype(self)> {
 			// NOLINTNEXTLINE(readability-identifier-length)
 			constexpr auto N = mpl::index_of_v<T, list>;
 			return get_impl<N>(std::forward<Union>(self));
@@ -598,26 +670,84 @@ namespace hyperion {
 			return std::move(*this).template get<N>();
 		}
 
-		template<usize Index>
+        template<usize Index>
+        struct do_destruct {
+            static constexpr bool value = false;
+        };
+
+        template<usize Index>
+        requires (Index < SIZE)
+        struct do_destruct<Index> {
+            static constexpr bool value = (std::is_class_v<variant<Index>>
+                                             || (std::is_union_v<variant<Index>>
+                                                 && concepts::Destructible<variant<Index>>))
+                                            && !std::is_trivially_destructible_v<variant<Index>>;
+        };
+
+        template<usize Index>
+        static constexpr bool do_destruct_v = do_destruct<Index>::value;
+
+        template<usize Index>
+        inline constexpr auto destruct_with_index([[maybe_unused]] mpl::index<Index> index)
+            noexcept(concepts::NoexceptDestructible<variant<Index>>)
+        {
+            if constexpr(do_destruct_v<Index>) {
+                get_impl<Index>(*this).~variant<Index>();
+            }
+        }
+
 		inline constexpr auto
+        // NOLINTNEXTLINE(readability-function-cognitive-complexity
 		destruct(usize current_index) noexcept(concepts::AllNoexceptDestructible<list>) -> void {
-			using variant = variant<Index>;
 			if(!is_valueless()) {
-				if(current_index == Index) {
-					if constexpr(
-						(std::is_class_v<variant>
-                         || (std::is_union_v<variant> && concepts::Destructible<variant>))
-						&& !std::is_trivially_destructible_v<variant>)
-					{
-						get_impl<Index>(*this).~variant();
-					}
-				}
-				else if constexpr(Index + 1_usize < SIZE) {
-					if constexpr(!concepts::Same<next_variant<Index + 1_usize>, detail::None>) {
-						destruct<Index + 1_usize>(current_index);
-					}
-				}
-				set_index(SIZE + 1_usize);
+                if constexpr(SIZE <= 5_usize) {
+                    switch(current_index) {
+                        case 0_usize:
+                            if constexpr(do_destruct_v<0_usize>) {
+                                  using variant = variant<0_usize>;
+                                  // NOLINTNEXTLINE
+                                  this->m_first.~variant();
+                            }
+                            break;
+                        case 1_usize:
+                            if constexpr(do_destruct_v<1_usize>) {
+                                  using variant = variant<1_usize>;
+                                  // NOLINTNEXTLINE
+                                  this->m_second.~variant();
+                            }
+                            break;
+                        case 2_usize:
+                            if constexpr(do_destruct_v<2_usize>)
+                            {
+                                  // NOLINTNEXTLINE
+                                  this->m_third.~variant();
+                            }
+                            break;
+                        case 3_usize:
+                            if constexpr(do_destruct_v<3_usize>)
+                            {
+                                  // NOLINTNEXTLINE
+                                  this->m_fourth.~variant();
+                            }
+                            break;
+                        case 4_usize:
+                            if constexpr(do_destruct_v<4_usize>)
+                            {
+                                  using variant = variant<4_usize>;
+                                  // NOLINTNEXTLINE
+                                  this->m_fifth.~variant();
+                            }
+                            break;
+                        default:
+                            HYPERION_UNREACHABLE();
+                    }
+                }
+                else {
+                    mpl::call_with_index(current_index, [this](auto index) {
+                        destruct_with_index(index);
+                    });
+                }
+				set_index(SIZE);
 			}
 		}
 
@@ -637,7 +767,7 @@ namespace hyperion {
 			if constexpr(constructible) {
 				try {
 					if(!is_valueless()) {
-						destruct<Index>(get_index());
+						destruct(get_index());
 					}
 
 					std::construct_at(std::addressof(get_impl<Index>(*this)), std::forward<Args>(args)...);
@@ -645,11 +775,11 @@ namespace hyperion {
 					return;
 				}
 				catch([[maybe_unused]] const std::exception& e) {
-					set_index(SIZE + 1);
+					set_index(SIZE);
 					throw;
 				}
 				catch(...) {
-					set_index(SIZE + 1);
+					set_index(SIZE);
 					throw;
 				}
 			}
@@ -668,7 +798,7 @@ namespace hyperion {
 			}
 		}
 
-		template<usize Index, typename U>
+		template<usize Index, bool ONLY_THIS_INDEX = false, typename U>
 			inline constexpr auto assign(U&& to_assign) noexcept(
 			mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_assignable,
 													std::true_type,
@@ -677,13 +807,17 @@ namespace hyperion {
 			using current = variant<Index>;
 			constexpr auto assignable = std::is_assignable_v<current, decltype(to_assign)>;
 
+            if constexpr(ONLY_THIS_INDEX) {
+                static_assert(assignable);
+            }
+
 			if constexpr(assignable) {
 				try {
                     const auto assignable_but_this_variant_not_constructed
                         = get_index() != Index;
 
 					if(assignable_but_this_variant_not_constructed) {
-                        destruct<0_usize>(get_index());
+                        destruct(get_index());
 
 						if constexpr(concepts::ConstructibleFrom<current, decltype(to_assign)>) {
                             std::construct_at(std::addressof(get_impl<Index>(*this)), std::forward<U>(to_assign));
@@ -698,22 +832,26 @@ namespace hyperion {
 					get_impl<Index>(*this) = std::forward<U>(to_assign);
 					set_index(Index);
 					return;
-				}
-				catch([[maybe_unused]] const std::exception& e) {
-					set_index(SIZE + 1);
-					throw;
-				}
-				catch(...) {
-					set_index(SIZE + 1);
-					throw;
-				}
+                }
+                catch([[maybe_unused]] const std::exception& e) {
+                    set_index(SIZE);
+                    throw;
+                }
+                catch(...) {
+                    set_index(SIZE);
+                    throw;
+                }
 			}
 
-			constexpr auto next_index = Index + 1_usize;
-			if constexpr(next_index < SIZE) {
+            if constexpr(ONLY_THIS_INDEX) {
+                // we shouldn't be able to get here
+                throw;
+            }
+
+			if constexpr(Index + 1_usize < SIZE) {
 				using next_variant = next_variant<Index + 1_usize>;
 				if constexpr(!concepts::Same<next_variant, detail::None>) {
-					return assign<next_index>(std::forward<U>(to_assign));
+					return assign<Index + 1_usize>(std::forward<U>(to_assign));
 				}
 			}
 		}
@@ -734,6 +872,14 @@ namespace hyperion {
         /** NOLINTNEXTLINE(bugprone-macro-parentheses) **/                        \
         for(__VA_ARGS__ __VA_OPT__(= __variant->template get<Type>());            \
             __variant != nullptr; __variant = nullptr)
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define any_variant()                                                             \
+    break;                                                                        \
+    default:                                                                      \
+        /** NOLINT(bugprone-macro-parentheses) **/                                \
+        /** NOLINTNEXTLINE(bugprone-macro-parentheses) **/                        \
+        for(; __variant != nullptr; __variant = nullptr)
 
 	// NOLINTNEXTLINE(cert-dcl59-cpp, google-build-namespaces, modernize-use-trailing-return-type)
 	TEST_SUITE("Enum") {
@@ -768,44 +914,6 @@ namespace hyperion {
             CHECK_NE(val.get_if<0_usize>(), nullptr);
             CHECK_EQ(val.get_if<1_usize>(), nullptr);
 
-            SUBCASE("Assignment") {
-               val = TestStruct2(3_i32, "TestString");
-
-               CHECK(val.is_variant(1_usize));
-               CHECK_EQ(val.get_index(), 1_usize);
-               CHECK_FALSE(val.is_valueless());
-
-               const auto& new_val = val.get<TestStruct2>();
-               CHECK_EQ(new_val.val1, 3_i64);
-               CHECK_EQ(new_val.val2, std::string("TestString"));
-
-               SUBCASE("Inspection") {
-                   inspect(val) {
-                        decomposed(TestStruct1) {
-                            // we shouldn't get here
-                            CHECK_FALSE(true);
-                        }
-                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
-                            CHECK_EQ(vali64, 3_i64);
-                            CHECK_EQ(valstr, std::string("TestString"));
-                        }
-                   }
-               }
-
-               SUBCASE("Match") {
-                    val.match(
-                        []([[maybe_unused]] const TestStruct1& val1) noexcept -> void {
-                            // we shouldn't get here
-                            CHECK_FALSE(true);
-                        },
-                        [](const TestStruct2& val2) noexcept -> void {
-                            CHECK_EQ(val2.val1, 3_i64);
-                            CHECK_EQ(val2.val2, std::string("TestString"));
-                        }
-                    );
-               }
-            }
-
             SUBCASE("Inspection") {
                 inspect(val) {
                     decomposed(TestStruct1, const auto& [valusize, valf64]) {
@@ -820,7 +928,7 @@ namespace hyperion {
                 }
             }
 
-            SUBCASE("Match") {
+            SUBCASE("MatchWithOverload") {
                 val.match(
                     Overload {
                         [](const TestStruct1& val1) noexcept -> void {
@@ -835,20 +943,180 @@ namespace hyperion {
                     }
                 );
             }
+
+            SUBCASE("Assignment") {
+                val = TestStruct2(3_i32, "TestString");
+
+                CHECK(val.is_variant(1_usize));
+                CHECK_EQ(val.get_index(), 1_usize);
+                CHECK_FALSE(val.is_valueless());
+
+                const auto& new_val = val.get<TestStruct2>();
+                CHECK_EQ(new_val.val1, 3_i64);
+                CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                SUBCASE("Inspection") {
+                    inspect(val) {
+                        decomposed(TestStruct1) {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        }
+                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                            CHECK_EQ(vali64, 3_i64);
+                            CHECK_EQ(valstr, std::string("TestString"));
+                        }
+                    }
+                }
+
+                SUBCASE("Match") {
+                    val.match(
+                        []([[maybe_unused]] const TestStruct1& val1) noexcept -> void {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        },
+                        [](const TestStruct2& val2) noexcept -> void {
+                            CHECK_EQ(val2.val1, 3_i64);
+                            CHECK_EQ(val2.val2, std::string("TestString"));
+                        }
+                    );
+                }
+            }
+
+            SUBCASE("Emplacement") {
+                val.emplace<TestStruct2>(3_i32, "TestString");
+
+                CHECK(val.is_variant(1_usize));
+                CHECK_EQ(val.get_index(), 1_usize);
+                CHECK_FALSE(val.is_valueless());
+
+                const auto& new_val = val.get<TestStruct2>();
+                CHECK_EQ(new_val.val1, 3_i64);
+                CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                SUBCASE("Inspection") {
+                    inspect(val) {
+                        decomposed(TestStruct1) {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        }
+                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                            CHECK_EQ(vali64, 3_i64);
+                            CHECK_EQ(valstr, std::string("TestString"));
+                        }
+                    }
+                }
+
+                SUBCASE("Match") {
+                    val.match(
+                        []([[maybe_unused]] const TestStruct1& val1) noexcept -> void {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        },
+                        [](const TestStruct2& val2) noexcept -> void {
+                            CHECK_EQ(val2.val1, 3_i64);
+                            CHECK_EQ(val2.val2, std::string("TestString"));
+                        }
+                    );
+                }
+            }
+
+            SUBCASE("Copy") {
+                auto _val = test_enum(enum_tag<TestStruct2>{}, 3_i32, "TestString");
+                val = _val;
+
+                CHECK(val.is_variant(1_usize));
+                CHECK_EQ(val.get_index(), 1_usize);
+                CHECK_FALSE(val.is_valueless());
+
+                const auto& new_val = val.get<TestStruct2>();
+                CHECK_EQ(new_val.val1, 3_i64);
+                CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                SUBCASE("Inspection") {
+                    inspect(val) {
+                        decomposed(TestStruct1) {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        }
+                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                            CHECK_EQ(vali64, 3_i64);
+                            CHECK_EQ(valstr, std::string("TestString"));
+                        }
+                    }
+                }
+
+                SUBCASE("Match") {
+                    val.match(
+                        []([[maybe_unused]] const TestStruct1& val1) noexcept -> void {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        },
+                        [](const TestStruct2& val2) noexcept -> void {
+                            CHECK_EQ(val2.val1, 3_i64);
+                            CHECK_EQ(val2.val2, std::string("TestString"));
+                        }
+                    );
+                }
+            }
+
+            SUBCASE("Move") {
+                auto _val = test_enum(enum_tag<TestStruct2>{}, 3_i32, "TestString");
+                val = std::move(_val);
+
+                CHECK(val.is_variant(1_usize));
+                CHECK_EQ(val.get_index(), 1_usize);
+                CHECK_FALSE(val.is_valueless());
+
+                const auto& new_val = val.get<TestStruct2>();
+                CHECK_EQ(new_val.val1, 3_i64);
+                CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                SUBCASE("Inspection") {
+                    inspect(val) {
+                        decomposed(TestStruct1) {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        }
+                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                            CHECK_EQ(vali64, 3_i64);
+                            CHECK_EQ(valstr, std::string("TestString"));
+                        }
+                    }
+                }
+
+                SUBCASE("Match") {
+                    val.match(
+                        []([[maybe_unused]] const TestStruct1& val1) noexcept -> void {
+                            // we shouldn't get here
+                            CHECK_FALSE(true);
+                        },
+                        [](const TestStruct2& val2) noexcept -> void {
+                            CHECK_EQ(val2.val1, 3_i64);
+                            CHECK_EQ(val2.val2, std::string("TestString"));
+                        }
+                    );
+                }
+            }
 		}
 
 		struct TestStruct3 {
 			TestStruct3(usize* _val1, f64 _val2) noexcept : val1(_val1), val2(_val2) {
                 (*val1) += 1_usize;
 			}
-            TestStruct3(const TestStruct3&) noexcept = default;
-            TestStruct3(TestStruct3&&) noexcept = default;
+            TestStruct3(const TestStruct3& test) noexcept :val1(test.val1), val2(test.val2){
+                (*val1) += 1_usize;
+            }
+            TestStruct3(TestStruct3&& test) noexcept : val1(test.val1), val2(test.val2) {
+                test.val1 = nullptr;
+            }
             ~TestStruct3() noexcept {
-                (*val1) -= 1_usize;
+                if(val1 != nullptr) {
+                    (*val1) -= 1_usize;
+                }
             }
 
             auto operator=(const TestStruct3&) noexcept -> TestStruct3& = default;
-            auto operator=(TestStruct3&&) noexcept -> TestStruct3& = default;
+            auto operator=(TestStruct3&& test) noexcept -> TestStruct3& = default;
 
             usize* val1;
 			f64 val2;
@@ -859,18 +1127,25 @@ namespace hyperion {
 			TestStruct4(i64* _val1, const std::string& _val2) noexcept : val1(_val1), val2(_val2) {
                 (*val1) += 1_i64;
 			}
-            TestStruct4(const TestStruct4&) noexcept = default;
-            TestStruct4(TestStruct4&&) noexcept = default;
+            TestStruct4(const TestStruct4& test) noexcept :val1(test.val1), val2(test.val2){
+                (*val1) += 1_i64;
+            }
+            TestStruct4(TestStruct4&& test) noexcept :val1(test.val1), val2(std::move(test.val2)){ 
+                test.val1 = nullptr;
+            }
             ~TestStruct4() noexcept {
-                (*val1) -= 1_i64;
+                if(val1 != nullptr) {
+                    (*val1) -= 1_i64;
+                }
             }
             auto operator=(const TestStruct4&) noexcept -> TestStruct4& = default;
-            auto operator=(TestStruct4&&) noexcept -> TestStruct4& = default;
+            auto operator=(TestStruct4&& test) noexcept -> TestStruct4& = default;
 
             i64* val1;
 			std::string val2;
 		};
 
+        // case to check that constructors and destructors are run the expected number of times
         TEST_CASE("VerificationSet2") {
             using test_enum = Enum<TestStruct3, TestStruct4>;
 
@@ -894,46 +1169,6 @@ namespace hyperion {
                 CHECK_NE(val.get_if<0_usize>(), nullptr);
                 CHECK_EQ(val.get_if<1_usize>(), nullptr);
 
-                SUBCASE("Assignment") {
-                   val = TestStruct4(&struct4_instances, "TestString");
-
-                   CHECK(val.is_variant(1_usize));
-                   CHECK_EQ(val.get_index(), 1_usize);
-                   CHECK_FALSE(val.is_valueless());
-
-                   const auto& new_val = val.get<TestStruct4>();
-                   CHECK_EQ((*new_val.val1), 1_i64);
-                   CHECK_EQ((*new_val.val1), struct4_instances);
-                   CHECK_EQ(struct3_instances, 0_usize);
-                   CHECK_EQ(new_val.val2, std::string("TestString"));
-
-                   SUBCASE("Inspection") {
-                       inspect(val) {
-                            decomposed(TestStruct3) {
-                                // we shouldn't get here
-                                CHECK_FALSE(true);
-                            }
-                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
-                                CHECK_EQ((*vali64ptr), 1_i64);
-                                CHECK_EQ(valstr, std::string("TestString"));
-                            }
-                       }
-                   }
-
-                   SUBCASE("Match") {
-                        val.match(
-                            []([[maybe_unused]] const TestStruct3& val1) noexcept -> void {
-                                // we shouldn't get here
-                                CHECK_FALSE(true);
-                            },
-                            [](const TestStruct4& val2) noexcept -> void {
-                                CHECK_EQ((*val2.val1), 1_i64);
-                                CHECK_EQ(val2.val2, std::string("TestString"));
-                            }
-                        );
-                   }
-                }
-
                 SUBCASE("Inspection") {
                     inspect(val) {
                         decomposed(TestStruct3, const auto& [valusizeptr, valf64]) {
@@ -948,7 +1183,7 @@ namespace hyperion {
                     }
                 }
 
-                SUBCASE("Match") {
+                SUBCASE("MatchWithOverload") {
                     val.match(
                         Overload {
                             [](const TestStruct3& val1) noexcept -> void {
@@ -962,6 +1197,175 @@ namespace hyperion {
                             }
                         }
                     );
+                }
+
+                SUBCASE("Assignment") {
+                    {
+                        val = TestStruct4(&struct4_instances, "TestString");
+                    }
+
+                    CHECK(val.is_variant(1_usize));
+                    CHECK_EQ(val.get_index(), 1_usize);
+                    CHECK_FALSE(val.is_valueless());
+
+                    const auto& new_val = val.get<TestStruct4>();
+                    CHECK_EQ((*new_val.val1), 1_i64);
+                    CHECK_EQ((*new_val.val1), struct4_instances);
+                    CHECK_EQ(struct3_instances, 0_usize);
+                    CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                    SUBCASE("Inspection") {
+                        inspect(val) {
+                            decomposed(TestStruct3) {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            }
+                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                                CHECK_EQ((*vali64ptr), 1_i64);
+                                CHECK_EQ(valstr, std::string("TestString"));
+                            }
+                        }
+                    }
+
+                    SUBCASE("Match") {
+                        val.match(
+                            []([[maybe_unused]] const TestStruct3& val1) noexcept -> void {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            },
+                            [](const TestStruct4& val2) noexcept -> void {
+                                CHECK_EQ((*val2.val1), 1_i64);
+                                CHECK_EQ(val2.val2, std::string("TestString"));
+                            }
+                        );
+                    }
+                }
+
+                SUBCASE("Emplacement") {
+                    val.emplace<TestStruct4>(&struct4_instances, "TestString");
+
+                    CHECK(val.is_variant(1_usize));
+                    CHECK_EQ(val.get_index(), 1_usize);
+                    CHECK_FALSE(val.is_valueless());
+
+                    const auto& new_val = val.get<TestStruct4>();
+                    CHECK_EQ((*new_val.val1), 1_i64);
+                    CHECK_EQ((*new_val.val1), struct4_instances);
+                    CHECK_EQ(struct3_instances, 0_usize);
+                    CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                    SUBCASE("Inspection") {
+                        inspect(val) {
+                            decomposed(TestStruct3) {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            }
+                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                                CHECK_EQ((*vali64ptr), 1_i64);
+                                CHECK_EQ(valstr, std::string("TestString"));
+                            }
+                        }
+                    }
+
+                    SUBCASE("Match") {
+                        val.match(
+                            []([[maybe_unused]] const TestStruct3& val1) noexcept -> void {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            },
+                            [](const TestStruct4& val2) noexcept -> void {
+                                CHECK_EQ((*val2.val1), 1_i64);
+                                CHECK_EQ(val2.val2, std::string("TestString"));
+                            }
+                        );
+                    }
+                }
+
+                SUBCASE("Copy") {
+                    {
+                        auto _val = test_enum(enum_tag<TestStruct4>{}, &struct4_instances, "TestString");
+                        val = _val;
+                    }
+
+                    CHECK(val.is_variant(1_usize));
+                    CHECK_EQ(val.get_index(), 1_usize);
+                    CHECK_FALSE(val.is_valueless());
+
+                    const auto& new_val = val.get<TestStruct4>();
+                    CHECK_EQ((*new_val.val1), 1_i64);
+                    CHECK_EQ((*new_val.val1), struct4_instances);
+                    CHECK_EQ(struct3_instances, 0_usize);
+                    CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                    SUBCASE("Inspection") {
+                        inspect(val) {
+                            decomposed(TestStruct3) {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            }
+                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                                CHECK_EQ((*vali64ptr), 1_i64);
+                                CHECK_EQ(valstr, std::string("TestString"));
+                            }
+                        }
+                    }
+
+                    SUBCASE("Match") {
+                        val.match(
+                            []([[maybe_unused]] const TestStruct3& val1) noexcept -> void {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            },
+                            [](const TestStruct4& val2) noexcept -> void {
+                                CHECK_EQ((*val2.val1), 1_i64);
+                                CHECK_EQ(val2.val2, std::string("TestString"));
+                            }
+                        );
+                    }
+                }
+
+                SUBCASE("Move") {
+                    {
+                        auto _val = test_enum(enum_tag<TestStruct4>{}, &struct4_instances, "TestString");
+                        test_enum _val2(std::move(_val));
+                        val = std::move(_val2);
+                    }
+
+                    CHECK(val.is_variant(1_usize));
+                    CHECK_EQ(val.get_index(), 1_usize);
+                    CHECK_FALSE(val.is_valueless());
+
+                    const auto& new_val = val.get<TestStruct4>();
+                    CHECK_EQ((*new_val.val1), 1_i64);
+                    CHECK_EQ((*new_val.val1), struct4_instances);
+                    CHECK_EQ(struct3_instances, 0_usize);
+                    CHECK_EQ(new_val.val2, std::string("TestString"));
+
+                    SUBCASE("Inspection") {
+                        inspect(val) {
+                            decomposed(TestStruct3) {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            }
+                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                                CHECK_EQ((*vali64ptr), 1_i64);
+                                CHECK_EQ(valstr, std::string("TestString"));
+                            }
+                        }
+                    }
+
+                    SUBCASE("Match") {
+                        val.match(
+                            []([[maybe_unused]] const TestStruct3& val1) noexcept -> void {
+                                // we shouldn't get here
+                                CHECK_FALSE(true);
+                            },
+                            [](const TestStruct4& val2) noexcept -> void {
+                                CHECK_EQ((*val2.val1), 1_i64);
+                                CHECK_EQ(val2.val2, std::string("TestString"));
+                            }
+                        );
+                    }
                 }
             }
 
