@@ -1,16 +1,39 @@
 ---@diagnostic disable: undefined-global
-set_project("HyperionUtils")
+set_project("hyperion-utils")
 set_version("0.1.0")
 
 set_languages("cxx20")
 
 set_xmakever("2.6.9")
 
-add_requires("conan::doctest/2.4.9", {alias = "doctest", system = false, configs = {languages = "cxx20"}})
-add_requires("conan::fmt/8.1.1", {alias = "fmt", system = false, configs = {languages = "cxx20"}})
-add_requires("conan::ms-gsl/4.0.0", {alias = "gsl", system = false, configs = {languages = "cxx20"}})
-add_requires("conan::boost/1.79.0", {
+add_requires("doctest", {
+    alias = "doctest",
+    system = false,
+    external = true,
+    configs = {
+        languages = "cxx20"
+    }
+})
+add_requires("fmt", {
+    alias = "fmt",
+    system = false,
+    external = true,
+    configs = {
+        languages = "cxx20"
+    }
+})
+add_requires("gsl", {
+    alias = "gsl",
+    system = false,
+    external = true,
+    configs = {
+        languages = "cxx20"
+    }
+})
+add_requires("boost", {
 	alias = "boost",
+    system = false,
+    external = true,
 	configs = {
 		container = true,
 		exception = true,
@@ -18,16 +41,15 @@ add_requires("conan::boost/1.79.0", {
 		stacktrace = true,
         languages = "cxx20"
 	},
-    system = false
 })
-add_requires("conan::hana/1.79.0", {
-    alias = "hana",
+add_requires("conan::tracy/0.8.2.1", {
+    alias = "tracy",
+    system = false,
+    external = true,
     configs = {
         languages = "cxx20"
-    },
-    system = false
+    }
 })
-add_requires("conan::tracy/0.8.2.1", { alias = "tracy", system = false, configs = {languages = "cxx20"}})
 
 add_rules("mode.debug", "mode.release")
 
@@ -193,7 +215,7 @@ local hyperion_utils_sources = {
 	"$(projectdir)/src/logging/Sink.cpp",
 }
 
-target("HyperionUtils")
+target("hyperion-utils")
 	set_kind("static")
 	add_includedirs("$(projectdir)/include")
 	add_headerfiles(hyperion_utils_main_headers, { prefixdir = "Hyperion" })
@@ -207,7 +229,7 @@ target("HyperionUtils")
 	add_headerfiles(hyperion_utils_result_headers, { prefixdir = "Hyperion/result" })
 	add_headerfiles(hyperion_utils_sync_headers, { prefixdir = "Hyperion/synchronization" })
 	add_files(hyperion_utils_sources)
-	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "doctest", "fmt", "gsl", "tracy", {public = true})
 	add_defines("DOCTEST_CONFIG_DISABLE")
 	set_default(true)
 	add_options("hyperion_tracy_enable")
@@ -218,12 +240,12 @@ target("HyperionUtils")
 	end)
 target_end()
 
-target("HyperionUtilsTest")
+target("hyperion-utils-test")
 	set_kind("binary")
 	add_includedirs("$(projectdir)/include", { public = false })
 	add_files(hyperion_utils_sources)
 	add_files("src/doctest_main.cpp")
-	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "doctest", "fmt", "gsl", "tracy", {public = true})
 	set_default(false)
 	on_config(function(target)
 		setup_compile_flags(target)
@@ -231,12 +253,12 @@ target("HyperionUtilsTest")
 	end)
 target_end()
 
-target("HyperionUtilsBenchmark")
+target("hyperion-utils-benchmark")
 	set_kind("binary")
 	add_includedirs("$(projectdir)/include", { public = false })
 	add_files(hyperion_utils_sources)
 	add_files("src/benchmark.cpp")
-	add_packages("boost", "hana", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "doctest", "fmt", "gsl", "tracy", {public = true})
 	add_defines("DOCTEST_CONFIG_DISABLE")
 	set_default(false)
 	on_config(function(target)
@@ -280,7 +302,7 @@ target("clang-tidy")
 	add_files(hyperion_utils_option_headers, { prefixdir = "Hyperion/option", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_result_headers, { prefixdir = "Hyperion/result", rule = "clang-tidy-source" })
 	add_files(hyperion_utils_sync_headers, { prefixdir = "Hyperion/synchronization", rule = "clang-tidy-source" })
-	add_packages("boost", "doctest", "fmt", "gsl", "tracy")
+	add_packages("boost", "doctest", "fmt", "gsl", "tracy", {public = true})
 	before_build_file(function(_, source_file, _)
 		print("[" .. math.floor(100 * ((num_finished + .0) / total_files)) .. "%] running clang-tidy on " .. source_file)
 	end)
