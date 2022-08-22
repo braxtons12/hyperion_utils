@@ -31,7 +31,7 @@
 #include <Hyperion/enum/detail.h>
 #include <Hyperion/error/Panic.h>
 
-// the inspection macros declared before the tests break formatting for some reason
+// the enum_inspection macros declared before the tests break formatting for some reason
 // clang-format off
 
 namespace hyperion {
@@ -308,7 +308,8 @@ namespace hyperion {
         }
 
         template<typename T>
-        requires mpl::contains_v<T, list> && (variant_index<T> < SIZE)
+        requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
+                 && (variant_index<T> < SIZE)
         [[nodiscard]] inline constexpr auto is_variant() const noexcept -> bool {
             return m_current_index == variant_index<T>;
         }
@@ -492,7 +493,7 @@ namespace hyperion {
         }
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get() & noexcept -> reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
@@ -504,7 +505,7 @@ namespace hyperion {
 		}
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get() const& noexcept -> const_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
@@ -516,7 +517,7 @@ namespace hyperion {
 		}
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get() && noexcept -> rvalue_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
@@ -528,7 +529,7 @@ namespace hyperion {
 		}
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get() const&& noexcept -> const_rvalue_reference<T> {
             if(!is_variant<T>()) {
                 panic("get<T>() called on variant for T equal to index {} when it currently holds variant {}",
@@ -561,7 +562,7 @@ namespace hyperion {
         }
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get_if() noexcept -> std::add_pointer_t<T> {
             if(!is_variant<T>()) {
                 return nullptr;
@@ -571,7 +572,7 @@ namespace hyperion {
 		}
 
 		template<typename T>
-		requires mpl::contains_v<T, list>
+		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 		[[nodiscard]] inline constexpr auto get_if() const noexcept
             -> std::add_pointer_t<std::add_const_t<T>> {
             if(!is_variant<T>()) {
@@ -856,16 +857,200 @@ namespace hyperion {
 			}
 		}
 	};
+} // namespace hyperion
+
+#if !defined(_GLIBCXX_VARIANT) && !defined(_LIBCPP_VARIANT) && !defined(_VARIANT_)
+#include <variant>
+#endif
+
+// wire up hyperion::Enum<Types...> to support access like std::variant<Types...>,
+// except for std::visit
+template<std::size_t I, typename... Ts>
+requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+struct std::variant_alternative<I, hyperion::Enum<Ts...>> {
+    using type = typename hyperion::Enum<Ts...>::template variant<I>;
+};
+
+template<std::size_t I, typename... Ts>
+requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+struct std::variant_alternative<I, const hyperion::Enum<Ts...>> {
+    using type = std::add_const_t<typename hyperion::Enum<Ts...>::template variant<I>>;
+};
+
+template<std::size_t I, typename... Ts>
+requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+struct std::variant_alternative<I, volatile hyperion::Enum<Ts...>> {
+    using type = std::add_volatile_t<typename hyperion::Enum<Ts...>::template variant<I>>;
+};
+
+template<std::size_t I, typename... Ts>
+requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+struct std::variant_alternative<I, const volatile hyperion::Enum<Ts...>> {
+    using type = std::add_cv_t<typename hyperion::Enum<Ts...>::template variant<I>>;
+};
+
+template<typename... Ts>
+struct std::variant_size<hyperion::Enum<Ts...>> {
+    static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
+};
+
+template<typename... Ts>
+struct std::variant_size<const hyperion::Enum<Ts...>> {
+    static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
+};
+
+template<typename... Ts>
+struct std::variant_size<volatile hyperion::Enum<Ts...>> {
+    static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
+};
+
+template<typename... Ts>
+struct std::variant_size<const volatile hyperion::Enum<Ts...>> {
+    static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
+};
+
+// NOLINTNEXTLINE(cert-dcl58-cpp)
+namespace std {
+    template<typename T, typename... Ts>
+    requires hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+    inline constexpr auto holds_alternative(const hyperion::Enum<Ts...>& _enum) noexcept -> bool {
+        return _enum.template is_variant<T>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get(const hyperion::Enum<Ts...>& _enum)
+        -> const std::variant_alternative_t<I, hyperion::Enum<Ts...>>& {
+        if(!_enum.template is_variant<I>()) {
+            throw std::bad_variant_access();
+        }
+
+        return _enum.template get<I>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get(const hyperion::Enum<Ts...>&& _enum)
+        -> const std::variant_alternative_t<I, hyperion::Enum<Ts...>>&& {
+        if(!_enum.template is_variant<I>()) {
+            throw std::bad_variant_access();
+        }
+
+        return std::move(_enum).template get<I>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get(hyperion::Enum<Ts...>& _enum)
+        -> std::variant_alternative_t<I, hyperion::Enum<Ts...>>& {
+        if(!_enum.template is_variant<I>()) {
+            throw std::bad_variant_access();
+        }
+
+        return _enum.template get<I>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get(hyperion::Enum<Ts...>&& _enum)
+        -> std::variant_alternative_t<I, hyperion::Enum<Ts...>>&& {
+        if(!_enum.template is_variant<I>()) {
+            throw std::bad_variant_access();
+        }
+
+        return std::move(_enum).template get<I>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get(const hyperion::Enum<Ts...>& _enum) -> const T& {
+        if(!_enum.template is_variant<T>()) {
+            throw std::bad_variant_access();
+        }
+
+        return _enum.template get<T>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get(const hyperion::Enum<Ts...>&& _enum) -> const T&& {
+        if(!_enum.template is_variant<T>()) {
+            throw std::bad_variant_access();
+        }
+
+        return std::move(_enum).template get<T>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get(hyperion::Enum<Ts...>& _enum) -> T& {
+        if(!_enum.template is_variant<T>()) {
+            throw std::bad_variant_access();
+        }
+
+        return _enum.template get<T>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get(hyperion::Enum<Ts...>&& _enum) -> T&& {
+        if(!_enum.template is_variant<T>()) {
+            throw std::bad_variant_access();
+        }
+
+        return std::move(_enum).template get<T>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get_if(const hyperion::Enum<Ts...>* _enum) noexcept
+        -> std::add_pointer_t<std::add_const_t<variant_alternative_t<I, hyperion::Enum<Ts...>>>>
+    {
+        return _enum->template get_if<I>();
+    }
+
+    template<size_t I, typename... Ts>
+    requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    inline constexpr auto get_if(hyperion::Enum<Ts...>* _enum) noexcept
+        -> std::add_pointer_t<variant_alternative_t<I, hyperion::Enum<Ts...>>>
+    {
+        return _enum->template get_if<I>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get_if(const hyperion::Enum<Ts...>* _enum) noexcept
+        -> std::add_pointer_t<std::add_const_t<T>>
+    {
+        return _enum->template get_if<T>();
+    }
+
+    template<typename T, typename... Ts>
+    requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+              && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    inline constexpr auto get_if(hyperion::Enum<Ts...>* _enum) noexcept
+        -> std::add_pointer_t<T>
+    {
+        return _enum->template get_if<T>();
+    }
+} // namespace std
+
+namespace hyperion {
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define inspect(variant)                                                        \
+#define enum_inspect(variant)                                                        \
     IGNORE_RESERVED_IDENTIFIERS_START                                           \
     for(auto __variant = &(variant); __variant != nullptr; __variant = nullptr) \
     IGNORE_RESERVED_IDENTIFIERS_STOP                                            \
         switch (__variant->get_index())
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define decomposed(Type, ...)                                                     \
+#define enum_variant(Type, ...)                                                     \
     break;                                                                        \
     case mpl::index_of_v<Type, std::remove_cvref_t<decltype(*__variant)>::list>:  \
         /** NOLINT(bugprone-macro-parentheses) **/                                \
@@ -915,13 +1100,13 @@ namespace hyperion {
             CHECK_EQ(val.get_if<1_usize>(), nullptr);
 
             SUBCASE("Inspection") {
-                inspect(val) {
-                    decomposed(TestStruct1, const auto& [valusize, valf64]) {
+                enum_inspect(val) {
+                    enum_variant(TestStruct1, const auto& [valusize, valf64]) {
                         CHECK_EQ(valusize, 2_usize);
                         CHECK_LT(valf64, 1.01_f64);
                         CHECK_GT(valf64, 0.99_f64);
                     }
-                    decomposed(TestStruct2) {
+                    enum_variant(TestStruct2) {
                         // we shouldn't get here
                         CHECK_FALSE(true);
                     }
@@ -956,12 +1141,12 @@ namespace hyperion {
                 CHECK_EQ(new_val.val2, std::string("TestString"));
 
                 SUBCASE("Inspection") {
-                    inspect(val) {
-                        decomposed(TestStruct1) {
+                    enum_inspect(val) {
+                        enum_variant(TestStruct1) {
                             // we shouldn't get here
                             CHECK_FALSE(true);
                         }
-                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                        enum_variant(TestStruct2, const auto& [vali64, valstr]) {
                             CHECK_EQ(vali64, 3_i64);
                             CHECK_EQ(valstr, std::string("TestString"));
                         }
@@ -994,12 +1179,12 @@ namespace hyperion {
                 CHECK_EQ(new_val.val2, std::string("TestString"));
 
                 SUBCASE("Inspection") {
-                    inspect(val) {
-                        decomposed(TestStruct1) {
+                    enum_inspect(val) {
+                        enum_variant(TestStruct1) {
                             // we shouldn't get here
                             CHECK_FALSE(true);
                         }
-                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                        enum_variant(TestStruct2, const auto& [vali64, valstr]) {
                             CHECK_EQ(vali64, 3_i64);
                             CHECK_EQ(valstr, std::string("TestString"));
                         }
@@ -1033,12 +1218,12 @@ namespace hyperion {
                 CHECK_EQ(new_val.val2, std::string("TestString"));
 
                 SUBCASE("Inspection") {
-                    inspect(val) {
-                        decomposed(TestStruct1) {
+                    enum_inspect(val) {
+                        enum_variant(TestStruct1) {
                             // we shouldn't get here
                             CHECK_FALSE(true);
                         }
-                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                        enum_variant(TestStruct2, const auto& [vali64, valstr]) {
                             CHECK_EQ(vali64, 3_i64);
                             CHECK_EQ(valstr, std::string("TestString"));
                         }
@@ -1072,12 +1257,12 @@ namespace hyperion {
                 CHECK_EQ(new_val.val2, std::string("TestString"));
 
                 SUBCASE("Inspection") {
-                    inspect(val) {
-                        decomposed(TestStruct1) {
+                    enum_inspect(val) {
+                        enum_variant(TestStruct1) {
                             // we shouldn't get here
                             CHECK_FALSE(true);
                         }
-                        decomposed(TestStruct2, const auto& [vali64, valstr]) {
+                        enum_variant(TestStruct2, const auto& [vali64, valstr]) {
                             CHECK_EQ(vali64, 3_i64);
                             CHECK_EQ(valstr, std::string("TestString"));
                         }
@@ -1170,13 +1355,13 @@ namespace hyperion {
                 CHECK_EQ(val.get_if<1_usize>(), nullptr);
 
                 SUBCASE("Inspection") {
-                    inspect(val) {
-                        decomposed(TestStruct3, const auto& [valusizeptr, valf64]) {
+                    enum_inspect(val) {
+                        enum_variant(TestStruct3, const auto& [valusizeptr, valf64]) {
                             CHECK_EQ((*valusizeptr), 1_usize);
                             CHECK_LT(valf64, 1.01_f64);
                             CHECK_GT(valf64, 0.99_f64);
                         }
-                        decomposed(TestStruct4) {
+                        enum_variant(TestStruct4) {
                             // we shouldn't get here
                             CHECK_FALSE(true);
                         }
@@ -1215,12 +1400,12 @@ namespace hyperion {
                     CHECK_EQ(new_val.val2, std::string("TestString"));
 
                     SUBCASE("Inspection") {
-                        inspect(val) {
-                            decomposed(TestStruct3) {
+                        enum_inspect(val) {
+                            enum_variant(TestStruct3) {
                                 // we shouldn't get here
                                 CHECK_FALSE(true);
                             }
-                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                            enum_variant(TestStruct4, const auto& [vali64ptr, valstr]) {
                                 CHECK_EQ((*vali64ptr), 1_i64);
                                 CHECK_EQ(valstr, std::string("TestString"));
                             }
@@ -1255,12 +1440,12 @@ namespace hyperion {
                     CHECK_EQ(new_val.val2, std::string("TestString"));
 
                     SUBCASE("Inspection") {
-                        inspect(val) {
-                            decomposed(TestStruct3) {
+                        enum_inspect(val) {
+                            enum_variant(TestStruct3) {
                                 // we shouldn't get here
                                 CHECK_FALSE(true);
                             }
-                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                            enum_variant(TestStruct4, const auto& [vali64ptr, valstr]) {
                                 CHECK_EQ((*vali64ptr), 1_i64);
                                 CHECK_EQ(valstr, std::string("TestString"));
                             }
@@ -1298,12 +1483,12 @@ namespace hyperion {
                     CHECK_EQ(new_val.val2, std::string("TestString"));
 
                     SUBCASE("Inspection") {
-                        inspect(val) {
-                            decomposed(TestStruct3) {
+                        enum_inspect(val) {
+                            enum_variant(TestStruct3) {
                                 // we shouldn't get here
                                 CHECK_FALSE(true);
                             }
-                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                            enum_variant(TestStruct4, const auto& [vali64ptr, valstr]) {
                                 CHECK_EQ((*vali64ptr), 1_i64);
                                 CHECK_EQ(valstr, std::string("TestString"));
                             }
@@ -1342,12 +1527,12 @@ namespace hyperion {
                     CHECK_EQ(new_val.val2, std::string("TestString"));
 
                     SUBCASE("Inspection") {
-                        inspect(val) {
-                            decomposed(TestStruct3) {
+                        enum_inspect(val) {
+                            enum_variant(TestStruct3) {
                                 // we shouldn't get here
                                 CHECK_FALSE(true);
                             }
-                            decomposed(TestStruct4, const auto& [vali64ptr, valstr]) {
+                            enum_variant(TestStruct4, const auto& [vali64ptr, valstr]) {
                                 CHECK_EQ((*vali64ptr), 1_i64);
                                 CHECK_EQ(valstr, std::string("TestString"));
                             }
