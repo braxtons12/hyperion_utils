@@ -13,12 +13,12 @@ Some of the notable features include:
 - Robust, compile-time configurable logging (logging level, sinks, global and local loggers,
   threading support)
 - Unique data structures (ringbuffer, lock-free multi-producer, single consumer queue)
-- Robust error handling facilities similar to :cpp:`boost::outcome` and Rust,
-  and semantics and an API closely matching Rust's :rust:`Result<T, E>` and :rust:`Option<T>`
+- Robust error handling facilities similar to `boost::outcome` and Rust,
+  and semantics and an API closely matching Rust's `Result<T, E>` and `Option<T>`
 - Various meta-programming facilities including custom Concepts, Type Traits, and a small
   meta-programming library
-- Synchronization primitives similar to Rust's owning synchronization types like :rust:`Mutex<T>` and :rust:`RwLock<T>`
-- :cpp:`Enum<Types...>`, a C++20 alternative to std::variant with improved API, compile-time, and performance,
+- Synchronization primitives similar to Rust's owning synchronization types like `Mutex<T>` and `RwLock<T>`
+- `Enum<Types...>`, a C++20 alternative to std::variant with improved API, compile-time, and performance,
   designed to more closely model algebraic data types from other languages
 
 
@@ -77,15 +77,22 @@ inline auto log_thing() -> void {
 }
 
 auto main(i32 argc, char** argv) -> i32 {
+    // create a file in the system temporary files directory in the default logging subdirectory
+    // and with default timestamped name (ie "/tmp/Hyperion/Hyperion [2022-11-21=13:44:56].log"),
+    // then create a file sink that will sink to it. If any step fails, abort the program with an
+    // error message
     auto file_sink = hyperion::logging::FileSink::create_file()
                      .and_then(hyperion::logging::make_sink<hyperion::logging::FileSink, hyperion::fs::File&&>)
                      .expect("Failed to create the example logging file!");
+    // create a container of logging sinks, and push our file_sink into it
     auto sinks = hyperion::logging::Sinks();
     sinks.push_back(std::move(file_sink));
+    // create a new logger and initialize the global logger to it
     auto logger = hyperion::make_unique<hyperion::Logger<Parameters>>(std::move(sinks));
     hyperion::GlobalLog::set_global_logger(std::move(logger));
 
     log_thing();
+    return 0;
 }
 
 ```
