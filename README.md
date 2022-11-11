@@ -64,7 +64,7 @@ inline auto get_thing() -> Option<Thing> {
 inline auto log_thing() -> void {
     if(auto thing = get_thing()) {
         // Logging with the global logger can return an error if the logger hasn't been initialized,
-        // or the logging policy implies logging can fail (for example, if using an ayschronous
+        // or the logging policy implies logging can fail (for example, if using an asynchronous
         // logger that discards entries when the queue is full). Because of this, the default
         // logging functions return a hyperion::Result.
         // For this simple example, we'll just ignore it
