@@ -1,76 +1,39 @@
 # HyperionUtils
 
-HyperionUtils is a header-only C++20 library of utilities, data-structures, and monads
-used in the Hyperion game engine.<br>
-It is currently under active development and has not yet hit a release point.
+hyperion-utils is a foundational library for the Hyperion game engine, containing many of the
+"vocabulary"-level types, data structures, and core utilities used internally by the engine.
 
-HyperionUtils is not dependent on the engine and can be used freely separately from any other
-Hyperion projects.
+It's currently under active development and has not yet hit a stable release point.
 
-Some of the features of HyperionUtils include:
+hyperion-utils is not dependent on other parts of the engine and can be used freely, separately from
+any other Hyperion projects.
 
-- Robust, Compile-time configurable logging (in progress)
-- Datastructures, such as queues supporting lock-free concurrency (initial implementation complete; API unlikely to change, implementation subject to change)
-- Error handling facilities similar to Rust and boost::outcome with equivalent semantics and API to Rust (complete)
-- Option monad based on Rust's Option with equivalent semantics and API to Rust (complete)
-- Concepts, Type Traits, and meta-programming functions (in progress; Those already implemented unlikely to change)
-- Rust-style owning synchronization types (in progress)
+Some of the notable features include:
 
-## Documentation
+- Robust, compile-time configurable logging (logging level, sinks, global and local loggers,
+  threading support)
+- Unique data structures (ringbuffer, lock-free multi-producer, single consumer queue)
+- Robust error handling facilities similar to :cpp:`boost::outcome` and Rust,
+  and semantics and an API closely matching Rust's :rust:`Result<T, E>` and :rust:`Option<T>`
+- Various meta-programming facilities including custom Concepts, Type Traits, and a small
+  meta-programming library
+- Synchronization primitives similar to Rust's owning synchronization types like :rust:`Mutex<T>` and :rust:`RwLock<T>`
+- :cpp:`Enum<Types...>`, a C++20 alternative to std::variant with improved API, compile-time, and performance,
+  designed to more closely model algebraic data types from other languages
 
-You can view the documentation [here](https://braxtons12.github.io/Hyperion-Utils/)
 
-## Getting Started
+### Quick Start
 
-HyperionUtils uses CMake, and incorporating it into your project is easy!
+For how to get started using hyperion-utils, check out the [Quick Start Guide](https://braxtons12.github.io/Hyperion-Utils/quick_start.html).
 
-HyperionUtils depends on [fmt](https://github.com/fmtlib/fmt), so you will have to link to fmt in
-your target.
+### Documentation
 
-First, setup your CMake project.
-In `CMakeLists.txt`:
-
-```cmake
-
-FetchContent_Declare(HyperionUtils
-	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
-	GIT_TAG origin/master
-	)
-
-FetchContent_MakeAvailable(HyperionUtils)
-
-### Setup your target......
-
-target_link_libraries(your_target fmt::fmt HyperionUtils)
-
-```
-
-Then, include your desired headers, either the main header, `HyperionUtils/HyperionUtils.h`, for everything,
-or individual ones for granular imports. If you want to use `Option` or `Result`, please include them
-through `Monads.h` or the main header instead of individually, as the API surface in each is
-dependent on the other
+You can also find the rest of the project documentation [here](https://braxtons12.github.io/Hyperion-Utils/)
 
 ### Example
 
-First, import HyperionUtils.
-In `CMakeLists.txt`:
-
-```cmake
-
-FetchContent_Declare(HyperionUtils
-	GIT_REPOSITORY "https://github.com/braxtons12/Hyperion-Utils"
-	GIT_TAG origin/master
-	)
-
-FetchContent_MakeAvailable(HyperionUtils)
-
-### Add your target, etc...
-
-target_link_libraries(your_target fmt::fmt HyperionUtils)
-
-```
-
-Then, in your code:
+After following the Quick Start Guide, you'll be able to use hyperion-utils in your project.
+A basic example of what hyperion-utils can do is below:
 
 ```cpp
 
@@ -80,15 +43,17 @@ using hyperion::Option;
 using hyperion::Some;
 using hyperion::None;
 using hyperion::MESSAGE;
+using hyperion::i32;
+using hyperion::operator""_i32;
 
-using LogParams = hyperion::DefaultLogParameters;
+using LogParams = hyperion::logging::DefaultParameters;
 
-struct Thing{int x = 0;, int y = 2; };
+struct Thing{i32 x = 0;, i32 y = 2; };
 
 bool condition = true;
 inline auto get_thing() -> Option<Thing> {
 	if(condition) {
-		return Some(Thing{.x=42});
+		return Some(Thing{.x=42_i32});
 	}
 	else {
 		return None();
@@ -97,31 +62,44 @@ inline auto get_thing() -> Option<Thing> {
 
 inline auto log_thing() -> void {
     if(auto thing = get_thing()) {
-        // Logging can return an error depending on the logging policy, or if the
-		// configured log level is higher than the logging entry we tried to queue.
-		// Thus, MESSAGE returns a Result to communicate this. For this simple
-		// example, we'll just ignore it
-        ignore(MESSAGE<LogParams>(
-                None(), // Optional thread identifier
-                "{}", // format string, see fmt
+        // Logging with the global logger can return an error if the logger hasn't been initialized,
+        // or the logging policy implies logging can fail (for example, if using an ayschronous
+        // logger that discards entries when the queue is full). Because of this, the default
+        // logging functions return a hyperion::Result.
+        // For this simple example, we'll just ignore it
+        ignore(MESSAGE(
+                "{}", // format string, see libfmt
                 thing.unwrap().x); //the stuff we want to log.
-				// If thing were None, this would call std::terminate
     }
+    else {
+        ignore(ERROR("thing was None!"));
+    }
+}
+
+auto main(i32 argc, char** argv) -> i32 {
+    auto file_sink = hyperion::logging::FileSink::create_file()
+                     .and_then(hyperion::logging::make_sink<hyperion::logging::FileSink, hyperion::fs::File&&>)
+                     .expect("Failed to create the example logging file!");
+    auto sinks = hyperion::logging::Sinks();
+    sinks.push_back(std::move(file_sink));
+    auto logger = hyperion::make_unique<hyperion::Logger<Parameters>>(std::move(sinks));
+    hyperion::GlobalLog::set_global_logger(std::move(logger));
+
+    log_thing();
 }
 
 ```
 
 ### Testing
 
-Tests are currently setup as an isolated project in the "test" subdirectory.<br>
-This prevents collisions between other googletest builds in Hyperion's other sublibraries.<br>
-To run the tests, simply configure and build the test project, then run the resulting "Test" executable:<br>
+Tests are currently setup as a separate target build and use the Doctest testing framework.
+To run the tests, simply configure the project and build the test target, then run the resulting executable:<br>
 
 ```sh
 
 cmake -B build -G "Ninja"
-cmake --build build
-./build/Test
+cmake --build build --target HyperionUtilsTest
+./build/HyperionUtilsTest
 
 ```
 
@@ -129,7 +107,7 @@ cmake --build build
 
 Feel free to submit issues, pull requests, etc!<br>
 When contributing code, please following the project `.clang-format` (except in judicious cases of
-templates or requires clauses ruining things), use trailing returns types, use assign-init over direct-init
+templates or requires clauses ruining formatting), use trailing returns types, use assign-init over direct-init
 (parenthesis or braced init), and prefer simplicity and correctness over performance by default
 
 ### License
