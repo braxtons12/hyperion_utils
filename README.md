@@ -43,6 +43,7 @@ using hyperion::Option;
 using hyperion::Some;
 using hyperion::None;
 using hyperion::MESSAGE;
+using hyperion::ERROR;
 using hyperion::i32;
 using hyperion::operator""_i32;
 
