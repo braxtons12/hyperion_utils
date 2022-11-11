@@ -14,6 +14,13 @@ package("hyperion-utils")
             languages = "cxx20"
         },
     })
+    add_deps("vcpkg::tracy", {
+        alias = "tracy",
+        system = false,
+        configs = {
+            languages = "cxx20"
+        },
+    })
     
     on_load(function (package)
         package:set("installdir", path.join(os.scriptdir(), package:plat(), package:arch(), package:mode()))

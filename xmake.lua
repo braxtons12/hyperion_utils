@@ -42,7 +42,7 @@ add_requires("boost", {
         languages = "cxx20"
 	},
 })
-add_requires("conan::tracy/0.8.2.1", {
+add_requires("vcpkg::tracy", {
     alias = "tracy",
     system = false,
     external = true,
@@ -72,7 +72,7 @@ if not is_plat("windows") then
 end
 
 option("hyperion_tracy_enable")
-add_defines(TRACY_ENABLE)
+    add_defines(TRACY_ENABLE)
 option_end()
 
 local setup_compile_flags = function(target)

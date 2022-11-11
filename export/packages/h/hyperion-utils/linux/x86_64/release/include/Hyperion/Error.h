@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic high-level types for communicating recoverable errors
 /// @version 0.1
-/// @date 2022-07-09
+/// @date 2022-08-26
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -295,7 +295,7 @@ namespace hyperion::error {
 		///
 		/// `Index == 0` returns the error code value.
 		/// `Index == 1` returns the error message.
-		/// Other `Index` values ar invalid
+		/// Other `Index` values are invalid
 		///
 		/// @return The error code value (`Index == 0`), or the error message (`Index
 		/// == 1`)
@@ -310,7 +310,7 @@ namespace hyperion::error {
 		///
 		/// `Index == 0` returns the error code value.
 		/// `Index == 1` returns the error message.
-		/// Other `Index` values ar invalid
+		/// Other `Index` values are invalid
 		///
 		/// @return The error code value (`Index == 0`), or the error message (`Index
 		/// == 1`)
@@ -574,7 +574,7 @@ namespace hyperion::error {
 		///
 		/// `Index == 0` returns the error code value.
 		/// `Index == 1` returns the error message.
-		/// Other `Index` values ar invalid
+		/// Other `Index` values are invalid
 		///
 		/// @return The error code value (`Index == 0`), or the error message (`Index
 		/// == 1`)
@@ -589,7 +589,7 @@ namespace hyperion::error {
 		///
 		/// `Index == 0` returns the error code value.
 		/// `Index == 1` returns the error message.
-		/// Other `Index` values ar invalid
+		/// Other `Index` values are invalid
 		///
 		/// @return The error code value (`Index == 0`), or the error message (`Index
 		/// == 1`)

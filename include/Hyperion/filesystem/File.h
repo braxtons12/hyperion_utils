@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2022-07-09
+/// @date 2022-08-27
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -152,8 +152,8 @@ namespace hyperion::fs {
 		/// @param options - The `OpenOptions` the file was opened with
 		/// @ingroup filesystem
 		constexpr File(std::FILE* file, // NOLINT
-					   OpenOptions options = {.type = AccessType::ReadWrite,
-											  .modifier = AccessModifier::Truncate}) noexcept
+					   OpenOptions options = {AccessType::ReadWrite,
+											  AccessModifier::Truncate}) noexcept
 			: m_file(file), m_options(options) {
 		}
 
@@ -166,8 +166,8 @@ namespace hyperion::fs {
 		/// @ingroup filesystem
 		constexpr File(std::FILE* file,
 					   UniquePtr<buffer_type>&& buffer,
-					   OpenOptions options = {.type = AccessType::ReadWrite,
-											  .modifier = AccessModifier::Truncate}) noexcept
+					   OpenOptions options = {AccessType::ReadWrite,
+											  AccessModifier::Truncate}) noexcept
 			: m_file(file), m_buffer(std::move(buffer)), m_options(options) { // NOLINT
 		}
 

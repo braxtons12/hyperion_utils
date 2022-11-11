@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2022-07-22
+/// @date 2022-08-27
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -31,7 +31,6 @@
 #include <Hyperion/FmtIO.h>
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/Ignore.h>
-#include <Hyperion/Result.h>
 #include <Hyperion/option/None.h>
 #include <Hyperion/option/SomeFWD.h>
 #include <Hyperion/result/Err.h>
@@ -77,6 +76,7 @@
 /// headers.
 /// @ingroup result
 /// @headerfile "Hyperion/Result.h"
+
 #ifndef HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 	// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 	#define HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED false
@@ -832,6 +832,13 @@ namespace hyperion {
 			return hyperion::Ok<T>(this->extract());
 		}
 
+	  private:
+		template<typename F>
+		using or_else_result = decltype(std::declval<F>()(std::declval<err_rvalue_reference>()));
+
+	  public:
+		// clang-format off
+
 		/// @brief Forwards the value contained in this into a new `Result`, consuming this
 		/// `Result`.
 		///
@@ -849,13 +856,15 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F,
-				 typename U = typename decltype(std::declval<F>()(
-					 std::declval<err_rvalue_reference>()))::err_rvalue_reference,
-				 typename R
-				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
-		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference> && concepts::
-			NoexceptMovable<T> && concepts::NoexceptMovable<E>
+				 typename U = typename or_else_result<F>::err_rvalue_reference,
+				 typename R = std::conditional_t<std::is_rvalue_reference_v<U>,
+                                                 std::remove_reference_t<U>,
+                                U>>
+		requires concepts::InvocableWithReturn<Result<T, R>, F, err_rvalue_reference>
+                 && concepts::NoexceptMovable<T>
+                 && concepts::NoexceptMovable<E>
 		[[nodiscard]] inline auto or_else(F && func) noexcept->Result<T, R> {
+			// clang-format on
 			// the invocable checks above are probably redundant because of the inferred template
 			// parameters, but we'll keep them for completeness’ sake and clarity of requirements
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED

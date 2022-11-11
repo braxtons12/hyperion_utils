@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief A monadic type representing an optional value
 /// @version 0.1
-/// @date 2022-07-22
+/// @date 2022-08-27
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -185,7 +185,7 @@ namespace hyperion {
 			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
 			: OptionData(static_cast<const OptionData&>(option)) {
 		}
-		/// @brief Copy Constructor
+		/// @brief Converting Copy Constructor from `Option<U>` where `T != U`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
@@ -204,7 +204,7 @@ namespace hyperion {
 			: OptionData(static_cast<OptionData&&>(option)) {
 			option = None();
 		}
-		/// @brief Copy Constructor
+		/// @brief Converting Move Constructor from `Option<U>` where `T != U`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
@@ -366,6 +366,13 @@ namespace hyperion {
 			return std::forward<SomeFunc>(some_func)(this->extract());
 		}
 
+	  private:
+		template<typename F>
+		using and_then_result = decltype(std::declval<F>()(std::declval<rvalue_reference>()));
+
+	  public:
+		// clang-format off
+
 		/// @brief Continues control flow into `func` if this is the `Some` variant,
 		/// otherwise returns `None`.
 		///
@@ -385,12 +392,13 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F,
-				 typename U = typename decltype(std::declval<F>()(
-					 std::declval<rvalue_reference>()))::rvalue_reference,
-				 typename R
-				 = std::conditional_t<std::is_rvalue_reference_v<U>, std::remove_reference_t<U>, U>>
+				 typename U = typename and_then_result<F>::rvalue_reference,
+				 typename R = std::conditional_t<std::is_rvalue_reference_v<U>,
+                                                 std::remove_reference_t<U>,
+                                U>>
 		requires concepts::InvocableWithReturn<Option<R>, F, rvalue_reference>
 		[[nodiscard]] inline auto and_then(F&& func) noexcept -> Option<R> {
+			// clang-format on
 			// the invocable checks above are probably redundant because of the inferred
 			// template
 			if(!is_some()) {
@@ -722,6 +730,9 @@ namespace hyperion {
 
 		// clang-format off
 
+		/// @brief Converting assignment operator from `U`
+		/// @ingroup option
+		/// @headerfile "Hyperion/Option.h"
         template<typename U>
         constexpr auto operator=(const U& data)
             noexcept(std::is_nothrow_assignable_v<T, decltype(data)>)
@@ -732,14 +743,16 @@ namespace hyperion {
             return *this;
         }
 
-		/// @brief Copy assignment operator
+		/// @brief Converting assignment operator from `Option<U>` where U is `T&` or `const T&`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
 		requires concepts::Same<T, std::remove_reference_t<U>>
-		constexpr auto operator=(const Option<U>& option) noexcept(concepts::NoexceptCopyAssignable<T>)
+                 && concepts::CopyAssignable<T>
+                 && concepts::Reference<U>
+		constexpr auto operator=(const Option<U>& option)
+            noexcept(concepts::NoexceptCopyAssignable<T>)
 			-> Option&
-			requires concepts::CopyAssignable<T> && concepts::Reference<U>
 		{
 			// clang-format on
 			OptionData::operator=(static_cast<const OptionData&>(option));
