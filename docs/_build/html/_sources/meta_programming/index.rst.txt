@@ -1,0 +1,10 @@
+.. _metaprogramming:
+
+Meta Programming
+===
+
+.. toctree::
+
+   :maxdepth: 2
+   :glob:
+   *

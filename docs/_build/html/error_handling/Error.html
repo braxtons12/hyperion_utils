@@ -1,0 +1,1018 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Error &#8212; hyperion-utils  documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/Error';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Option" href="Option.html" />
+    <link rel="prev" title="Error Handling" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="dark">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">hyperion-utils  documentation</p>
+  
+</a>
+    
+    <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+  </div>
+
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Error</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Option.html">Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Result.html">Result</a></li>
+</ul></li></ul>
+  </div>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item">
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="error">
+<h1>Error<a class="headerlink" href="#error" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error9ErrorBaseE">
+<span id="_CPPv3N8hyperion5error9ErrorBaseE"></span><span id="_CPPv2N8hyperion5error9ErrorBaseE"></span><span id="hyperion::error::ErrorBase"></span><span class="target" id="classhyperion_1_1error_1_1ErrorBase"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ErrorBase</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion5error9ErrorBaseE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Basic interface for recoverable errors. <a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref">Error</span></a> types may provide additional functionality beyond this, but this much is required. </p>
+<p>Subclassed by <a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref">hyperion::error::AnyError</span></a>, <a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref">hyperion::error::Error&lt; Domain &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error9ErrorBase5valueEv">
+<span id="_CPPv3NK8hyperion5error9ErrorBase5valueEv"></span><span id="_CPPv2NK8hyperion5error9ErrorBase5valueEv"></span><span id="hyperion::error::ErrorBase::valueCCE"></span><span class="target" id="group__error_1ga0e6982cf9f238f5e92dbb4ca65524790"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">i64</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error9ErrorBase5valueEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value of the associated error code as an <code class="docutils literal notranslate"><span class="pre">i64</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The value of the associated error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error9ErrorBase7messageEv">
+<span id="_CPPv3NK8hyperion5error9ErrorBase7messageEv"></span><span id="_CPPv2NK8hyperion5error9ErrorBase7messageEv"></span><span id="hyperion::error::ErrorBase::messageC"></span><span class="target" id="group__error_1ga4d4755e6cb5b016cb82d0d6fe783ec4c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error9ErrorBase7messageEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the message associated with the error as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The message associated with the error </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error9ErrorBase9to_stringEv">
+<span id="_CPPv3NK8hyperion5error9ErrorBase9to_stringEv"></span><span id="_CPPv2NK8hyperion5error9ErrorBase9to_stringEv"></span><span id="hyperion::error::ErrorBase::to_stringC"></span><span class="target" id="group__error_1ga20a3556b59e4b5a157dc98aa092d42d2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error9ErrorBase9to_stringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Converts this error into a <code class="docutils literal notranslate"><span class="pre">std::string</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>This error as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">SystemDomain</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1error_1_1Error"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error9ErrorBaseE" title="hyperion::error::ErrorBase"><span class="n"><span class="pre">ErrorBase</span></span></a><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>General purpose type for communicating recoverable errors. </p>
+<p>Wraps an <code class="docutils literal notranslate"><span class="pre">error::ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> in a type-safe manner. Usually makes up the <code class="docutils literal notranslate"><span class="pre">E</span></code> variant of a <code class="docutils literal notranslate"><a class="reference internal" href="Result.html#classhyperion_1_1Result"><span class="std std-ref"><span class="pre">Result</span></span></a><span class="pre">&lt;T,</span> <span class="pre">E&gt;</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> associated with the this error </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error10value_typeE">
+<span id="_CPPv3N8hyperion5error5Error10value_typeE"></span><span id="_CPPv2N8hyperion5error5Error10value_typeE"></span><span class="target" id="group__error_1ga5b6fbcb2c24f0903e74fd492c95324a8"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_type</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error10value_typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The type used to represent the error (an enum, integer error code, etc) </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorEv">
+<span id="_CPPv3N8hyperion5error5Error5ErrorEv"></span><span id="_CPPv2N8hyperion5error5Error5ErrorEv"></span><span id="hyperion::error::Error::ErrorCE"></span><span class="target" id="group__error_1ga0f9a2a50a68fb4bfeac63be3fef2c081"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error5ErrorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a default <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> with an error code representing an unknown error. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorERK9ErrorCodeI6DomainE">
+<span id="_CPPv3N8hyperion5error5Error5ErrorERK9ErrorCodeI6DomainE"></span><span id="_CPPv2N8hyperion5error5Error5ErrorERK9ErrorCodeI6DomainE"></span><span id="hyperion::error::Error::Error__ErrorCode:Domain:CRCE"></span><span class="target" id="group__error_1ga5026d34c88aa1b7fb531eaf74fedd055"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error5ErrorERK9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from the given <code class="docutils literal notranslate"><span class="pre">ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorERR9ErrorCodeI6DomainE">
+<span id="_CPPv3N8hyperion5error5Error5ErrorERR9ErrorCodeI6DomainE"></span><span id="_CPPv2N8hyperion5error5Error5ErrorERR9ErrorCodeI6DomainE"></span><span id="hyperion::error::Error::Error__ErrorCode:Domain:RRCE"></span><span class="target" id="group__error_1gafe761a3eb56f20202011f32a76f515f8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error5ErrorERR9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from the given <code class="docutils literal notranslate"><span class="pre">ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorERK10value_type">
+<span id="_CPPv3N8hyperion5error5Error5ErrorERK10value_type"></span><span id="_CPPv2N8hyperion5error5Error5ErrorERK10value_type"></span><span id="hyperion::error::Error::Error__value_typeCRCE"></span><span class="target" id="group__error_1ga9510ca64ba6247863a977285e5eac99e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error5Error10value_typeE" title="hyperion::error::Error::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error5ErrorERK10value_type" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from the given error code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classhyperion_1_1error_1_1Error_1ga9510ca64ba6247863a977285e5eac99e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error5Error10value_typeE" title="hyperion::error::Error::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from the given error code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorERK5Error">
+<span id="_CPPv3N8hyperion5error5Error5ErrorERK5Error"></span><span id="_CPPv2N8hyperion5error5Error5ErrorERK5Error"></span><span id="hyperion::error::Error::Error__ErrorCRCE"></span><span class="target" id="group__error_1gaaae8082f1abf9d0211ae5e442f5398ca"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error5Error5ErrorERK5Error" title="hyperion::error::Error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd><p>Copy-constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5Error5ErrorERR5Error">
+<span id="_CPPv3N8hyperion5error5Error5ErrorERR5Error"></span><span id="_CPPv2N8hyperion5error5Error5ErrorERR5Error"></span><span id="hyperion::error::Error::Error__ErrorRRCE"></span><span class="target" id="group__error_1ga415bb2e62a0ede8e6dbe31b5f5e5d8ec"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error5Error5ErrorERR5Error" title="hyperion::error::Error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5Error5ErrorERR5Error" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5ErrorD0Ev">
+<span id="_CPPv3N8hyperion5error5ErrorD0Ev"></span><span id="_CPPv2N8hyperion5error5ErrorD0Ev"></span><span id="hyperion::error::Error::~ErrorCE"></span><span class="target" id="group__error_1ga5b1b950fe60584955b2ac2c316b8b731"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Error</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5ErrorD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destroys this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Error5valueEv">
+<span id="_CPPv3NK8hyperion5error5Error5valueEv"></span><span id="_CPPv2NK8hyperion5error5Error5valueEv"></span><span id="hyperion::error::Error::valueC"></span><span class="target" id="group__error_1ga8140379254f905e14ce79200c96f3a17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">i64</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Error5valueEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">i64</span></code> value of the error code associated with this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The associated error code as an <code class="docutils literal notranslate"><span class="pre">i64</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Error4codeEv">
+<span id="_CPPv3NK8hyperion5error5Error4codeEv"></span><span id="_CPPv2NK8hyperion5error5Error4codeEv"></span><span id="hyperion::error::Error::codeC"></span><span class="target" id="group__error_1gabdd7cce9be156979f7837b487e9e40c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Error4codeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">ErrorCode</span></code> associated with this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The associated <code class="docutils literal notranslate"><span class="pre">ErrorCode</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Error7messageEv">
+<span id="_CPPv3NK8hyperion5error5Error7messageEv"></span><span id="_CPPv2NK8hyperion5error5Error7messageEv"></span><span id="hyperion::error::Error::messageC"></span><span class="target" id="group__error_1ga3d7333da8222124a253a2cffbf6c03c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Error7messageEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the error message associated with this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error message </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Error15message_as_cstrEv">
+<span id="_CPPv3NK8hyperion5error5Error15message_as_cstrEv"></span><span id="_CPPv2NK8hyperion5error5Error15message_as_cstrEv"></span><span id="hyperion::error::Error::message_as_cstrC"></span><span class="target" id="group__error_1ga16c3f51a6de9c3feedb1b5267a9273be"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message_as_cstr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Error15message_as_cstrEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the error message associated with this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code>, as a cstring. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error message </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Error9to_stringEv">
+<span id="_CPPv3NK8hyperion5error5Error9to_stringEv"></span><span id="_CPPv2NK8hyperion5error5Error9to_stringEv"></span><span id="hyperion::error::Error::to_stringC"></span><span class="target" id="group__error_1ga580e80ea3960f21ced631ac14937677b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Error9to_stringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Gets the <code class="docutils literal notranslate"><span class="pre">std::string</span></code> representation of this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> formatted as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Errorcv9ErrorCodeI6DomainEEv">
+<span id="_CPPv3NK8hyperion5error5Errorcv9ErrorCodeI6DomainEEv"></span><span id="_CPPv2NK8hyperion5error5Errorcv9ErrorCodeI6DomainEEv"></span><span id="hyperion::error::Error::castto-ErrorCode:Domain:-operatorCCE"></span><span class="target" id="group__error_1ga72804bdedfbffa6cd81d46e872cfc6b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Errorcv9ErrorCodeI6DomainEEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Converts this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> into its underlying <code class="docutils literal notranslate"><span class="pre">ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error5Errorcv10value_typeEv">
+<span id="_CPPv3NK8hyperion5error5Errorcv10value_typeEv"></span><span id="_CPPv2NK8hyperion5error5Errorcv10value_typeEv"></span><span id="hyperion::error::Error::castto-value_type-operatorCCE"></span><span class="target" id="group__error_1gafdb69301e439611cc6cfc9fffad3fd3c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error5Error10value_typeE" title="hyperion::error::Error::value_type"><span class="n"><span class="pre">value_type</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error5Errorcv10value_typeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Converts this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> into its underlying <code class="docutils literal notranslate"><span class="pre">value_type</span></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK5ErrorI7Domain2E">
+<span id="_CPPv3I_16StatusCodeDomainENK8hyperion5error5ErroreqERK5ErrorI7Domain2E"></span><span id="_CPPv2I_16StatusCodeDomainENK8hyperion5error5ErroreqERK5ErrorI7Domain2E"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain2</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga3d03808639749c49843aafb8b18dd390"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK5ErrorI7Domain2E" title="hyperion::error::Error::operator==::Domain2"><span class="n"><span class="pre">Domain2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK5ErrorI7Domain2E" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Equality comparison operator with another <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from a possibly different <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain2</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> of <code class="docutils literal notranslate"><span class="pre">error</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK5ErrorI7Domain2E">
+<span id="_CPPv3I_16StatusCodeDomainENK8hyperion5error5ErrorneERK5ErrorI7Domain2E"></span><span id="_CPPv2I_16StatusCodeDomainENK8hyperion5error5ErrorneERK5ErrorI7Domain2E"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain2</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga4072cdd47dabca7cdec99cef81cc28a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK5ErrorI7Domain2E" title="hyperion::error::Error::operator!=::Domain2"><span class="n"><span class="pre">Domain2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK5ErrorI7Domain2E" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Inequality comparison operator with another <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> from a possibly different <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain2</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> of <code class="docutils literal notranslate"><span class="pre">error</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK9ErrorCodeI7Domain2E">
+<span id="_CPPv3I_16StatusCodeDomainENK8hyperion5error5ErroreqERK9ErrorCodeI7Domain2E"></span><span id="_CPPv2I_16StatusCodeDomainENK8hyperion5error5ErroreqERK9ErrorCodeI7Domain2E"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain2</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga2bb60f0241f5e169a0b976e575c49fb5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK9ErrorCodeI7Domain2E" title="hyperion::error::Error::operator==::Domain2"><span class="n"><span class="pre">Domain2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErroreqEbRK9ErrorCodeI7Domain2E" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Equality comparison operator with an <code class="docutils literal notranslate"><span class="pre">ErrorCode</span></code> from a possibly different <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain2</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> of <code class="docutils literal notranslate"><span class="pre">code</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK9ErrorCodeI7Domain2E">
+<span id="_CPPv3I_16StatusCodeDomainENK8hyperion5error5ErrorneERK9ErrorCodeI7Domain2E"></span><span id="_CPPv2I_16StatusCodeDomainENK8hyperion5error5ErrorneERK9ErrorCodeI7Domain2E"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain2</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gad226d7881722a6eedd3d2f11e297249e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK9ErrorCodeI7Domain2E" title="hyperion::error::Error::operator!=::Domain2"><span class="n"><span class="pre">Domain2</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainENK8hyperion5error5ErrorneEbRK9ErrorCodeI7Domain2E" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Inequality comparison operator with an <code class="docutils literal notranslate"><span class="pre">ErrorCode</span></code> from a possibly different <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain2</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> of <code class="docutils literal notranslate"><span class="pre">code</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5ErroraSERK5Error">
+<span id="_CPPv3N8hyperion5error5ErroraSERK5Error"></span><span id="_CPPv2N8hyperion5error5ErroraSERK5Error"></span><span id="hyperion::error::Error::assign-operator__ErrorCRCE"></span><span class="target" id="group__error_1gab29ff86676ac2d08ba91cf45b720ea21"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5ErroraSERK5Error" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assigns the given <code class="docutils literal notranslate"><span class="pre">error</span></code> to this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5ErroraSERR5Error">
+<span id="_CPPv3N8hyperion5error5ErroraSERR5Error"></span><span id="_CPPv2N8hyperion5error5ErroraSERR5Error"></span><span id="hyperion::error::Error::assign-operator__ErrorRRCE"></span><span class="target" id="group__error_1ga339e75a9e6f40f47c3a41b252d2e3ba6"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5ErroraSERR5Error" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns the given <code class="docutils literal notranslate"><span class="pre">error</span></code> to this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5ErroraSERK9ErrorCodeI6DomainE">
+<span id="_CPPv3N8hyperion5error5ErroraSERK9ErrorCodeI6DomainE"></span><span id="_CPPv2N8hyperion5error5ErroraSERK9ErrorCodeI6DomainE"></span><span id="hyperion::error::Error::assign-operator__ErrorCode:Domain:CRCE"></span><span class="target" id="group__error_1gab2b7713f8cfe39856b6086d05dccc006"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5ErroraSERK9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assigns the given <code class="docutils literal notranslate"><span class="pre">ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> to this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error5ErroraSERR9ErrorCodeI6DomainE">
+<span id="_CPPv3N8hyperion5error5ErroraSERR9ErrorCodeI6DomainE"></span><span id="_CPPv2N8hyperion5error5ErroraSERR9ErrorCodeI6DomainE"></span><span id="hyperion::error::Error::assign-operator__ErrorCode:Domain:RRCE"></span><span class="target" id="group__error_1ga1f9f4a6b44841a9b7d399caf1545dd82"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error5ErroraSERR9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns the given <code class="docutils literal notranslate"><span class="pre">ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> to this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">Error</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_5usizeENKO8hyperion5error5Error3getEDav">
+<span id="_CPPv3I_5usizeENKO8hyperion5error5Error3getEv"></span><span id="_CPPv2I_5usizeENKO8hyperion5error5Error3getEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gabf0c7358de20b45565591e65bf259090"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_5usizeENKO8hyperion5error5Error3getEDav" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provides <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>-like structured binding support. </p>
+<p><code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code> returns the error code value. <code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code> returns the error message. Other <code class="docutils literal notranslate"><span class="pre">Index</span></code> values are invalid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code value (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code>), or the error message (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code>) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_5usizeENKR8hyperion5error5Error3getEDav">
+<span id="_CPPv3I_5usizeENKR8hyperion5error5Error3getEv"></span><span id="_CPPv2I_5usizeENKR8hyperion5error5Error3getEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gaa9ba0b769a7277c3bc7f66b2ea890f0f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_5usizeENKR8hyperion5error5Error3getEDav" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provides <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>-like structured binding support. </p>
+<p><code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code> returns the error code value. <code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code> returns the error message. Other <code class="docutils literal notranslate"><span class="pre">Index</span></code> values are invalid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code value (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code>), or the error message (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code>) </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEEE">
+<span id="_CPPv3I_N8hyperion5error16StatusCodeDomainEENSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEEE"></span><span id="_CPPv2I_N8hyperion5error16StatusCodeDomainEENSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__size_3_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_size</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEEE" title="std::tuple_size&lt;hyperion::error::Error&lt;Domain&gt;&gt;::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4NSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEE5valueE">
+<span id="_CPPv3NSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEE5valueE"></span><span id="_CPPv2NSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEE5valueE"></span><span id="std::tuple_size:hyperion::error::Error:Domain::::value__hyperion::usize"></span><span class="target" id="structstd_1_1tuple__size_3_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4_1abf158375ad854888e12b20ff51d49441"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4NSt10tuple_sizeIN8hyperion5error5ErrorI6DomainEEE5valueE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEEE">
+<span id="_CPPv3I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEEE"></span><span id="_CPPv2I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIX0EN8hyperion5error5ErrorI6DomainEEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__element_3_010_00_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_element</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEEE" title="std::tuple_element&lt;0, hyperion::error::Error&lt;Domain&gt;&gt;::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4NSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEE4typeE">
+<span id="_CPPv3NSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEE4typeE"></span><span id="_CPPv2NSt13tuple_elementIX0EN8hyperion5error5ErrorI6DomainEEE4typeE"></span><span class="target" id="structstd_1_1tuple__element_3_010_00_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4_1acddde74b917c050433f92d95821ced49"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEEE" title="std::tuple_element&lt;0, hyperion::error::Error&lt;Domain&gt;&gt;::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_type</span></span><a class="headerlink" href="#_CPPv4NSt13tuple_elementIXL0EEN8hyperion5error5ErrorI6DomainEEE4typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEEE">
+<span id="_CPPv3I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEEE"></span><span id="_CPPv2I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIX1EN8hyperion5error5ErrorI6DomainEEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__element_3_011_00_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_element</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEEE" title="std::tuple_element&lt;1, hyperion::error::Error&lt;Domain&gt;&gt;::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_N8hyperion5error16StatusCodeDomainEENSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4NSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEE4typeE">
+<span id="_CPPv3NSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEE4typeE"></span><span id="_CPPv2NSt13tuple_elementIX1EN8hyperion5error5ErrorI6DomainEEE4typeE"></span><span class="target" id="structstd_1_1tuple__element_3_011_00_01hyperion_1_1error_1_1Error_3_01Domain_01_4_01_4_1adb4127208e9f56a56c392d020f1a4c7f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><a class="headerlink" href="#_CPPv4NSt13tuple_elementIXL1EEN8hyperion5error5ErrorI6DomainEEE4typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyErrorE">
+<span id="_CPPv3N8hyperion5error8AnyErrorE"></span><span id="_CPPv2N8hyperion5error8AnyErrorE"></span><span id="hyperion::error::AnyError"></span><span class="target" id="classhyperion_1_1error_1_1AnyError"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error9ErrorBaseE" title="hyperion::error::ErrorBase"><span class="n"><span class="pre">ErrorBase</span></span></a><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyErrorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> represents a type erased error from any <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyError8AnyErrorEv">
+<span id="_CPPv3N8hyperion5error8AnyError8AnyErrorEv"></span><span id="_CPPv2N8hyperion5error8AnyError8AnyErrorEv"></span><span id="hyperion::error::AnyError::AnyError"></span><span class="target" id="group__error_1ga082edc3f93958cb6b729788442d4f7d7"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyError8AnyErrorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> as an unknown error. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK9ErrorCodeI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERK9ErrorCodeI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERK9ErrorCodeI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga74484871d51956c0f4ca71fadfaf7c5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK9ErrorCodeI6DomainE" title="hyperion::error::AnyError::AnyError::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given <code class="docutils literal notranslate"><span class="pre">error::ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>code</strong> – - The error code this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> should represent </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR9ErrorCodeI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERR9ErrorCodeI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERR9ErrorCodeI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga31f146b8eea715e1abd2db5753af2fce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR9ErrorCodeI6DomainE" title="hyperion::error::AnyError::AnyError::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given <code class="docutils literal notranslate"><span class="pre">error::ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>code</strong> – - The error code this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> should represent </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK5ErrorI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERK5ErrorI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERK5ErrorI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gab8b34e92c341606be91a3318d36032d1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK5ErrorI6DomainE" title="hyperion::error::AnyError::AnyError::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRK5ErrorI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">error::Error</span></span></a><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>error</strong> – - The error this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> should represent </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR5ErrorI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERR5ErrorI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorERR5ErrorI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gab1be91954420399e2c26e7818b798080"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR5ErrorI6DomainE" title="hyperion::error::AnyError::AnyError::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyError8AnyErrorE26HYPERION_CONSTEXPR_STRINGSRR5ErrorI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">error::Error</span></span></a><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>error</strong> – - The error this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> should represent </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyError8AnyErrorERK8AnyError">
+<span id="_CPPv3N8hyperion5error8AnyError8AnyErrorERK8AnyError"></span><span id="_CPPv2N8hyperion5error8AnyError8AnyErrorERK8AnyError"></span><span id="hyperion::error::AnyError::AnyError__AnyErrorCR"></span><span class="target" id="group__error_1gaa575dd863f3e9390bd5415a2429c818b"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyError8AnyErrorERK8AnyError" title="hyperion::error::AnyError::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyError8AnyErrorERK8AnyError" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given one. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyError8AnyErrorERR8AnyError">
+<span id="_CPPv3N8hyperion5error8AnyError8AnyErrorERR8AnyError"></span><span id="_CPPv2N8hyperion5error8AnyError8AnyErrorERR8AnyError"></span><span id="hyperion::error::AnyError::AnyError__AnyErrorRR"></span><span class="target" id="group__error_1gaf233ce529a6907257c35eee4886eec1d"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyError</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyError8AnyErrorERR8AnyError" title="hyperion::error::AnyError::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyError8AnyErrorERR8AnyError" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-constructs an <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> from the given one. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyErrorD0Ev">
+<span id="_CPPv3N8hyperion5error8AnyErrorD0Ev"></span><span id="_CPPv2N8hyperion5error8AnyErrorD0Ev"></span><span id="hyperion::error::AnyError::~AnyError"></span><span class="target" id="group__error_1ga68a55b53e00773eb8cda0f0d18c95762"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~AnyError</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyErrorD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destroys this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error8AnyError5valueEv">
+<span id="_CPPv3NK8hyperion5error8AnyError5valueEv"></span><span id="_CPPv2NK8hyperion5error8AnyError5valueEv"></span><span id="hyperion::error::AnyError::valueCCE"></span><span class="target" id="group__error_1gadf10ca3d49b07c5b6e3d82992adcda72"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">i64</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error8AnyError5valueEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">i64</span></code> value corresponding with the error code this represents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code as an <code class="docutils literal notranslate"><span class="pre">i64</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error8AnyError7messageEv">
+<span id="_CPPv3NK8hyperion5error8AnyError7messageEv"></span><span id="_CPPv2NK8hyperion5error8AnyError7messageEv"></span><span id="hyperion::error::AnyError::messageC"></span><span class="target" id="group__error_1gad07e4c845bd040f68fed146f9b0662f4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error8AnyError7messageEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the error message associated with the error code this represents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code message </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error8AnyError9to_stringEv">
+<span id="_CPPv3NK8hyperion5error8AnyError9to_stringEv"></span><span id="_CPPv2NK8hyperion5error8AnyError9to_stringEv"></span><span id="hyperion::error::AnyError::to_stringC"></span><span class="target" id="group__error_1ga60ef65e9aa1c80a4521a9f945f1cd97d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error8AnyError9to_stringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the string representation of this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> as a <code class="docutils literal notranslate"><span class="pre">std::string</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyErroraSERK8AnyError">
+<span id="_CPPv3N8hyperion5error8AnyErroraSERK8AnyError"></span><span id="_CPPv2N8hyperion5error8AnyErroraSERK8AnyError"></span><span id="hyperion::error::AnyError::assign-operator__AnyErrorCR"></span><span class="target" id="group__error_1ga01f67ef6f4dd6edf62d0587ded6c4319"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyErroraSERK8AnyError" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assigns the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> to this one. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error8AnyErroraSERR8AnyError">
+<span id="_CPPv3N8hyperion5error8AnyErroraSERR8AnyError"></span><span id="_CPPv2N8hyperion5error8AnyErroraSERR8AnyError"></span><span id="hyperion::error::AnyError::assign-operator__AnyErrorRR"></span><span class="target" id="group__error_1ga6198927a671eb88bc94174f5e3a54db1"></span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error8AnyErroraSERR8AnyError" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> to this one. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK9ErrorCodeI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERK9ErrorCodeI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERK9ErrorCodeI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gace5ba2924e1fc7d8cfd1b5f8a423c32f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK9ErrorCodeI6DomainE" title="hyperion::error::AnyError::operator=::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assigns this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> with the given <code class="docutils literal notranslate"><span class="pre">error::ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error code</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>code</strong> – - The error code to assign to this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR9ErrorCodeI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERR9ErrorCodeI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERR9ErrorCodeI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga4e4522448aa60dcc5ca93080d203138f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ErrorCode</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR9ErrorCodeI6DomainE" title="hyperion::error::AnyError::operator=::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR9ErrorCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> with the given <code class="docutils literal notranslate"><span class="pre">error::ErrorCode</span><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error code</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>code</strong> – - The error code to assign to this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK5ErrorI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERK5ErrorI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERK5ErrorI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gab322533836c6020fae5964fe3501a2ff"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK5ErrorI6DomainE" title="hyperion::error::AnyError::operator=::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRK5ErrorI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assigns this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> with the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">error::Error</span></span></a><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>error</strong> – - The error to assign to this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR5ErrorI6DomainE">
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERR5ErrorI6DomainE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error8AnyErroraSERR5ErrorI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">StatusCodeDomain</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga8c207cdd051271c4ba9cb9320ca05b26"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">HYPERION_CONSTEXPR_STRINGS</span></span><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR5ErrorI6DomainE" title="hyperion::error::AnyError::operator=::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">error</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error8AnyErroraSER8AnyErrorRR5ErrorI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1AnyError"><span class="std std-ref"><span class="pre">AnyError</span></span></a></code> with the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1Error"><span class="std std-ref"><span class="pre">error::Error</span></span></a><span class="pre">&lt;Domain&gt;</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">error::StatusCodeDomain</span></code> of the error</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>error</strong> – - The error to assign to this </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_5usizeENKO8hyperion5error8AnyError3getEDav">
+<span id="_CPPv3I_5usizeENKO8hyperion5error8AnyError3getEv"></span><span id="_CPPv2I_5usizeENKO8hyperion5error8AnyError3getEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga00b865312fee46ba615ad633337dba48"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;&amp;</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_5usizeENKO8hyperion5error8AnyError3getEDav" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provides <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>-like structured binding support. </p>
+<p><code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code> returns the error code value. <code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code> returns the error message. Other <code class="docutils literal notranslate"><span class="pre">Index</span></code> values are invalid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code value (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code>), or the error message (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code>) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_5usizeENKR8hyperion5error8AnyError3getEDav">
+<span id="_CPPv3I_5usizeENKR8hyperion5error8AnyError3getEv"></span><span id="_CPPv2I_5usizeENKR8hyperion5error8AnyError3getEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gaafec6494774d460d67d5d687fee06b35"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_5usizeENKR8hyperion5error8AnyError3getEDav" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provides <code class="docutils literal notranslate"><span class="pre">std::tuple</span></code>-like structured binding support. </p>
+<p><code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code> returns the error code value. <code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code> returns the error message. Other <code class="docutils literal notranslate"><span class="pre">Index</span></code> values are invalid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The error code value (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">0</span></code>), or the error message (<code class="docutils literal notranslate"><span class="pre">Index</span> <span class="pre">==</span> <span class="pre">1</span></code>) </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4IENSt10tuple_sizeIN8hyperion5error8AnyErrorEEE">
+<span id="_CPPv3IENSt10tuple_sizeIN8hyperion5error8AnyErrorEEE"></span><span id="_CPPv2IENSt10tuple_sizeIN8hyperion5error8AnyErrorEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__size_3_01hyperion_1_1error_1_1AnyError_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_size</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4IENSt10tuple_sizeIN8hyperion5error8AnyErrorEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4NSt10tuple_sizeIN8hyperion5error8AnyErrorEE5valueE">
+<span id="_CPPv3NSt10tuple_sizeIN8hyperion5error8AnyErrorEE5valueE"></span><span id="_CPPv2NSt10tuple_sizeIN8hyperion5error8AnyErrorEE5valueE"></span><span id="std::tuple_size:hyperion::error::AnyError:::value__hyperion::usize"></span><span class="target" id="structstd_1_1tuple__size_3_01hyperion_1_1error_1_1AnyError_01_4_1a5290619173c00366f3c96bb1079b822a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">usize</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4NSt10tuple_sizeIN8hyperion5error8AnyErrorEE5valueE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4IENSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEEE">
+<span id="_CPPv3IENSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEEE"></span><span id="_CPPv2IENSt13tuple_elementIX0EN8hyperion5error8AnyErrorEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__element_3_010_00_01hyperion_1_1error_1_1AnyError_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_element</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4IENSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4NSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEE4typeE">
+<span id="_CPPv3NSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEE4typeE"></span><span id="_CPPv2NSt13tuple_elementIX0EN8hyperion5error8AnyErrorEE4typeE"></span><span class="target" id="structstd_1_1tuple__element_3_010_00_01hyperion_1_1error_1_1AnyError_01_4_1a61a7531844c19a6e1fe1d43f35460f9f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">i64</span></span><a class="headerlink" href="#_CPPv4NSt13tuple_elementIXL0EEN8hyperion5error8AnyErrorEE4typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4IENSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEEE">
+<span id="_CPPv3IENSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEEE"></span><span id="_CPPv2IENSt13tuple_elementIX1EN8hyperion5error8AnyErrorEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structstd_1_1tuple__element_3_011_00_01hyperion_1_1error_1_1AnyError_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tuple_element</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error8AnyErrorE" title="hyperion::error::AnyError"><span class="n"><span class="pre">AnyError</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4IENSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4NSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEE4typeE">
+<span id="_CPPv3NSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEE4typeE"></span><span id="_CPPv2NSt13tuple_elementIX1EN8hyperion5error8AnyErrorEE4typeE"></span><span class="target" id="structstd_1_1tuple__element_3_011_00_01hyperion_1_1error_1_1AnyError_01_4_1a1fb7162695670613e9a16b34e311ccd5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><a class="headerlink" href="#_CPPv4NSt13tuple_elementIXL1EEN8hyperion5error8AnyErrorEE4typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Error Handling</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="Option.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Option</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Braxton Salyer &lt;braxtonsalyer@gmail.com&gt;.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

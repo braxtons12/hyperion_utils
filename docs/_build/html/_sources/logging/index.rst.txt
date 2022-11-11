@@ -1,0 +1,10 @@
+.. _logging:
+
+Logging
+===
+
+.. toctree::
+
+   :maxdepth: 2
+   :glob:
+   *
