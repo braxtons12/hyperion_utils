@@ -47,3 +47,7 @@ For an overview of each module, see the links in the left sidebar or below.
 
     filesystem/index
 
+.. toctree::
+    :caption: Enum
+    
+    enum
