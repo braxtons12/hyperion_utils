@@ -867,44 +867,52 @@ namespace hyperion {
 // except for std::visit
 template<std::size_t I, typename... Ts>
 requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_alternative<I, hyperion::Enum<Ts...>> {
     using type = typename hyperion::Enum<Ts...>::template variant<I>;
 };
 
 template<std::size_t I, typename... Ts>
 requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_alternative<I, const hyperion::Enum<Ts...>> {
     using type = std::add_const_t<typename hyperion::Enum<Ts...>::template variant<I>>;
 };
 
 template<std::size_t I, typename... Ts>
 requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_alternative<I, volatile hyperion::Enum<Ts...>> {
     using type = std::add_volatile_t<typename hyperion::Enum<Ts...>::template variant<I>>;
 };
 
 template<std::size_t I, typename... Ts>
 requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_alternative<I, const volatile hyperion::Enum<Ts...>> {
     using type = std::add_cv_t<typename hyperion::Enum<Ts...>::template variant<I>>;
 };
 
 template<typename... Ts>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_size<hyperion::Enum<Ts...>> {
     static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
 };
 
 template<typename... Ts>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_size<const hyperion::Enum<Ts...>> {
     static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
 };
 
 template<typename... Ts>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_size<volatile hyperion::Enum<Ts...>> {
     static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
 };
 
 template<typename... Ts>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::variant_size<const volatile hyperion::Enum<Ts...>> {
     static constexpr auto value = hyperion::Enum<Ts...>::SIZE;
 };
@@ -913,12 +921,14 @@ struct std::variant_size<const volatile hyperion::Enum<Ts...>> {
 namespace std {
     template<typename T, typename... Ts>
     requires hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto holds_alternative(const hyperion::Enum<Ts...>& _enum) noexcept -> bool {
         return _enum.template is_variant<T>();
     }
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(const hyperion::Enum<Ts...>& _enum)
         -> const std::variant_alternative_t<I, hyperion::Enum<Ts...>>& {
         if(!_enum.template is_variant<I>()) {
@@ -930,6 +940,7 @@ namespace std {
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(const hyperion::Enum<Ts...>&& _enum)
         -> const std::variant_alternative_t<I, hyperion::Enum<Ts...>>&& {
         if(!_enum.template is_variant<I>()) {
@@ -941,6 +952,7 @@ namespace std {
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(hyperion::Enum<Ts...>& _enum)
         -> std::variant_alternative_t<I, hyperion::Enum<Ts...>>& {
         if(!_enum.template is_variant<I>()) {
@@ -952,6 +964,7 @@ namespace std {
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(hyperion::Enum<Ts...>&& _enum)
         -> std::variant_alternative_t<I, hyperion::Enum<Ts...>>&& {
         if(!_enum.template is_variant<I>()) {
@@ -964,6 +977,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(const hyperion::Enum<Ts...>& _enum) -> const T& {
         if(!_enum.template is_variant<T>()) {
             throw std::bad_variant_access();
@@ -975,6 +989,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(const hyperion::Enum<Ts...>&& _enum) -> const T&& {
         if(!_enum.template is_variant<T>()) {
             throw std::bad_variant_access();
@@ -986,6 +1001,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(hyperion::Enum<Ts...>& _enum) -> T& {
         if(!_enum.template is_variant<T>()) {
             throw std::bad_variant_access();
@@ -997,6 +1013,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get(hyperion::Enum<Ts...>&& _enum) -> T&& {
         if(!_enum.template is_variant<T>()) {
             throw std::bad_variant_access();
@@ -1007,6 +1024,7 @@ namespace std {
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get_if(const hyperion::Enum<Ts...>* _enum) noexcept
         -> std::add_pointer_t<std::add_const_t<variant_alternative_t<I, hyperion::Enum<Ts...>>>>
     {
@@ -1015,6 +1033,7 @@ namespace std {
 
     template<size_t I, typename... Ts>
     requires (I < std::variant_size_v<hyperion::Enum<Ts...>>)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get_if(hyperion::Enum<Ts...>* _enum) noexcept
         -> std::add_pointer_t<variant_alternative_t<I, hyperion::Enum<Ts...>>>
     {
@@ -1024,6 +1043,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get_if(const hyperion::Enum<Ts...>* _enum) noexcept
         -> std::add_pointer_t<std::add_const_t<T>>
     {
@@ -1033,6 +1053,7 @@ namespace std {
     template<typename T, typename... Ts>
     requires (hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
               && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
+    // NOLINTNEXTLINE(cert-dcl58-cpp)
     inline constexpr auto get_if(hyperion::Enum<Ts...>* _enum) noexcept
         -> std::add_pointer_t<T>
     {
@@ -1043,14 +1064,14 @@ namespace std {
 namespace hyperion {
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define enum_inspect(variant)                                                        \
+#define enum_inspect(variant)                                                   \
     IGNORE_RESERVED_IDENTIFIERS_START                                           \
     for(auto __variant = &(variant); __variant != nullptr; __variant = nullptr) \
     IGNORE_RESERVED_IDENTIFIERS_STOP                                            \
         switch (__variant->get_index())
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define enum_variant(Type, ...)                                                     \
+#define enum_variant(Type, ...)                                                   \
     break;                                                                        \
     case mpl::index_of_v<Type, std::remove_cvref_t<decltype(*__variant)>::list>:  \
         /** NOLINT(bugprone-macro-parentheses) **/                                \
