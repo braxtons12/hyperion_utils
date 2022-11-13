@@ -344,6 +344,7 @@ namespace hyperion::error {
 /// @brief Specialize `std::tuple_size` for `error::Error<Domain>`
 /// @ingroup error
 template<hyperion::error::StatusCodeDomain Domain>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::tuple_size<hyperion::error::Error<Domain>> {
 	static constexpr hyperion::usize value = 2;
 };
@@ -351,6 +352,7 @@ struct std::tuple_size<hyperion::error::Error<Domain>> {
 /// @brief Specialize `std::tuple_element<0, T>` for `error::Error<Domain>`
 /// @ingroup error
 template<hyperion::error::StatusCodeDomain Domain>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::tuple_element<0, hyperion::error::Error<Domain>> {
 	using type = typename hyperion::error::Error<Domain>::value_type;
 };
@@ -358,6 +360,7 @@ struct std::tuple_element<0, hyperion::error::Error<Domain>> {
 /// @brief Specialize `std::tuple_element<1, T>` for `error::Error<Domain>`
 /// @ingroup error
 template<hyperion::error::StatusCodeDomain Domain>
+// NOLINTNEXTLINE(cert-dcl58-cpp)
 struct std::tuple_element<1, hyperion::error::Error<Domain>> {
 	using type = std::string;
 };
