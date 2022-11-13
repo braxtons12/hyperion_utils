@@ -794,8 +794,11 @@ namespace hyperion {
 			}
 
 			if constexpr(ONLY_IF_THIS_INDEX) {
-				// bail if we're only supposed to attempt construction at the current
-				// index and the current index wasn't constructible
+				// shouldn't be able to happen, per the static assert above, but weirder things have
+				// happened
+				panic("Attempt to force construction of index {0} of an Enum with a set of "
+					  "arguments that the type at index {0} cannot be constructed from",
+					  Index);
 				throw;
 			}
 
@@ -853,8 +856,11 @@ namespace hyperion {
 			}
 
 			if constexpr(ONLY_THIS_INDEX) {
-				// we shouldn't be able to get here
-				throw;
+				// shouldn't be able to happen, per the static assert above, but weirder things have
+				// happened
+				panic("Attempt to force-assign to index {0} of an Enum with a value that the type "
+					  "at index {0} cannot be assigned with",
+					  Index);
 			}
 
 			if constexpr(Index + 1_usize < SIZE) {
