@@ -3,7 +3,7 @@
 /// @brief meta-programming functions to determine if a given meta-condition matches the desired
 /// value for various sets of arguments
 /// @version 0.1
-/// @date 2022-08-07
+/// @date 2022-11-12
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -55,16 +55,12 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
-	static inline constexpr auto any_type_satisfies(List list) {
-		return hana::integral_c<bool, [list]() noexcept {
-			auto satisfied = false;
-			hana::for_each(list, [&satisfied](auto val) noexcept {
-				satisfied = satisfied
-							|| (RequirementType::value
-								== ConditionType<typename decltype(val)::type>::value);
-			});
-			return satisfied;
-		}()>;
+	static inline constexpr auto any_type_satisfies([[maybe_unused]] List list) {
+		return hana::bool_c<hana::fold_left(List{}, false, [](bool state, auto value) noexcept {
+			return state
+				   || (RequirementType::value
+					   == ConditionType<typename decltype(value)::type>::value);
+		})>;
 	}
 
 	/// @brief Value of Meta-programming function `any_type_satisfies`. Used to determine that at
@@ -77,12 +73,12 @@ namespace hyperion::mpl {
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr auto any_type_satisfies_v
-		= decltype(any_type_satisfies<ConditionType, RequirementType>(List{}))::value;
+		= hana::value_of(any_type_satisfies<ConditionType, RequirementType>(List{}));
 
-	static_assert(any_type_satisfies_v<std::is_integral, std::true_type, list<u8, f32, f64>>,
+	static_assert(any_type_satisfies_v<std::is_integral, std::true_type, mpl::list<u8, f32, f64>>,
 				  "mpl::any_type_satisfies implementation failing");
 	static_assert(
-		!any_type_satisfies_v<std::is_floating_point, std::true_type, list<u8, i32, usize>>,
+		!any_type_satisfies_v<std::is_floating_point, std::true_type, mpl::list<u8, i32, usize>>,
 		"mpl::any_type_satisfies implementation failing");
 
 	namespace detail {
@@ -100,7 +96,7 @@ namespace hyperion::mpl {
 					   == ConditionType<typename decltype(val)::type, Args...>::value;
 			};
 
-			return hana::integral_c<bool, hana::any_of(list, satisfies)>;
+			return hana::bool_c<hana::any_of(list, satisfies)>;
 		}
 	} // namespace detail
 
@@ -135,19 +131,19 @@ namespace hyperion::mpl {
 			 typename CheckList,
 			 typename ArgList>
 	static inline constexpr auto
-	any_type_satisfies_with_arg_list(CheckList _list, [[maybe_unused]] ArgList arglist) noexcept
-		-> bool {
-		constexpr auto satisfies = [arglist](auto val) noexcept {
+	any_type_satisfies_with_arg_list([[maybe_unused]] CheckList _list,
+									 [[maybe_unused]] ArgList arglist) noexcept {
+		constexpr auto satisfies = [](auto val) noexcept {
 			constexpr auto satisfies_impl = [](auto... vals) {
 				return RequirementType::value
 					   == ConditionType<typename decltype(val)::type,
 										typename decltype(vals)::type...>::value;
 			};
 
-			return hana::unpack(arglist, satisfies_impl);
+			return hana::unpack(ArgList{}, satisfies_impl);
 		};
 
-		return hana::any_of(_list, satisfies);
+		return hana::bool_c<hana::any_of(CheckList{}, satisfies)>;
 	}
 
 	/// @brief Value of Meta-programming function `any_type_satisfies_with_arg_list`. Used to
@@ -167,8 +163,8 @@ namespace hyperion::mpl {
 			 typename RequirementType,
 			 typename CheckList,
 			 typename ArgList>
-	static inline constexpr auto any_type_satisfies_with_arg_list_v
-		= any_type_satisfies_with_arg_list<ConditionType, RequirementType>(CheckList{}, ArgList{});
+	static inline constexpr auto any_type_satisfies_with_arg_list_v = hana::value_of(
+		any_type_satisfies_with_arg_list<ConditionType, RequirementType>(CheckList{}, ArgList{}));
 
 	namespace detail {
 		class atswal_test {
@@ -180,13 +176,13 @@ namespace hyperion::mpl {
 
 		static_assert(any_type_satisfies_with_arg_list_v<std::is_constructible,
 														 std::true_type,
-														 list<f32, usize, atswal_test>,
-														 list<i32, f32>>,
+														 mpl::list<f32, usize, atswal_test>,
+														 mpl::list<i32, f32>>,
 					  "mpl::any_type_satisfies_with_arg_list implementation failing");
 		static_assert(!any_type_satisfies_with_arg_list_v<std::is_constructible,
 														  std::true_type,
-														  list<f32, usize>,
-														  list<i32, f32>>,
+														  mpl::list<f32, usize>,
+														  mpl::list<i32, f32>>,
 					  "mpl::any_type_satisfies_with_arg_list implementation failing");
 	} // namespace detail
 
@@ -210,16 +206,12 @@ namespace hyperion::mpl {
 	/// @headerfile "Hyperion/mpl/ForAll.h"
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
-	static inline constexpr auto all_types_satisfy(List list) noexcept {
-		return hana::integral_c<bool, [list]() noexcept {
-			auto satisfied = true;
-			hana::for_each(list, [&satisfied](auto val) noexcept {
-				satisfied = satisfied
-							&& (RequirementType::value
-								== ConditionType<typename decltype(val)::type>::value);
-			});
-			return satisfied;
-		}()>;
+	static inline constexpr auto all_types_satisfy([[maybe_unused]] List list) noexcept {
+		return hana::bool_c<hana::fold_left(List{}, true, [](bool state, auto value) noexcept {
+			return state
+				   && (RequirementType::value
+					   == ConditionType<typename decltype(value)::type>::value);
+		})>;
 	}
 
 	/// @brief Value of Meta-programming function `for_all`. Used to determine that every type
@@ -228,12 +220,12 @@ namespace hyperion::mpl {
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr bool all_types_satisfy_v
-		= decltype(all_types_satisfy<ConditionType, RequirementType>(List{}))::value;
+		= hana::value_of(all_types_satisfy<ConditionType, RequirementType>(List{}));
 
 	static_assert(
-		all_types_satisfy_v<std::is_default_constructible, std::true_type, list<u8, u32, f32>>,
+		all_types_satisfy_v<std::is_default_constructible, std::true_type, mpl::list<u8, u32, f32>>,
 		"mpl::all_types_satisfy implementation failing");
-	static_assert(!all_types_satisfy_v<std::is_integral, std::true_type, list<u8, u32, f32>>,
+	static_assert(!all_types_satisfy_v<std::is_integral, std::true_type, mpl::list<u8, u32, f32>>,
 				  "mpl::all_types_satisfy implementation failing");
 
 	/// @brief Meta-programming function to determine that for every list of types, `Types...`
@@ -259,29 +251,24 @@ namespace hyperion::mpl {
 			 HasValue RequirementType,
 			 typename Evaluatee,
 			 typename Lists>
-	static inline constexpr auto all_lists_satisfy_for_type(Lists lists) noexcept {
-		return hana::integral_c<bool, [lists]() noexcept {
-			auto satisfied = true;
-			hana::for_each(lists, [&satisfied](auto list) noexcept {
-				constexpr auto satisfies = [](auto... types) noexcept {
-					return RequirementType::value
-						   == ConditionType<Evaluatee, typename decltype(types)::type...>::value;
-				};
+	static inline constexpr auto all_lists_satisfy_for_type([[maybe_unused]] Lists lists) noexcept {
+		return hana::bool_c<hana::fold_left(Lists{}, true, [](bool state, auto list) noexcept {
+			constexpr auto satisfies = [](auto... types) noexcept {
+				return RequirementType::value
+					   == ConditionType<Evaluatee, typename decltype(types)::type...>::value;
+			};
 
-				using list_t = typename decltype(list)::type;
-				satisfied = satisfied && hana::unpack(list_t{}, satisfies);
-			});
-			return satisfied;
-		}()>;
+			using list_t = typename decltype(list)::type;
+			return state && hana::unpack(list_t{}, satisfies);
+		})>;
 	}
 
 	template<template<typename, typename...> typename ConditionType,
 			 HasValue RequirementType,
 			 typename Evaluatee,
 			 typename Lists>
-	static inline constexpr bool all_lists_satisfy_for_type_v
-		= decltype(all_lists_satisfy_for_type<ConditionType, RequirementType, Evaluatee>(
-			Lists{}))::value;
+	static inline constexpr bool all_lists_satisfy_for_type_v = hana::value_of(
+		all_lists_satisfy_for_type<ConditionType, RequirementType, Evaluatee>(Lists{}));
 
 	namespace detail::test {
 		struct AllListsSatisfyTest1 {
@@ -336,10 +323,11 @@ namespace hyperion::mpl {
 						  mpl::list<mpl::list<usize, char>, mpl::list<const char*, usize>>>,
 					  "all_lists_satisfy_for_type failing");
 
-		static_assert(all_lists_satisfy_for_type_v < std::is_constructible,
-					  std::true_type,
-					  AllListsSatisfyTest2,
-					  mpl::apply_to_list<mpl::list, mpl::list<u8, f32, i64>>>,
-					  "mpl::all_lists_satisfy_for_type implementation failing");
+		static_assert(
+			all_lists_satisfy_for_type_v<std::is_constructible,
+										 std::true_type,
+										 AllListsSatisfyTest2,
+										 mpl::apply_to_list<mpl::list, mpl::list<u8, f32, i64>>>,
+			"mpl::all_lists_satisfy_for_type implementation failing");
 	} // namespace detail::test
 } // namespace hyperion::mpl

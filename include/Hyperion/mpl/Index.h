@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief basic meta-programming index type
 /// @version 0.1
-/// @date 2022-08-07
+/// @date 2022-11-12
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -41,7 +41,16 @@ namespace hyperion::mpl {
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/Index.h"
 	template<usize N>
-	struct index : hana::integral_constant<usize, N> { };
+	struct index : public hana::integral_constant<usize, N> {
+    };
+
+	/// @brief Instance of the Hyperion basic meta-programming index type
+	///
+	/// @tparam N - The index
+	/// @ingroup mpl
+	/// @headerfile "Hyperion/mpl/Index.h"
+    template<usize N>
+    static inline constexpr auto index_c = index<N>{};
 
 ///// @brief An instance of `mpl::index_t<N>`
 ///// @ingroup mpl
