@@ -3,7 +3,7 @@
 /// @brief An alternative to std::variant with improved compile time and runtime performance and
 /// additional features
 /// @version 0.1
-/// @date 2022-08-21
+/// @date 2022-11-13
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -31,10 +31,88 @@
 #include <Hyperion/enum/detail.h>
 #include <Hyperion/error/Panic.h>
 
-// the enum_inspection macros declared before the tests break formatting for some reason
+///	@defgroup enum Enum
+/// `Enum<Ts...>` is a sum type similar to `std::variant`, but that more closely models the API
+/// surface and ergonomics of sum types from other languages, such as Rust's `enum` type category.
+/// To achieve this, it provides an API compatible with `std::variant`, including overloads for
+/// static functions and meta-programming types in `std`, along with additional functionality that
+/// improves ergonomics and usage vs `std::variant`.
+///
+/// # Example
+/// @code {.cpp}
+/// using MyEnum = Enum<u32, u64, f32>;
+/// auto my_enum = MyEnum(enum_tag<f32>{}, 42.0_f32);
+///
+/// const auto index = my_enum.index();
+/// HYPERION_ASSERT(index == 2_usize, "");
+/// const auto is_variant = my_enum.is_variant(2_usize);
+/// HYPERION_ASSERT(is_variant, "");
+/// const auto is_variant_templated = my_enum.is_variant<2_usize>();
+/// HYPERION_ASSERT(is_variant_templated, "");
+/// const auto is_variant_type = my_enum.is_variant<f32>();
+/// HYPERION_ASSERT(is_variant_type, "");
+/// const auto* val = my_enum.get_if<2_usize>();
+/// HYPERION_ASSERT(val != nullptr, "");
+/// const auto& val2 = my_enum.get<f32>();
+/// HYPERION_ASSERT(val2 == 42.0_f32, "");
+///
+/// my_enum.match(
+///             [](f32 value){ println("enum was an f32"); },
+///             [](auto value){ println("enum wasn't an f32"); }
+///         );
+///
+///	enum_inspect(my_enum) {
+///		enum_variant(f32, const auto& value) {
+///		    HYPERION_ASSERT(value == 42.0_f32, "");
+///		    println("enum was an f32");
+///		}
+///		any_variant() {
+///		    println("enum wasn't an f32");
+///		}
+///	}
+///
+///	my_enum = 24_u64;
+///
+/// my_enum.match(
+///             [](u64 value){ println("enum was a u64"); },
+///             [](auto value){ println("enum wasn't a u64"); }
+///         );
+///
+///	enum_inspect(my_enum) {
+///		enum_variant(u64, const auto& value) {
+///		    HYPERION_ASSERT(value == 24_u64, "");
+///		    println("enum was a u64");
+///		}
+///		any_variant() {
+///		    println("enum wasn't a u64");
+///		}
+///	}
+///
+///	const auto* val3 = std::get_if<u64>(my_enum);
+///	HYPERION_ASSERT(val3 != nullptr, "");
+///	HYPERION_ASSERT(*val3 == 24_u64, "");
+///
+/// @endcode
+/// @headerfile "Hyperion/Enum.h"
 
 namespace hyperion {
 
+    /// @brief Overload wraps a set of callables into a single callable type suitable for passing to
+    /// `std::visit` or `Enum<Ts...>::match`
+    ///
+    /// # Example
+    /// @code {.cpp}
+	/// using MyEnum = Enum<u32, u64, f32>;
+	/// auto my_enum = MyEnum(enum_tag<f32>{}, 42.0_f32);
+	/// my_enum.match(Overload{
+    ///                 [](f32 value){ println("enum was an f32"); },
+    ///                 [](auto value){ println("enum wasn't an f32"); }
+    ///             });
+    /// @endcode
+    ///
+    /// @tparam Callables - The types of the callables this `Overload` wraps
+    /// @ingroup enum
+    /// @headerfile "Hyperion/Enum.h"
 	template<typename... Callables>
 	struct Overload : Callables... {
 		using Callables::operator()...;
@@ -42,6 +120,74 @@ namespace hyperion {
 	template<typename... Callables>
 	Overload(Callables...) -> Overload<Callables...>;
 
+	/// @brief `Enum<Ts...>` is a sum type (a type-safe tagged union) similar to `std::variant`.
+	///
+	/// `Enum<Ts...>` is a sum type (a type-safe tagged union) similar to `std::variant`,
+    /// but that more closely models the API surface and ergonomics of sum types from other
+    /// languages, such as Rust's `enum` type category. To achieve this, it provides an API
+    /// compatible with `std::variant`, including overloads for static functions and
+    /// meta-programming types in `std`, along with additional functionality that improves
+    /// ergonomics and usage vs `std::variant`.
+	///
+	/// # Example
+	/// @code {.cpp}
+	/// using MyEnum = Enum<u32, u64, f32>;
+	/// auto my_enum = MyEnum(enum_tag<f32>{}, 42.0_f32);
+	///
+	/// const auto index = my_enum.index();
+	/// HYPERION_ASSERT(index == 2_usize, "");
+	/// const auto is_variant = my_enum.is_variant(2_usize);
+	/// HYPERION_ASSERT(is_variant, "");
+	/// const auto is_variant_templated = my_enum.is_variant<2_usize>();
+	/// HYPERION_ASSERT(is_variant_templated, "");
+	/// const auto is_variant_type = my_enum.is_variant<f32>();
+	/// HYPERION_ASSERT(is_variant_type, "");
+	/// const auto* val = my_enum.get_if<2_usize>();
+	/// HYPERION_ASSERT(val != nullptr, "");
+	/// const auto& val2 = my_enum.get<f32>();
+	/// HYPERION_ASSERT(val2 == 42.0_f32, "");
+	///
+	/// my_enum.match(
+	///             [](f32 value){ println("enum was an f32"); },
+	///             [](auto value){ println("enum wasn't an f32"); }
+	///         );
+	///
+	///	enum_inspect(my_enum) {
+	///		enum_variant(f32, const auto& value) {
+	///		    HYPERION_ASSERT(value == 42.0_f32, "");
+	///		    println("enum was an f32");
+	///		}
+	///		any_variant() {
+	///		    println("enum wasn't an f32");
+	///		}
+	///	}
+	///
+	///	my_enum = 24_u64;
+	///
+	/// my_enum.match(
+	///             [](u64 value){ println("enum was a u64"); },
+	///             [](auto value){ println("enum wasn't a u64"); }
+	///         );
+	///
+	///	enum_inspect(my_enum) {
+	///		enum_variant(u64, const auto& value) {
+	///		    HYPERION_ASSERT(value == 24_u64, "");
+	///		    println("enum was a u64");
+	///		}
+	///		any_variant() {
+	///		    println("enum wasn't a u64");
+	///		}
+	///	}
+	///
+	///	const auto* val3 = std::get_if<u64>(my_enum);
+	///	HYPERION_ASSERT(val3 != nullptr, "");
+	///	HYPERION_ASSERT(*val3 == 24_u64, "");
+	///
+	/// @endcode
+    ///
+    /// @tparam Types - The list of types that can be stored in the Enum
+    /// @ingroup enum
+	/// @headerfile "Hyperion/Enum.h"
 	template<typename... Types>
 	class Enum : private detail::EnumUnion<0_usize, Types...> {
 	  private:
