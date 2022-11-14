@@ -1462,6 +1462,7 @@ namespace hyperion {
 
 // wire up hyperion::Enum<Types...> to support access like std::variant<Types...>,
 // except for std::visit
+
 template<std::size_t I, typename... Ts>
 requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 // NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1523,6 +1524,16 @@ namespace std {
 		return _enum.template is_variant<T>();
 	}
 
+    /// @defgroup std_getI std::get
+    /// Overloads of `std::get<I>` for `hyperion::Enum`
+    /// @headerfile "Hyperion/Enum.h"
+    ///
+    /// @defgroup std_getT std::get
+    /// Overloads of `std::get<T>` for `hyperion::Enum`
+    /// @headerfile "Hyperion/Enum.h"
+
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1535,6 +1546,8 @@ namespace std {
 		return _enum.template get<I>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1547,6 +1560,8 @@ namespace std {
 		return std::move(_enum).template get<I>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1559,6 +1574,8 @@ namespace std {
 		return _enum.template get<I>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1571,6 +1588,8 @@ namespace std {
 		return std::move(_enum).template get<I>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
@@ -1583,6 +1602,8 @@ namespace std {
 		return _enum.template get<T>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
@@ -1595,6 +1616,8 @@ namespace std {
 		return std::move(_enum).template get<T>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
@@ -1607,6 +1630,8 @@ namespace std {
 		return _enum.template get<T>();
 	}
 
+    /// @brief overload `std::get` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
@@ -1619,6 +1644,8 @@ namespace std {
 		return std::move(_enum).template get<T>();
 	}
 
+    /// @brief overload `std::get_if` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1627,6 +1654,8 @@ namespace std {
 		return _enum->template get_if<I>();
 	}
 
+    /// @brief overload `std::get_if` for `hyperion::Enum`
+    /// @ingroup std_getI
 	template<size_t I, typename... Ts>
 	requires(I < std::variant_size_v<hyperion::Enum<Ts...>>)
 	// NOLINTNEXTLINE(cert-dcl58-cpp)
@@ -1635,6 +1664,8 @@ namespace std {
 		return _enum->template get_if<I>();
 	}
 
+    /// @brief overload `std::get_if` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
@@ -1644,6 +1675,8 @@ namespace std {
 		return _enum->template get_if<T>();
 	}
 
+    /// @brief overload `std::get_if` for `hyperion::Enum`
+    /// @ingroup std_getT
 	template<typename T, typename... Ts>
 	requires(hyperion::mpl::contains_v<T, hyperion::mpl::list<Ts...>>
 			 && hyperion::mpl::instances_of_v<T, hyperion::mpl::list<Ts...>> == 1)
