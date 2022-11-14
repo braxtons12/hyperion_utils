@@ -97,22 +97,23 @@
 
 namespace hyperion {
 
-    /// @brief Overload wraps a set of callables into a single callable type suitable for passing to
-    /// `std::visit` or `Enum<Ts...>::match`
-    ///
-    /// # Example
-    /// @code {.cpp}
+	/// @brief Overload wraps a set of callables into a single callable type suitable for passing to
+	/// `std::visit` or `Enum<Ts...>::match`
+	///
+	/// # Example
+	/// @code {.cpp}
 	/// using MyEnum = Enum<u32, u64, f32>;
 	/// auto my_enum = MyEnum(enum_tag<f32>{}, 42.0_f32);
 	/// my_enum.match(Overload{
-    ///                 [](f32 value){ println("enum was an f32"); },
-    ///                 [](auto value){ println("enum wasn't an f32"); }
-    ///             });
-    /// @endcode
-    ///
-    /// @tparam Callables - The types of the callables this `Overload` wraps
-    /// @ingroup enum
-    /// @headerfile "Hyperion/Enum.h"
+	///                 [](f32 value){ println("enum was an f32"); },
+	///                 [](auto value){ println("enum wasn't an f32"); }
+	///             });
+	/// @endcode
+	///
+	/// @tparam Callables The types of the callables this `Overload` wraps
+	///
+	/// @ingroup enum
+	/// @headerfile "Hyperion/Enum.h"
 	template<typename... Callables>
 	struct Overload : Callables... {
 		using Callables::operator()...;
@@ -123,11 +124,11 @@ namespace hyperion {
 	/// @brief `Enum<Ts...>` is a sum type (a type-safe tagged union) similar to `std::variant`.
 	///
 	/// `Enum<Ts...>` is a sum type (a type-safe tagged union) similar to `std::variant`,
-    /// but that more closely models the API surface and ergonomics of sum types from other
-    /// languages, such as Rust's `enum` type category. To achieve this, it provides an API
-    /// compatible with `std::variant`, including overloads for static functions and
-    /// meta-programming types in `std`, along with additional functionality that improves
-    /// ergonomics and usage vs `std::variant`.
+	/// but that more closely models the API surface and ergonomics of sum types from other
+	/// languages, such as Rust's `enum` type category. To achieve this, it provides an API
+	/// compatible with `std::variant`, including overloads for static functions and
+	/// meta-programming types in `std`, along with additional functionality that improves
+	/// ergonomics and usage vs `std::variant`.
 	///
 	/// # Example
 	/// @code {.cpp}
@@ -184,46 +185,93 @@ namespace hyperion {
 	///	HYPERION_ASSERT(*val3 == 24_u64, "");
 	///
 	/// @endcode
-    ///
-    /// @tparam Types - The list of types that can be stored in the Enum
-    /// @ingroup enum
+	///
+	/// @tparam Types The list of types that can be stored in the Enum
+	/// @ingroup enum
 	/// @headerfile "Hyperion/Enum.h"
 	template<typename... Types>
 	class Enum : private detail::EnumUnion<0_usize, Types...> {
 	  private:
+		/// @brief internal storage management type
 		using Union = detail::EnumUnion<0_usize, Types...>;
+		/// @brief Contains meta-functions and static members useful for the implementation
 		using tags = typename Union::tags;
 
+		/// @brief Forms the lvalue reference type corresponding to the type T
+		/// @tparam T  The type to form the lvalue reference type of
 		template<typename T>
 		using reference = std::add_lvalue_reference_t<T>;
 
+		/// @brief Forms the const lvalue reference type corresponding to the type T
+		/// @tparam T  The type to form the const lvalue reference type of
 		template<typename T>
 		using const_reference = std::add_lvalue_reference_t<std::add_const_t<T>>;
 
+		/// @brief Forms the rvalue reference type corresponding to the type T
+		/// @tparam T  The type to form the rvalue reference type of
 		template<typename T>
 		using rvalue_reference = std::add_rvalue_reference_t<T>;
 
+		/// @brief Forms the const rvalue reference type corresponding to the type T
+		/// @tparam T  The type to form the const rvalue reference type of
 		template<typename T>
 		using const_rvalue_reference = std::add_rvalue_reference_t<std::add_const_t<T>>;
 
+		/// @brief The type of the `Enum` variant at index `Index + 1`
+		/// @tparam Index  The current `Enum` variant index
 		template<usize Index>
 		using next_variant = typename tags::template next_variant<Index>;
 
 	  public:
+		/// @brief The type list containing the variant types of this `Enum` instantiation
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		using list = typename tags::list;
+		/// @brief The size type used to store the variant index
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		using size_type = typename tags::size_type;
+		/// @brief The size of the `list`. The number of `Enum` variants in this instantiation
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		static constexpr auto SIZE = static_cast<size_type>(tags::SIZE);
 
+		/// @brief The type of the `Enum` variant at index `Index`
+		/// @tparam Index  The variant index to get the corresponding type for
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<usize Index, std::enable_if_t<(Index < SIZE), bool> = true>
 		using variant = typename tags::template variant<Index>;
 
+		/// @brief The variant index associated with the given type.
+		/// If T occurs multiple times in `list`, this will be the index corresponding with the
+		/// first occurrence of `T`
+		/// @tparam T  The type to get the variant index of
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T>
 		requires mpl::contains_v<T, list>
 		static inline constexpr auto variant_index = mpl::index_of_v<T, list>;
 
 	  private:
+		/// @brief The index of the current variant type stored in the `Enum`
 		size_type m_current_index = SIZE;
 
+		/// @brief A version of `list`, but with all elements `const`
+		using list_as_const = mpl::apply_to_list<std::add_const_t, list>;
+
+		/// @brief A version of `list`, but with all elements as lvalue references
+		using list_as_ref = mpl::apply_to_list<std::add_lvalue_reference_t, list>;
+
+		/// @brief A version of `list`, but with all elements as const lvalue references
+		using list_as_const_ref = mpl::apply_to_list<std::add_lvalue_reference_t, list_as_const>;
+
+		/// @brief Checks if the `Enum` variant at `Index` can be constructed from `Args...`
+		/// @tparam Index  The variant index to check
+		/// @tparam Args  The types of the arguments to pass to the variant at `Index`'s
+		/// constructor
+		/// @return Whether the `Enum` variant at `Index` is constructible from an argument list of
+		/// types `Args...`
 		template<usize Index, typename... Args>
 		requires(Index < SIZE)
 		static inline consteval auto check_constructible() noexcept -> std::pair<bool, usize> {
@@ -245,6 +293,10 @@ namespace hyperion {
 			return {false, SIZE};
 		}
 
+		/// @brief Checks if the `Enum` variant at `Index` can be assigned from `Args`
+		/// @tparam Index  The variant index to check
+		/// @tparam Args  The type to assign the variant at `Index` with
+		/// @return Whether the `Enum` variant at `Index` is assignable from an `Arg`
 		template<usize Index, typename Arg>
 		requires(Index < SIZE)
 		static inline consteval auto check_assignable() noexcept -> std::pair<bool, usize> {
@@ -267,7 +319,18 @@ namespace hyperion {
 		}
 
 	  public:
-		// default-constructs as the first variant
+		/// @brief Default constructs an `Enum`
+		/// This will default construct an `Enum` as the first variant (ie the variant at index
+		/// zero).
+		///
+		/// # Requirements
+		/// * The variant at index zero must be `DefaultConstructible`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as the variant at index zero is `NoexceptDefaultConstructible`,
+		/// otherwise can throw any exception throwable by the variant at index zero.
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		constexpr Enum() noexcept(concepts::NoexceptDefaultConstructible<variant<0>>)
 		requires concepts::DefaultConstructible<variant<0>>
 		{
@@ -276,21 +339,45 @@ namespace hyperion {
 			set_index(0_usize);
 		}
 
-		// Constructs as the first variant constructible from `value`
+		/// @brief Constructs an `Enum` as the first variant `ConstructibleFrom` `value`
+		///
+		/// # Requirements
+		/// * A variant of `Enum` must be `ConstructibleFrom` `value`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as the constructible variant is `NoexceptConstructibleFrom` `value`
+		/// otherwise can throw any exception throwable by the constructible variant.
+		///
+		/// @param value  The value to construct the `Enum` from
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T>
-		// NOLINTNEXTLINE(bugprone-forwarding-reference-overload)
-		explicit constexpr Enum(T&& value) noexcept(
-			mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_constructible,
-													std::true_type,
-													list,
-													mpl::list<T>>)
+		explicit constexpr Enum(T&& value) // NOLINT(bugprone-forwarding-reference-overload)
+			noexcept(mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_constructible,
+															 std::true_type,
+															 list,
+															 mpl::list<T>>)
 		requires(check_constructible<0, decltype(value)>().first)
 		{
 			construct<check_constructible<0, decltype(value)>().second, true>(
 				std::forward<T>(value));
 		}
 
-		// constructs the variant indicated by `T` from `args...`
+		/// @brief Constructs an `Enum` as the variant `T` from the argument list `args...`
+		///
+		/// # Requirements
+		/// * `T` must be a variant of `Enum`
+		/// * `T` must be `ConstructibleFrom` `args...`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as `T` is `NoexceptConstructible` from `args...` otherwise can
+		/// throw any exception throwable by constructing `T` from `args...`.
+		///
+		/// @param tag  The tag signalling the variant, `T`, to construct the `Enum` as
+		/// @param args  The arguments to pass to `T`'s constructor
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T, typename... Args>
 		requires(mpl::contains_v<T, list> && concepts::ConstructibleFrom<T, Args...>)
 		explicit constexpr Enum([[maybe_unused]] enum_tag<T> tag, Args&&... args) noexcept(
@@ -298,6 +385,20 @@ namespace hyperion {
 			construct<variant_index<T>, true>(std::forward<Args>(args)...);
 		}
 
+		/// @brief Copy Constructs an `Enum` from the given one
+		///
+		/// # Requirements
+		/// * All variants of `Enum` must be `CopyConstructible`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as all variants of `Enum` are `NoexceptCopyConstructible`,
+		/// otherwise can throw any exception throwable by copy constructing one of the `Enum`
+		/// variants.
+		///
+		/// @param value  The `Enum` to copy-construct an `Enum` from
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		constexpr Enum(const Enum& value) noexcept(
 			mpl::all_types_satisfy_v<std::is_nothrow_copy_constructible, std::true_type, list>)
 		requires mpl::all_types_satisfy_v<std::is_copy_constructible, std::true_type, list>
@@ -313,6 +414,20 @@ namespace hyperion {
 			}
 		}
 
+		/// @brief Move Constructs an `Enum` from the given one
+		///
+		/// # Requirements
+		/// * All variants of `Enum` must be `MoveConstructible`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as all variants of `Enum` are `NoexceptMoveConstructible`,
+		/// otherwise can throw any exception throwable by move constructing one of the `Enum`
+		/// variants.
+		///
+		/// @param value  The `Enum` to move-construct this `Enum` from
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		constexpr Enum(Enum&& value) noexcept(
 			mpl::all_types_satisfy_v<std::is_nothrow_move_constructible, std::true_type, list>)
 		requires mpl::all_types_satisfy_v<std::is_move_constructible, std::true_type, list>
@@ -331,6 +446,18 @@ namespace hyperion {
 
 // work around for clang not-yet supporting multiple destructors
 #if HYPERION_PLATFORM_COMPILER_CLANG
+		/// @brief Destructor
+		///
+		/// # Triviality
+		/// * Trivial if all variants of `Enum` are `TriviallyDestructible`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as all variants of `Enum` are `NoexceptDestructible`,
+		/// otherwise can throw any exception throwable by destructing one of the `Enum`
+		/// variants.
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		constexpr ~Enum() noexcept(
 			mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>) {
 			if constexpr(mpl::any_type_satisfies_v<std::is_trivially_destructible,
@@ -341,24 +468,54 @@ namespace hyperion {
 			}
 		}
 #else
-
-		// destructor to use if __any__ type in `list` is __not__ trivially destructible
+		/// @brief Destructor
+		///
+		/// # Triviality
+		/// * Trivial if all variants of `Enum` are `TriviallyDestructible`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as all variants of `Enum` are `NoexceptDestructible`,
+		/// otherwise can throw any exception throwable by destructing one of the `Enum`
+		/// variants.
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		constexpr ~Enum() noexcept(
 			mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
 		requires(mpl::any_type_satisfies_v<std::is_trivially_destructible, std::false_type, list>)
 		{
 			destruct(get_index());
 		}
-		// destructor to use if all types in `list` are trivially destructible
-		// NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
 		constexpr ~Enum() noexcept = default;
 #endif
+		// clang-format off
 
-		constexpr auto operator=(const Enum& value) noexcept(
-			mpl::all_types_satisfy_v<std::is_nothrow_copy_constructible, std::true_type, list>)
+		/// @brief Copy-assigns this `Enum` from the given one
+		///
+		/// # Requirements
+		/// * All variants of `Enum` must be `CopyAssignable`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as:
+		///     - The all variants of this `Enum` are `NoexceptCopyAssignable` from `value`,
+		///     otherwise can throw any exception throwable by copy-assigning one of the `Enum`
+		///     variants.
+		///     - All variants of this `Enum` are `NoexceptDestructible`
+		/// * If the `noexcept` requirements are not met and an exception is thrown in this
+		/// operator, then this `Enum` will be in the "valueless-by-exception" state
+		///
+		/// @param value  The `Enum` to copy-assign this `Enum` from
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
+		constexpr auto operator=(const Enum& value)
+            noexcept(
+			    mpl::all_types_satisfy_v<std::is_nothrow_copy_constructible, std::true_type, list>
+                && mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
 			-> Enum&
 		requires mpl::all_types_satisfy_v<std::is_copy_assignable, std::true_type, list>
 		{
+			// clang-format on
 			if(this == &value) {
 				return *this;
 			}
@@ -372,12 +529,34 @@ namespace hyperion {
 
 			return *this;
 		}
+		// clang-format off
 
-		constexpr auto operator=(Enum&& value) noexcept(
-			mpl::all_types_satisfy_v<std::is_nothrow_move_constructible, std::true_type, list>)
+		/// @brief Move-assigns this `Enum` from the given one
+		///
+		/// # Requirements
+		/// * All variants of `Enum` must be `MoveAssignable`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as:
+		///     - The all variants of this `Enum` are `NoexceptMoveAssignable` from `value`,
+		///     otherwise can throw any exception throwable by move-assigning one of the `Enum`
+		///     variants.
+		///     - All variants of this `Enum` are `NoexceptDestructible`
+		/// * If the `noexcept` requirements are not met and an exception is thrown in this
+		/// operator, then this `Enum` will be in the "valueless-by-exception" state
+		///
+		/// @param value  The `Enum` to move-assign this `Enum` from
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
+		constexpr auto operator=(Enum&& value)
+            noexcept(
+                mpl::all_types_satisfy_v<std::is_nothrow_move_constructible, std::true_type, list>
+                && mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
 			-> Enum&
-		requires mpl::all_types_satisfy_v<std::is_move_constructible, std::true_type, list>
+        requires mpl::all_types_satisfy_v<std::is_move_constructible, std::true_type, list>
 		{
+			// clang-format on
 			if(this == &value) {
 				return *this;
 			}
@@ -392,41 +571,109 @@ namespace hyperion {
 
 			return *this;
 		}
+		// clang-format off
 
+		/// @brief Assigns `value` to the first `Enum` variant of this `Enum` assignable from
+        /// `value`
+		///
+		/// # Requirements
+		/// * A variant of `Enum` must be `Assignable` from `value`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as:
+		///     - The assignable variant of this `Enum` is `NoexceptAssignable` from `value`,
+		///     otherwise can throw any exception throwable by assigning the assignable variant
+		///     from `value`
+		///     - All variants of this `Enum` are `NoexceptDestructible`
+		/// * If the `noexcept` requirements are not met and an exception is thrown in this
+		/// operator, then this `Enum` will be in the "valueless-by-exception" state
+		///
+		/// @param value  The value to assign this `Enum` from
+		///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T>
 		requires mpl::any_type_satisfies_with_arg_list_v<std::is_assignable,
 														 std::true_type,
 														 list,
 														 mpl::list<T>>
-				 // NOLINTNEXTLINE
-				 constexpr auto operator=(T&& value) noexcept(
-					 mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_assignable,
+                 && concepts::NotSame<std::remove_cvref_t<T>, Enum>
+        constexpr auto operator=(T&& value) // NOLINT
+			noexcept(mpl::any_type_satisfies_with_arg_list_v<std::is_nothrow_assignable,
 															 std::true_type,
 															 list,
-															 mpl::list<T>>) -> Enum&
-				 requires concepts::NotSame<std::remove_cvref_t<decltype(value)>, Enum>
+															 mpl::list<T>>
+                    && mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
+		    -> Enum&
 		{
+			// clang-format on
 			this->template assign<check_assignable<0_usize, decltype(value)>().second, true>(
 				std::forward<T>(value));
 			return *this;
 		}
+		// clang-format off
 
+		/// @brief Re-constructs this `Enum` as the variant at index `N`, from `args...`
+		///
+		/// # Requirements
+        /// * `N` is a valid variant index for this `Enum` (`N < SIZE`)
+		/// * The variant at index `N` must be `ConstructibleFrom` `args...`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as:
+		///     - The variant at index `N` of this `Enum` is `NoexceptConstructibleFrom`` `args...`,
+		///     otherwise can throw any exception throwable by constructing the variant at index `N`
+		///     from `args...`
+		///     - All variants of this `Enum` are `NoexceptDestructible`
+		/// * If the `noexcept` requirements are not met and an exception is thrown in this
+		/// function, then this `Enum` will be in the "valueless-by-exception" state
+        ///
+        /// @param args  The arguments to construct the variant at index `N` from
+        ///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<usize N, typename... Args>
-		requires concepts::ConstructibleFrom<variant<N>, Args...>
-		constexpr auto
-		emplace(Args&&... args) noexcept(concepts::NoexceptConstructibleFrom<variant<N>, Args...>)
-			-> void {
+		requires concepts::ConstructibleFrom<variant<N>, Args...> && (N < SIZE)
+		constexpr auto emplace(Args&&... args)
+            noexcept(concepts::NoexceptConstructibleFrom<variant<N>, Args...>
+                    && mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
+			-> void 
+        {
+			// clang-format on
 			if(!is_valueless()) {
 				destruct(get_index());
 			}
 
 			construct<N, true>(std::forward<Args>(args)...);
 		}
+		// clang-format off
 
+		/// @brief Re-constructs this `Enum` as the variant `T`, from `args...`
+		///
+		/// # Requirements
+		/// * `T` is a variant of this `Enum`
+		/// * `T` is `ConstructibleFrom` `args...`
+		///
+		/// # Exception Safety
+		/// * `noexcept` as long as:
+		///     - `T` is `NoexceptConstructibleFrom`` `args...`, otherwise can throw any exception
+		///     throwable by constructing a `T` from `args...`
+		///     - All variants of this `Enum` are `NoexceptDestructible`
+		/// * If the `noexcept` requirements are not met and an exception is thrown in this
+		/// function, then this `Enum` will be in the "valueless-by-exception" state
+        ///
+        /// @param args  The arguments to construct the variant, `T`, from
+        ///
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T, typename... Args>
-		requires concepts::ConstructibleFrom<T, Args...>
-		constexpr auto
-		emplace(Args&&... args) noexcept(concepts::NoexceptConstructibleFrom<T, Args...>) -> void {
+		requires concepts::ConstructibleFrom<T, Args...> && mpl::contains_v<T, list>
+        constexpr auto emplace(Args&&... args)
+            noexcept(concepts::NoexceptConstructibleFrom<T, Args...>
+                    && mpl::all_types_satisfy_v<std::is_nothrow_destructible, std::true_type, list>)
+            -> void
+        {
+			// clang-format on
 			if(!is_valueless()) {
 				destruct(get_index());
 			}
@@ -434,56 +681,124 @@ namespace hyperion {
 			construct<variant_index<T>, true>(std::forward<Args>(args)...);
 		}
 
+		/// @brief Returns the index associated with the `Enum` variant this `Enum` currently is
+		/// @return The index associated with the variant this currently is
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		[[nodiscard]] inline constexpr auto get_index() const noexcept -> size_type {
 			return m_current_index;
 		}
 
+		/// @brief Returns the index associated with the `Enum` variant this `Enum` currently is
+		/// @return The index associated with the variant this currently is
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		[[nodiscard]] inline constexpr auto index() const noexcept -> size_type {
 			return m_current_index;
 		}
 
+		/// @brief Returns whether this `Enum` is currently the variant associated with `index`
+		/// @param index  The index to check
+		/// @return Whether this `Enum` is the variant associated with `index`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		[[nodiscard]] inline constexpr auto is_variant(usize index) const noexcept -> bool {
 			return m_current_index == index;
 		}
 
+		/// @brief Returns whether this `Enum` is currently the variant associated with `Index`
+		///
+		/// # Requirements
+		/// * `Index` must be a valid variant index (`Index < SIZE`)
+		///
+		/// @tparam Index  The index to check
+		/// @return Whether this `Enum` is the variant associated with `Index`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<usize Index>
 		requires(Index < SIZE)
 		[[nodiscard]] inline constexpr auto is_variant() const noexcept -> bool {
 			return m_current_index == Index;
 		}
+		// clang-format off
 
+		/// @brief Returns whether this `Enum` is currently the variant `T`
+		///
+		/// # Requirements
+		/// * `T` must be a variant of this `Enum`
+        /// * `T` must only occur once in the list of possible variants this `Enum` can take
+		///
+		/// @tparam T  The variant to check
+		/// @return Whether this `Enum` is the variant `T`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename T>
 		requires mpl::contains_v<T, list> && (mpl::instances_of_v<T, list> == 1_usize)
 				 && (variant_index<T> < SIZE)
-				 [[nodiscard]] inline constexpr auto is_variant() const noexcept -> bool {
+        [[nodiscard]] inline constexpr auto is_variant() const noexcept -> bool {
+			// clang-format on
 			return m_current_index == variant_index<T>;
 		}
 
+		/// @brief Returns whether this `Enum` is currently valueless (whether the `Enum` has been
+		/// made valueless due to an exception thrown during an assignment or `emplace` call)
+		/// @return Whether this `Enum` is valueless-by-exception
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		[[nodiscard]] inline constexpr auto is_valueless() const noexcept -> bool {
 			return m_current_index == SIZE;
 		}
+		// clang-format off
 
-	  private:
-		using list_as_const = mpl::apply_to_list<std::add_const_t, list>;
-		using list_as_ref = mpl::apply_to_list<std::add_lvalue_reference_t, list>;
-		using list_as_const_ref = mpl::apply_to_list<std::add_lvalue_reference_t, list_as_const>;
-
-	  public:
+        /// @brief Invokes the callable `function` with the current variant of this `Enum`
+        ///
+        /// Equivalent to invoking `function` as if in 
+        /// `std::forward<F>(function)(this->get<this->index()>())` (ignoring that `this->index()`
+        /// is not a constant expression and thus can't be used as a template parameter)
+        ///
+        /// # Requirements
+        /// * `function` must be invokable with every variant of this `Enum`. The easiest ways to
+        /// satisfy this are to use a generic lambda or to pass in an `Overload` wrapping multiple
+        /// callables.
+        /// * The return type of `function` must be the same for every variant of this `Enum`
+        ///
+        /// # Exception Safety
+        /// * `noexcept` if `function` is `noexcept` for every variant of this `Enum`, otherwise
+        /// can throw any exception throwable by `function`.
+        ///
+        /// # Example
+        /// @code {.cpp}
+        /// using MyEnum = Enum<std::string, u32, std::vector<u8>>;
+        /// auto my_enum = MyEnum(enum_tag<std::string>{}, "MyEnum");
+        ///
+        /// my_enum.match(Overload{
+        ///                 [](auto value){ println("Not string"); },
+        ///                 [](std::string value){ println("std::string: {}", value); }
+        ///              });
+        /// @endcode
+        ///
+        /// @param function  The callable to invoke with the current variant of this `Enum`
+        ///
+        /// @return The result of invoking function as if in
+        /// `std::forward<F>(function)(this->get<this->index()>())`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename F>
-		requires(
-			mpl::all_lists_satisfy_for_type_v<std::is_invocable,
-											  std::true_type,
-											  F,
-											  mpl::apply_to_list<mpl::list, list>>
-			|| mpl::all_lists_satisfy_for_type_v<std::is_invocable,
-												 std::true_type,
-												 F,
-												 mpl::apply_to_list<mpl::list, list_as_const_ref>>)
+		requires(mpl::all_lists_satisfy_for_type_v<std::is_invocable,
+											       std::true_type,
+											       F,
+											       mpl::apply_to_list<mpl::list, list>>
+			     || mpl::all_lists_satisfy_for_type_v<std::is_invocable,
+												      std::true_type,
+												      F,
+												      mpl::apply_to_list<mpl::list, list_as_const_ref>>)
 		[[nodiscard]] inline constexpr auto match(F&& function) const
 			noexcept(mpl::all_lists_satisfy_for_type_v<std::is_nothrow_invocable,
 													   std::true_type,
 													   F,
-													   mpl::apply_to_list<mpl::list, list>>) {
+													   mpl::apply_to_list<mpl::list, list>>)
+        {
+			// clang-format on
 			return mpl::call_with_index<SIZE>(
 				get_index(),
 				[this, func = std::forward<F>(function)](auto index) mutable noexcept(
@@ -495,6 +810,39 @@ namespace hyperion {
 				});
 		}
 
+        /// @brief Invokes the callable `function` with the current variant of this `Enum`
+        ///
+        /// Equivalent to invoking `function` as if in 
+        /// `std::forward<F>(function)(this->get<this->index()>())` (ignoring that `this->index()`
+        /// is not a constant expression and thus can't be used as a template parameter)
+        ///
+        /// # Requirements
+        /// * `function` must be invokable with every variant of this `Enum`. The easiest ways to
+        /// satisfy this are to use a generic lambda or to pass in an `Overload` wrapping multiple
+        /// callables.
+        /// * The return type of `function` must be the same for every variant of this `Enum`
+        ///
+        /// # Exception Safety
+        /// * `noexcept` if `function` is `noexcept` for every variant of this `Enum`, otherwise
+        /// can throw any exception throwable by `function`.
+        ///
+        /// # Example
+        /// @code {.cpp}
+        /// using MyEnum = Enum<std::string, u32, std::vector<u8>>;
+        /// auto my_enum = MyEnum(enum_tag<std::string>{}, "MyEnum");
+        ///
+        /// my_enum.match(Overload{
+        ///                 [](auto value){ println("Not string"); },
+        ///                 [](std::string value){ println("std::string: {}", value); }
+        ///              });
+        /// @endcode
+        ///
+        /// @param function  The callable to invoke with the current variant of this `Enum`
+        ///
+        /// @return The result of invoking function as if in
+        /// `std::forward<F>(function)(this->get<this->index()>())`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename F>
 		requires(mpl::all_lists_satisfy_for_type_v<std::is_invocable,
 												   std::true_type,
@@ -521,10 +869,55 @@ namespace hyperion {
 		}
 
 	  private:
+		/// @brief Converts `list` into a list of single-element lists, each containing the
+		/// variant contained in `list` at that respective index
 		template<typename T>
 		using make_list_of_lists = mpl::apply_to_list<mpl::list, T>;
 
 	  public:
+        /// @brief Invokes the callable from the list of callables, `functions...`, most
+        /// specifically invokable with the current variant of this `Enum`.
+        ///
+        /// By most specific, it is meant that a callable whose parameter most stringently matches
+        /// the current variant of this `Enum` will be the one invoked. For example, if this `Enum`
+        /// is an instance of `Enum<u32, f32, i32>`, this `Enum` is currently the `f32` variant, 
+        /// and `functions...` consists of one lambda taking a generic parameter
+        /// (ie `[](auto value){ ... }`) and one taking an `f32` (ie `[](f32 value){ ... }`),
+        /// the lambda taking an `f32` will be chosen.
+        ///
+        /// Equivalent to invoking the chosen callable, `callable`, as if in 
+        /// `std::forward<F>(callable)(this->get<this->index()>())` (ignoring that `this->index()`
+        /// is not a constant expression and thus can't be used as a template parameter)
+        ///
+        /// Equivalent to calling the single-argument version of `match` with an `Overload` wrapping
+        /// the list of callables in `functions...`, ie:
+        /// `this->match(Overload{std::forward<F>(functions)...})`
+        ///
+        /// # Requirements
+        /// * `functions...` must contain callables that collectively can be invoked with every
+        /// variant of this `Enum`. 
+        /// * The return type of each callable in `functions...` must be the same.
+        ///
+        /// # Exception Safety
+        /// * `noexcept` if every callable in `functions...` is `noexcept` when invoked with its
+        /// associated `Enum` variant(s), otherwise can throw any exception throwable by the
+        /// callables in `functions...`.
+        ///
+        /// # Example
+        /// @code {.cpp}
+        /// using MyEnum = Enum<std::string, u32, std::vector<u8>>;
+        /// auto my_enum = MyEnum(enum_tag<std::string>{}, "MyEnum");
+        ///
+        /// my_enum.match([](auto value){ println("Not string"); },
+        ///               [](std::string value){ println("std::string: {}", value); });
+        /// @endcode
+        ///
+        /// @param functions  The callables to invoke with the current variant of this `Enum`
+        ///
+        /// @return The result of invoking the chsoen callable as if in
+        /// `std::forward<F>(callable)(this->get<this->index()>())`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename... F>
 		requires(mpl::all_lists_satisfy_for_type_v<std::is_invocable,
 												   std::true_type,
@@ -552,6 +945,49 @@ namespace hyperion {
 				});
 		}
 
+        /// @brief Invokes the callable from the list of callables, `functions...`, most
+        /// specifically invokable with the current variant of this `Enum`.
+        ///
+        /// By most specific, it is meant that a callable whose parameter most stringently matches
+        /// the current variant of this `Enum` will be the one invoked. For example, if this `Enum`
+        /// is an instance of `Enum<u32, f32, i32>`, this `Enum` is currently the `f32` variant, 
+        /// and `functions...` consists of one lambda taking a generic parameter
+        /// (ie `[](auto value){ ... }`) and one taking an `f32` (ie `[](f32 value){ ... }`),
+        /// the lambda taking an `f32` will be chosen.
+        ///
+        /// Equivalent to invoking the chosen callable, `callable`, as if in 
+        /// `std::forward<F>(callable)(this->get<this->index()>())` (ignoring that `this->index()`
+        /// is not a constant expression and thus can't be used as a template parameter)
+        ///
+        /// Equivalent to calling the single-argument version of `match` with an `Overload` wrapping
+        /// the list of callables in `functions...`, ie:
+        /// `this->match(Overload{std::forward<F>(functions)...})`
+        ///
+        /// # Requirements
+        /// * `functions...` must contain callables that collectively can be invoked with every
+        /// variant of this `Enum`. 
+        /// * The return type of each callable in `functions...` must be the same.
+        ///
+        /// # Exception Safety
+        /// * `noexcept` if every callable in `functions...` is `noexcept` when invoked with its
+        /// associated `Enum` variant(s), otherwise can throw any exception throwable by the
+        /// callables in `functions...`.
+        ///
+        /// # Example
+        /// @code {.cpp}
+        /// using MyEnum = Enum<std::string, u32, std::vector<u8>>;
+        /// auto my_enum = MyEnum(enum_tag<std::string>{}, "MyEnum");
+        ///
+        /// my_enum.match([](auto value){ println("Not string"); },
+        ///               [](std::string value){ println("std::string: {}", value); });
+        /// @endcode
+        ///
+        /// @param functions  The callables to invoke with the current variant of this `Enum`
+        ///
+        /// @return The result of invoking the chsoen callable as if in
+        /// `std::forward<F>(callable)(this->get<this->index()>())`
+		/// @ingroup Enum
+		/// @headerfile "Hyperion/Enum.h"
 		template<typename... F>
 		requires(mpl::all_lists_satisfy_for_type_v<std::is_invocable,
 												   std::true_type,
@@ -745,11 +1181,13 @@ namespace hyperion {
 			m_current_index = index;
 		}
 
+		/// @brief Returns `T` with the same ref-qualification as `U`
 		template<typename T, typename U>
 		using get_correct_ref_qual = std::conditional_t<std::is_rvalue_reference_v<U>,
 														std::add_rvalue_reference_t<T>,
 														std::add_lvalue_reference_t<T>>;
 
+		/// @brief Returns `T` with the same `const` and ref qualification as `U`
 		template<typename T, typename U>
 		using get_ret = std::conditional_t<std::is_const_v<std::remove_reference_t<U>>,
 										   get_correct_ref_qual<std::add_const_t<T>, U>,
@@ -797,9 +1235,8 @@ namespace hyperion {
 		requires mpl::contains_v<T, list>
 		[[nodiscard]] static inline constexpr auto
 		get_impl(Union&& self) noexcept -> get_ret<T, decltype(self)> {
-			// NOLINTNEXTLINE(readability-identifier-length)
-			constexpr auto N = mpl::index_of_v<T, list>;
-			return get_impl<N>(std::forward<Union>(self));
+			constexpr auto Index = mpl::index_of_v<T, list>;
+			return get_impl<Index>(std::forward<Union>(self));
 		}
 
 		template<usize N>
