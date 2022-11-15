@@ -234,23 +234,6 @@ target("hyperion-utils")
 		setup_compile_flags(target)
 		setup_link_libs(target)
 	end)
-    -- restore the package file after exporting,
-    -- so that we don't have to manually reset the package dependencies
-    after_package(function()
-        local file_exists = function(name)
-            local f = io.open(name, "r")
-            if f ~= nil then
-                f:close()
-                return true
-            else
-                return false
-            end
-        end
-
-        if file_exists("./export/packages/h/hyperion-utils/xmake.lua") then
-            os.run("git restore export/packages/h/hyperion-utils/xmake.lua")
-        end
-    end)
 target_end()
 
 target("hyperion-utils-test")
