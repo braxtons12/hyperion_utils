@@ -2,10 +2,11 @@ Error Handling
 **************
 
 .. toctree::
-   :caption: Modules
+    :caption: Modules
 
-   Error
-   Option
-   Result
+    StatusCode
+    Error
+    Option
+    Result
 
    
