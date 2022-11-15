@@ -77,11 +77,11 @@ STATUS_CODE_DOMAIN(
 		return make_status_code(error::Errno::Unknown);
 	});
 
-	template<>
-	struct hyperion::error::status_code_enum_info<hyperion::logging::QueueErrorCategory> {
-		using domain_type [[maybe_unused]] = hyperion::logging::QueueErrorDomain;
-		static constexpr bool value = true;
-	};
+template<>
+struct hyperion::error::status_code_enum_info<hyperion::logging::QueueErrorCategory> {
+	using domain_type [[maybe_unused]] = hyperion::logging::QueueErrorDomain;
+	static constexpr bool value = true;
+};
 
 namespace hyperion::logging {
 
@@ -116,8 +116,7 @@ namespace hyperion::logging {
 		{
 			// clang-format on
 			if(!m_data.try_push_back(std::forward<U>(entry))) {
-				return Err(
-					QueueError(make_error_code(QueueErrorCategory::QueueIsFull)));
+				return Err(QueueError(make_error_code(QueueErrorCategory::QueueIsFull)));
 			}
 
 			return Ok();
@@ -132,8 +131,7 @@ namespace hyperion::logging {
 		{
 			// clang-format on
 			if(!m_data.try_emplace_back(std::forward<Args>(args)...)) {
-				return Err(
-					QueueError(make_error_code(QueueErrorCategory::QueueIsFull)));
+				return Err(QueueError(make_error_code(QueueErrorCategory::QueueIsFull)));
 			}
 
 			return Ok();
@@ -190,8 +188,7 @@ namespace hyperion::logging {
 				return Ok(ret.unwrap());
 			}
 
-			return Err(
-				QueueError(make_error_code(QueueErrorCategory::QueueIsEmpty)));
+			return Err(QueueError(make_error_code(QueueErrorCategory::QueueIsEmpty)));
 		}
 
 		[[nodiscard]] inline auto empty() const noexcept -> bool {
