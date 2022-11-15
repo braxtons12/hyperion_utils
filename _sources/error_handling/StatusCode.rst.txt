@@ -1,47 +1,25 @@
 StatusCode
 **********
 
-.. doxygenconcept:: hyperion::error::UUIDString
+Overview
+--------
 
-.. doxygenvariable:: hyperion::error::num_chars_in_uuid
+This module provides Hyperion's basic low-level functionality for representing errors.
+This functionality includes defining the basic requirements for status code domain types,
+status codes, and the machinery for working with them.
 
-.. doxygenvariable:: hyperion::error::num_chars_in_ms_uuid
+Status code domains (in code, :cpp:`StatusCodeDomain` s) represent domains, or categories, from which
+potential errors can occur. For example, :cpp:`PosixDomain`, :cpp:`Win32Domain`, and :cpp:`NTDomain`
+are all :cpp:`StatusCodeDomain` s that represent errors that can occur from POSIX functions and
+Windows's Win32 and NT subsystems, respectively. :cpp:`StatusCodeDomain` s provide the functionality
+to convert from low-level error codes from their respective domain to textual error messages those
+codes represent, check whether a given code represents success or failure, and convert a code from
+its domain to the :cpp:`GenericDomain`'s :cpp:`hyperion::error::Errno` (if applicable).
 
-.. doxygenconcept:: hyperion::error::StatusCodeDomain
+.. toctree::
+    :caption: Modules
 
-.. doxygenfunction:: hyperion::error::parse_uuid_from_string
+    status_codes/StatusCodeDomain
+    status_codes/StatusCode
 
-.. doxygendefine:: STATUS_CODE_DOMAIN
-
-.. doxygenstruct:: hyperion::error::status_code_enum_info
-   :members:
-   :undoc-members:
-
-.. doxygenstruct:: hyperion::error::is_status_code_enum
-   :members:
-   :undoc-members:
-
-.. doxygenvariable:: hyperion::error::is_status_code_enum_v
-
-.. doxygenconcept:: hyperion::error::StatusCodeEnum
-
-.. doxygentypedef:: hyperion::error::status_code_enum_domain
-
-.. doxygentypedef:: hyperion::error::status_code_enum_domain_checked
-
-.. doxygenconcept:: hyperion::error::ConvertibleToGenericStatusCode
-
-.. doxygenclass:: hyperion::error::StatusCode
-   :members:
-
-.. doxygenfunction:: make_status_code(hyperion::error::StatusCodeEnum auto)
-.. doxygenfunction:: make_status_code(hyperion::i64)
-.. doxygenfunction:: make_status_code(hyperion::i64, Domain&&)
-
-.. doxygenclass:: hyperion::error::ErrorCode
-   :members:
-
-.. doxygenfunction:: make_error_code(hyperion::error::StatusCodeEnum auto)
-.. doxygenfunction:: make_error_code(hyperion::i64)
-.. doxygenfunction:: make_error_code(hyperion::i64, Domain&&)
 
