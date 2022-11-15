@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Base requirements of a `StatusCodeDomain` and utilities for implementing one
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-11-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -95,10 +95,49 @@ namespace hyperion::error {
 	/// In addition to the requirements listed here, if a domain has codes with semantic equivalence
 	/// to POSIX error codes, the domain should provide a (preferably `constexpr`) member function
 	/// of the signature:
-	///
+    ///
 	/// @code {.cpp}
 	/// auto as_generic_code(const StatusCode<YourDomain>& code) -> GenericStatusCode;
 	/// @endcode
+	///
+	/// # Requirements
+	/// Given a `const StatusCode<Domain>& code`, a `Domain domain`, and a
+	/// `DomainOrOther domain2`, where `Domain` is the `StatusCodeDomain` being verified and
+	/// `DomainOrOther` is a potentially different `StatusCodeDomain` a `StatusCodeDomain` must
+	/// meet:
+	/// * `typename Domain::value_type` - Every domain must have a value type
+	/// * `std::constructible_from<Domain, u64>` - Every domain must be constructible from the `u64`
+	/// representation of its UUID
+	/// * `std::constructible_from<Domain, const char(&)[num_chars_in_uuid]` - Every domain must be
+	/// constructible from the string representation of its UUID
+	/// * `std::constructible_from<Domain, const char(&)[num_chars_in_ms_uuid]` - Every domain must
+	/// be constructible from the string representation of its UUID
+	/// * `{ domain.id() } -> std::same_as<u64>` - Every domain must have a member function `id`
+	/// that returns its UUID in its `u64` representation
+	/// * `{ domain.name() } -> std::same_as<std::string_view>` - Every domain must have a member
+	/// function `name` which returns the user-facing name of the domain as a `std::string_view`
+	/// * `{ domain.message(code) } -> concepts::Stringable` - Every
+	/// domain must be capable of converting a `StatusCode` of its domain into the textual message
+	/// associated with the low-level code, as a type convertible to `std::string` and/or
+	/// `std::string_view`
+	/// * `{ domain.are_equivalent(code, code) } -> std::same_as<bool>` - Every domain must have a
+	/// member function `are_equivalent` which returns whether two status codes, of potentially
+	/// different domains represent equivalent errors
+	/// * `{ domain.is_error(code) } -> std::same_as<bool>` - Every domain must have a member
+	/// function `is_error` which returns whether a status code of that domain represents an error
+	/// * `{ domain.is_success(code) } -> std::same_as<bool>` - Every domain must have a member
+	/// function `is_success` which returns whether a status code of that domain represents success
+	/// * `{ domain.success_value() } -> std::same_as<typename Domain::value_type>` - Every domain
+	/// must have a member function `success_value` which returns the value of that domain's
+	/// `value_type` which represents success
+	/// * `domain == domain2` - Every domain must be comparable to other domains for equality,
+	/// and domains comparing equal must be the same domain
+	/// * `domain != domain2` - Every domain must be comparable to other domains for inequality,
+	/// and domains comparing non-equal must NOT be the same domain
+	/// * `{ make_status_code_domain<Domain>() } -> std::same_as<Domain>` - Every domain must have
+	/// an associated specialization of the global function `make_status_code_domain` taking zero
+	/// arguments which returns an instance of that domain.
+	///
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCodeDomain.h"
 	template<typename Domain>
@@ -252,7 +291,9 @@ namespace hyperion::error {
 
 /// @brief Generates a `StatusCodeDomain` class from the given parameters
 ///
-/// Generates a complete class definition for a `StatusCodeDomain` comprised of the given parameters
+/// Generates a complete implementation for a `StatusCodeDomain` comprised of the given parameters,
+/// including the class definition, supplementaty `make_status_code_domain` factory functions, and
+/// aliases for `StatusCode`, `ErrorCode`, and `Error`s of that domain.
 ///
 /// @param Name  The name of the class
 /// @param Category  The category of the domain (ie if the domain is `PosixDomain`,
