@@ -7,7 +7,6 @@ set_languages("cxx20")
 set_xmakever("2.6.9")
 
 add_requires("doctest", {
-    alias = "doctest",
     system = false,
     external = true,
     configs = {
@@ -15,7 +14,6 @@ add_requires("doctest", {
     }
 })
 add_requires("fmt", {
-    alias = "fmt",
     system = false,
     external = true,
     configs = {
@@ -23,7 +21,6 @@ add_requires("fmt", {
     }
 })
 add_requires("gsl", {
-    alias = "gsl",
     system = false,
     external = true,
     configs = {
@@ -31,7 +28,6 @@ add_requires("gsl", {
     }
 })
 add_requires("boost", {
-	alias = "boost",
     system = false,
     external = true,
 	configs = {
