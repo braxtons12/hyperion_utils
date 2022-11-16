@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic run-time assert facilities with formatted error messages
 /// @version 0.1
-/// @date 2022-06-05
+/// @date 2022-11-16
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -62,22 +62,6 @@ namespace hyperion::error {
 	IGNORE_UNUSED_MACROS_START
 
 #if HYPERION_PLATFORM_DEBUG
-	/// @def hyperion_assert(condition, format_string, ...)
-	/// @brief Triggers an assertion, printing the formatted error message along with detailed
-	/// source code location information of where the error occurred and a backtrace
-	///
-	/// Formats the error message via the given `format_string` and `format_args`, prepended with
-	/// the source code location and followed by a backtrace in the format:
-	/// "Assertion triggered at [file_nam:line:column: function_name]: assertion_message
-	/// Backtrace:
-	/// backtrace"
-	///
-	/// @param condition - The condition to check
-	/// @param format_string - The format string for generating the formatted error message
-	/// @param ... - The (possible/optional) arguments to format into the error message
-	/// @ingroup error
-	/// @headerfile "Hyperion/error/Assert.h"
-	/// @note Only enabled in Debug builds
 	#define hyperion_assert(condition, format_string, ...) /** NOLINT(   		   **/          \
 		/** cppcoreguidelines-macro-usage,                                         **/     \
 		/** bugprone-reserved-identifier, cert-dcl37-c,                            **/     \
@@ -104,6 +88,7 @@ namespace hyperion::error {
 														   /** cert-dcl51-cpp) 			   **/         \
 		hyperion::ignore(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
 #endif // HYPERION_PLATFORM_DEBUG
+// clang-format off
 
 /// @def HYPERION_ASSERT(condition, format_string, ...)
 /// @brief Conditionally triggers an assertion, printing the formatted error message along with
@@ -111,22 +96,24 @@ namespace hyperion::error {
 ///
 /// Formats the error message via the given `format_string` and `format_args`, prepended with
 /// the source code location and followed by a backtrace in the format:
-/// "Assertion triggered at [file_nam:line:column: function_name]: assertion_message
+/// @code 
+/// Assertion triggered at [{file_name}:{line}:{column}: {function_name}]: {assertion_message}
 /// Backtrace:
-/// backtrace"
+/// {Backtrace}
+/// @endcode
 ///
 /// @param condition - The assertion condition. Fires the assertion if `false`
 /// @param format_string - The format string for generating the formatted error message
 /// @param ... - The (possible/optional) arguments to format into the error message
-/// @ingroup error
-/// @headerfile "Hyperion/error/Assert.h"
 /// @note Only enabled in Debug builds
 /// @note Please don't pass arguments with side-effects to this, at best you'll cause build
 /// errors in release builds, and at worst you'll cause really hard to find bugs
-#define HYPERION_ASSERT(condition, /** NOLINT(cppcoreguidelines-macro-usage)**/ \
-						format_string,                                          \
-						...)                                                    \
+///
+/// @ingroup error
+/// @headerfile "Hyperion/error/Assert.h"
+#define HYPERION_ASSERT(condition, format_string, ...)/** NOLINT(cppcoreguidelines-macro-usage)**/ \
 	hyperion_assert(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
 
 	IGNORE_UNUSED_MACROS_STOP
+// clang-format on
 } // namespace hyperion::error

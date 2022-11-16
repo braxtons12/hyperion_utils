@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Runtime termination facilities
 /// @version 0.1
-/// @date 2022-06-06
+/// @date 2022-11-16
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -119,7 +119,7 @@ namespace hyperion::error {
 		///
 		/// @return the current panic handler
 		/// @ingroup error
-		/// @ingroup "Hyperion/error/Panic.h"
+		/// @headerfile "Hyperion/error/Panic.h"
 		[[nodiscard]] static inline auto get_handler() noexcept -> handler_type {
 			return handler.load(std::memory_order_seq_cst);
 		}
@@ -132,7 +132,7 @@ namespace hyperion::error {
 		///
 		/// @return the default panic handler
 		/// @ingroup error
-		/// @ingroup "Hyperion/error/Panic.h"
+		/// @headerfile "Hyperion/error/Panic.h"
 		[[nodiscard]] static inline auto get_default_handler() noexcept -> handler_type {
 			return &default_handler;
 		}
@@ -168,18 +168,6 @@ namespace hyperion::error {
 
 	IGNORE_INVALID_NORETURN_START
 
-	/// @brief Invokes a panic with the given message
-	///
-	/// A panic is a forced termination due to a detected irrecoverable error
-	///
-	/// @tparam Args - The types of the arguments to pass to the format string
-	///
-	/// @param format_string - The format string for formatting the error message to print before
-	/// aborting
-	/// @param location - The source code location the panic occurred
-	/// @param format_args - The arguments to format into the format string
-	/// @ingroup error
-	/// @headerfile "Hyperion/error/Panic.h"
 	template<typename... Args>
 	[[noreturn]] inline constexpr auto panic_impl(fmt::format_string<Args...>&& format_string,
 												  std::source_location location,
