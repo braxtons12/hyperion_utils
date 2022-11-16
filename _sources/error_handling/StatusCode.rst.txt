@@ -136,5 +136,10 @@ Examples
 
     status_codes/StatusCodeDomain
     status_codes/StatusCode
+    status_codes/PosixDomain
+    status_codes/Win32Domain
+    status_codes/NTDomain
+    status_codes/GenericDomain
+    status_codes/SystemDomain
 
 

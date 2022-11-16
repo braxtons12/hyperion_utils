@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GenericDomain &#8212; hyperion-utils  documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/status_codes/GenericDomain';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SystemDomain" href="SystemDomain.html" />
+    <link rel="prev" title="NTDomain" href="NTDomain.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="dark">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">hyperion-utils  documentation</p>
+  
+</a>
+    
+    <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="../index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+  </div>
+
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="../index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="../index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../StatusCode.html">StatusCode</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="StatusCodeDomain.html">StatusCodeDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StatusCode.html">StatusCode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PosixDomain.html">PosixDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Win32Domain.html">Win32Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NTDomain.html">NTDomain</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">GenericDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SystemDomain.html">SystemDomain</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Error.html">Error</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Option.html">Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Result.html">Result</a></li>
+</ul></li></ul>
+  </div>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item">
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="genericdomain">
+<h1>GenericDomain<a class="headerlink" href="#genericdomain" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomainE">
+<span id="_CPPv3N8hyperion5error13GenericDomainE"></span><span id="_CPPv2N8hyperion5error13GenericDomainE"></span><span id="hyperion::error::GenericDomain"></span><span class="target" id="classhyperion_1_1error_1_1GenericDomain"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> is the <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> that covers status codes matching those strictly required by POSIX (those represented by <code class="docutils literal notranslate"><span class="pre">Errno</span></code>). </p>
+<p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> does not cover additional values of <code class="docutils literal notranslate"><span class="pre">errno</span></code> used or provided by a system’s specific implementation. For an extended support POSIX-compliant <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code>, <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="docutils literal notranslate"><a class="reference internal" href="PosixDomain.html#classhyperion_1_1error_1_1PosixDomain"><span class="std std-ref"><span class="pre">PosixDomain</span></span></a></code>. </p>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain10value_typeE">
+<span id="_CPPv3N8hyperion5error13GenericDomain10value_typeE"></span><span id="_CPPv2N8hyperion5error13GenericDomain10value_typeE"></span><span class="target" id="group__error_1ga11ad7d5b642e03377cd4dca3a072f0ca"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Errno</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain10value_typeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The value type of <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> status codes is <code class="docutils literal notranslate"><span class="pre">Errno</span></code> </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain13GenericDomainEv">
+<span id="_CPPv3N8hyperion5error13GenericDomain13GenericDomainEv"></span><span id="_CPPv2N8hyperion5error13GenericDomain13GenericDomainEv"></span><span id="hyperion::error::GenericDomain::GenericDomainCE"></span><span class="target" id="group__error_1ga25c55c93ef3adaf5ace0a5a2ff06bef7"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> with the default UUID. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain13GenericDomainE3u64">
+<span id="_CPPv3N8hyperion5error13GenericDomain13GenericDomainE3u64"></span><span id="_CPPv2N8hyperion5error13GenericDomain13GenericDomainE3u64"></span><span id="hyperion::error::GenericDomain::GenericDomain__u64CE"></span><span class="target" id="group__error_1ga1d290106eeffc0b09b1b7cdc1315b5c6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uuid</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainE3u64" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> with a user-specific UUID. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using a custom UUID <strong></strong> instances of <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> in the program should be constructed with the same custom UUID, otherwise equality comparison between other domains and <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> instances could give erroneous results, and equality comparison between different <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> instances will give erroneous results. As a result, this constructor should only be used when you specifically require a custom UUID and <strong>YOU KNOW WHAT YOU ARE DOING™</strong></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – - The UUID to use for <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_10UUIDStringEN8hyperion5error13GenericDomain13GenericDomainERR4UUID">
+<span id="_CPPv3I_10UUIDStringEN8hyperion5error13GenericDomain13GenericDomainERR4UUID"></span><span id="_CPPv2I_10UUIDStringEN8hyperion5error13GenericDomain13GenericDomainERR4UUID"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="StatusCodeDomain.html#_CPPv4I0EN8hyperion5error10UUIDStringE" title="hyperion::error::UUIDString"><span class="n"><span class="pre">UUIDString</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UUID</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga6e9346229e8b6598ea7f489ef6d431c8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_10UUIDStringEN8hyperion5error13GenericDomain13GenericDomainERR4UUID" title="hyperion::error::GenericDomain::GenericDomain::UUID"><span class="n"><span class="pre">UUID</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uuid</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4I_10UUIDStringEN8hyperion5error13GenericDomain13GenericDomainERR4UUID" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> with a user-specific UUID. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using a custom UUID <strong></strong> instances of <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> in the program should be constructed with the same custom UUID, otherwise equality comparison between other domains and <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> instances could give erroneous results, and equality comparison between different <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> instances will give erroneous results. As a result, this constructor should only be used when you specifically require a custom UUID and <strong>YOU KNOW WHAT YOU ARE DOING™</strong></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – - The UUID to use for <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain13GenericDomainERK13GenericDomain">
+<span id="_CPPv3N8hyperion5error13GenericDomain13GenericDomainERK13GenericDomain"></span><span id="_CPPv2N8hyperion5error13GenericDomain13GenericDomainERK13GenericDomain"></span><span id="hyperion::error::GenericDomain::GenericDomain__GenericDomainCRCE"></span><span class="target" id="group__error_1gaeefd129fee72d7992c0c45c1882515ca"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainERK13GenericDomain" title="hyperion::error::GenericDomain::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainERK13GenericDomain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain13GenericDomainERR13GenericDomain">
+<span id="_CPPv3N8hyperion5error13GenericDomain13GenericDomainERR13GenericDomain"></span><span id="_CPPv2N8hyperion5error13GenericDomain13GenericDomainERR13GenericDomain"></span><span id="hyperion::error::GenericDomain::GenericDomain__GenericDomainRRCE"></span><span class="target" id="group__error_1ga20bbd8477a65c0a989d582d1908430af"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericDomain</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainERR13GenericDomain" title="hyperion::error::GenericDomain::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain13GenericDomainERR13GenericDomain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomainD0Ev">
+<span id="_CPPv3N8hyperion5error13GenericDomainD0Ev"></span><span id="_CPPv2N8hyperion5error13GenericDomainD0Ev"></span><span id="hyperion::error::GenericDomain::~GenericDomainCE"></span><span class="target" id="group__error_1ga8d1691ff64634e1994c5aca00db5889a"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~GenericDomain</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomainD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain2idEv">
+<span id="_CPPv3NK8hyperion5error13GenericDomain2idEv"></span><span id="_CPPv2NK8hyperion5error13GenericDomain2idEv"></span><span id="hyperion::error::GenericDomain::idCCE"></span><span class="target" id="group__error_1ga2625698d931c59d40ffe73f7efa44c7b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">u64</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain2idEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the UUID of the domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the domain UUID </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain4nameEv">
+<span id="_CPPv3NK8hyperion5error13GenericDomain4nameEv"></span><span id="_CPPv2NK8hyperion5error13GenericDomain4nameEv"></span><span id="hyperion::error::GenericDomain::nameCCE"></span><span class="target" id="group__error_1ga5f20a8c80125d771a4e3d54d03a6e4aa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain4nameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the name of the domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the domain name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain7messageE10value_type">
+<span id="_CPPv3NK8hyperion5error13GenericDomain7messageE10value_type"></span><span id="_CPPv2NK8hyperion5error13GenericDomain7messageE10value_type"></span><span id="hyperion::error::GenericDomain::message__value_typeCCE"></span><span class="target" id="group__error_1gaf2602acfcbb5fa4e3045485fe3de27ea"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain10value_typeE" title="hyperion::error::GenericDomain::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain7messageE10value_type" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the textual message associated with the given status code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The status code to get the message for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the message associated with the code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain7messageERK17GenericStatusCode">
+<span id="_CPPv3NK8hyperion5error13GenericDomain7messageERK17GenericStatusCode"></span><span id="_CPPv2NK8hyperion5error13GenericDomain7messageERK17GenericStatusCode"></span><span id="hyperion::error::GenericDomain::message__GenericStatusCodeCRCCE"></span><span class="target" id="group__error_1gaf6b1c8ea63d05f9abeac06b206db4289"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="hyperion::error::GenericStatusCode"><span class="n"><span class="pre">GenericStatusCode</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain7messageERK17GenericStatusCode" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the textual message associated with the given status code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The status code to get the message for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the message associated with the code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain8is_errorERK17GenericStatusCode">
+<span id="_CPPv3NK8hyperion5error13GenericDomain8is_errorERK17GenericStatusCode"></span><span id="_CPPv2NK8hyperion5error13GenericDomain8is_errorERK17GenericStatusCode"></span><span id="hyperion::error::GenericDomain::is_error__GenericStatusCodeCRCCE"></span><span class="target" id="group__error_1ga4b19e45db5adb986159596acff083665"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_error</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="hyperion::error::GenericStatusCode"><span class="n"><span class="pre">GenericStatusCode</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain8is_errorERK17GenericStatusCode" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns whether the given status code represents an error. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The status code to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the code represents an error, otherwise <code class="docutils literal notranslate"><span class="pre">false</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain10is_successERK17GenericStatusCode">
+<span id="_CPPv3NK8hyperion5error13GenericDomain10is_successERK17GenericStatusCode"></span><span id="_CPPv2NK8hyperion5error13GenericDomain10is_successERK17GenericStatusCode"></span><span id="hyperion::error::GenericDomain::is_success__GenericStatusCodeCRCCE"></span><span class="target" id="group__error_1ga0b7a4612a9bed5be944ff39265f353f1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_success</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="hyperion::error::GenericStatusCode"><span class="n"><span class="pre">GenericStatusCode</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain10is_successERK17GenericStatusCode" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns whether the given status code represents success. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The status code to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the code represents success, otherwise <code class="docutils literal notranslate"><span class="pre">false</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK8hyperion5error13GenericDomain14are_equivalentEbRK17GenericStatusCodeRK10StatusCodeI6DomainE">
+<span id="_CPPv3I0ENK8hyperion5error13GenericDomain14are_equivalentERK17GenericStatusCodeRK10StatusCodeI6DomainE"></span><span id="_CPPv2I0ENK8hyperion5error13GenericDomain14are_equivalentERK17GenericStatusCodeRK10StatusCodeI6DomainE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gabf7d6d9cd5388e363ec1e0200e0e9e37"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">are_equivalent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="hyperion::error::GenericStatusCode"><span class="n"><span class="pre">GenericStatusCode</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="StatusCode.html#_CPPv4I0EN8hyperion5error10StatusCodeE" title="hyperion::error::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK8hyperion5error13GenericDomain14are_equivalentEbRK17GenericStatusCodeRK10StatusCodeI6DomainE" title="hyperion::error::GenericDomain::are_equivalent::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I0ENK8hyperion5error13GenericDomain14are_equivalentEbRK17GenericStatusCodeRK10StatusCodeI6DomainE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns whether the given status codes are semantically equivalent. </p>
+<p>Checks if the given codes are semantically equivalent. For most <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code>s, this usually means checking the codes for equality after being converted to <code class="docutils literal notranslate"><span class="pre">GenericStatusCode</span></code>s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> of the second status code </p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>lhs</strong> – - The first status code to compare </p></li>
+<li><p><strong>rhs</strong> – - The second status code to compare </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the codes are semantically equivalent, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion5error13GenericDomain15as_generic_codeERK30ConvertibleToGenericStatusCode">
+<span id="_CPPv3NK8hyperion5error13GenericDomain15as_generic_codeERK30ConvertibleToGenericStatusCode"></span><span id="_CPPv2NK8hyperion5error13GenericDomain15as_generic_codeERK30ConvertibleToGenericStatusCode"></span><span id="hyperion::error::GenericDomain::as_generic_code__ConvertibleToGenericStatusCodeCRCCE"></span><span class="target" id="group__error_1ga15ccfb181831780bbc0e98736b04b128"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">as_generic_code</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="StatusCode.html#_CPPv4I0EN8hyperion5error30ConvertibleToGenericStatusCodeE" title="hyperion::error::ConvertibleToGenericStatusCode"><span class="n"><span class="pre">ConvertibleToGenericStatusCode</span></span></a><span class="w"> </span><span class="k"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">code</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="hyperion::error::GenericStatusCode"><span class="n"><span class="pre">GenericStatusCode</span></span></a><a class="headerlink" href="#_CPPv4NK8hyperion5error13GenericDomain15as_generic_codeERK30ConvertibleToGenericStatusCode" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Converts the given status code to a <code class="docutils literal notranslate"><span class="pre">GenericStatusCode</span></code> </p>
+<p>This will convert the given code to its semantically equivalent counterpart in the <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not all status code values are convertible to the <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code>, even from domains fully compatible with <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1error_1_1GenericDomain"><span class="std std-ref"><span class="pre">GenericDomain</span></span></a></code> and that satisfy <code class="docutils literal notranslate"><span class="pre">ConvertibleToGenericStatusCode</span></code>. In this case, they will map to <code class="docutils literal notranslate"><span class="pre">Errno::Unknown</span></code>. Codes of value <code class="docutils literal notranslate"><span class="pre">Errno::Unknown</span></code> will never compare as semantically equivalent. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – - The status code to convert to a <code class="docutils literal notranslate"><span class="pre">GenericStatusCode</span></code> </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The given status code as a <code class="docutils literal notranslate"><span class="pre">GenericStatusCode</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomainaSERK13GenericDomain">
+<span id="_CPPv3N8hyperion5error13GenericDomainaSERK13GenericDomain"></span><span id="_CPPv2N8hyperion5error13GenericDomainaSERK13GenericDomain"></span><span id="hyperion::error::GenericDomain::assign-operator__GenericDomainCRCE"></span><span class="target" id="group__error_1ga0c5c18309f46da052a28cc1ef9f38a83"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomainaSERK13GenericDomain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Copy-assignment operator. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomainaSERR13GenericDomain">
+<span id="_CPPv3N8hyperion5error13GenericDomainaSERR13GenericDomain"></span><span id="_CPPv2N8hyperion5error13GenericDomainaSERR13GenericDomain"></span><span id="hyperion::error::GenericDomain::assign-operator__GenericDomainRRCE"></span><span class="target" id="group__error_1gad7a2e14a561e86dc67807525b0c1321f"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomainaSERR13GenericDomain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assignment operator. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain13success_valueEv">
+<span id="_CPPv3N8hyperion5error13GenericDomain13success_valueEv"></span><span id="_CPPv2N8hyperion5error13GenericDomain13success_valueEv"></span><span id="hyperion::error::GenericDomain::success_valueCE"></span><span class="target" id="group__error_1ga7905f1976a5c2569a15176028d113da4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">success_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain10value_typeE" title="hyperion::error::GenericDomain::value_type"><span class="n"><span class="pre">value_type</span></span></a><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain13success_valueEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the value indicating success for this domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The domain’s success value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain14get_last_errorEv">
+<span id="_CPPv3N8hyperion5error13GenericDomain14get_last_errorEv"></span><span id="_CPPv2N8hyperion5error13GenericDomain14get_last_errorEv"></span><span id="hyperion::error::GenericDomain::get_last_error"></span><span class="target" id="group__error_1ga4db80b73af95aefc5fad69c87f687070"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_last_error</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain10value_typeE" title="hyperion::error::GenericDomain::value_type"><span class="n"><span class="pre">value_type</span></span></a><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain14get_last_errorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the most recent value of <code class="docutils literal notranslate"><span class="pre">errno</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the value of <code class="docutils literal notranslate"><span class="pre">errno</span></code> at the time of the call </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain4UUIDE">
+<span id="_CPPv3N8hyperion5error13GenericDomain4UUIDE"></span><span id="_CPPv2N8hyperion5error13GenericDomain4UUIDE"></span><span class="target" id="classhyperion_1_1error_1_1GenericDomain_1ae06a19ba61916264a69d5e511cfd992d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">UUID</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="StatusCodeDomain.html#_CPPv4N8hyperion5error17num_chars_in_uuidE" title="hyperion::error::num_chars_in_uuid"><span class="n"><span class="pre">num_chars_in_uuid</span></span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;bb14ea47-2e32-4296-8ff8-1f9e2660ccc6&quot;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain4UUIDE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error13GenericDomain2IDE">
+<span id="_CPPv3N8hyperion5error13GenericDomain2IDE"></span><span id="_CPPv2N8hyperion5error13GenericDomain2IDE"></span><span id="hyperion::error::GenericDomain::ID__u64"></span><span class="target" id="classhyperion_1_1error_1_1GenericDomain_1a7c044e635f29d09633fad85b01736909"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="StatusCodeDomain.html#_CPPv4I_5usizeEN8hyperion5error22parse_uuid_from_stringE3u64RA1N_Kc" title="hyperion::error::parse_uuid_from_string"><span class="n"><span class="pre">parse_uuid_from_string</span></span></a><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomain4UUIDE" title="hyperion::error::GenericDomain::UUID"><span class="n"><span class="pre">UUID</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error13GenericDomain2IDE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion5error13GenericDomaineqEbRK13GenericDomainRK6Domain">
+<span id="_CPPv3I0EN8hyperion5error13GenericDomaineqERK13GenericDomainRK6Domain"></span><span id="_CPPv2I0EN8hyperion5error13GenericDomaineqERK13GenericDomainRK6Domain"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1gaaa4aba4c0bffe0dd6f8a9ac8c9263168"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8hyperion5error13GenericDomaineqEbRK13GenericDomainRK6Domain" title="hyperion::error::GenericDomain::operator==::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion5error13GenericDomaineqEbRK13GenericDomainRK6Domain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Domain equality comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The type of the second domain to compare</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>lhs</strong> – - The left-hand domain to compare </p></li>
+<li><p><strong>rhs</strong> – - The right-hand domain to compare</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the two domains are equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion5error13GenericDomainneEbRK13GenericDomainRK6Domain">
+<span id="_CPPv3I0EN8hyperion5error13GenericDomainneERK13GenericDomainRK6Domain"></span><span id="_CPPv2I0EN8hyperion5error13GenericDomainneERK13GenericDomainRK6Domain"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__error_1ga9e4613bf399e36b1552372aedd6fe558"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lhs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8hyperion5error13GenericDomainneEbRK13GenericDomainRK6Domain" title="hyperion::error::GenericDomain::operator!=::Domain"><span class="n"><span class="pre">Domain</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rhs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion5error13GenericDomainneEbRK13GenericDomainRK6Domain" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Domain inequality comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Domain</strong> – - The type of the second domain to compare</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>lhs</strong> – - The left-hand domain to compare </p></li>
+<li><p><strong>rhs</strong> – - The right-hand domain to compare</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the two domains are <strong>not</strong> equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error17GenericStatusCodeE">
+<span id="_CPPv3N8hyperion5error17GenericStatusCodeE"></span><span id="_CPPv2N8hyperion5error17GenericStatusCodeE"></span><span class="target" id="StatusCodeDomain_8h_1a5e19df472b210fbb51d4dc05074dcc76"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">GenericStatusCode</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="StatusCode.html#_CPPv4I0EN8hyperion5error10StatusCodeE" title="hyperion::error::StatusCode"><span class="n"><span class="pre">StatusCode</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error17GenericStatusCodeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error16GenericErrorCodeE">
+<span id="_CPPv3N8hyperion5error16GenericErrorCodeE"></span><span id="_CPPv2N8hyperion5error16GenericErrorCodeE"></span><span class="target" id="StatusCodeDomain_8h_1ac246e2cda31ebfb2fa89fa21da4df666"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">GenericErrorCode</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="StatusCode.html#_CPPv4I0EN8hyperion5error9ErrorCodeE" title="hyperion::error::ErrorCode"><span class="n"><span class="pre">ErrorCode</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error16GenericErrorCodeE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion5error12GenericErrorE">
+<span id="_CPPv3N8hyperion5error12GenericErrorE"></span><span id="_CPPv2N8hyperion5error12GenericErrorE"></span><span class="target" id="group__error_1ga5b45f344e8b5a628da2bd6b2223ec8e6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">GenericError</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../Error.html#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="hyperion::error::Error"><span class="n"><span class="pre">Error</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion5error12GenericErrorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">GenericError</span></code> represents the strict set of POSIX required error codes. </p>
+<p>In Hyperion’s error system, <code class="docutils literal notranslate"><span class="pre">GenericError</span></code> fills a role similar to a <code class="docutils literal notranslate"><span class="pre">std::error_code</span></code> of <code class="docutils literal notranslate"><span class="pre">std::generic_category</span></code> </p>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__generic__domain"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">generic_domain</span></span></dt>
+<dd><p>Definitions of <code class="docutils literal notranslate"><span class="pre">make_status_code_domain</span></code> for <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IE23make_status_code_domainIN8hyperion5error13GenericDomainEN8hyperion3u64EEN8hyperion5error13GenericDomainERRN8hyperion3u64E">
+<span id="_CPPv3IE23make_status_code_domainIN8hyperion5error13GenericDomainEN8hyperion3u64EERRN8hyperion3u64E"></span><span id="_CPPv2IE23make_status_code_domainIN8hyperion5error13GenericDomainEN8hyperion3u64EERRN8hyperion3u64E"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__generic__domain_1ga8d933460cd1f83c361814dd16e7d371f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_status_code_domain</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">u64</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">u64</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uuid</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><a class="headerlink" href="#_CPPv4IE23make_status_code_domainIN8hyperion5error13GenericDomainEN8hyperion3u64EEN8hyperion5error13GenericDomainERRN8hyperion3u64E" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specialize <code class="docutils literal notranslate"><span class="pre">make_status_code_domain</span></code> for <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> and <code class="docutils literal notranslate"><span class="pre">u64</span></code>. Creates a <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> with a custom UUID. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using a custom UUID <strong></strong> instances of <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> in the program should be constructed with the same custom UUID, otherwise equality comparison between other domains and <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> instances could give erroneous results, and equality comparison between different <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> instances will give erroneous results. As a result, this constructor should only be used when you specifically require a custom UUID and <strong>YOU KNOW WHAT YOU ARE DOING™</strong></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – - The UUID to use for <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IE23make_status_code_domainIN8hyperion5error13GenericDomainEEN8hyperion5error13GenericDomainEv">
+<span id="_CPPv3IE23make_status_code_domainIN8hyperion5error13GenericDomainEEv"></span><span id="_CPPv2IE23make_status_code_domainIN8hyperion5error13GenericDomainEEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__generic__domain_1gad3bda42adf86f99f88442fc4c6792665"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make_status_code_domain</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error13GenericDomainE" title="hyperion::error::GenericDomain"><span class="n"><span class="pre">GenericDomain</span></span></a><a class="headerlink" href="#_CPPv4IE23make_status_code_domainIN8hyperion5error13GenericDomainEEN8hyperion5error13GenericDomainEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specialize <code class="docutils literal notranslate"><span class="pre">make_status_code_domain</span></code> for <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> with no arguments. Creates a <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> with the default UUID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a <code class="docutils literal notranslate"><span class="pre">GenericDomain</span></code> </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="NTDomain.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">NTDomain</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="SystemDomain.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">SystemDomain</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Braxton Salyer &lt;braxtonsalyer@gmail.com&gt;.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

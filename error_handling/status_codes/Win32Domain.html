@@ -6,43 +6,43 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Error Handling &#8212; hyperion-utils  documentation</title>
+    <title>Win32Domain &#8212; hyperion-utils  documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
 
   
   <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+    href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+    href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/index';</script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="StatusCode" href="StatusCode.html" />
-    <link rel="prev" title="Index" href="../genindex.html" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/status_codes/Win32Domain';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="NTDomain" href="NTDomain.html" />
+    <link rel="prev" title="PosixDomain" href="PosixDomain.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -63,7 +63,7 @@
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
       
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
@@ -82,7 +82,7 @@
   
 
 
-<a class="navbar-brand logo" href="../index.html">
+<a class="navbar-brand logo" href="../../index.html">
 
   
   
@@ -118,35 +118,35 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../quick_start.html">
+                    <a class="nav-link" href="../../quick_start.html">
                         Quick Start Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../genindex.html">
+                    <a class="nav-link" href="../../genindex.html">
                         Index
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="../index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../filesystem/index.html">
+                    <a class="nav-link" href="../../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../enum.html">
+                    <a class="nav-link" href="../../enum.html">
                         Enum
                     </a>
                 </li>
@@ -217,35 +217,35 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../quick_start.html">
+                    <a class="nav-link" href="../../quick_start.html">
                         Quick Start Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../genindex.html">
+                    <a class="nav-link" href="../../genindex.html">
                         Index
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="../index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../filesystem/index.html">
+                    <a class="nav-link" href="../../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../enum.html">
+                    <a class="nav-link" href="../../enum.html">
                         Enum
                     </a>
                 </li>
@@ -284,7 +284,7 @@
   
   <div class="sidebar-start-items sidebar-primary__section">
     <div class="sidebar-start-items__item">
-<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
@@ -297,35 +297,35 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                 <li class="nav-item">
-                    <a class="nav-link" href="../quick_start.html">
+                    <a class="nav-link" href="../../quick_start.html">
                         Quick Start Guide
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../genindex.html">
+                    <a class="nav-link" href="../../genindex.html">
                         Index
                     </a>
                 </li>
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="../index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../filesystem/index.html">
+                    <a class="nav-link" href="../../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../enum.html">
+                    <a class="nav-link" href="../../enum.html">
                         Enum
                     </a>
                 </li>
@@ -338,20 +338,20 @@
     Section Navigation
   </p>
   <div class="bd-toc-item navbar-nav">
-    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="StatusCode.html">StatusCode</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCodeDomain.html">StatusCodeDomain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCode.html">StatusCode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/PosixDomain.html">PosixDomain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/Win32Domain.html">Win32Domain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/NTDomain.html">NTDomain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/GenericDomain.html">GenericDomain</a></li>
-<li class="toctree-l2"><a class="reference internal" href="status_codes/SystemDomain.html">SystemDomain</a></li>
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../StatusCode.html">StatusCode</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="StatusCodeDomain.html">StatusCodeDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StatusCode.html">StatusCode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PosixDomain.html">PosixDomain</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Win32Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NTDomain.html">NTDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GenericDomain.html">GenericDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SystemDomain.html">SystemDomain</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Error.html">Error</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Option.html">Option</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Result.html">Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Error.html">Error</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Option.html">Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Result.html">Result</a></li>
 </ul></li></ul>
   </div>
 </nav>
@@ -381,31 +381,27 @@
             
             <article class="bd-article" role="main">
               
-  <section id="error-handling">
-<h1>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="StatusCode.html">StatusCode</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="StatusCode.html#overview">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="StatusCode.html#examples">Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/StatusCodeDomain.html">StatusCodeDomain</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/StatusCode.html">StatusCode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/PosixDomain.html">PosixDomain</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/Win32Domain.html">Win32Domain</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/NTDomain.html">NTDomain</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/GenericDomain.html">GenericDomain</a></li>
-<li class="toctree-l4"><a class="reference internal" href="status_codes/SystemDomain.html">SystemDomain</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Error.html">Error</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Option.html">Option</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Result.html">Result</a></li>
-</ul>
+  <section id="win32domain">
+<h1>Win32Domain<a class="headerlink" href="#win32domain" title="Permalink to this heading">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “hyperion::error::Win32Domain” in doxygen xml output for project “hyperion-utils” from directory: _build/xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “hyperion::error::Win32StatusCode” in doxygen xml output for project “hyperion-utils” from directory: _build/xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “hyperion::error::Win32ErrorCode” in doxygen xml output for project “hyperion-utils” from directory: _build/xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “hyperion::error::Win32Error” in doxygen xml output for project “hyperion-utils” from directory: _build/xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygengroup: Cannot find group “win32_domain” in doxygen xml output for project “hyperion-utils” from directory: _build/xml</p>
 </div>
 </section>
 
@@ -417,17 +413,17 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../genindex.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="PosixDomain.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Index</p>
+          <p class="prev-next-title">PosixDomain</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="StatusCode.html" title="next page">
+  <a class='right-next' id="next-link" href="NTDomain.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">StatusCode</p>
+      <p class="prev-next-title">NTDomain</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -453,7 +449,7 @@
   
     
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
 
   <footer class="bd-footer"><div class="bd-footer__inner container">
   
