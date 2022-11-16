@@ -8,5 +8,7 @@ Error Handling
     Error
     Option
     Result
+    Assert
+    Panic
 
    

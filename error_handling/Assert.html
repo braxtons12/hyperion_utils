@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Filesystem &#8212; hyperion-utils  documentation</title>
+    <title>Assert &#8212; hyperion-utils  documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,11 +38,11 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'filesystem/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/Assert';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="File" href="File.html" />
-    <link rel="prev" title="Panic" href="../error_handling/Panic.html" />
+    <link rel="next" title="Panic" href="Panic.html" />
+    <link rel="prev" title="Result" href="Result.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -131,15 +131,15 @@
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../error_handling/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
@@ -230,15 +230,15 @@
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../error_handling/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
@@ -310,15 +310,15 @@
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../error_handling/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Error Handling
                     </a>
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
                         Filesystem
                     </a>
                 </li>
@@ -338,8 +338,22 @@
     Section Navigation
   </p>
   <div class="bd-toc-item navbar-nav">
-    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="File.html">File</a></li>
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="StatusCode.html">StatusCode</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCodeDomain.html">StatusCodeDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCode.html">StatusCode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/PosixDomain.html">PosixDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/Win32Domain.html">Win32Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/NTDomain.html">NTDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/GenericDomain.html">GenericDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/SystemDomain.html">SystemDomain</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Error.html">Error</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Option.html">Option</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Result.html">Result</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Assert</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Panic.html">Panic</a></li>
 </ul></li></ul>
   </div>
 </nav>
@@ -369,14 +383,52 @@
             
             <article class="bd-article" role="main">
               
-  <section id="filesystem">
-<h1>Filesystem<a class="headerlink" href="#filesystem" title="Permalink to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="File.html">File</a></li>
-</ul>
+  <section id="assert">
+<h1>Assert<a class="headerlink" href="#assert" title="Permalink to this heading">#</a></h1>
+<p>Hyperion provides a runtime assert similar to the standard <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">assert</span><span class="w"></span></code>, but that supports an
+additional message string using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="w"></span></code> style string formatting</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Assert.h&gt;</span><span class="cp"></span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="kt">void</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg2</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">HYPERION_ASSERT</span><span class="p">(</span><span class="n">cant_be_arg2</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">                    </span><span class="s">&quot;example_function called with cant_be_arg2 ({}) equal to cant_be_arg1 ({})&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">                    </span><span class="n">cant_be_arg2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">7</span><span class="w">                    </span><span class="n">cant_be_arg1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">8</span><span class="p">}</span><span class="w"></span>
+</pre></div>
 </div>
+</div>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HYPERION_ASSERT">
+<span class="target" id="group__error_1ga4b524d90939d3167ca3ffaaec56c1c44"></span><span class="sig-name descname"><span class="n"><span class="pre">HYPERION_ASSERT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">condition</span></span>, <span class="n"><span class="pre">format_string</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HYPERION_ASSERT" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Conditionally triggers an assertion, printing the formatted error message along with detailed source code location information of where the error occurred and a backtrace. </p>
+<p>Formats the error message via the given <code class="docutils literal notranslate"><span class="pre">format_string</span></code> and <code class="docutils literal notranslate"><span class="pre">format_args</span></code>, prepended with the source code location and followed by a backtrace in the format: <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Assertion</span><span class="w"> </span><span class="n">triggered</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="p">[{</span><span class="n">file_name</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">line</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">column</span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">function_name</span><span class="p">}]</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">assertion_message</span><span class="p">}</span><span class="w"></span>
+<span class="nl">Backtrace</span><span class="p">:</span><span class="w"></span>
+<span class="p">{</span><span class="n">Backtrace</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only enabled in Debug builds </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please don’t pass arguments with side-effects to this, at best you’ll cause build errors in release builds, and at worst you’ll cause really hard to find bugs </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> – - The assertion condition. Fires the assertion if <code class="docutils literal notranslate"><span class="pre">false</span></code> </p></li>
+<li><p><strong>format_string</strong> – - The format string for generating the formatted error message </p></li>
+<li><p><strong>...</strong> – - The (possible/optional) arguments to format into the error message </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -387,17 +439,17 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../error_handling/Panic.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="Result.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Panic</p>
+          <p class="prev-next-title">Result</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="File.html" title="next page">
+  <a class='right-next' id="next-link" href="Panic.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">File</p>
+      <p class="prev-next-title">Panic</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
