@@ -6,7 +6,7 @@ to :cpp:`std::terminate()`, but more closely models Rust's :rust:`panic!`, and i
 :cpp:`panic`. :cpp:`panic` will print info about the panic site as well as a runtime-formatted
 error message using fmtlib and :cpp:`std::format` style string formatting before calling the
 registered panic handler. The default panic handler will terminate the program, but it can be
-overriden to provide custom behavior (for example, showing an error dialog in a GUI application).
+overridden to provide custom behavior (for example, showing an error dialog in a GUI application).
 
 .. code-block:: cpp
     :caption: Example

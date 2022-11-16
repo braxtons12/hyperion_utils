@@ -390,7 +390,7 @@ to <code class="code highlight cpp docutils literal highlight-cpp"><span class="
 <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span><span class="w"></span></code>. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span><span class="w"></span></code> will print info about the panic site as well as a runtime-formatted
 error message using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="w"></span></code> style string formatting before calling the
 registered panic handler. The default panic handler will terminate the program, but it can be
-overriden to provide custom behavior (for example, showing an error dialog in a GUI application).</p>
+overridden to provide custom behavior (for example, showing an error dialog in a GUI application).</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Example</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Panic.h&gt;</span><span class="cp"></span>
