@@ -16,6 +16,17 @@ to convert from low-level error codes from their respective domain to textual er
 codes represent, check whether a given code represents success or failure, and convert a code from
 its domain to the :cpp:`GenericDomain`'s :cpp:`hyperion::error::Errno` (if applicable).
 
+.. toctree::
+    :caption: Modules
+
+    status_codes/StatusCodeDomain
+    status_codes/StatusCode
+    status_codes/PosixDomain
+    status_codes/Win32Domain
+    status_codes/NTDomain
+    status_codes/GenericDomain
+    status_codes/SystemDomain
+
 Examples
 """"""""
 
@@ -130,16 +141,4 @@ Examples
         using domain_type [[maybe_unused]] = my_namespace::MyErrorDomain;
         static constexpr bool value = true;
     }
-
-.. toctree::
-    :caption: Modules
-
-    status_codes/StatusCodeDomain
-    status_codes/StatusCode
-    status_codes/PosixDomain
-    status_codes/Win32Domain
-    status_codes/NTDomain
-    status_codes/GenericDomain
-    status_codes/SystemDomain
-
 
