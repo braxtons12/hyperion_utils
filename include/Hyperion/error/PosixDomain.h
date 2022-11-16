@@ -3,7 +3,7 @@
 /// @brief `StatusCodeDomain` supporting platform-implementation-specific values of `errno` in
 /// addition to those __required__ by POSIX
 /// @version 0.1
-/// @date 2022-07-22
+/// @date 2022-11-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -34,11 +34,6 @@
 
 namespace hyperion::error {
 
-	class PosixDomain;
-
-	using PosixStatusCode = StatusCode<PosixDomain>;
-	using PosixErrorCode = ErrorCode<PosixDomain>;
-
 	/// @brief `PosixDomain` is the `StatusCodeDomain` that covers status codes covering a
 	/// platform's specific implementation of `errno` values in addition to those __strictly__
 	/// required by POSIX (those represented by `Errno`).
@@ -46,6 +41,9 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/PosixDomain.h"
 	class [[nodiscard("A StatusCodeDomain should always be used")]] PosixDomain {
 	  public:
+        using PosixStatusCode = StatusCode<PosixDomain>;
+        using PosixErrorCode = ErrorCode<PosixDomain>;
+
 		/// @brief The value type of `PosixDomain` status codes is `i64`
 		/// @ingroup error
 		using value_type = i64;
@@ -364,7 +362,18 @@ namespace hyperion::error {
 			}
 		}
 	};
+
+    /// @brief Shorthand alias for `StatusCode`s of `PosixDomain`, ie `StatusCode<PosixDomain>`
+    /// @ingroup error
+    using PosixStatusCode = PosixDomain::PosixStatusCode;
+    /// @brief Shorthand alias for `ErrorCode`s of `PosixDomain`, ie `ErrorCode<PosixDomain>`
+    /// @ingroup error
+    using PosixErrorCode = PosixDomain::PosixErrorCode;
 } // namespace hyperion::error
+
+/// @defgroup posix_domain PosixDomain
+/// @brief Definitions of `make_status_code_domain` for `PosixDomain`
+/// @ingroup error
 
 /// @brief Specialize `make_status_code_domain` for `PosixDomain` and `u64`.
 /// Creates a `PosixDomain` with a custom UUID.
@@ -379,7 +388,7 @@ namespace hyperion::error {
 /// @param uuid - The UUID to use for `PosixDomain`
 ///
 /// @return a `PosixDomain`
-/// @ingroup error
+/// @ingroup posix_domain
 template<>
 [[nodiscard]] inline constexpr auto
 // NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
@@ -402,7 +411,7 @@ make_status_code_domain<hyperion::error::PosixDomain, hyperion::u64>(hyperion::u
 /// @param uuid - The UUID to use for `PosixDomain`
 ///
 /// @return a `PosixDomain`
-/// @ingroup error
+/// @ingroup posix_domain
 template<>
 [[nodiscard]] inline constexpr auto
 // NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
@@ -428,7 +437,7 @@ template<>
 /// @param uuid - The UUID to use for `PosixDomain`
 ///
 /// @return a `PosixDomain`
-/// @ingroup error
+/// @ingroup posix_domain
 template<>
 [[nodiscard]] inline constexpr auto
 // NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name, bugprone-exception-escape)
@@ -444,7 +453,7 @@ template<>
 /// a `PosixDomain` with the default UUID.
 ///
 /// @return a `PosixDomain`
-/// @ingroup error
+/// @ingroup posix_domain
 template<>
 inline constexpr auto
 make_status_code_domain<hyperion::error::PosixDomain>() noexcept -> hyperion::error::PosixDomain {

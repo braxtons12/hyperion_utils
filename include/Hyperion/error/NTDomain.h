@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `StatusCodeDomain` supporting NT error codes
 /// @version 0.1
-/// @date 2021-11-10
+/// @date 2022-11-15
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -54,10 +54,6 @@ namespace hyperion::error {
 		#error Unknown architecture
 	#endif
 	} // namespace detail::win32
-
-	class NTDomain;
-	using NTStatusCode = StatusCode<NTDomain>;
-	using NTErrorCode = ErrorCode<NTDomain>;
 
 	/// @brief `NTDomain` is the `StatusCodeDomain` that covers Windows NT error codes
 	/// @ingroup error
@@ -118,7 +114,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain UUID
 		/// @ingroup error
-		[[nodiscard]] constexpr auto id() const noexcept->u64 {
+		[[nodiscard]] constexpr auto id() const noexcept -> u64 {
 			return m_uuid;
 		}
 
@@ -126,7 +122,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain name
 		/// @ingroup error
-		[[nodiscard]] constexpr auto name() const noexcept->std::string_view { // NOLINT
+		[[nodiscard]] constexpr auto name() const noexcept -> std::string_view { // NOLINT
 			return "nt domain";
 		}
 
@@ -137,7 +133,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(value_type code) // NOLINT
-			const noexcept->std::string {
+			const noexcept -> std::string {
 			return as_string(code);
 		}
 
@@ -148,7 +144,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(const NTStatusCode& code) // NOLINT
-			const noexcept->std::string {
+			const noexcept -> std::string {
 			return as_string(code.code());
 		}
 
@@ -159,7 +155,7 @@ namespace hyperion::error {
 		/// @return `true` if the code represents an error, otherwise `false`
 		/// @ingroup error
 		[[nodiscard]] constexpr auto is_error(const NTStatusCode& code) // NOLINT (could-b-static)
-			const noexcept->bool {
+			const noexcept -> bool {
 			return code.code() != 0;
 		}
 
@@ -170,7 +166,7 @@ namespace hyperion::error {
 		/// @return `true` if the code represents success, otherwise `false`
 		/// @ingroup error
 		[[nodiscard]] constexpr auto is_success(const NTStatusCode& code) // NOLINT (could-b-static)
-			const noexcept->bool {
+			const noexcept -> bool {
 			return code.code() == 0;
 		}
 
@@ -187,8 +183,8 @@ namespace hyperion::error {
 		/// @ingroup error
 		template<typename Domain>
 		[[nodiscard]] constexpr auto are_equivalent(const NTStatusCode& lhs,
-													const StatusCode<Domain>& rhs)
-			const noexcept->bool {
+													const StatusCode<Domain>& rhs) const noexcept
+			-> bool {
 			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain>>) {
 				return as_generic_code(lhs) == rhs.as_generic_code();
 			}
@@ -218,7 +214,7 @@ namespace hyperion::error {
 		/// Codes of value `Errno::Unknown` will never compare as semantically equivalent.
 		/// @ingroup error
 		[[nodiscard]] constexpr auto as_generic_code(const NTStatusCode& code) // NOLINT
-			const noexcept->GenericStatusCode {
+			const noexcept -> GenericStatusCode {
 			return make_status_code(to_generic_code(code.code()));
 		}
 
@@ -234,7 +230,7 @@ namespace hyperion::error {
 		/// Codes of value `-1` (unknown error) will never compare as semantically equivalent.
 		/// @ingroup error
 		[[nodiscard]] constexpr auto as_win32_code(const NTStatusCode& code) // NOLINT
-			const noexcept->Win32StatusCode {
+			const noexcept -> Win32StatusCode {
 			return Win32StatusCode(to_win32_code(code.code()));
 		}
 
@@ -242,7 +238,7 @@ namespace hyperion::error {
 		///
 		/// @return The domain's success value
 		/// @ingroup error
-		[[nodiscard]] static inline constexpr auto success_value() noexcept->value_type {
+		[[nodiscard]] static inline constexpr auto success_value() noexcept -> value_type {
 			return 0;
 		}
 
@@ -256,7 +252,7 @@ namespace hyperion::error {
 		/// @return Whether the two domains are equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto operator==(const NTDomain& lhs, const Domain& rhs) noexcept->bool {
+		friend constexpr auto operator==(const NTDomain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() == rhs.id();
 		}
 
@@ -270,16 +266,16 @@ namespace hyperion::error {
 		/// @return Whether the two domains are __not__ equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto operator!=(const NTDomain& lhs, const Domain& rhs) noexcept->bool {
+		friend constexpr auto operator!=(const NTDomain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() != rhs.id();
 		}
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(const NTDomain&) noexcept->NTDomain& = default;
+		constexpr auto operator=(const NTDomain&) noexcept -> NTDomain& = default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(NTDomain&&) noexcept->NTDomain& = default;
+		constexpr auto operator=(NTDomain&&) noexcept -> NTDomain& = default;
 
 	  private:
 		u64 m_uuid = ID;
@@ -291,7 +287,7 @@ namespace hyperion::error {
 		/// @param code - The NT error code to convert
 		///
 		/// @return the message string associated with `code`, as a `std::string`
-		static inline auto as_string(value_type code) noexcept->std::string {
+		static inline auto as_string(value_type code) noexcept -> std::string {
 			// Nial uses 32k in his implementation for proposal P1028, but that seems
 			// excessively large
 			wchar_t buffer[1024]; // NOLINT
@@ -355,8 +351,8 @@ namespace hyperion::error {
 			return "failed to get message from system";
 		}
 
-		[[nodiscard]] static inline constexpr auto to_generic_code(
-			value_type code) noexcept->Errno {
+		[[nodiscard]] static inline constexpr auto to_generic_code(value_type code) noexcept
+			-> Errno {
 			if(code >= 0) {
 				return Errno::Success;
 			}
@@ -464,8 +460,8 @@ namespace hyperion::error {
 		}
 
 		// NOLINTNEXTLINE (function-size)
-		[[nodiscard]] static inline constexpr auto to_win32_code(
-			value_type code) noexcept->Win32Domain::value_type {
+		[[nodiscard]] static inline constexpr auto to_win32_code(value_type code) noexcept
+			-> Win32Domain::value_type {
 			if(code >= 0) {
 				return 0;
 			}
@@ -1493,7 +1489,17 @@ namespace hyperion::error {
 		}
 	};
 
+	/// @brief Shorthand alias for `StatusCode`s of `NTDomain`, ie `StatusCode<NTDomain>`
+	/// @ingroup error
+	using NTStatusCode = NTDomain::NTStatusCode;
+	/// @brief Shorthand alias for `ErrorCode`s of `NTDomain`, ie `ErrorCode<NTDomain>`
+	/// @ingroup error
+	using NTErrorCode = NTDomain::NTErrorCode;
 } // namespace hyperion::error
+
+/// @defgroup nt_domain NTDomain
+/// @brief Definitions of `make_status_code_domain` for `NTDomain`
+/// @ingroup error
 
 /// @brief Specialize `make_status_code_domain` for `NTDomain` and `u64`.
 /// Creates a `NTDomain` with a custom UUID.
@@ -1508,7 +1514,7 @@ namespace hyperion::error {
 /// @param uuid - The UUID to use for `NTDomain`
 ///
 /// @return a `NTDomain`
-/// @ingroup error
+/// @ingroup nt_domain
 template<>
 [[nodiscard]] inline constexpr auto
 // NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
@@ -1530,7 +1536,7 @@ make_status_code_domain<hyperion::error::NTDomain, hyperion::u64>(hyperion::u64&
 /// @param uuid - The UUID to use for `NTDomain`
 ///
 /// @return a `NTDomain`
-/// @ingroup error
+/// @ingroup nt_domain
 template<>
 [[nodiscard]] inline constexpr auto
 	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
@@ -1554,7 +1560,7 @@ template<>
 /// @param uuid - The UUID to use for `NTDomain`
 ///
 /// @return a `NTDomain`
-/// @ingroup error
+/// @ingroup nt_domain
 template<>
 [[nodiscard]] inline constexpr auto
 	// NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
@@ -1569,7 +1575,7 @@ template<>
 /// a `NTDomain` with the default UUID.
 ///
 /// @return a `NTDomain`
-/// @ingroup error
+/// @ingroup nt_domain
 template<>
 inline constexpr auto
 make_status_code_domain<hyperion::error::NTDomain>() noexcept -> hyperion::error::NTDomain {

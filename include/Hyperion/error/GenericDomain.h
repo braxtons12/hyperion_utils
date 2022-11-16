@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `StatusCodeDomain` supporting the values of `errno` __required__ by POSIX
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2022-11-15
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -442,6 +442,10 @@ namespace hyperion::error {
 	};
 } // namespace hyperion::error
 
+/// @defgroup generic_domain GenericDomain
+/// @brief Definitions of `make_status_code_domain` for `GenericDomain`
+/// @ingroup error
+
 /// @brief Specialize `make_status_code_domain` for `GenericDomain` and `u64`.
 /// Creates a `GenericDomain` with a custom UUID.
 ///
@@ -455,7 +459,7 @@ namespace hyperion::error {
 /// @param uuid - The UUID to use for `GenericDomain`
 ///
 /// @return a `GenericDomain`
-/// @ingroup error
+/// @ingroup generic_domain
 template<>
 [[nodiscard]] inline constexpr auto
 // NOLINTNEXTLINE(readability-inconsistent-declaration-parameter-name)
@@ -477,7 +481,7 @@ make_status_code_domain<hyperion::error::GenericDomain, hyperion::u64>(
 /// @param uuid - The UUID to use for `GenericDomain`
 ///
 /// @return a `GenericDomain`
-/// @ingroup error
+/// @ingroup generic_domain
 template<>
 [[nodiscard]] inline constexpr auto
 	make_status_code_domain // NOLINT(readability-inconsistent-declaration-parameter-name,
@@ -502,7 +506,7 @@ template<>
 /// @param uuid - The UUID to use for `GenericDomain`
 ///
 /// @return a `GenericDomain`
-/// @ingroup error
+/// @ingroup generic_domain
 template<>
 [[nodiscard]] inline constexpr auto
 	make_status_code_domain // NOLINT(readability-inconsistent-declaration-parameter-name,
@@ -518,7 +522,7 @@ template<>
 /// a `GenericDomain` with the default UUID.
 ///
 /// @return a `GenericDomain`
-/// @ingroup error
+/// @ingroup generic_domain
 template<>
 inline constexpr auto make_status_code_domain<hyperion::error::GenericDomain>() noexcept
 	-> hyperion::error::GenericDomain {

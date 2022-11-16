@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Option" href="Option.html" />
-    <link rel="prev" title="StatusCode" href="status_codes/StatusCode.html" />
+    <link rel="prev" title="SystemDomain" href="status_codes/SystemDomain.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -342,6 +342,11 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="StatusCode.html">StatusCode</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCodeDomain.html">StatusCodeDomain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="status_codes/StatusCode.html">StatusCode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/PosixDomain.html">PosixDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/Win32Domain.html">Win32Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/NTDomain.html">NTDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/GenericDomain.html">GenericDomain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_codes/SystemDomain.html">SystemDomain</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Error</a></li>
@@ -470,7 +475,7 @@
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE">
-<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="status_codes/StatusCodeDomain.html#_CPPv4I0EN8hyperion5error16StatusCodeDomainE" title="hyperion::error::StatusCodeDomain"><span class="n"><span class="pre">StatusCodeDomain</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">SystemDomain</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1error_1_1Error"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error9ErrorBaseE" title="hyperion::error::ErrorBase"><span class="n"><span class="pre">ErrorBase</span></span></a><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv3I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span id="_CPPv2I_16StatusCodeDomainEN8hyperion5error5ErrorE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="status_codes/StatusCodeDomain.html#_CPPv4I0EN8hyperion5error16StatusCodeDomainE" title="hyperion::error::StatusCodeDomain"><span class="n"><span class="pre">StatusCodeDomain</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Domain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="status_codes/SystemDomain.html#_CPPv4N8hyperion5error12SystemDomainE" title="hyperion::error::SystemDomain"><span class="n"><span class="pre">SystemDomain</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1error_1_1Error"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion5error9ErrorBaseE" title="hyperion::error::ErrorBase"><span class="n"><span class="pre">ErrorBase</span></span></a><a class="headerlink" href="#_CPPv4I_16StatusCodeDomainEN8hyperion5error5ErrorE" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>General purpose type for communicating recoverable errors. </p>
 <p>Wraps an <code class="docutils literal notranslate"><a class="reference internal" href="status_codes/StatusCode.html#classhyperion_1_1error_1_1ErrorCode"><span class="std std-ref"><span class="pre">error::ErrorCode</span></span></a><span class="pre">&lt;Domain&gt;</span></code> in a type-safe manner. Usually makes up the <code class="docutils literal notranslate"><span class="pre">E</span></code> variant of a <code class="docutils literal notranslate"><a class="reference internal" href="Result.html#classhyperion_1_1Result"><span class="std std-ref"><span class="pre">Result</span></span></a><span class="pre">&lt;T,</span> <span class="pre">E&gt;</span></code></p>
 <dl class="field-list simple">
@@ -1075,11 +1080,11 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="status_codes/StatusCode.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="status_codes/SystemDomain.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">StatusCode</p>
+          <p class="prev-next-title">SystemDomain</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="Option.html" title="next page">
