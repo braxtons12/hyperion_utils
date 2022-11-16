@@ -394,6 +394,120 @@ Windows’s Win32 and NT subsystems, respectively. <code class="code highlight c
 to convert from low-level error codes from their respective domain to textual error messages those
 codes represent, check whether a given code represents success or failure, and convert a code from
 its domain to the <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">GenericDomain</span><span class="w"></span></code>’s <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">Errno</span><span class="w"></span></code> (if applicable).</p>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Using the System Domain</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// The system domain is the status code domain associated with general system library errors</span>
+<span class="linenos"> 2</span><span class="c1">// (ie errors from the POSIX and C standard libraries on UNIX, or the Win32 library on Windows).</span>
+<span class="linenos"> 3</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/SystemDomain.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 4</span><span class="k">auto</span><span class="w"> </span><span class="n">example_checked_add</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">rhs</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="o">*</span><span class="w"> </span><span class="n">out_val</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemStatusCode</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="c1">// if rhs + lhs &gt; std::numeric_limits&lt;i32&gt;::max(), the operation will overflow, so we return</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="c1">// an error code</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lhs</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rhs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">        </span><span class="c1">//</span>
+<span class="linenos">11</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">same_as</span><span class="o">&lt;</span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">Win32Domain</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemDomain</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemStatusCode</span><span class="p">(</span><span class="n">ERROR_INVALID_PARAMETER</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemStatusCode</span><span class="p">(</span><span class="n">EDOM</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">    </span><span class="o">*</span><span class="n">out_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rhs</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemStatusCode</span><span class="p">(</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">        </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemStatusCode</span><span class="o">::</span><span class="n">domain_type</span><span class="o">::</span><span class="n">success_value</span><span class="p">());</span><span class="w"></span>
+<span class="linenos">23</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="k">auto</span><span class="w"> </span><span class="n">use_checked_add</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="k">operator</span><span class="s">&quot;&quot;</span><span class="n">_i32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">lhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="n">_i32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">rhs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">24</span><span class="n">_i32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="n">_i32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">example_checked_add</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span><span class="w"> </span><span class="n">rhs</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">out</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">32</span><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">SystemDomain</span><span class="o">::</span><span class="n">is_error</span><span class="p">(</span><span class="n">result</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">33</span><span class="w">        </span><span class="n">hyperion</span><span class="o">::</span><span class="n">eprintln</span><span class="p">(</span><span class="s">&quot;checked add was an error:</span><span class="se">\n</span><span class="s">error {}: {}&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">                           </span><span class="n">result</span><span class="p">.</span><span class="n">code</span><span class="p">(),</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="n">message</span><span class="p">());</span><span class="w"></span>
+<span class="linenos">35</span><span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="w">    </span><span class="n">hyperion</span><span class="o">::</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;checked add result: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">39</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Creating Your Own <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StatusCodeDomain</span><span class="w"></span></code></span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Error.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">my_namespace</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="c1">// create an enum we use to represent our low-level status codes</span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">MyErrorCategory</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">         </span><span class="mi">0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Success</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">         </span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BadThing</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">         </span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReallyBadThing</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">         </span><span class="mi">-1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unknown</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">     </span><span class="p">};</span><span class="w"></span>
+<span class="linenos">10</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace my_namespace</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="w"> </span><span class="c1">// hyperion provides this macro to automate the generation of the boilerplate needed for a</span>
+<span class="linenos">13</span><span class="w"> </span><span class="c1">// `StatusCodeDomain`. This automatically generates the class definition, overloaded definitions</span>
+<span class="linenos">14</span><span class="w"> </span><span class="c1">// of `make_status_code_domain`, shorthand aliases for `StatusCode`, `ErrorCode`, and `Error`</span>
+<span class="linenos">15</span><span class="w"> </span><span class="c1">// instantiations for the domain, and a static assert ensuring `StatusCodeDomain`&#39;s requirements</span>
+<span class="linenos">16</span><span class="w"> </span><span class="c1">// are met by the generated code</span>
+<span class="linenos">17</span><span class="w"> </span><span class="n">STATUS_CODE_DOMAIN</span><span class="p">(</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">     </span><span class="n">MyErrorDomain</span><span class="p">,</span><span class="w"> </span><span class="c1">// The name of the `StatusCodeDomain` class</span>
+<span class="linenos">19</span><span class="w">     </span><span class="n">My</span><span class="p">,</span><span class="w"> </span><span class="c1">// The root-name of the `StatusCodeDomain`, used to prefix aliases for</span>
+<span class="linenos">20</span><span class="w">              </span><span class="c1">// `StatusCode&lt;MyErrorDomain&gt;` and `ErrorCode&lt;MyErrorDomain&gt;`, ie:</span>
+<span class="linenos">21</span><span class="w">              </span><span class="c1">// `using MyStatusCode = StatusCode&lt;MyErrorDomain&gt;;`</span>
+<span class="linenos">22</span><span class="w">     </span><span class="n">my_namespace</span><span class="p">,</span><span class="w"> </span><span class="c1">// the namespace to place the `StatusCodeDomain` class declaration in</span>
+<span class="linenos">23</span><span class="w">     </span><span class="n">my_namespace</span><span class="o">::</span><span class="n">MyErrorCategory</span><span class="p">,</span><span class="w"> </span><span class="c1">// the value type of the `StatusCodeDomain`</span>
+<span class="linenos">24</span><span class="w">     </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// whether codes of this domain are convertible to codes of the generic domain</span>
+<span class="linenos">25</span><span class="w">           </span><span class="c1">// generally, you should at least provide conversions for your success and unknown</span>
+<span class="linenos">26</span><span class="w">           </span><span class="c1">// values, but it isn&#39;t necessary</span>
+<span class="linenos">27</span><span class="w">     </span><span class="s">&quot;029ddb93-2245-ab31-bc89-928db01aefb5&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The UUID of the domain</span>
+<span class="linenos">28</span><span class="w">     </span><span class="s">&quot;MyErrorDomain&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The name of the domain class, as a string</span>
+<span class="linenos">29</span><span class="w">     </span><span class="n">my_namespace</span><span class="o">::</span><span class="n">MyErrorCategory</span><span class="o">::</span><span class="n">Success</span><span class="p">,</span><span class="w"> </span><span class="c1">// The domain&#39;s success value</span>
+<span class="linenos">30</span><span class="w">     </span><span class="n">my_namespace</span><span class="o">::</span><span class="n">MyErrorCategory</span><span class="o">::</span><span class="n">Unknown</span><span class="p">,</span><span class="w"> </span><span class="c1">// The domain&#39;s official value for unknown errors</span>
+<span class="linenos">31</span><span class="w">     </span><span class="c1">// Function converting a `value_type` (ie a `my_namespace::MyErrorCategory`) into its</span>
+<span class="linenos">32</span><span class="w">     </span><span class="c1">// associated error message</span>
+<span class="linenos">33</span><span class="w">     </span><span class="p">[](</span><span class="n">value_type</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">value_type</span><span class="o">::</span><span class="n">Success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">35</span><span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Success&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">value_type</span><span class="o">::</span><span class="n">BadThing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;A Bad Thing Happened!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">39</span><span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">40</span><span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">value_type</span><span class="o">::</span><span class="n">ReallyBadThing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">41</span><span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;A Really Bad Thing Happened!&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">42</span><span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Unknown error&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">45</span><span class="w">     </span><span class="p">},</span><span class="w"></span>
+<span class="linenos">46</span><span class="w">     </span><span class="c1">// if codes of this domain are convertible to codes in the generic domain, provide a</span>
+<span class="linenos">47</span><span class="w">     </span><span class="c1">// function converting a `value_type` to a `hyperion::error::GenericStatusCode`.</span>
+<span class="linenos">48</span><span class="w">     </span><span class="c1">// Otherwise, this parameter can be omitted.</span>
+<span class="linenos">49</span><span class="w">     </span><span class="p">[](</span><span class="n">value_type</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">GenericStatusCode</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">50</span><span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">value_type</span><span class="o">::</span><span class="n">Success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">51</span><span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="n">make_status_code</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">Errno</span><span class="o">::</span><span class="n">Success</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">52</span><span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="w">         </span><span class="k">return</span><span class="w"> </span><span class="n">make_status_code</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">Errno</span><span class="o">::</span><span class="n">Unknown</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">55</span><span class="w">     </span><span class="p">});</span><span class="w"></span>
+<span class="linenos">56</span>
+<span class="linenos">57</span><span class="w"> </span><span class="c1">// specialize `status_code_enum_info` to register our `my_namespace::MyErrorCategory` enum as</span>
+<span class="linenos">58</span><span class="w"> </span><span class="c1">// the value type for a `StatusCodeDomain`, specifically, our `my_namespace::MyErrorDomain` domain</span>
+<span class="linenos">59</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;&gt;</span><span class="w"></span>
+<span class="linenos">60</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">status_code_enum_info</span><span class="o">&lt;</span><span class="n">my_namespace</span><span class="o">::</span><span class="n">MyErrorCategory</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">61</span><span class="w">     </span><span class="k">using</span><span class="w"> </span><span class="n">domain_type</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my_namespace</span><span class="o">::</span><span class="n">MyErrorDomain</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">62</span><span class="w">     </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">63</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul>
@@ -401,6 +515,7 @@ its domain to the <code class="code highlight cpp docutils literal highlight-cpp
 <li class="toctree-l1"><a class="reference internal" href="status_codes/StatusCode.html">StatusCode</a></li>
 </ul>
 </div>
+</section>
 </section>
 </section>
 
@@ -446,6 +561,13 @@ its domain to the <code class="code highlight cpp docutils literal highlight-cpp
   <a class="reference internal nav-link" href="#overview">
    Overview
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     Examples
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
