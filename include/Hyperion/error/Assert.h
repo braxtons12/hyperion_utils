@@ -105,7 +105,7 @@ namespace hyperion::error {
 /// @param condition - The assertion condition. Fires the assertion if `false`
 /// @param format_string - The format string for generating the formatted error message
 /// @param ... - The (possible/optional) arguments to format into the error message
-/// @note Only enabled in Debug builds
+/// @note This is only enabled in Debug builds, in non-debug builds this will resolve to a no-op
 /// @note Please don't pass arguments with side-effects to this, at best you'll cause build
 /// errors in release builds, and at worst you'll cause really hard to find bugs
 ///
