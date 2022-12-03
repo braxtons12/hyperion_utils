@@ -28,6 +28,7 @@
 #include <Hyperion/BasicTypes.h>
 #include <Hyperion/Concepts.h>
 #include <concepts>
+#include <string_view>
 #include <type_traits>
 
 namespace hyperion::error {
@@ -95,7 +96,7 @@ namespace hyperion::error {
 	/// In addition to the requirements listed here, if a domain has codes with semantic equivalence
 	/// to POSIX error codes, the domain should provide a (preferably `constexpr`) member function
 	/// of the signature:
-    ///
+	///
 	/// @code {.cpp}
 	/// auto as_generic_code(const StatusCode<YourDomain>& code) -> GenericStatusCode;
 	/// @endcode
@@ -406,8 +407,8 @@ namespace hyperion::error {
 			}                                                                                      \
                                                                                                    \
 			template<typename U = Category##StatusCode>                                            \
-			requires concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,               \
-									Category##StatusCode>                                          \
+			requires hyperion::concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,     \
+											  Category##StatusCode>                                \
 					 [[nodiscard]] inline constexpr auto                                           \
 					 as_generic_code(const U& _code) const noexcept                                \
 					 -> hyperion::error::GenericStatusCode                                         \
@@ -442,8 +443,8 @@ namespace hyperion::error {
 			u64 m_uuid = ID;                                                                       \
                                                                                                    \
 			template<typename U = Category##StatusCode>                                            \
-			requires concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,               \
-									Category##StatusCode>                                          \
+			requires hyperion::concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,     \
+											  Category##StatusCode>                                \
 					 [[nodiscard]] inline constexpr auto as_generic_code(                          \
 						 [[maybe_unused]] const Category##StatusCode& code) const noexcept         \
 					 -> hyperion::error::GenericStatusCode                                         \
