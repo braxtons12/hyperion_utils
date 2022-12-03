@@ -370,34 +370,38 @@ target_link_libraries(HyperionUtilsLoggerBenchmark PRIVATE
 #target_compile_options(HyperionUtilsTest PUBLIC -fsanitize=thread)
 #target_link_options(HyperionUtilsTest PUBLIC -fsanitize=thread)
 
-find_package(Doxygen REQUIRED)
+set(DOXYGEN_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/docs/_build/html")
+set(DOXYGEN_HTML "${DOXYGEN_OUTPUT_DIR}/index.html")
 
-set(MCSS_DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile-mcss.in")
-set(MCSS_DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile-mcss")
-set(MCSS_CONF_PY "${CMAKE_CURRENT_SOURCE_DIR}/conf.py")
-set(DOXYGEN_INPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/Cnx")
-set(DOXYGEN_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/docs")
-set(DOXYGEN_INDEX_FILE "${DOXYGEN_OUTPUT_DIR}/xml/index.xml")
-set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")
-set(DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile")
-
-set(DOXYGEN_HTML "${DOXYGEN_OUTPUT_DIR}/html/index.html")
-
-set(COMPILATION_DATABASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(DOXYGEN_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set(DOXYGEN_COMPILE_OPTIONS "-I${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
-configure_file(${MCSS_DOXYFILE_IN} ${MCSS_DOXYFILE_OUT} @ONLY)
-
-file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
+set(DOCS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/docs")
+set(DOCS_FILES
+    "${DOCS_DIR}/index.rst"
+    "${DOCS_DIR}/enum.rst"
+    "${DOCS_DIR}/quick_start.rst"
+    "${DOCS_DIR}/error_handling/index.rst"
+    "${DOCS_DIR}/error_handling/Assert.rst"
+    "${DOCS_DIR}/error_handling/Error.rst"
+    "${DOCS_DIR}/error_handling/Option.rst"
+    "${DOCS_DIR}/error_handling/Panic.rst"
+    "${DOCS_DIR}/error_handling/Result.rst"
+    "${DOCS_DIR}/error_handling/StatusCode.rst"
+    "${DOCS_DIR}/error_handling/status_codes/GenericDomain.rst"
+    "${DOCS_DIR}/error_handling/status_codes/NTDomain.rst"
+    "${DOCS_DIR}/error_handling/status_codes/PosixDomain.rst"
+    "${DOCS_DIR}/error_handling/status_codes/StatusCode.rst"
+    "${DOCS_DIR}/error_handling/status_codes/StatusCodeDomain.rst"
+    "${DOCS_DIR}/error_handling/status_codes/SystemDomain.rst"
+    "${DOCS_DIR}/error_handling/status_codes/Win32Domain.rst"
+    "${DOCS_DIR}/filesystem/index.rst"
+    "${DOCS_DIR}/filesystem/File.rst"
+    )
 
 add_custom_command(OUTPUT ${DOXYGEN_HTML}
-	DEPENDS ${HYPERION_UTILS_EXPORTS} ${CMAKE_CURRENT_SOURCE_DIR}/README.md
-	COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/third-party/m.css/documentation/doxygen.py ${MCSS_CONF_PY} --debug
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN} ${MCSS_DOXYFILE_OUT} ${MCSS_DOXYFILE_IN}
-	COMMENT "Generating themed docs with m.css"
+    DEPENDS ${HYPERION_UTILS_EXPORTS} ${DOCS_FILES}
+	COMMAND make html
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/docs
+	MAIN_DEPENDENCY
+	COMMENT "Generating documentation with doxygen, sphinx, and breathe"
 	VERBATIM)
 
 add_custom_target(HyperionUtilsDoxygen DEPENDS ${DOXYGEN_HTML})
