@@ -415,7 +415,7 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap() noexcept -> ok_type
-		requires concepts::NoexceptMovable<T>
+		requires (std::is_reference_v<T> || concepts::NoexceptMoveConstructible<T>)
 		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
@@ -525,7 +525,7 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap_err() noexcept -> err_type
-		requires concepts::NoexceptMovable<E>
+		requires (std::is_reference_v<E> || concepts::NoexceptMoveConstructible<E>)
 		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
