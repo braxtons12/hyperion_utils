@@ -3,7 +3,7 @@
 /// @brief An alternative to std::variant with improved compile time and runtime performance and
 /// additional features
 /// @version 0.1
-/// @date 2022-11-13
+/// @date 2022-12-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -295,7 +295,7 @@ namespace hyperion {
 
 		/// @brief Checks if the `Enum` variant at `Index` can be assigned from `Args`
 		/// @tparam Index  The variant index to check
-		/// @tparam Args  The type to assign the variant at `Index` with
+		/// @tparam Arg  The type to assign the variant at `Index` with
 		/// @return Whether the `Enum` variant at `Index` is assignable from an `Arg`
 		template<usize Index, typename Arg>
 		requires(Index < SIZE)

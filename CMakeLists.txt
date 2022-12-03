@@ -46,13 +46,21 @@ FetchContent_Declare(boost
 	libs/container_hash
 	libs/core
 	libs/detail
+	libs/function_types
+	libs/fusion
+	libs/hana
 	libs/integer
+	libs/io
+	libs/mpl
 	libs/predef
 	libs/preprocessor
 	libs/stacktrace
 	libs/static_assert
 	libs/throw_exception
+	libs/tuple
+	libs/typeof
 	libs/type_traits
+	libs/utility
 	libs/winapi
 	tools/cmake
 	)
@@ -332,6 +340,7 @@ if (UNIX)
 		pthread
 		doctest::doctest
 		atomic
+        Boost::hana
 		${TRACY}
 		${HYPERION_UTILS_BACKTRACE}
 		${HYPERION_UTILS_LINK_LIBS}
@@ -341,6 +350,7 @@ else ()
 		GSL
 		fmt::fmt
 		doctest::doctest
+        Boost::hana
 		${TRACY}
 		${HYPERION_UTILS_BACKTRACE}
 		${HYPERION_UTILS_LINK_LIBS}

@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief basic meta-programming index type
 /// @version 0.1
-/// @date 2022-11-12
+/// @date 2022-12-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -29,7 +29,26 @@
 #include <Hyperion/BasicTypes.h>
 
 IGNORE_UNUSED_VALUES_START
+IGNORE_UNKNOWN_DOC_COMMAND_START
+IGNORE_COMMA_MISUSE_START
+IGNORE_RESERVED_IDENTIFIERS_START
+#if HYPERION_PLATFORM_COMPILER_CLANG
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wdouble-promotion\"")
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wold-style-cast\"")
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wshadow\"")
+#endif // HYPERION_PLATFORM_COMPILER_CLANG
 #include <boost/hana.hpp>
+#if HYPERION_PLATFORM_COMPILER_CLANG
+    _Pragma("GCC diagnostic pop")
+    _Pragma("GCC diagnostic pop")
+    _Pragma("GCC diagnostic pop")
+#endif // HYPERION_PLATFORM_COMPILER_CLANG
+IGNORE_RESERVED_IDENTIFIERS_STOP
+IGNORE_COMMA_MISUSE_STOP
+IGNORE_UNKNOWN_DOC_COMMAND_STOP
 IGNORE_UNUSED_VALUES_STOP
 
 namespace hyperion::mpl {

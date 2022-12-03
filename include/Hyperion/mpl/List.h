@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Meta-programming facilities for working with a list of types
 /// @version 0.1
-/// @date 2022-11-12
+/// @date 2022-12-02
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -30,14 +30,7 @@
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/mpl/Index.h>
 
-IGNORE_UNUSED_VALUES_START
-#include <boost/hana.hpp>
-IGNORE_UNUSED_VALUES_STOP
-
 namespace hyperion::mpl {
-
-	namespace hana = boost::hana;
-
 	IGNORE_UNUSED_VALUES_START
 
 	/// @brief Basic meta-programming type list
