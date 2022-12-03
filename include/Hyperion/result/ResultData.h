@@ -667,30 +667,6 @@ namespace hyperion::result {
 		}
 
 		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto operator=(ok_const_reference t) noexcept -> ResultData& {
-			if(m_active == Active::Ok) {
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				m_ok = ref(t);
-			}
-			else {
-				if(m_active == Active::Err) {
-					if constexpr(!std::is_trivially_destructible_v<err_storage_type>) {
-						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-						std::destroy_at(std::addressof(m_err));
-					}
-				}
-				else {
-					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-					std::destroy_at(std::addressof(m_none));
-				}
-
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				std::construct_at(std::addressof(m_ok), ref(t));
-			}
-			m_active = Active::Ok;
-			return *this;
-		}
-		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto operator=(ok_rvalue_reference t) noexcept -> ResultData& {
 			if(m_active == Active::Ok) {
 				if constexpr(std::is_trivially_copy_assignable_v<T>) {
@@ -1115,30 +1091,6 @@ namespace hyperion::result {
 		}
 
 		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto operator=(err_const_reference e) noexcept -> ResultData& {
-			if(m_active == Active::Err) {
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				m_err = ref(e);
-			}
-			else {
-				if(m_active == Active::Ok) {
-					if constexpr(!std::is_trivially_destructible_v<ok_storage_type>) {
-						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-						std::destroy_at(std::addressof(m_ok));
-					}
-				}
-				else {
-					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-					std::destroy_at(std::addressof(m_none));
-				}
-
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				std::construct_at(std::addressof(m_err), ref(e));
-			}
-			m_active = Active::Err;
-			return *this;
-		}
-		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto operator=(err_rvalue_reference e) noexcept -> ResultData& {
 			if(m_active == Active::Err) {
 				if constexpr(std::is_trivially_copy_assignable_v<E>) {
@@ -1457,30 +1409,6 @@ namespace hyperion::result {
 		}
 
 		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto operator=(ok_const_reference t) noexcept -> ResultData& {
-			if(m_active == Active::Ok) {
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				m_ok = ref(t);
-			}
-			else {
-				if(m_active == Active::Err) {
-					if constexpr(!std::is_trivially_destructible_v<err_storage_type>) {
-						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-						std::destroy_at(std::addressof(m_err));
-					}
-				}
-				else {
-					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-					std::destroy_at(std::addressof(m_none));
-				}
-
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				std::construct_at(std::addressof(m_ok), ref(t));
-			}
-			m_active = Active::Ok;
-			return *this;
-		}
-		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto operator=(ok_rvalue_reference t) noexcept -> ResultData& {
 			if(m_active == Active::Ok) {
 				if constexpr(std::is_trivially_copy_assignable_v<T>) {
@@ -1517,30 +1445,6 @@ namespace hyperion::result {
 			return *this;
 		}
 
-		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto operator=(err_const_reference e) noexcept -> ResultData& {
-			if(m_active == Active::Err) {
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				m_err = ref(e);
-			}
-			else {
-				if(m_active == Active::Ok) {
-					if constexpr(!std::is_trivially_destructible_v<ok_storage_type>) {
-						// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-						std::destroy_at(std::addressof(m_ok));
-					}
-				}
-				else {
-					// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-					std::destroy_at(std::addressof(m_none));
-				}
-
-				// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-				std::construct_at(std::addressof(m_err), ref(e));
-			}
-			m_active = Active::Err;
-			return *this;
-		}
 		// NOLINTNEXTLINE(readability-identifier-length)
 		constexpr auto operator=(err_rvalue_reference e) noexcept -> ResultData& {
 			if(m_active == Active::Err) {
