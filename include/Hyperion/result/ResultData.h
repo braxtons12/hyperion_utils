@@ -460,13 +460,7 @@ namespace hyperion::result {
 		constexpr ResultData() noexcept : m_none() {
 		}
 		// NOLINTNEXTLINE(readability-identifier-length)
-		explicit constexpr ResultData(ok_const_reference ok) noexcept
-		requires std::is_const_v<T>
-		: m_ok(ref(ok)),
-		  m_active(Active::Ok) {
-		}
-		// NOLINTNEXTLINE(readability-identifier-length)
-		explicit constexpr ResultData(ok_reference ok) noexcept
+		explicit constexpr ResultData(ok_rvalue_reference ok) noexcept
 			: m_ok(ref(ok)), m_active(Active::Ok) {
 		}
 		explicit constexpr ResultData(err_const_reference err) noexcept(
@@ -857,12 +851,7 @@ namespace hyperion::result {
 			concepts::NoexceptConstructibleFrom<T, Args...>)
 			: m_ok(std::forward<Args>(args)...), m_active(Active::Ok) {
 		}
-		explicit constexpr ResultData(err_const_reference err) noexcept
-		requires std::is_const_v<E>
-		: m_err(ref(err)),
-		  m_active(Active::Err) {
-		}
-		explicit constexpr ResultData(err_reference err) noexcept
+		explicit constexpr ResultData(err_rvalue_reference err) noexcept
 			: m_err(ref(err)), m_active(Active::Err) {
 		}
 		explicit constexpr ResultData(option::None none) noexcept
@@ -1215,21 +1204,10 @@ namespace hyperion::result {
 		constexpr ResultData() noexcept : m_none() {
 		}
 		// NOLINTNEXTLINE(readability-identifier-length)
-		explicit constexpr ResultData(ok_const_reference ok) noexcept
-		requires std::is_const_v<T>
-		: m_ok(ref(ok)),
-		  m_active(Active::Ok) {
-		}
-		// NOLINTNEXTLINE(readability-identifier-length)
-		explicit constexpr ResultData(ok_reference ok) noexcept
+		explicit constexpr ResultData(ok_rvalue_reference ok) noexcept
 			: m_ok(ref(ok)), m_active(Active::Ok) {
 		}
-		explicit constexpr ResultData(err_const_reference err) noexcept
-		requires std::is_const_v<E>
-		: m_err(ref(err)),
-		  m_active(Active::Err) {
-		}
-		explicit constexpr ResultData(err_reference err) noexcept
+		explicit constexpr ResultData(err_rvalue_reference err) noexcept
 			: m_err(ref(err)), m_active(Active::Err) {
 		}
 		explicit constexpr ResultData(option::None none) noexcept
