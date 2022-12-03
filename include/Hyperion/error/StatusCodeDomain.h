@@ -336,11 +336,11 @@ namespace hyperion::error {
 			static const constexpr char (&UUID)[hyperion::error::num_chars_in_uuid] /** NOLINT **/ \
 				= uuid_string;                                                                     \
                                                                                                    \
-			static constexpr u64 ID								 /** NOLINT **/                    \
+			static constexpr hyperion::u64 ID					 /** NOLINT **/                    \
 				= hyperion::error::parse_uuid_from_string(UUID); /** NOLINT **/                    \
                                                                                                    \
 			constexpr Name() noexcept = default;                                                   \
-			explicit constexpr Name(u64 uuid) noexcept : m_uuid(uuid) { /**NOLINT**/               \
+			explicit constexpr Name(hyperion::u64 uuid) noexcept : m_uuid(uuid) { /**NOLINT**/     \
 			}                                                                                      \
 			template<hyperion::error::UUIDString UUID>	  /** NOLINT**/                            \
 			explicit constexpr Name(UUID&& uuid) noexcept /** NOLINT **/                           \
@@ -349,7 +349,9 @@ namespace hyperion::error {
 			constexpr Name(Name&&) noexcept = default;                                             \
 			constexpr ~/****/ Name() noexcept = default;                                           \
                                                                                                    \
-			[[nodiscard]] inline constexpr auto id() const noexcept -> u64 { return m_uuid; }      \
+			[[nodiscard]] inline constexpr auto id() const noexcept -> hyperion::u64 {             \
+				return m_uuid;                                                                     \
+			}                                                                                      \
                                                                                                    \
 			[[nodiscard]] inline constexpr auto name() const noexcept -> std::string_view {        \
 				return name_string;                                                                \
@@ -440,7 +442,7 @@ namespace hyperion::error {
 			constexpr auto operator=(Name&&) noexcept -> Name& = default;                          \
                                                                                                    \
 		  private:                                                                                 \
-			u64 m_uuid = ID;                                                                       \
+			hyperion::u64 m_uuid = ID;                                                             \
                                                                                                    \
 			template<typename U = Category##StatusCode>                                            \
 			requires hyperion::concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,     \
