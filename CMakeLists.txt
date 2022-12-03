@@ -162,12 +162,22 @@ set(HYPERION_UTILS_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/Logger.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/logging/Sink.cpp"
 	)
+set(HYPERION_UTILS_TEST_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/tests/doctest_main.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/ChangeDetector.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/Enum.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/LockFreeQueue.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/Option.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/Result.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/RingBuffer.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/src/tests/memory/UniquePtr.cpp"
+    )
 
 add_library(HyperionUtils STATIC)
 add_library(Hyperion::Utils ALIAS HyperionUtils)
 
 add_executable(HyperionUtilsTest
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/doctest_main.cpp"
+    ${HYPERION_UTILS_TEST_SOURCES}
 	)
 
 add_executable(HyperionUtilsLoggerBenchmark

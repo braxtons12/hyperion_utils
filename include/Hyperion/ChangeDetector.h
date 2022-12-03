@@ -3,7 +3,7 @@
 /// @brief basic value-change detector type. Useful when you need to track when
 /// writes to a stored value actually change it semantically
 /// @version 0.1
-/// @date 2022-05-12
+/// @date 2022-12-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -134,36 +134,4 @@ namespace hyperion {
 	  private:
 		T m_previous_value = T();
 	};
-
-	// NOLINTNEXTLINE
-	TEST_SUITE("ChangeDetector") {
-		TEST_CASE("value") {
-			auto detector = ChangeDetector<i32>();
-			CHECK_EQ(detector.value(), 0_i32);
-
-			SUBCASE("changed_lvalue") {
-				auto val = 2_i32;
-				CHECK(detector.changed(val));
-				CHECK_EQ(detector.value(), 2_i32);
-			}
-
-			SUBCASE("changed_rvalue") {
-				CHECK(detector.changed(2_i32));
-				CHECK_EQ(detector.value(), 2_i32);
-			}
-		}
-
-		TEST_CASE("pointer") {
-			auto value = 0_i32;
-			auto detector = ChangeDetector<i32*>(&value);
-			CHECK_EQ(*(detector.value()), 0_i32);
-
-			SUBCASE("changed") {
-				auto val = 2_i32;
-				CHECK(detector.changed(&val));
-				CHECK_EQ(*(detector.value()), 2_i32);
-			}
-		}
-	}
-
 } // namespace hyperion

@@ -3,7 +3,7 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2022-07-09
+/// @date 2022-12-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -1206,48 +1206,5 @@ namespace hyperion {
 		return UniquePtr<ElementType[], Deleter>( // NOLINT (arrays)
 			Traits::allocate(allocator, num_elements),
 			Deleter(allocator, num_elements));
-	}
-
-	// NOLINTNEXTLINE
-	TEST_SUITE("UniquePtr") {
-		TEST_CASE("Constructor") {
-			auto ptr1 = UniquePtr<i32>();
-			// NOLINTNEXTLINE
-			auto ptr2 = UniquePtr<i32>(new i32(3_i32));
-			auto ptr3 = hyperion::make_unique<i32>(2_i32);
-
-			CHECK_EQ(ptr1, nullptr);
-			CHECK_NE(ptr2, nullptr);
-			CHECK_NE(ptr3, nullptr);
-			CHECK_EQ(*ptr2, 3_i32);
-			CHECK_EQ(*ptr3, 2_i32);
-
-			SUBCASE("move") {
-				auto ptr4 = std::move(ptr3);
-				// NOLINTNEXTLINE(bugprone-use-after-move,hicpp-invalid-access-moved)
-				CHECK_EQ(ptr3, nullptr);
-				CHECK_NE(ptr4, nullptr);
-				CHECK_EQ(*ptr4, 2_i32);
-			}
-
-			SUBCASE("accessors_and_modifiers") {
-				CHECK(ptr3);
-				CHECK(static_cast<bool>(ptr3));
-				CHECK_NE(ptr3.get(), nullptr);
-				CHECK_EQ(*(ptr3.get()), 2_i32);
-
-				auto* ptr4 = ptr3.release();
-				CHECK_EQ(ptr3, nullptr);
-				CHECK_NE(ptr4, nullptr);
-				CHECK_EQ(*ptr4, 2_i32);
-
-				*ptr4 = 4_i32;
-				ptr3.reset(ptr4);
-				CHECK_NE(ptr3, nullptr);
-				CHECK(ptr3);
-				CHECK_EQ(*ptr3, 4_i32);
-				CHECK_EQ(*(ptr3.get()), 4_i32);
-			}
-		}
 	}
 } // namespace hyperion

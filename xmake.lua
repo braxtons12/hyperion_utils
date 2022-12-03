@@ -211,6 +211,17 @@ local hyperion_utils_sources = {
 	"$(projectdir)/src/logging/Sink.cpp",
 }
 
+local hyperion_utils_test_sources = {
+	"$(projectdir)/src/tests/doctest_main.cpp",
+	"$(projectdir)/src/tests/ChangeDetector.cpp",
+	"$(projectdir)/src/tests/Enum.cpp",
+	"$(projectdir)/src/tests/LockFreeQueue.cpp",
+	"$(projectdir)/src/tests/Option.cpp",
+	"$(projectdir)/src/tests/Result.cpp",
+	"$(projectdir)/src/tests/RingBuffer.cpp",
+	"$(projectdir)/src/tests/memory/UniquePtr.cpp",
+}
+
 target("hyperion-utils")
 	set_kind("static")
 	add_includedirs("$(projectdir)/include")
@@ -229,7 +240,6 @@ target("hyperion-utils")
 	add_defines("DOCTEST_CONFIG_DISABLE")
 	set_default(true)
 	add_options("hyperion_tracy_enable")
-	add_options("hyperion_disable_testing")
 	on_config(function(target)
 		setup_compile_flags(target)
 		setup_link_libs(target)
@@ -239,8 +249,8 @@ target_end()
 target("hyperion-utils-test")
 	set_kind("binary")
 	add_includedirs("$(projectdir)/include", { public = false })
-	add_files(hyperion_utils_sources)
-	add_files("src/doctest_main.cpp")
+    add_files(hyperion_utils_test_sources)
+	add_deps("hyperion-utils")
 	add_packages("boost", "doctest", "fmt", "gsl", "tracy", {public = true})
 	set_default(false)
 	on_config(function(target)
