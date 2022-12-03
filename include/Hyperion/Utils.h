@@ -47,4 +47,3 @@
 #include <Hyperion/Span.h>
 #include <Hyperion/Synchronization.h>
 #include <Hyperion/TypeTraits.h>
-#include <Hyperion/test/OptionAndResultTests.h>
