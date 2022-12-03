@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2022-08-27
+/// @date 2022-12-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
