@@ -380,12 +380,7 @@ namespace hyperion {
 				panic("Result::as_ref called on an Error result, terminating");
 			}
 
-			if constexpr(concepts::Reference<T>) {
-				return this->get().get();
-			}
-			else {
-				return this->get();
-			}
+            return this->get();
 		}
 
 		/// @brief Similar to `unwrap`, but doesn't consume this `Result`.
