@@ -559,7 +559,7 @@ namespace hyperion::result {
 		}
 
 		/// @brief Returns a reference to this as the `Ok` variant
-		[[nodiscard]] inline constexpr auto get() noexcept -> ok_storage_type& {
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_reference {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			return m_ok.get();
 		}
@@ -944,7 +944,7 @@ namespace hyperion::result {
 		}
 
 		/// @brief Returns a reference to this as the `Err` variant
-		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_storage_type& {
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_reference {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			return m_err.get();
 		}
@@ -1288,7 +1288,7 @@ namespace hyperion::result {
 		}
 
 		/// @brief Returns a reference to this as the `Ok` variant
-		[[nodiscard]] inline constexpr auto get() noexcept -> ok_storage_type& {
+		[[nodiscard]] inline constexpr auto get() noexcept -> ok_reference {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			return m_ok.get();
 		}
@@ -1300,7 +1300,7 @@ namespace hyperion::result {
 		}
 
 		/// @brief Returns a reference to this as the `Err` variant
-		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_storage_type& {
+		[[nodiscard]] inline constexpr auto get_err() noexcept -> err_reference {
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
 			return m_err.get();
 		}
