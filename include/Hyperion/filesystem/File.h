@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2022-08-27
+/// @date 2022-12-03
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -117,6 +117,14 @@ namespace hyperion::fs {
 			FailIfExists = 8_u32
 		};
 
+		/// @brief Position to seek from when seeking in a file.
+		/// @ingroup filesystem
+		enum class SeekOrigin : i32 {
+			Begin = SEEK_SET,
+			Current = SEEK_CUR,
+			End = SEEK_END,
+		};
+
 		/// @brief The access permission options to open a file with
 		///
 		/// The type can be any of `File::AccessType`.
@@ -152,8 +160,8 @@ namespace hyperion::fs {
 		/// @param options - The `OpenOptions` the file was opened with
 		/// @ingroup filesystem
 		constexpr File(std::FILE* file, // NOLINT
-					   OpenOptions options = {AccessType::ReadWrite,
-											  AccessModifier::Truncate}) noexcept
+					   OpenOptions options
+					   = {AccessType::ReadWrite, AccessModifier::Truncate}) noexcept
 			: m_file(file), m_options(options) {
 		}
 
@@ -166,8 +174,8 @@ namespace hyperion::fs {
 		/// @ingroup filesystem
 		constexpr File(std::FILE* file,
 					   UniquePtr<buffer_type>&& buffer,
-					   OpenOptions options = {AccessType::ReadWrite,
-											  AccessModifier::Truncate}) noexcept
+					   OpenOptions options
+					   = {AccessType::ReadWrite, AccessModifier::Truncate}) noexcept
 			: m_file(file), m_buffer(std::move(buffer)), m_options(options) { // NOLINT
 		}
 
@@ -366,6 +374,27 @@ namespace hyperion::fs {
 		/// @return `Ok()` on success, `Err(error::SystemError)` on failure
 		/// @ingroup filesystem
 		[[nodiscard]] auto flush() noexcept -> Result<>;
+
+        /// @brief Seeks within the file to the position at `offset`, relative to the given seek
+        /// origin
+        ///
+        /// @param offset  The offset from the seek origin to seek to
+        /// @param origin  The origin from which to seek
+        ///
+        /// @return `Ok()` on success, `Err(error::SystemError)` on failure
+        /// @ingroup filesystem
+		[[nodiscard]] auto
+		seek(i64 offset, SeekOrigin origin = SeekOrigin::Current) noexcept -> Result<>;
+        /// @brief Returns the current position in the file, relative to the beginning of the file
+        ///
+        /// @return The position in the file on success, `Err(error::SystemError)` on failure
+        /// @ingroup filesystem
+		[[nodiscard]] auto position() noexcept -> Result<usize>;
+        /// @brief Returns the size of the file in bytes
+        ///
+        /// @return The size of the file on success, `Err(error::SystemError)` on failure
+        /// @ingroup filesystem
+		[[nodiscard]] auto size() noexcept -> Result<usize>;
 
 		/// @brief `File`s can't be copy-assigned
 		/// @ingroup filesystem

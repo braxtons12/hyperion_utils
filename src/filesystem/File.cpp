@@ -1,3 +1,29 @@
+/// @file File.cpp
+/// @author Braxton Salyer <braxtonsalyer@gmail.com>
+/// @brief Basic file I/O support
+/// @version 0.1
+/// @date 2022-12-03
+///
+/// MIT License
+/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all
+/// copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+/// SOFTWARE.
 #include <Hyperion/filesystem/File.h>
 
 namespace hyperion::fs {
@@ -235,4 +261,36 @@ namespace hyperion::fs {
 
 		return Ok();
 	}
+
+	[[nodiscard]] auto File::seek(i64 offset, SeekOrigin origin) noexcept -> Result<> {
+		// NOLINTNEXTLINE(google-runtime-int)
+		if(std::fseek(m_file.get(), gsl::narrow_cast<long>(offset), static_cast<i32>(origin)) != 0)
+		{
+			return Err(error::SystemError(error::SystemDomain::get_last_error()));
+		}
+
+		return Ok();
+	}
+	[[nodiscard]] auto File::position() noexcept -> Result<usize> {
+		const auto res = std::ftell(m_file.get());
+		if(res == -1) {
+			return Err(error::SystemError(error::SystemDomain::get_last_error()));
+		}
+
+		return Ok(gsl::narrow_cast<usize>(res));
+	}
+	[[nodiscard]] auto File::size() noexcept -> Result<usize> {
+		return position().and_then([this](auto original_pos) noexcept {
+			auto ret = seek(0, SeekOrigin::End).and_then([this](auto&&) -> Result<usize> {
+				const auto size = std::ftell(m_file.get());
+				if(size == -1) {
+					return Err(error::SystemError(error::SystemDomain::get_last_error()));
+				}
+				return Ok(gsl::narrow_cast<usize>(size));
+			});
+			ignore(seek(original_pos, SeekOrigin::Begin));
+			return ret;
+		});
+	}
+
 } // namespace hyperion::fs
