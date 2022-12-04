@@ -537,7 +537,7 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		[[nodiscard]] inline constexpr auto
-		unwrap() noexcept -> type requires concepts::NoexceptMovable<T> {
+		unwrap() noexcept -> type requires concepts::NoexceptMoveConstructible<T> {
 			if(!is_some()) {
 				panic("Option::unwrap called on a None, terminating");
 			}
