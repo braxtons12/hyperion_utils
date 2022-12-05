@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `StatusCodeDomain` supporting NT error codes
 /// @version 0.1
-/// @date 2022-11-15
+/// @date 2022-12-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -60,6 +60,9 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/NTDomain.h"
 	class [[nodiscard("A StatusCodeDomain should always be used")]] NTDomain {
 	  public:
+        using NTStatusCode = StatusCode<NTDomain>;
+        using NTErrorCode = ErrorCode<NTDomain>;
+
 		/// @brief The value type of `NTDomain` status codes is `NTSTATUS`
 		/// @ingroup error
 		using value_type = detail::win32::NTSTATUS;

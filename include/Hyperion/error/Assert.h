@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic run-time assert facilities with formatted error messages
 /// @version 0.1
-/// @date 2022-11-16
+/// @date 2022-12-04
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -63,29 +63,29 @@ namespace hyperion::error {
 
 #if HYPERION_PLATFORM_DEBUG
 	#define hyperion_assert(condition, format_string, ...) /** NOLINT(   		   **/          \
-		/** cppcoreguidelines-macro-usage,                                         **/     \
-		/** bugprone-reserved-identifier, cert-dcl37-c,                            **/     \
-		/** cert-dcl51-cpp)                                                        **/     \
-		[&]() {                                                                            \
-			if(!(condition)) {                                                             \
-				const auto location = std::source_location::current();                     \
-				eprintln("Assertion triggered at [{}:{}:{}: {}]: {}\bBacktrace:\n{}",      \
-						 location.file_name(),                                             \
-						 location.line(),                                                  \
-						 location.column(),                                                \
-						 location.function_name(),                                         \
-						 fmt::format(std::move(format_string) __VA_OPT__(, ) __VA_ARGS__), \
-						 hyperion::backtrace());                                           \
-				assert(condition);                                                         \
-			}                                                                              \
+		/** cppcoreguidelines-macro-usage,                                         **/          \
+		/** bugprone-reserved-identifier, cert-dcl37-c,                            **/          \
+		/** cert-dcl51-cpp)                                                        **/          \
+		[&]() {                                                                                 \
+			if(!(condition)) {                                                                  \
+				const auto location = std::source_location::current();                          \
+				hyperion::eprintln("Assertion triggered at [{}:{}:{}: {}]: {}\bBacktrace:\n{}", \
+						 location.file_name(),                                                  \
+						 location.line(),                                                       \
+						 location.column(),                                                     \
+						 location.function_name(),                                              \
+						 fmt::format(std::move(format_string) __VA_OPT__(, ) __VA_ARGS__),      \
+						 hyperion::backtrace());                                                \
+				assert(condition);                                                              \
+			}                                                                                   \
 		}()
 #else // HYPERION_PLATFORM_DEBUG
 
 	#define hyperion_assert(condition, format_string, ...) /** NOLINT(                       **/ \
 														   /** cppcoreguidelines-macro-usage,**/ \
 														   /** bugprone-reserved-identifier, **/ \
-														   /** cert-dcl37-c,		           **/     \
-														   /** cert-dcl51-cpp) 			   **/         \
+														   /** cert-dcl37-c,		         **/ \
+														   /** cert-dcl51-cpp) 			     **/ \
 		hyperion::ignore(condition, format_string __VA_OPT__(, ) __VA_ARGS__)
 #endif // HYPERION_PLATFORM_DEBUG
 // clang-format off
