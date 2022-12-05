@@ -3,7 +3,7 @@
 /// @brief Forward declarations of the `Some` functions for creating an `Option<T>` containing a
 /// value
 /// @version 0.1
-/// @date 2022-8-26
+/// @date 2022-12-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -46,7 +46,8 @@ namespace hyperion {
 			 typename U = std::conditional_t<concepts::Pointer<std::remove_reference_t<T>>,
 											 std::remove_reference_t<T>,
 											 T>>
-	[[nodiscard]] inline constexpr auto Some(T&& some) noexcept -> Option<U>;
+	[[nodiscard]] inline constexpr auto
+	Some(T&& some) noexcept(concepts::NoexceptConstructibleFrom<U, T>) -> Option<U>;
 
 	/// @brief Creates an `Option<T>` by constructing a `T` in place in the `Option<T>`
 	///
@@ -60,7 +61,8 @@ namespace hyperion {
 	/// @headerfile "Hyperion/Option.h"
 	template<typename T, typename... Args>
 	requires concepts::ConstructibleFrom<T, Args...>
-	[[nodiscard]] inline constexpr auto Some(Args&&... args) noexcept -> Option<T>;
+	[[nodiscard]] inline constexpr auto
+	Some(Args&&... args) noexcept(concepts::NoexceptConstructibleFrom<T, Args...>) -> Option<T>;
 
 	/// @brief Creates an `Option<T>` by storing the given `T` in the `Option<T>`
 	///

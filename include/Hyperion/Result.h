@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief `Result` represents the outcome of an operation that can fail recoverably
 /// @version 0.1
-/// @date 2022-12-03
+/// @date 2022-12-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -201,20 +201,21 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		constexpr Result() noexcept = default;
-		// clang-format off
 
 		/// @brief Constructs a `Result` from the given `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(const T& ok) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptCopyConstructible<T>
+		constexpr Result(const T& ok) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<T>)
+		requires concepts::CopyConstructible<T>
 			: ResultData(ok) {
 		}
 		/// @brief Constructs a `Result` from the given `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(T&& ok) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptMoveConstructible<T>
+		constexpr Result(T && ok) // NOLINT
+			noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T>
 			: ResultData(std::move(ok)) {
 		}
 		/// @brief Constructs a `Result` by constructing the `T` in place in the `Result`
@@ -225,21 +226,24 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename... Args>
 		requires concepts::ConstructibleFrom<T, Args...> && concepts::NotReference<T>
-		constexpr explicit Result(Args&&... args) noexcept // NOLINT
+		constexpr explicit Result(Args && ... args) // NOLINT
+			noexcept(concepts::NoexceptConstructibleFrom<T, Args...>)
 			: ResultData(std::forward<Args>(args)...) {
 		}
 		/// @brief Constructs a `Result` from the given `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(const E& err) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptCopyConstructible<E>
+		constexpr Result(const E& err) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<E>)
+		requires concepts::CopyConstructible<E>
 			: ResultData(err) {
 		}
 		/// @brief Constructs a `Result` from the given `E`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(E&& err) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptMoveConstructible<E>
+		constexpr Result(E && err) // NOLINT
+			noexcept(concepts::NoexceptMoveConstructible<E>)
+		requires concepts::MoveConstructible<E>
 			: ResultData(std::move(err)) {
 		}
 		/// @brief Constructs a `Result` by constructing the `E` in place in the `Result`
@@ -250,18 +254,19 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename... Args>
 		requires concepts::ConstructibleFrom<E, Args...> && concepts::NotReference<E>
-		constexpr explicit Result(Args&&... args) noexcept // NOLINT
+		constexpr explicit Result(Args && ... args) // NOLINT
+			noexcept(concepts::NoexceptConstructibleFrom<E, Args...>)
 			: ResultData(std::forward<Args>(args)...) {
 		}
-		// clang-format on
 
 		/// @brief Constructs a `Result` from an `Err`
 		///
 		/// @param error - The error indicating failure
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		Result(const hyperion::Err<E>& error) noexcept // NOLINT
-		requires concepts::NoexceptCopyConstructible<E>
+		Result(const hyperion::Err<E>& error) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<E>)
+		requires concepts::CopyConstructible<E>
 			: ResultData(error.m_error) {
 		}
 		/// @brief Constructs a `Result` from an `Err`
@@ -269,8 +274,9 @@ namespace hyperion {
 		/// @param error - The error indicating failure
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		Result(hyperion::Err<E> && error) noexcept // NOLINT
-		requires concepts::NoexceptMoveConstructible<E>
+		Result(hyperion::Err<E> && error) // NOLINT
+			noexcept(concepts::NoexceptMoveConstructible<E>)
+		requires concepts::MoveConstructible<E>
 			: ResultData(std::move(error.m_error)) {
 		}
 		/// @brief Constructs a `Result` from an `Ok`
@@ -278,8 +284,9 @@ namespace hyperion {
 		/// @param ok - The value indicating success
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(const hyperion::Ok<T>& ok) noexcept // NOLINT
-		requires concepts::NoexceptCopyConstructible<T>
+		constexpr Result(const hyperion::Ok<T>& ok) // NOLINT
+			noexcept(concepts::NoexceptCopyConstructible<T>)
+		requires concepts::CopyConstructible<T>
 			: ResultData(ok.m_ok) {
 		}
 		/// @brief Constructs a `Result` from an `Ok`
@@ -287,8 +294,9 @@ namespace hyperion {
 		/// @param ok - The value indicating success
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		constexpr Result(hyperion::Ok<T> && ok) noexcept // NOLINT
-		requires concepts::NoexceptMoveConstructible<T>
+		constexpr Result(hyperion::Ok<T> && ok) // NOLINT
+			noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T>
 			: ResultData(std::move(ok.m_ok)) {
 		}
 		/// @brief Copy Constructor
@@ -435,8 +443,12 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T & default_value) noexcept -> ok_type
+		[[nodiscard]] inline constexpr auto unwrap_or(T & default_value) noexcept(
+			concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+											 concepts::NoexceptCopyConstructible<T>)
+			->ok_type
 		requires concepts::NotReference<T>
+				 && (concepts::MoveConstructible<T> || concepts::CopyConstructible<T>)
 		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
@@ -457,7 +469,13 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Ok`, or `default_value`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T && default_value) noexcept -> ok_type {
+		[[nodiscard]] inline constexpr auto unwrap_or(T && default_value) noexcept(
+			concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+											 concepts::NoexceptCopyConstructible<T>)
+			->ok_type
+		requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+				 || concepts::CopyConstructible<T>)
+		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -482,7 +500,13 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Result.h"
 		template<typename F>
 		requires concepts::InvocableWithReturn<T, F>
-		[[nodiscard]] inline auto unwrap_or_else(F && default_generator) noexcept -> T {
+				 [[nodiscard]] inline auto unwrap_or_else(F && default_generator) noexcept(
+					 concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+													  concepts::NoexceptCopyConstructible<T>)
+					 ->ok_type
+				 requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+						  || concepts::CopyConstructible<T>)
+		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
@@ -505,7 +529,13 @@ namespace hyperion {
 		template<typename U>
 		requires concepts::Convertible<U, std::string>
 				 || concepts::Convertible<U, std::string_view>
-				 [[nodiscard]] inline auto expect(U && panic_message) noexcept -> ok_type {
+					[[nodiscard]] inline auto expect(U && panic_message) noexcept(
+						concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+														 concepts::NoexceptCopyConstructible<T>)
+						->ok_type
+					requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+							 || concepts::CopyConstructible<T>)
+		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
 	#endif // HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED

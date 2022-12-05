@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief A monadic type representing an optional value
 /// @version 0.1
-/// @date 2022-08-27
+/// @date 2022-12-05
 ///
 /// MIT License
 /// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -141,23 +141,22 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		constexpr Option() noexcept = default;
-		// clang-format off
 
 		/// @brief Constructs an `Option<T>` from the given `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(const T& some) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptCopyConstructible<T>
-			: OptionData(some)
-		{
+		constexpr Option(const T& some) // NOLINT (explicit)
+			noexcept(concepts::NoexceptCopyConstructible<T>)
+		requires concepts::CopyConstructible<T>
+			: OptionData(some) {
 		}
 		/// @brief Constructs an `Option<T>` from the given `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(T&& some) noexcept // NOLINT (explicit)
-			requires concepts::NoexceptMoveConstructible<T> && concepts::NotReference<T>
-			: OptionData(std::move(some))
-		{
+		constexpr Option(T&& some) // NOLINT (explicit)
+			noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T> && concepts::NotReference<T>
+			: OptionData(std::move(some)) {
 		}
 		/// @brief Constructs an `Option<T>` by constructing the `T` in place in the `Option`
 		///
@@ -167,10 +166,10 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Option.h"
 		template<typename... Args>
 		requires concepts::ConstructibleFrom<T, Args...> && concepts::NotReference<T>
-		constexpr explicit Option(Args&&... args) noexcept // NOLINT
+		constexpr explicit Option(Args&&... args) // NOLINT
+			noexcept(concepts::NoexceptConstructibleFrom<T, Args...>)
 			: OptionData(std::forward<Args>(args)...) {
 		}
-		// clang-format on
 
 		/// @brief Constructs an empty `Option`, aka an `Option` as the `None` variant
 		/// @ingroup option
@@ -581,7 +580,13 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Some`, or `default_value`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		[[nodiscard]] inline constexpr auto unwrap_or(T&& default_value) noexcept -> type {
+		[[nodiscard]] inline constexpr auto
+		unwrap_or(T&& default_value) noexcept(concepts::MoveConstructible<T> ?
+												  concepts::NoexceptMoveConstructible<T> :
+												  concepts::NoexceptCopyConstructible<T>) -> type
+		requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+				 || concepts::CopyConstructible<T>)
+		{
 			if(!is_some()) {
 				return std::move(default_value);
 			}
@@ -604,7 +609,13 @@ namespace hyperion {
 		/// @headerfile "Hyperion/Option.h"
 		template<typename F>
 		requires concepts::InvocableWithReturn<T, F>
-		[[nodiscard]] inline auto unwrap_or_else(F&& default_generator) noexcept -> T {
+				 [[nodiscard]] inline auto unwrap_or_else(F&& default_generator) noexcept(
+					 concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+													  concepts::NoexceptCopyConstructible<T>)
+					 -> type
+				 requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+						  || concepts::CopyConstructible<T>)
+		{
 			if(!is_some()) {
 				return std::forward<F>(default_generator)();
 			}
@@ -624,7 +635,14 @@ namespace hyperion {
 		template<typename U>
 		requires concepts::Convertible<U, std::string>
 				 || concepts::Convertible<U, std::string_view>
-				 [[nodiscard]] inline auto expect(U&& panic_message) noexcept -> type {
+					[[nodiscard]] inline auto
+					expect(U&& panic_message) noexcept(concepts::MoveConstructible<T> ?
+														   concepts::NoexceptMoveConstructible<T> :
+														   concepts::NoexceptCopyConstructible<T>)
+						-> type
+					requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+							 || concepts::CopyConstructible<T>)
+		{
 			if(!is_some()) {
 				panic("{}", std::forward<U>(panic_message));
 			}
@@ -837,7 +855,8 @@ namespace hyperion {
 	/// @ingroup option
 	/// @headerfile "Hyperion/Option.h"
 	template<typename T, typename U>
-	[[nodiscard]] inline constexpr auto Some(T&& some) noexcept -> Option<U> {
+	[[nodiscard]] inline constexpr auto
+	Some(T&& some) noexcept(concepts::NoexceptConstructibleFrom<U, T>) -> Option<U> {
 		return Option<U>(std::forward<T>(some));
 	}
 
@@ -853,7 +872,8 @@ namespace hyperion {
 	/// @headerfile "Hyperion/Option.h"
 	template<typename T, typename... Args>
 	requires concepts::ConstructibleFrom<T, Args...>
-	[[nodiscard]] inline constexpr auto Some(Args&&... args) noexcept -> Option<T> {
+	[[nodiscard]] inline constexpr auto
+	Some(Args&&... args) noexcept(concepts::NoexceptConstructibleFrom<T, Args...>) -> Option<T> {
 		return Option<T>(std::forward<Args>(args)...);
 	}
 
