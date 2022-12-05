@@ -380,7 +380,7 @@ namespace hyperion {
 				panic("Result::as_ref called on an Error result, terminating");
 			}
 
-            return this->get();
+			return this->get();
 		}
 
 		/// @brief Similar to `unwrap`, but doesn't consume this `Result`.
@@ -409,8 +409,12 @@ namespace hyperion {
 		/// @return The contained `T`
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
-		[[nodiscard]] inline constexpr auto unwrap() noexcept -> ok_type
-		requires (std::is_reference_v<T> || concepts::NoexceptMoveConstructible<T>)
+		[[nodiscard]] inline constexpr auto unwrap() noexcept(
+			concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+											 concepts::NoexceptCopyConstructible<T>)
+			->ok_type
+		requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+				 || concepts::CopyConstructible<T>)
 		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;
@@ -520,7 +524,7 @@ namespace hyperion {
 		/// @ingroup result
 		/// @headerfile "Hyperion/Result.h"
 		[[nodiscard]] inline constexpr auto unwrap_err() noexcept -> err_type
-		requires (std::is_reference_v<E> || concepts::NoexceptMoveConstructible<E>)
+		requires(std::is_reference_v<E> || concepts::NoexceptMoveConstructible<E>)
 		{
 	#if HYPERION_RESULT_PANICS_ON_DESTRUCTION_IF_UNHANDLED
 			m_handled = true;

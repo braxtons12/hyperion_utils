@@ -181,8 +181,8 @@ namespace hyperion {
 		/// @brief Copy Constructor
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(const Option& option) noexcept(
-			concepts::NoexceptCopyConstructible<T>) requires concepts::CopyConstructible<T>
+		constexpr Option(const Option& option) noexcept(concepts::NoexceptCopyConstructible<T>)
+		requires concepts::CopyConstructible<T>
 			: OptionData(static_cast<const OptionData&>(option)) {
 		}
 		/// @brief Converting Copy Constructor from `Option<U>` where `T != U`
@@ -199,8 +199,8 @@ namespace hyperion {
 		/// @brief Move Constructor
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr Option(Option&& option) noexcept(
-			concepts::NoexceptMoveConstructible<T>) requires concepts::MoveConstructible<T>
+		constexpr Option(Option&& option) noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T>
 			: OptionData(static_cast<OptionData&&>(option)) {
 			option = None();
 		}
@@ -317,9 +317,10 @@ namespace hyperion {
 				 concepts::Invocable G,
 				 typename U = decltype(std::declval<F>()(std::declval<const_reference>())),
 				 typename V = decltype(std::declval<G>()())>
-		requires concepts::Same<U, V> && concepts::InvocableWithReturn<U, F, const_reference>
-		[[nodiscard]] inline auto
-		map_or_else(F&& map_func, G&& default_generator) const noexcept -> U {
+		requires concepts::Same<U, V>
+				 && concepts::InvocableWithReturn<U, F, const_reference>
+				 [[nodiscard]] inline auto
+				 map_or_else(F&& map_func, G&& default_generator) const noexcept -> U {
 			// the invocable checks above are probably redundant because of the inferred
 			// template parameters, but we'll keep them for completeness’ sake and
 			// clarity of requirements
@@ -356,9 +357,9 @@ namespace hyperion {
 				 concepts::Invocable NoneFunc,
 				 typename R1 = decltype(std::declval<SomeFunc>()(std::declval<rvalue_reference>())),
 				 typename R2 = decltype(std::declval<NoneFunc>()())>
-		requires concepts::Same<R1,
-								R2> && concepts::InvocableWithReturn<R1, SomeFunc, rvalue_reference>
-		inline auto match(SomeFunc&& some_func, NoneFunc&& none_func) noexcept -> R1 {
+		requires concepts::Same<R1, R2>
+				 && concepts::InvocableWithReturn<R1, SomeFunc, rvalue_reference>
+				 inline auto match(SomeFunc&& some_func, NoneFunc&& none_func) noexcept -> R1 {
 			if(!is_some()) {
 				return std::forward<NoneFunc>(none_func)();
 			}
@@ -537,7 +538,12 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		[[nodiscard]] inline constexpr auto
-		unwrap() noexcept -> type requires concepts::NoexceptMoveConstructible<T> {
+		unwrap() noexcept(concepts::MoveConstructible<T> ? concepts::NoexceptMoveConstructible<T> :
+														   concepts::NoexceptCopyConstructible<T>)
+			-> type
+		requires(std::is_reference_v<T> || concepts::MoveConstructible<T>
+				 || concepts::CopyConstructible<T>)
+		{
 			if(!is_some()) {
 				panic("Option::unwrap called on a None, terminating");
 			}
@@ -555,8 +561,9 @@ namespace hyperion {
 		/// @return The contained `T` if this is `Some`, or `default_value`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		[[nodiscard]] inline constexpr auto
-		unwrap_or(T& default_value) noexcept -> type requires concepts::NotReference<T> {
+		[[nodiscard]] inline constexpr auto unwrap_or(T& default_value) noexcept -> type
+		requires concepts::NotReference<T>
+		{
 			if(!is_some()) {
 				return std::move(default_value);
 			}
@@ -615,8 +622,9 @@ namespace hyperion {
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
 		template<typename U>
-		requires concepts::Convertible<U, std::string> || concepts::Convertible<U, std::string_view>
-		[[nodiscard]] inline auto expect(U&& panic_message) noexcept -> type {
+		requires concepts::Convertible<U, std::string>
+				 || concepts::Convertible<U, std::string_view>
+				 [[nodiscard]] inline auto expect(U&& panic_message) noexcept -> type {
 			if(!is_some()) {
 				panic("{}", std::forward<U>(panic_message));
 			}
@@ -682,8 +690,9 @@ namespace hyperion {
 		/// @return true if this is `None`, false otherwise
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto
-		operator==(const T& some) const noexcept -> bool requires concepts::EqualityComparable<T> {
+		constexpr auto operator==(const T& some) const noexcept -> bool
+		requires concepts::EqualityComparable<T>
+		{
 			if(!is_some()) {
 				return false;
 			}
@@ -696,8 +705,9 @@ namespace hyperion {
 		/// @return true if this is `None`, false otherwise
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto operator!=(const T& some) const noexcept
-			-> bool requires concepts::InequalityComparable<T> {
+		constexpr auto operator!=(const T& some) const noexcept -> bool
+		requires concepts::InequalityComparable<T>
+		{
 			if(!is_some()) {
 				return true;
 			}
@@ -718,8 +728,10 @@ namespace hyperion {
 		/// @brief Copy assignment operator
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto operator=(const Option& option) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> Option& requires concepts::CopyAssignable<T> {
+		constexpr auto
+		operator=(const Option& option) noexcept(concepts::NoexceptCopyAssignable<T>) -> Option&
+		requires concepts::CopyAssignable<T>
+		{
 			if(this == &option) {
 				return *this;
 			}
@@ -762,8 +774,10 @@ namespace hyperion {
 		/// @brief Move assignment operator
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto operator=(Option&& option) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> Option& requires concepts::MoveAssignable<T> || concepts::Reference<T> {
+		constexpr auto
+		operator=(Option&& option) noexcept(concepts::NoexceptMoveAssignable<T>) -> Option&
+		requires concepts::MoveAssignable<T> || concepts::Reference<T>
+		{
 
 			if(this == &option) {
 				return *this;
@@ -777,8 +791,10 @@ namespace hyperion {
 		/// @brief Copy assignment operator from `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto operator=(const T& some) noexcept(concepts::NoexceptCopyAssignable<T>)
-			-> Option& requires concepts::CopyAssignable<T> {
+		constexpr auto
+		operator=(const T& some) noexcept(concepts::NoexceptCopyAssignable<T>) -> Option&
+		requires concepts::CopyAssignable<T>
+		{
 			OptionData::operator=(some);
 			return *this;
 		}
@@ -786,8 +802,9 @@ namespace hyperion {
 		/// @brief Move assignment operator from `T`
 		/// @ingroup option
 		/// @headerfile "Hyperion/Option.h"
-		constexpr auto operator=(T&& some) noexcept(concepts::NoexceptMoveAssignable<T>)
-			-> Option& requires concepts::MoveAssignable<T> {
+		constexpr auto operator=(T&& some) noexcept(concepts::NoexceptMoveAssignable<T>) -> Option&
+		requires concepts::MoveAssignable<T>
+		{
 			OptionData::operator=(std::move(some));
 			return *this;
 		}
