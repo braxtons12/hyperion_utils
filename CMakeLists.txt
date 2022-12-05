@@ -209,6 +209,7 @@ if (MSVC)
 		/Zc:preprocessor
 		/permissive-
 		/Zc:rvalueCast
+        /Zc:__cplusplus
 		/wd5104
 		)
 	target_compile_options(HyperionUtilsTest
