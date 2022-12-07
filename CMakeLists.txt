@@ -419,7 +419,7 @@ set(DOCS_FILES
 
 add_custom_command(OUTPUT ${DOXYGEN_HTML}
     DEPENDS ${HYPERION_UTILS_EXPORTS} ${DOCS_FILES}
-	COMMAND make html
+    COMMAND sphinx-build -M html . _build
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/docs
 	MAIN_DEPENDENCY
 	COMMENT "Generating documentation with doxygen, sphinx, and breathe"
