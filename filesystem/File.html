@@ -445,6 +445,28 @@
 
 </dd></dl>
 
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File10SeekOriginE">
+<span id="_CPPv3N8hyperion2fs4File10SeekOriginE"></span><span id="_CPPv2N8hyperion2fs4File10SeekOriginE"></span><span class="target" id="group__filesystem_1ga8d801cee0d1846ab6bf28d301c1b18fc"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SeekOrigin</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">i32</span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File10SeekOriginE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Position to seek from when seeking in a file. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File10SeekOrigin5BeginE">
+<span id="_CPPv3N8hyperion2fs4File10SeekOrigin5BeginE"></span><span id="_CPPv2N8hyperion2fs4File10SeekOrigin5BeginE"></span><span class="target" id="group__filesystem_1gga8d801cee0d1846ab6bf28d301c1b18fca1a06729125544cab7cee73195fc044f0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Begin</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File10SeekOrigin5BeginE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File10SeekOrigin7CurrentE">
+<span id="_CPPv3N8hyperion2fs4File10SeekOrigin7CurrentE"></span><span id="_CPPv2N8hyperion2fs4File10SeekOrigin7CurrentE"></span><span class="target" id="group__filesystem_1gga8d801cee0d1846ab6bf28d301c1b18fca222a267cc5778206b253be35ee3ddab5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Current</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File10SeekOrigin7CurrentE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File10SeekOrigin3EndE">
+<span id="_CPPv3N8hyperion2fs4File10SeekOrigin3EndE"></span><span id="_CPPv2N8hyperion2fs4File10SeekOrigin3EndE"></span><span class="target" id="group__filesystem_1gga8d801cee0d1846ab6bf28d301c1b18fca87557f11575c0ad78e4e28abedc13b6e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">End</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File10SeekOrigin3EndE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
@@ -623,6 +645,45 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Ok()</span></code> on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File4seekE3i6410SeekOrigin">
+<span id="_CPPv3N8hyperion2fs4File4seekE3i6410SeekOrigin"></span><span id="_CPPv2N8hyperion2fs4File4seekE3i6410SeekOrigin"></span><span id="hyperion::fs::File::seek__i64.SeekOrigin"></span><span class="target" id="group__filesystem_1ga241550c1bf7eed4e65dbe4f0f32b4354"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seek</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">i64</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <a class="reference internal" href="#_CPPv4N8hyperion2fs4File10SeekOriginE" title="hyperion::fs::File::SeekOrigin"><span class="n"><span class="pre">SeekOrigin</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">origin</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion2fs4File10SeekOriginE" title="hyperion::fs::File::SeekOrigin"><span class="n"><span class="pre">SeekOrigin</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N8hyperion2fs4File10SeekOrigin7CurrentE" title="hyperion::fs::File::SeekOrigin::Current"><span class="n"><span class="pre">Current</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="../error_handling/Result.html#_CPPv4I00EN8hyperion6ResultE" title="hyperion::Result"><span class="n"><span class="pre">Result</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File4seekE3i6410SeekOrigin" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Seeks within the file to the position at <code class="docutils literal notranslate"><span class="pre">offset</span></code>, relative to the given seek origin. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>offset</strong> – The offset from the seek origin to seek to </p></li>
+<li><p><strong>origin</strong> – The origin from which to seek</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Ok()</span></code> on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File8positionEv">
+<span id="_CPPv3N8hyperion2fs4File8positionEv"></span><span id="_CPPv2N8hyperion2fs4File8positionEv"></span><span id="hyperion::fs::File::position"></span><span class="target" id="group__filesystem_1gad43e46ca029804eb1ce4aca94166497d"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="../error_handling/Result.html#_CPPv4I00EN8hyperion6ResultE" title="hyperion::Result"><span class="n"><span class="pre">Result</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File8positionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the current position in the file, relative to the beginning of the file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The position in the file on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4File4sizeEv">
+<span id="_CPPv3N8hyperion2fs4File4sizeEv"></span><span id="_CPPv2N8hyperion2fs4File4sizeEv"></span><span id="hyperion::fs::File::size"></span><span class="target" id="group__filesystem_1ga1faef7c5eded7ea8e08b3c1699afab3e"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="../error_handling/Result.html#_CPPv4I00EN8hyperion6ResultE" title="hyperion::Result"><span class="n"><span class="pre">Result</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">usize</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4File4sizeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the size of the file in bytes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The size of the file on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
 </dd>
 </dl>
 </dd></dl>
