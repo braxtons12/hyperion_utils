@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Basic file I/O support
 /// @version 0.1
-/// @date 2022-12-03
+/// @date 2023-01-11
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -288,7 +288,7 @@ namespace hyperion::fs {
 				}
 				return Ok(gsl::narrow_cast<usize>(size));
 			});
-			ignore(seek(original_pos, SeekOrigin::Begin));
+			ignore(seek(gsl::narrow_cast<i64>(original_pos), SeekOrigin::Begin));
 			return ret;
 		});
 	}
