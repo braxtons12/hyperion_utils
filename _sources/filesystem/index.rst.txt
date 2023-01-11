@@ -5,6 +5,11 @@ Hyperion enhances standard filesystem facilities with additional types to make f
 more efficient. These generally all revolve around :cpp:`hyperion::fs::File`, Hyperion's type
 handing file access and I/O. 
 
+.. toctree::
+    :caption: Modules
+
+    File
+
 .. code-block:: cpp
     :caption: Example
     :linenos:
@@ -19,9 +24,4 @@ handing file access and I/O.
         auto file = maybe_file.expect("Failed to open MyFile.txt");
         file.println("Hello World! This is the secret of life: {}!", 42);
     }
-
-.. toctree::
-    :caption: Modules
-
-    File
 
