@@ -200,6 +200,7 @@ local hyperion_utils_main_headers = {
 	"$(projectdir)/include/Hyperion/RingBuffer.h",
 	"$(projectdir)/include/Hyperion/Span.h",
 	"$(projectdir)/include/Hyperion/Synchronization.h",
+	"$(projectdir)/include/Hyperion/Testing.h",
 	"$(projectdir)/include/Hyperion/TypeTraits.h",
 	"$(projectdir)/include/Hyperion/Utils.h",
 }

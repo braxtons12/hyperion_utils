@@ -153,6 +153,7 @@ set(HYPERION_UTILS_EXPORTS
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/synchronization/ReadWriteLock.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/synchronization/ScopedLockGuard.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Synchronization.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Testing.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/TypeTraits.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/Hyperion/Utils.h"
 	)
