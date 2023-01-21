@@ -3,7 +3,7 @@
 /// @brief An alternative to std::variant with improved compile time and runtime performance and
 /// additional features
 /// @version 0.1
-/// @date 2022-12-03
+/// @date 2023-01-20
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -1452,12 +1452,14 @@ namespace hyperion {
 							break;
 						case 2_usize:
 							if constexpr(do_destruct_v<2_usize>) {
+								using variant = variant<2_usize>;
 								// NOLINTNEXTLINE
 								this->m_third.~variant();
 							}
 							break;
 						case 3_usize:
 							if constexpr(do_destruct_v<3_usize>) {
+								using variant = variant<3_usize>;
 								// NOLINTNEXTLINE
 								this->m_fourth.~variant();
 							}
