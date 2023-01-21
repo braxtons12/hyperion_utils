@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Storage implementation details for hyperion::Enum
 /// @version 0.1
-/// @date 2022-08-07
+/// @date 2023-01-20
 ///
 /// MIT License
 /// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -77,7 +77,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> == 1_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
             constexpr EnumUnion() noexcept {
             }
@@ -96,7 +96,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> == 2_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
             constexpr EnumUnion() noexcept {
             }
@@ -116,7 +116,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> == 3_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
             constexpr EnumUnion() noexcept {
             }
@@ -137,7 +137,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> == 4_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
             constexpr EnumUnion() noexcept {
             }
@@ -159,7 +159,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> == 5_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
             constexpr EnumUnion() noexcept {
             }
@@ -182,7 +182,7 @@ namespace hyperion {
         template<usize Index, typename... Types>
         requires(mpl::size_v<mpl::list<Types...>> >= 6_usize)
         // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions,hicpp-special-member-functions)
-        struct EnumUnion<Index, Types...> : public virtual EnumTags<Types...> {
+        struct EnumUnion<Index, Types...> : public EnumTags<Types...> {
 			// clang-format on
             // NOLINTNEXTLINE(hicpp-use-equals-default, modernize-use-equals-default)
 			constexpr EnumUnion() noexcept {
