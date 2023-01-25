@@ -3,10 +3,10 @@
 /// @brief This includes Hyperion's `constexpr` equivalents and extensions to the C++ standard
 /// library's `std::unique_ptr<T, Deleter>`
 /// @version 0.1
-/// @date 2022-12-03
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
