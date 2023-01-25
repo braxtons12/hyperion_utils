@@ -39,6 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'filesystem/index';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/filesystem/index.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="File" href="File.html" />
@@ -393,7 +394,7 @@
   <section id="filesystem">
 <h1>Filesystem<a class="headerlink" href="#filesystem" title="Permalink to this heading">#</a></h1>
 <p>Hyperion enhances standard filesystem facilities with additional types to make file I/O safer and
-more efficient. These generally all revolve around <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">hyperion</span><span class="o">::</span><span class="n">fs</span><span class="o">::</span><span class="n">File</span><span class="w"></span></code>, Hyperion’s type
+more efficient. These generally all revolve around <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">hyperion</span><span class="o">::</span><span class="n">fs</span><span class="o">::</span><span class="n">File</span></code>, Hyperion’s type
 handing file access and I/O.</p>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
@@ -403,16 +404,16 @@ handing file access and I/O.</p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Example</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Filesystem.h&gt;</span><span class="cp"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Filesystem.h&gt;</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">example</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="o">::</span><span class="nn">fs</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">maybe_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;MyFile.txt&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">                                 </span><span class="n">File</span><span class="o">::</span><span class="n">OpenOptions</span><span class="p">{.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessType</span><span class="o">::</span><span class="n">Write</span><span class="p">,</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">                                                   </span><span class="p">.</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessModifier</span><span class="o">::</span><span class="n">None</span><span class="p">});</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maybe_file</span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;Failed to open MyFile.txt&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="n">file</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello World! This is the secret of life: {}!&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">10</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="k">auto</span><span class="w"> </span><span class="n">example</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="o">::</span><span class="nn">fs</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">maybe_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;MyFile.txt&quot;</span><span class="p">,</span>
+<span class="linenos"> 6</span><span class="w">                                 </span><span class="n">File</span><span class="o">::</span><span class="n">OpenOptions</span><span class="p">{.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessType</span><span class="o">::</span><span class="n">Write</span><span class="p">,</span>
+<span class="linenos"> 7</span><span class="w">                                                   </span><span class="p">.</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessModifier</span><span class="o">::</span><span class="n">None</span><span class="p">});</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maybe_file</span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;Failed to open MyFile.txt&quot;</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">file</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello World! This is the secret of life: {}!&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span>
+<span class="linenos">10</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

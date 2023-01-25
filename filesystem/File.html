@@ -39,6 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'filesystem/File';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/filesystem/File.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Memory Utilities and Smart Pointers" href="../memory/index.html" />
@@ -402,11 +403,11 @@
 <dt class="sig sig-object cpp" id="_CPPv4N8hyperion2fs4FileE">
 <span id="_CPPv3N8hyperion2fs4FileE"></span><span id="_CPPv2N8hyperion2fs4FileE"></span><span id="hyperion::fs::File"></span><span class="target" id="classhyperion_1_1fs_1_1File"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">File</span></span></span><a class="headerlink" href="#_CPPv4N8hyperion2fs4FileE" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Basic scoped file type providing formatted output and byte and character input. </p>
-<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="p">(</span><span class="s">&quot;/home/username/example.txt&quot;</span><span class="p">),</span><span class="w"></span>
-<span class="w">                       </span><span class="p">{.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessType</span><span class="o">::</span><span class="n">Write</span><span class="p">,</span><span class="w"></span>
-<span class="w">                        </span><span class="p">.</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessModifier</span><span class="o">::</span><span class="n">Truncate</span><span class="p">})</span><span class="w"></span>
-<span class="w">            </span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;Failed to open example file!&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="n">file</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello world!&quot;</span><span class="p">);</span><span class="w"></span>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="p">(</span><span class="s">&quot;/home/username/example.txt&quot;</span><span class="p">),</span>
+<span class="w">                       </span><span class="p">{.</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessType</span><span class="o">::</span><span class="n">Write</span><span class="p">,</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">modifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">AccessModifier</span><span class="o">::</span><span class="n">Truncate</span><span class="p">})</span>
+<span class="w">            </span><span class="p">.</span><span class="n">expect</span><span class="p">(</span><span class="s">&quot;Failed to open example file!&quot;</span><span class="p">);</span>
+<span class="n">file</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello world!&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
  </p>

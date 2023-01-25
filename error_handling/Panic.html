@@ -39,6 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/Panic';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/Panic.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Filesystem" href="../filesystem/index.html" />
@@ -407,22 +408,22 @@
   <section id="panic">
 <h1>Panic<a class="headerlink" href="#panic" title="Permalink to this heading">#</a></h1>
 <p>Hyperion provides a facility for “failing fast” when an irrecoverable error occurs. This is similar
-to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span><span class="w"></span></code>, but more closely models Rust’s <code class="code highlight rust docutils literal highlight-rust"><span class="fm">panic!</span><span class="w"></span></code>, and is aptly named so,
-<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span><span class="w"></span></code>. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span><span class="w"></span></code> will print info about the panic site as well as a runtime-formatted
-error message using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="w"></span></code> style string formatting before calling the
+to <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">()</span></code>, but more closely models Rust’s <code class="code highlight rust docutils literal highlight-rust"><span class="fm">panic!</span></code>, and is aptly named so,
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span></code>. <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">panic</span></code> will print info about the panic site as well as a runtime-formatted
+error message using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span></code> style string formatting before calling the
 registered panic handler. The default panic handler will terminate the program, but it can be
 overridden to provide custom behavior (for example, showing an error dialog in a GUI application).</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Example</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Panic.h&gt;</span><span class="cp"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Panic.h&gt;</span>
 <span class="linenos">2</span>
 <span class="linenos">3</span><span class="c1">// Input can&#39;t be 24 through 42, or bad things will happen</span>
-<span class="linenos">4</span><span class="kt">void</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">5</span><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">42</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">6</span><span class="w">        </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;example_function called with input value in the range [24, 42]</span><span class="se">\n</span><span class="s">input was {}&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos">7</span><span class="w">              </span><span class="n">input</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">8</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">9</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">4</span><span class="kt">void</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">5</span><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">42</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">6</span><span class="w">        </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;example_function called with input value in the range [24, 42]</span><span class="se">\n</span><span class="s">input was {}&quot;</span><span class="p">,</span>
+<span class="linenos">7</span><span class="w">              </span><span class="n">input</span><span class="p">);</span>
+<span class="linenos">8</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">9</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -432,23 +433,23 @@ overridden to provide custom behavior (for example, showing an error dialog in a
 <dd><p><a class="reference internal" href="#classhyperion_1_1error_1_1Panic"><span class="std std-ref">Panic</span></a> manages the active panic handler called when a panic occurs. </p>
 <section id="classhyperion_1_1error_1_1Panic_1autotoc_md82">
 <h2>Example<a class="headerlink" href="#classhyperion_1_1error_1_1Panic_1autotoc_md82" title="Permalink to this heading">#</a></h2>
-<p id="classhyperion_1_1error_1_1Panic_1autotoc_md82"><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Utils.h&gt;</span><span class="cp"></span>
-<span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">my_panic_handler</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">panic_message</span><span class="p">,</span><span class="w"></span>
-<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span><span class="w"> </span><span class="n">location</span><span class="p">,</span><span class="w"></span>
-<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">backtrace</span><span class="o">&amp;</span><span class="w"> </span><span class="n">backtrace</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<p id="classhyperion_1_1error_1_1Panic_1autotoc_md82"><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Utils.h&gt;</span>
+<span class="k">static</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">my_panic_handler</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">panic_message</span><span class="p">,</span>
+<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">source_location</span><span class="o">&amp;</span><span class="w"> </span><span class="n">location</span><span class="p">,</span>
+<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">backtrace</span><span class="o">&amp;</span><span class="w"> </span><span class="n">backtrace</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// do something w/ `panic_message`, `location`, and `backtrace`</span>
 <span class="w">    </span><span class="c1">// we leave it up to the handler to do something appropriate after handling the message</span>
 <span class="w">    </span><span class="c1">// this should usually be to terminate the process, so we do so here in our example</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+<span class="p">}</span>
 
-<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">hyperion</span><span class="o">::</span><span class="n">Panic</span><span class="o">::</span><span class="n">set_handler</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_panic_handler</span><span class="p">);</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">hyperion</span><span class="o">::</span><span class="n">Panic</span><span class="o">::</span><span class="n">set_handler</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_panic_handler</span><span class="p">);</span>
 
 <span class="w">    </span><span class="c1">// the full panic message, source location, and backtrace will be passed to</span>
 <span class="w">    </span><span class="c1">// `my_panic_handler`</span>
-<span class="w">    </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;My Panic Message!&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">panic</span><span class="p">(</span><span class="s">&quot;My Panic Message!&quot;</span><span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 </div>
  </p>

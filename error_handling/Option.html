@@ -39,6 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/Option';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/Option.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Result" href="Result.html" />
@@ -418,18 +419,18 @@
 <li><p>* Return values for functions not defined over their entire input range</p></li>
 </ul>
 </p>
-<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Option.h&gt;</span><span class="cp"></span>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/Option.h&gt;</span>
 
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="p">;</span><span class="w"></span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="p">;</span>
 
-<span class="kr">inline</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">checked_add</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Option</span><span class="o">&lt;</span><span class="n">u32</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">u32</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">Some</span><span class="p">(</span><span class="n">left</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">None</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">checked_add</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">left</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Option</span><span class="o">&lt;</span><span class="n">u32</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">u32</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">Some</span><span class="p">(</span><span class="n">left</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">right</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">None</span><span class="p">();</span>
+<span class="p">}</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">checked_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checked_add</span><span class="p">(</span><span class="mi">25</span><span class="n">_u32</span><span class="p">,</span><span class="w"> </span><span class="mi">120939</span><span class="n">_u32</span><span class="p">);</span><span class="w"></span>
-<span class="k">if</span><span class="p">(</span><span class="n">checked_sum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="s">&quot;sum is: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">checked_sum</span><span class="p">.</span><span class="n">unwrap</span><span class="p">());</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">auto</span><span class="w"> </span><span class="n">checked_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">checked_add</span><span class="p">(</span><span class="mi">25</span><span class="n">_u32</span><span class="p">,</span><span class="w"> </span><span class="mi">120939</span><span class="n">_u32</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">checked_sum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="s">&quot;sum is: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">checked_sum</span><span class="p">.</span><span class="n">unwrap</span><span class="p">());</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </p>

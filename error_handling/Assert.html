@@ -39,6 +39,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/Assert';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/Assert.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Panic" href="Panic.html" />
@@ -406,18 +407,18 @@
               
   <section id="assert">
 <h1>Assert<a class="headerlink" href="#assert" title="Permalink to this heading">#</a></h1>
-<p>Hyperion provides a runtime assert similar to the standard <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">assert</span><span class="w"></span></code>, but that supports an
-additional message string using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span><span class="w"></span></code> style string formatting</p>
+<p>Hyperion provides a runtime assert similar to the standard <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">assert</span></code>, but that supports an
+additional message string using fmtlib and <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">std</span><span class="o">::</span><span class="n">format</span></code> style string formatting</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Example</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Assert.h&gt;</span><span class="cp"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Hyperion/error/Assert.h&gt;</span>
 <span class="linenos">2</span>
-<span class="linenos">3</span><span class="kt">void</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg2</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">4</span><span class="w">    </span><span class="n">HYPERION_ASSERT</span><span class="p">(</span><span class="n">cant_be_arg2</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">,</span><span class="w"></span>
-<span class="linenos">5</span><span class="w">                    </span><span class="s">&quot;example_function called with cant_be_arg2 ({}) equal to cant_be_arg1 ({})&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos">6</span><span class="w">                    </span><span class="n">cant_be_arg2</span><span class="p">,</span><span class="w"></span>
-<span class="linenos">7</span><span class="w">                    </span><span class="n">cant_be_arg1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">8</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">3</span><span class="kt">void</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg2</span><span class="p">,</span><span class="w"> </span><span class="n">hyperion</span><span class="o">::</span><span class="n">i32</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">HYPERION_ASSERT</span><span class="p">(</span><span class="n">cant_be_arg2</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">cant_be_arg1</span><span class="p">,</span>
+<span class="linenos">5</span><span class="w">                    </span><span class="s">&quot;example_function called with cant_be_arg2 ({}) equal to cant_be_arg1 ({})&quot;</span><span class="p">,</span>
+<span class="linenos">6</span><span class="w">                    </span><span class="n">cant_be_arg2</span><span class="p">,</span>
+<span class="linenos">7</span><span class="w">                    </span><span class="n">cant_be_arg1</span><span class="p">);</span>
+<span class="linenos">8</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -425,9 +426,9 @@ additional message string using fmtlib and <code class="code highlight cpp docut
 <dt class="sig sig-object cpp" id="c.HYPERION_ASSERT">
 <span class="target" id="group__error_1ga4b524d90939d3167ca3ffaaec56c1c44"></span><span class="sig-name descname"><span class="n"><span class="pre">HYPERION_ASSERT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">condition</span></span>, <span class="n"><span class="pre">format_string</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.HYPERION_ASSERT" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Conditionally triggers an assertion, printing the formatted error message along with detailed source code location information of where the error occurred and a backtrace. </p>
-<p>Formats the error message via the given <code class="docutils literal notranslate"><span class="pre">format_string</span></code> and <code class="docutils literal notranslate"><span class="pre">format_args</span></code>, prepended with the source code location and followed by a backtrace in the format: <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Assertion</span><span class="w"> </span><span class="n">triggered</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="p">[{</span><span class="n">file_name</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">line</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">column</span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">function_name</span><span class="p">}]</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">assertion_message</span><span class="p">}</span><span class="w"></span>
-<span class="nl">Backtrace</span><span class="p">:</span><span class="w"></span>
-<span class="p">{</span><span class="n">Backtrace</span><span class="p">}</span><span class="w"></span>
+<p>Formats the error message via the given <code class="docutils literal notranslate"><span class="pre">format_string</span></code> and <code class="docutils literal notranslate"><span class="pre">format_args</span></code>, prepended with the source code location and followed by a backtrace in the format: <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Assertion</span><span class="w"> </span><span class="n">triggered</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="p">[{</span><span class="n">file_name</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">line</span><span class="p">}</span><span class="o">:</span><span class="p">{</span><span class="n">column</span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">function_name</span><span class="p">}]</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">assertion_message</span><span class="p">}</span>
+<span class="nl">Backtrace</span><span class="p">:</span>
+<span class="p">{</span><span class="n">Backtrace</span><span class="p">}</span>
 </pre></div>
 </div>
 </p>
