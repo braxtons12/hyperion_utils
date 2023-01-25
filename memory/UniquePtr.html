@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Enum" href="../enum.html" />
-    <link rel="prev" title="Memory Utilities and Smart Pointers" href="index.html" />
+    <link rel="prev" title="CompressedPair" href="CompressedPair.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -361,6 +361,8 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="EmptyBaseClass.html">EmptyBaseClass</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CompressedPair.html">CompressedPair</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">UniquePtr</a></li>
 </ul></li></ul>
   </div>
@@ -741,7 +743,7 @@
 <section id="group__UniquePtr_1autotoc_md144">
 <h2>Requirements<a class="headerlink" href="#group__UniquePtr_1autotoc_md144" title="Permalink to this heading">#</a></h2>
 <p id="group__UniquePtr_1autotoc_md144"><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">std::is_nothrow_swappable_v&lt;</span><span class="pre">CompressedPair</span><span class="pre">&lt;pointer,</span> <span class="pre">deleter_type&gt;&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">CompressedPair</span><span class="pre">&lt;pointer,</span> <span class="pre">deleter_type&gt;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">noexcept</span> <span class="pre">swappable</span> <span class="pre">in</span> <span class="pre">order</span> <span class="pre">to</span> <span class="pre">swap</span> <span class="pre">two</span></code><a class="reference internal" href="#classhyperion_1_1UniquePtr"><span class="std std-ref">UniquePtr</span></a><code class="docutils literal notranslate"><span class="pre">s.</span> <span class="pre">(</span></code>CompressedPair` is used internally to store the managed pointer and deleter, to allow for <a class="reference external" href="https://en.cppreference.com/w/cpp/language/ebo">Empty Base Class Optimization</a> ) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::is_nothrow_swappable_v&lt;</span><a class="reference internal" href="CompressedPair.html#classhyperion_1_1CompressedPair"><span class="std std-ref"><span class="pre">CompressedPair</span></span></a><span class="pre">&lt;pointer,</span> <span class="pre">deleter_type&gt;&gt;</span></code>: <code class="docutils literal notranslate"><a class="reference internal" href="CompressedPair.html#classhyperion_1_1CompressedPair"><span class="std std-ref"><span class="pre">CompressedPair</span></span></a><span class="pre">&lt;pointer,</span> <span class="pre">deleter_type&gt;</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">noexcept</span> <span class="pre">swappable</span> <span class="pre">in</span> <span class="pre">order</span> <span class="pre">to</span> <span class="pre">swap</span> <span class="pre">two</span></code><a class="reference internal" href="#classhyperion_1_1UniquePtr"><span class="std std-ref">UniquePtr</span></a><code class="docutils literal notranslate"><span class="pre">s.</span> <span class="pre">(</span></code>CompressedPair` is used internally to store the managed pointer and deleter, to allow for <a class="reference external" href="https://en.cppreference.com/w/cpp/language/ebo">Empty Base Class Optimization</a> ) </p></li>
 </ul>
 </p>
 </section>
@@ -1339,11 +1341,11 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="CompressedPair.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Memory Utilities and Smart Pointers</p>
+          <p class="prev-next-title">CompressedPair</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="../enum.html" title="next page">
