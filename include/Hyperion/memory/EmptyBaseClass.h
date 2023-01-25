@@ -3,10 +3,10 @@
 /// @brief This includes a utility class for performing
 /// [Empty Base Class Optimization](https://en.cppreference.com/w/cpp/language/ebo)
 /// @version 0.1
-/// @date 2021-10-19
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,8 +32,14 @@
 /// @ingroup memory
 /// @{
 ///	@defgroup EmptyBaseClass EmptyBaseClass
-/// THis modules provides a utility type for wrapping a type in a potentially Empty Base Class
-/// Optimized manner, along with relevant utilities for the associated implementation.
+/// This modules provides a class template for wrapping a type for use in an
+/// [Empty Base Class Optimized](https://en.cppreference.com/w/cpp/language/ebo) manner, along with
+/// relevant utilities for the associated implementation. This is useful, even in C++20 and up, when
+/// you __require__ that a type be EBOd portably, as things like `[[no_unique_address]]` are not
+/// guarateed to actually apply the optimization. For example, on Windows, `[[no_unique_address]]`
+/// does nothing on MSVC (until they are able to take an ABI break) and Clang, and MSVC's stand-in,
+/// `[[msvc::no_unique_address]]`, is not supported by Clang on Windows. This is just one example
+/// where the only way to ensure EBO is using this method instead of relying on the new attribute.
 /// @headerfile "Hyperion/memory/EmptyBaseClass.h"
 /// @}
 namespace hyperion {
@@ -56,11 +62,20 @@ namespace hyperion {
 	/// @brief Concept Requiring that a member of type `T` can NOT be Empty Base Class Optimized
 	/// @ingroup EmptyBaseClass
 	template<typename T>
-	concept NotEmptyBaseClassOptimizable = !EmptyBaseClassOptimizable<T>;
+	concept NotEmptyBaseClassOptimizable = !
+	EmptyBaseClassOptimizable<T>;
 
-	/// @brief `EmptyBaseClass` is a utility type used to wrap a type in a potentially
-	/// Empty Base Class Optimized manner
-	///
+	/// @brief `EmptyBaseClass` is a utility class template for wrapping a type for use in an
+	/// [Empty Base Class Optimized](https://en.cppreference.com/w/cpp/language/ebo) manner, along
+	/// with relevant utilities for the associated implementation. This is useful, even in C++20
+	/// and up, when you __require__ that a type be EBOd portably, as things like
+	/// `[[no_unique_address]]` are not guarateed to actually apply the optimization. For example,
+	/// on Windows, `[[no_unique_address]]` does nothing on MSVC (until they are able to take an ABI
+	/// break) and Clang, and MSVC's stand-in,
+	/// `[[msvc::no_unique_address]]`, is not supported by Clang on Windows. This is just one
+	/// example where the only way to ensure EBO is using this method instead of relying on the new
+	/// attribute.
+    ///
 	/// @tparam T - The type to wrap
 	/// @ingroup EmptyBaseClass
 	template<typename T>
