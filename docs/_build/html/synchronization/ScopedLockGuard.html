@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>EmptyBaseClass &#8212; hyperion-utils  documentation</title>
+    <title>ScopedLockGuard &#8212; hyperion-utils  documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,12 +38,12 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'memory/EmptyBaseClass';</script>
-    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/memory/EmptyBaseClass.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'synchronization/ScopedLockGuard';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/synchronization/ScopedLockGuard.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CompressedPair" href="CompressedPair.html" />
-    <link rel="prev" title="Memory Utilities and Smart Pointers" href="index.html" />
+    <link rel="next" title="Enum" href="../enum.html" />
+    <link rel="prev" title="ReadWriteLock" href="ReadWriteLock.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -146,15 +146,15 @@
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
                         Memory Utilities and Smart Pointers
                     </a>
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../synchronization/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Synchronization Utilities
                     </a>
                 </li>
@@ -259,15 +259,15 @@
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
                         Memory Utilities and Smart Pointers
                     </a>
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../synchronization/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Synchronization Utilities
                     </a>
                 </li>
@@ -353,15 +353,15 @@
                 </li>
                 
 
-                <li class="nav-item current active">
-                    <a class="nav-link" href="index.html">
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
                         Memory Utilities and Smart Pointers
                     </a>
                 </li>
                 
 
-                <li class="nav-item">
-                    <a class="nav-link" href="../synchronization/index.html">
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
                         Synchronization Utilities
                     </a>
                 </li>
@@ -382,9 +382,8 @@
   </p>
   <div class="bd-toc-item navbar-nav">
     <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">EmptyBaseClass</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CompressedPair.html">CompressedPair</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UniquePtr.html">UniquePtr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ReadWriteLock.html">ReadWriteLock</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ScopedLockGuard</a></li>
 </ul></li></ul>
   </div>
 </nav>
@@ -414,46 +413,21 @@
             
             <article class="bd-article" role="main">
               
-  <section id="emptybaseclass">
-<h1>EmptyBaseClass<a class="headerlink" href="#emptybaseclass" title="Permalink to this heading">#</a></h1>
-<dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion9UnInitTagE">
-<span id="_CPPv3I0EN8hyperion9UnInitTagE"></span><span id="_CPPv2I0EN8hyperion9UnInitTagE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structhyperion_1_1UnInitTag"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnInitTag</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion9UnInitTagE" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Tag type indicating the type should be left initialized. </p>
-</dd></dl>
-
-<dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv4I_N8concepts20DefaultConstructibleEEN8hyperion14DefaultInitTagE">
-<span id="_CPPv3I_N8concepts20DefaultConstructibleEEN8hyperion14DefaultInitTagE"></span><span id="_CPPv2I_N8concepts20DefaultConstructibleEEN8hyperion14DefaultInitTagE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">DefaultConstructible</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structhyperion_1_1DefaultInitTag"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefaultInitTag</span></span></span><a class="headerlink" href="#_CPPv4I_N8concepts20DefaultConstructibleEEN8hyperion14DefaultInitTagE" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Tag type indicating the type should be default-constructed. </p>
-</dd></dl>
-
-<dl class="cpp concept">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion25EmptyBaseClassOptimizableE">
-<span id="_CPPv3I0EN8hyperion25EmptyBaseClassOptimizableE"></span><span id="_CPPv2I0EN8hyperion25EmptyBaseClassOptimizableE"></span><span class="target" id="concepthyperion_1_1EmptyBaseClassOptimizable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmptyBaseClassOptimizable</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion25EmptyBaseClassOptimizableE" title="Permalink to this definition">#</a><br /></dt>
-<dd><div class="docutils container">
-<em>#include &lt;EmptyBaseClass.h&gt;</em></div>
-<p>Concept Requiring that a member of type <code class="docutils literal notranslate"><span class="pre">T</span></code> can be Empty Base Class Optimized. </p>
-</dd></dl>
-
-<dl class="cpp concept">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion28NotEmptyBaseClassOptimizableE">
-<span id="_CPPv3I0EN8hyperion28NotEmptyBaseClassOptimizableE"></span><span id="_CPPv2I0EN8hyperion28NotEmptyBaseClassOptimizableE"></span><span class="target" id="concepthyperion_1_1NotEmptyBaseClassOptimizable"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NotEmptyBaseClassOptimizable</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion28NotEmptyBaseClassOptimizableE" title="Permalink to this definition">#</a><br /></dt>
-<dd><div class="docutils container">
-<em>#include &lt;EmptyBaseClass.h&gt;</em></div>
-<p>Concept Requiring that a member of type <code class="docutils literal notranslate"><span class="pre">T</span></code> can NOT be Empty Base Class Optimized. </p>
-</dd></dl>
-
+  <section id="scopedlockguard">
+<h1>ScopedLockGuard<a class="headerlink" href="#scopedlockguard" title="Permalink to this heading">#</a></h1>
 <dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion14EmptyBaseClassE">
-<span id="_CPPv3I0EN8hyperion14EmptyBaseClassE"></span><span id="_CPPv2I0EN8hyperion14EmptyBaseClassE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1EmptyBaseClass"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmptyBaseClass</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion14EmptyBaseClassE" title="Permalink to this definition">#</a><br /></dt>
-<dd><p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1EmptyBaseClass"><span class="std std-ref"><span class="pre">EmptyBaseClass</span></span></a></code> is a utility class template for wrapping a type for use in an <a class="reference external" href="https://en.cppreference.com/w/cpp/language/ebo">Empty Base Class Optimized</a> manner, along with relevant utilities for the associated implementation. This is useful, even in C++20 and up, when you <strong>require</strong> that a type be EBOd portably, as things like <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code> are not guarateed to actually apply the optimization. For example, on Windows, <code class="docutils literal notranslate"><span class="pre">[[no_unique_address]]</span></code> does nothing on MSVC (until they are able to take an ABI break) and Clang, and MSVC’s stand-in, <code class="docutils literal notranslate"><span class="pre">[[msvc::no_unique_address]]</span></code>, is not supported by Clang on Windows. This is just one example where the only way to ensure EBO is using this method instead of relying on the new attribute. </p>
+<dt class="sig sig-object cpp" id="_CPPv4I_N8concepts12NotReferenceEI0E0EN8hyperion15ScopedLockGuardE">
+<span id="_CPPv3I_N8concepts12NotReferenceEI0E0EN8hyperion15ScopedLockGuardE"></span><span id="_CPPv2I_N8concepts12NotReferenceEI0E0EN8hyperion15ScopedLockGuardE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NotReference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lock</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1ScopedLockGuard"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ScopedLockGuard</span></span></span><a class="headerlink" href="#_CPPv4I_N8concepts12NotReferenceEI0E0EN8hyperion15ScopedLockGuardE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Usable by an owning lock type to provide scoped synchronized access to the protected data. </p>
+<p>If <code class="docutils literal notranslate"><span class="pre">Lock</span></code> is <code class="docutils literal notranslate"><span class="pre">std::unique_lock</span></code>, this provides exclusive read/write access to the protected data and is not copyable. If <code class="docutils literal notranslate"><span class="pre">Lock</span></code> is std::shared_lock`, this provides shared read-only access to the protected data and is copyable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> – - The type to wrap </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – - The type of the data to provide access to </p></li>
+<li><p><strong>Lock</strong> – - The <code class="docutils literal notranslate"><span class="pre">LockType</span></code> determining the type of access this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ScopedLockGuard"><span class="std std-ref"><span class="pre">ScopedLockGuard</span></span></a></code> provides </p></li>
+</ul>
 </dd>
 </dl>
-<p>Subclassed by <a class="reference internal" href="CompressedPair.html#classhyperion_1_1CompressedPair"><span class="std std-ref">hyperion::CompressedPair&lt; pointer, deleter_type &gt;</span></a>, <a class="reference internal" href="CompressedPair.html#classhyperion_1_1CompressedPair"><span class="std std-ref">hyperion::CompressedPair&lt; pointer, deleter_type &gt;</span></a></p>
 </dd></dl>
 
 </section>
@@ -466,17 +440,17 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="ReadWriteLock.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Memory Utilities and Smart Pointers</p>
+          <p class="prev-next-title">ReadWriteLock</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="CompressedPair.html" title="next page">
+  <a class='right-next' id="next-link" href="../enum.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">CompressedPair</p>
+      <p class="prev-next-title">Enum</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>

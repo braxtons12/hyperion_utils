@@ -3,10 +3,10 @@
 /// @brief This file includes a reader/writer lock type that manages access to a single instance of
 /// a type
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,14 @@
 #include <Hyperion/Result.h>
 #include <Hyperion/synchronization/ScopedLockGuard.h>
 
-#ifndef ERROR_CANT_WAIT
-	#define ERROR_CANT_WAIT 0x0000022A // NOLINT(cppcoreguidelines-macro-usage)
-#endif								   // ERROR_CANT_WAIT
+#if HYPERION_PLATFORM_WINDOWS || !HYPERION_WINDOWS_USES_POSIX_CODES
+	// If we're on Windows and Win32 hasn't been included, define the Win32 error code for
+	// ERROR_CANT WAIT to the correct value, we'll #undef it at the end of the header
+	#ifndef ERROR_CANT_WAIT
+		#define HYPERION_DEFINED_ERROR_CANT_WAIT true
+		#define ERROR_CANT_WAIT					 0x0000022A // NOLINT(cppcoreguidelines-macro-usage)
+	#endif													// ERROR_CANT_WAIT
+#endif
 
 namespace hyperion {
 	IGNORE_PADDING_START
@@ -52,11 +57,11 @@ namespace hyperion {
 	/// #include <array>
 	/// #include <thread>
 	/// // create a `ReadWriteLock<T>` protecting a `std::array`
-	/// auto vec = ReadWriteLock(std::array<i32, 10>());
+	/// auto array = ReadWriteLock(std::array<i32, 10>());
 	/// auto previous = 1_i32;
 	/// {
 	/// 	// get write access and mutate all of the elements in the array
-	/// 	auto write_guard = vec.write();
+	/// 	auto write_guard = array.write();
 	/// 	for(auto& i: *write_guard) {
 	/// 		i = previous + previous;
 	/// 		previous = i;
@@ -65,16 +70,22 @@ namespace hyperion {
 	/// // ^^^ Notice we had to scope `write_guard`'s lifetime so we could get read access below.
 	/// // Guards only release ownership when they're destroyed
 	///
-	/// // get read access to the array and print each element on two separate threads
-	/// auto read_guard = vec.read();
-	/// auto thread1 = std::jthread([guard = read_guard]() {
-	/// 	for(auto i = 0_usize; i < 5_usize; ++i) {
-	/// 		println("{}", guard->at(i));
+	/// // print each element, splitting each half across two separate threads.
+    /// // get read access as necessary by calling `read()`
+	/// auto thread1 = std::jthread([&array]() {
+    ///     // we can choose to only lock the array long enough to access a single
+    ///     // member/member function by using the `ReadLockGuard` as a temporary
+    ///     const auto size = array.read()->size();
+	/// 	for(auto i = 0_usize; i < size / 2_usize; ++i) {
+    /// 	    // or we can hold onto the `ReadLockGuard` as long as we need to do our work
+    /// 	    auto read_guard = array.read();
+	/// 		println("{}", read_guard->at(i));
 	///     }
 	/// });
-	/// auto thread1 = std::jthread([guard = read_guard]() {
-	/// 	for(auto i = 5_usize; i < 10_usize; ++i) {
-	/// 		println("{}", guard->at(i));
+	/// auto thread2 = std::jthread([&array]() {
+    ///     const auto size = array.read()->size();
+	/// 	for(auto i = size / 2_usize; i < size; ++i) {
+	/// 		println("{}", array.read()->at(i));
 	///     }
 	/// });
 	/// @endcode
@@ -107,15 +118,15 @@ namespace hyperion {
 		/// @param lock - The `ReadWriteLock<T>` to move
 		///
 		/// # Requirements
-		/// - `concepts::MoveAssignable<T>`: The protected `T` must be move assignable in order to
+		/// - `concepts::MoveConstructible<T>`: The protected `T` must be move assignable in order to
 		/// move construct a `ReadWriteLock<T>`
 		/// @ingroup synchronization
-		ReadWriteLock(ReadWriteLock&& lock) noexcept(concepts::NoexceptMoveAssignable<T>)
-		requires concepts::MoveAssignable<T>
-		{
-			auto _lock = std::unique_lock(lock.m_mutex);
-			// NOLINTNEXTLINE(cppcoreguidelines-prefer-member-initializer)
-			m_data = std::move(lock.m_data);
+		ReadWriteLock(ReadWriteLock&& lock) noexcept(concepts::NoexceptMoveConstructible<T>)
+		requires concepts::MoveConstructible<T>
+			: m_data([&lock]() {
+				  auto _lock = std::unique_lock(lock.m_mutex);
+				  return std::move(lock.m_data);
+			  }()) {
 		}
 
 		/// @brief Constructs a `ReadWriteLock<T>` with the given initial data
@@ -130,7 +141,7 @@ namespace hyperion {
 									 // hicpp-explicit-conversions)
 			noexcept(concepts::NoexceptCopyConstructible<T>)
 		requires concepts::CopyConstructible<T>
-		: m_data(data) {
+			: m_data(data) {
 		}
 
 		/// @brief Constructs a `ReadWriteLock<T>` with the given initial data
@@ -144,7 +155,7 @@ namespace hyperion {
 		ReadWriteLock(T&& data) // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
 			noexcept(concepts::NoexceptMoveConstructible<T>)
 		requires concepts::MoveConstructible<T>
-		: m_data(std::move(data)) {
+			: m_data(std::move(data)) {
 		}
 
 		~ReadWriteLock() noexcept(concepts::NoexceptDestructible<T>) = default;
@@ -248,3 +259,9 @@ namespace hyperion {
 
 	IGNORE_PADDING_STOP
 } // namespace hyperion
+
+#if HYPERION_PLATFORM_WINDOWS || !HYPERION_WINDOWS_USES_POSIX_CODES
+	#if HYPERION_DEFINED_ERROR_CANT_WAIT
+		#undef ERROR_CANT_WAIT
+	#endif
+#endif

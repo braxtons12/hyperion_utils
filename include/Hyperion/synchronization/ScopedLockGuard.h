@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file includes a unique lock guard for automatic unlocking of a typed lock
 /// @version 0.1
-/// @date 2022-06-04
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -172,7 +172,8 @@ namespace hyperion {
 			return &m_data;
 		}
 
-		[[nodiscard]] explicit inline operator T() noexcept {
+		[[nodiscard]] explicit inline operator T()
+			const noexcept(concepts::NoexceptCopyConstructible<T>) {
 			return m_data;
 		}
 
@@ -292,7 +293,8 @@ namespace hyperion {
 			return &m_data;
 		}
 
-		[[nodiscard]] explicit inline operator T() noexcept {
+		[[nodiscard]] explicit inline operator T()
+			const noexcept(concepts::NoexceptCopyConstructible<T>) {
 			return m_data;
 		}
 
@@ -308,9 +310,15 @@ namespace hyperion {
 		lock_type m_lock;
 	};
 
+    /// @brief Convience alias for an exclusive-access lock guard,
+    /// aka `ScopedLockGuard<T, std::unique_lock>`
+    /// @ingroup synchronization
 	template<typename T>
 	using WriteLockGuard = ScopedLockGuard<T, std::unique_lock>;
 
+    /// @brief Convience alias for a shared-access lock guard,
+    /// aka `ScopedLockGuard<T, std::shared_lock>`
+    /// @ingroup synchronization
 	template<typename T>
 	using ReadLockGuard = ScopedLockGuard<T, std::shared_lock>;
 } // namespace hyperion

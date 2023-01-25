@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file provides access to Hyperion's synchronization primitives and utilities
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -31,3 +31,4 @@
 /// @headerfile "Hyperion/Synchronization.h"
 
 #include <Hyperion/synchronization/ReadWriteLock.h>
+#include <Hyperion/synchronization/ScopedLockGuard.h>

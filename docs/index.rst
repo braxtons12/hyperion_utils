@@ -48,9 +48,14 @@ For an overview of each module, see the links in the left sidebar or below.
     filesystem/index
 
 .. toctree::
-    :caption: Memory Utilites and Smart Pointers
+    :caption: Memory Utilities and Smart Pointers
 
     memory/index
+
+.. toctree::
+    :caption: Synchronization Utilities
+
+    synchronization/index
 
 .. toctree::
     :caption: Enum
