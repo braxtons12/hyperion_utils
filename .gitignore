@@ -24,3 +24,6 @@ Doxyfile-mcss
 /cmake-build-release-visual-studio-profile/
 /.xmake/
 docs/_build/html/.nojekyll
+docs/_build/doctrees/
+docs/_build/latex/
+docs/_build/xml/
