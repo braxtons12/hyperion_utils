@@ -59,6 +59,7 @@ highlight_language = "c++"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 autosummary_generate = True
+html_baseurl = "braxtons12.github.io/Hyperion-Utils"
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "github_url": "https://github.com/braxtons12/Hyperion-Utils",

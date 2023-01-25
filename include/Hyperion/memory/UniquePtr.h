@@ -1101,6 +1101,7 @@ namespace hyperion {
 		usize m_num_elements = 1_usize;
 	};
 	IGNORE_PADDING_STOP
+    // clang-format off
 
 	/// @ingroup UniquePtr
 	/// @{
@@ -1147,10 +1148,9 @@ namespace hyperion {
 	requires concepts::NoexceptConstructibleFrom<ElementType, Args...>
 			 && concepts::Allocatable<ElementType, Alloc>
 			 && (!std::is_unbounded_array_v<T>)
-				[[nodiscard]] inline constexpr auto allocate_unique(const Allocator& alloc,
-																	Args&&... args) noexcept
-				-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
-				requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
+             && concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
+	[[nodiscard]] inline constexpr auto allocate_unique(const Allocator& alloc, Args&&... args)
+        noexcept -> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
 	{
 		using Traits = std::allocator_traits<Alloc>;
 		using Deleter = AllocatorAwareDeleter<T, Alloc>;
@@ -1203,10 +1203,9 @@ namespace hyperion {
 			 = typename std::allocator_traits<Allocator>::template rebind_alloc<ElementType>>
 	requires concepts::Allocatable<ElementType, Alloc>
 			 && std::is_unbounded_array_v<T>
-				[[nodiscard]] inline constexpr auto
-				allocate_unique(const Allocator& alloc, usize num_elements) noexcept
-				-> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
-				requires concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
+			 && concepts::NoexceptConstructibleFrom<Alloc, const Allocator&>
+    [[nodiscard]] inline constexpr auto allocate_unique(const Allocator& alloc, usize num_elements)
+        noexcept -> UniquePtr<T, AllocatorAwareDeleter<T, Alloc>>
 	{
 		using Traits = std::allocator_traits<Alloc>;
 		using Deleter = AllocatorAwareDeleter<ElementType[], Alloc>; // NOLINT (c arrays)

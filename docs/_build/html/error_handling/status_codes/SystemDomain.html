@@ -39,6 +39,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/status_codes/SystemDomain';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/status_codes/SystemDomain.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Error" href="../Error.html" />
@@ -413,15 +414,15 @@
 <p>By default this is <code class="docutils literal notranslate"><span class="pre">true</span></code>. To use the Win32 status code domain instead, define this to <code class="docutils literal notranslate"><span class="pre">false</span></code> prior to including any Hyperion headers </p>
 </dd></dl>
 
-<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX</span><span class="w"></span></code></p>
-<p>Configures Hyperion to __NOT__ use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">PosixDomain</span><span class="w"></span></code> as the system
-<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StatusCodeDomain</span><span class="w"></span></code>.</p>
-<p>To enable this configuration, define <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX</span><span class="w"></span></code> to any value
+<p><code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX</span></code></p>
+<p>Configures Hyperion to __NOT__ use <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">hyperion</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">PosixDomain</span></code> as the system
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StatusCodeDomain</span></code>.</p>
+<p>To enable this configuration, define <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_NOT_POSIX</span></code> to any value
 Normally, this would only be used on systems that do not support POSIX, but can also be used
-to disable it on systems that would normally use POSIX compliant error codes (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">errno</span><span class="w"></span></code>),
+to disable it on systems that would normally use POSIX compliant error codes (<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">errno</span></code>),
 but shouldn’t for your use case. In either situation, you __MUST__ define
-<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_DOMAIN</span><span class="w"></span></code> to the type of your desired <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StatusCodeDomain</span><span class="w"></span></code>
-prior to including __any__ Hyperion headers other than <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">Hyperion</span><span class="o">/</span><span class="n">error</span><span class="o">/</span><span class="n">StatusCodeDomain</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span><span class="w"></span></code></p>
+<code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HYPERION_SYSTEM_STATUS_CODE_DOMAIN</span></code> to the type of your desired <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">StatusCodeDomain</span></code>
+prior to including __any__ Hyperion headers other than <code class="code highlight cpp docutils literal highlight-cpp"><span class="o">&lt;</span><span class="n">Hyperion</span><span class="o">/</span><span class="n">error</span><span class="o">/</span><span class="n">StatusCodeDomain</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span></code></p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.HYPERION_SYSTEM_STATUS_CODE_DOMAIN">
 <span class="target" id="group__error_1ga40ad8d75468b9759e9b5e5bf2d9d0a90"></span><span class="sig-name descname"><span class="n"><span class="pre">HYPERION_SYSTEM_STATUS_CODE_DOMAIN</span></span></span><a class="headerlink" href="#c.HYPERION_SYSTEM_STATUS_CODE_DOMAIN" title="Permalink to this definition">#</a><br /></dt>

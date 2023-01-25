@@ -39,6 +39,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/status_codes/StatusCodeDomain';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/status_codes/StatusCodeDomain.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="StatusCode" href="StatusCode.html" />
@@ -436,7 +437,7 @@
 <p>A <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> is a literal type that provides the semantic information corresponding with an associated <code class="docutils literal notranslate"><span class="pre">StatusCode&lt;T&gt;</span></code>, such as semantic equivalence with another code, whether the code indicates success or an error, and the textual message associated with the code.</p>
 <p>All <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> types must have a UNIQUE ID representing that domain.</p>
 <p>In addition to the requirements listed here, if a domain has codes with semantic equivalence to POSIX error codes, the domain should provide a (preferably <code class="docutils literal notranslate"><span class="pre">constexpr</span></code>) member function of the signature:</p>
-<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">as_generic_code</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">StatusCode</span><span class="o">&lt;</span><span class="n">YourDomain</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">GenericStatusCode</span><span class="p">;</span><span class="w"></span>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">as_generic_code</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">StatusCode</span><span class="o">&lt;</span><span class="n">YourDomain</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">GenericStatusCode</span><span class="p">;</span>
 </pre></div>
 </div>
 </p>

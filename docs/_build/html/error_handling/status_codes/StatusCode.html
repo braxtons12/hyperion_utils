@@ -39,6 +39,7 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'error_handling/status_codes/StatusCode';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/error_handling/status_codes/StatusCode.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="PosixDomain" href="PosixDomain.html" />
@@ -411,11 +412,11 @@
 <span id="_CPPv3I0EN8hyperion5error21status_code_enum_infoE"></span><span id="_CPPv2I0EN8hyperion5error21status_code_enum_infoE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structhyperion_1_1error_1_1status__code__enum__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status_code_enum_info</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion5error21status_code_enum_infoE" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Registers an enum type as a <code class="docutils literal notranslate"><span class="pre">StatusCodeEnum</span></code> representing a particular <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code> as its <code class="docutils literal notranslate"><span class="pre">value_type</span></code> </p>
 <p>A enum can be registered as a <code class="docutils literal notranslate"><span class="pre">StatusCodeEnum</span></code> representing <strong>exactly one</strong> <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code>. To associate a particular enum with a <code class="docutils literal notranslate"><span class="pre">StatusCodeDomain</span></code>, specialize this template as:</p>
-<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span><span class="w"></span>
-<span class="k">struct</span><span class="w"> </span><span class="nc">status_code_enum_info</span><span class="o">&lt;</span><span class="n">YourEnum</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">domain_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YourStatusCodeDomainType</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">status_code_enum_info</span><span class="o">&lt;</span><span class="n">YourEnum</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">domain_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YourStatusCodeDomainType</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 </p>
