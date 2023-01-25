@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ReadWriteLock &#8212; hyperion-utils  documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'synchronization/ReadWriteLock';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/synchronization/ReadWriteLock.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ScopedLockGuard" href="ScopedLockGuard.html" />
+    <link rel="prev" title="Synchronization Utilities" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="dark">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">hyperion-utils  documentation</p>
+  
+</a>
+    
+    <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+  </div>
+
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ReadWriteLock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ScopedLockGuard.html">ScopedLockGuard</a></li>
+</ul></li></ul>
+  </div>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item">
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="readwritelock">
+<h1>ReadWriteLock<a class="headerlink" href="#readwritelock" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE">
+<span id="_CPPv3I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE"></span><span id="_CPPv2I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NotReference</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classhyperion_1_1ReadWriteLock"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><a class="headerlink" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Owning reader/writer lock for synchronizing a single piece of data. </p>
+<p>Owns an instance of type <code class="docutils literal notranslate"><span class="pre">T</span></code>, and provides synchronized protected access to it with <code class="docutils literal notranslate"><a class="reference internal" href="ScopedLockGuard.html#classhyperion_1_1ScopedLockGuard"><span class="std std-ref"><span class="pre">ScopedLockGuard</span></span></a><span class="pre">&lt;T,</span> <span class="pre">LockType&gt;</span></code>s. <code class="docutils literal notranslate"><a class="reference internal" href="#group__synchronization_1ga17bfc381c9dea1e4a086d6967fed6cce"><span class="std std-ref"><span class="pre">write()</span></span></a></code> and <code class="docutils literal notranslate"><a class="reference internal" href="#group__synchronization_1ga0e10297bf8525c51a797c21a4ec4c444"><span class="std std-ref"><span class="pre">try_write()</span></span></a></code> provide exclusive read/write access via <code class="docutils literal notranslate"><a class="reference internal" href="ScopedLockGuard.html#classhyperion_1_1ScopedLockGuard"><span class="std std-ref"><span class="pre">ScopedLockGuard</span></span></a><span class="pre">&lt;T,</span> <span class="pre">std::unique_lock&gt;</span></code>, while <code class="docutils literal notranslate"><a class="reference internal" href="#group__synchronization_1ga7877440991191eb0ead0ebfe37e5169b"><span class="std std-ref"><span class="pre">read()</span></span></a></code> and <code class="docutils literal notranslate"><a class="reference internal" href="#group__synchronization_1gad82021a51627ce8a3b34d99c76bd85a5"><span class="std std-ref"><span class="pre">try_read()</span></span></a></code> provide shared read-only access via <code class="docutils literal notranslate"><a class="reference internal" href="ScopedLockGuard.html#classhyperion_1_1ScopedLockGuard"><span class="std std-ref"><span class="pre">ScopedLockGuard</span></span></a></code>&lt;T, std::shared_lock&gt;`</p>
+<p>Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Hyperion/Synchronization.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;array&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
+<span class="c1">// create a `ReadWriteLock&lt;T&gt;` protecting a `std::array`</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadWriteLock</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">i32</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="n">_i32</span><span class="p">;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// get write access and mutate all of the elements in the array</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">write_guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">write</span><span class="p">();</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">i</span><span class="o">:</span><span class="w"> </span><span class="o">*</span><span class="n">write_guard</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">previous</span><span class="p">;</span>
+<span class="w">        </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// ^^^ Notice we had to scope `write_guard`&#39;s lifetime so we could get read access below.</span>
+<span class="c1">// Guards only release ownership when they&#39;re destroyed</span>
+
+<span class="c1">// print each element, splitting each half across two separate threads.</span>
+<span class="c1">// get read access as necessary by calling `read()`</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">thread1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">jthread</span><span class="p">([</span><span class="o">&amp;</span><span class="n">array</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// we can choose to only lock the array long enough to access a single</span>
+<span class="w">    </span><span class="c1">// member/member function by using the `ReadLockGuard` as a temporary</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="n">_usize</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="n">_usize</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// or we can hold onto the `ReadLockGuard` as long as we need to do our work</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">read_guard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+<span class="w">        </span><span class="n">println</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">read_guard</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">});</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">thread2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">jthread</span><span class="p">([</span><span class="o">&amp;</span><span class="n">array</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="n">_usize</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">println</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">read</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – - The type of the value to be guarded/synchronized </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockEv">
+<span id="_CPPv3N8hyperion13ReadWriteLock13ReadWriteLockEv"></span><span id="_CPPv2N8hyperion13ReadWriteLock13ReadWriteLockEv"></span><span id="hyperion::ReadWriteLock::ReadWriteLock"></span><span class="target" id="group__synchronization_1ga738461165f33fd94ceee42f2fd251f3b"></span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NoexceptDefaultConstructible</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a default <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> </p>
+<section id="group__synchronization_1autotoc_md156">
+<h2>Requirements<a class="headerlink" href="#group__synchronization_1autotoc_md156" title="Permalink to this heading">#</a></h2>
+<p id="group__synchronization_1autotoc_md156"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concepts::DefaultConstructible&lt;T&gt;</span></code>: The protected <code class="docutils literal notranslate"><span class="pre">T</span></code> must be default constructible in order to default construct a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> </p></li>
+</ul>
+</p>
+</section>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERK13ReadWriteLock">
+<span id="_CPPv3N8hyperion13ReadWriteLock13ReadWriteLockERK13ReadWriteLock"></span><span id="_CPPv2N8hyperion13ReadWriteLock13ReadWriteLockERK13ReadWriteLock"></span><span id="hyperion::ReadWriteLock::ReadWriteLock__ReadWriteLockCR"></span><span class="target" id="group__synchronization_1ga400709f43815923093de113fadd99ac2"></span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERK13ReadWriteLock" title="hyperion::ReadWriteLock::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lock</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERK13ReadWriteLock" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code>s are not copyable </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERR13ReadWriteLock">
+<span id="_CPPv3N8hyperion13ReadWriteLock13ReadWriteLockERR13ReadWriteLock"></span><span id="_CPPv2N8hyperion13ReadWriteLock13ReadWriteLockERR13ReadWriteLock"></span><span id="hyperion::ReadWriteLock::ReadWriteLock__ReadWriteLockRR"></span><span class="target" id="group__synchronization_1ga5cc3a60988100dd953f52a7b9f0c0cda"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERR13ReadWriteLock" title="hyperion::ReadWriteLock::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lock</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NoexceptMoveConstructible</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERR13ReadWriteLock" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move constructs the given <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> from the given one. </p>
+<p>Acquires exclusive access to the data in the given <code class="docutils literal notranslate"><span class="pre">lock</span></code> and moves its data into this one.</p>
+<section id="group__synchronization_1autotoc_md157">
+<h2>Requirements<a class="headerlink" href="#group__synchronization_1autotoc_md157" title="Permalink to this heading">#</a></h2>
+<p id="group__synchronization_1autotoc_md157"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concepts::MoveConstructible&lt;T&gt;</span></code>: The protected <code class="docutils literal notranslate"><span class="pre">T</span></code> must be move assignable in order to move construct a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> </p></li>
+</ul>
+</p>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lock</strong> – - The <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> to move</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERK1T">
+<span id="_CPPv3N8hyperion13ReadWriteLock13ReadWriteLockERK1T"></span><span id="_CPPv2N8hyperion13ReadWriteLock13ReadWriteLockERK1T"></span><span id="hyperion::ReadWriteLock::ReadWriteLock__TCR"></span><span class="target" id="group__synchronization_1ga3c5a42ad250677e79080d17e8a326a32"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NoexceptCopyConstructible</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERK1T" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> with the given initial data. </p>
+<section id="group__synchronization_1autotoc_md158">
+<h2>Requirements<a class="headerlink" href="#group__synchronization_1autotoc_md158" title="Permalink to this heading">#</a></h2>
+<p id="group__synchronization_1autotoc_md158"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concepts::CopyConstructible&lt;T&gt;</span></code>: The protected <code class="docutils literal notranslate"><span class="pre">T</span></code> must be copy constructible in order to construct a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> initialized with a copy of the given <code class="docutils literal notranslate"><span class="pre">data</span></code> </p></li>
+</ul>
+</p>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – - The data to guard</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERR1T">
+<span id="_CPPv3N8hyperion13ReadWriteLock13ReadWriteLockERR1T"></span><span id="_CPPv2N8hyperion13ReadWriteLock13ReadWriteLockERR1T"></span><span id="hyperion::ReadWriteLock::ReadWriteLock__TRR"></span><span class="target" id="group__synchronization_1ga4ecefc55a747177f16424e1fa0b2a01d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReadWriteLock</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NoexceptMoveConstructible</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock13ReadWriteLockERR1T" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> with the given initial data. </p>
+<section id="group__synchronization_1autotoc_md159">
+<h2>Requirements<a class="headerlink" href="#group__synchronization_1autotoc_md159" title="Permalink to this heading">#</a></h2>
+<p id="group__synchronization_1autotoc_md159"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concepts::MoveConstructible&lt;T&gt;</span></code>: The protected <code class="docutils literal notranslate"><span class="pre">T</span></code> must be move constructible in order to construct a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> initialized by moving <code class="docutils literal notranslate"><span class="pre">data</span></code> into it </p></li>
+</ul>
+</p>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – - The data to guard</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion13ReadWriteLock4readEv">
+<span id="_CPPv3NK8hyperion13ReadWriteLock4readEv"></span><span id="_CPPv2NK8hyperion13ReadWriteLock4readEv"></span><span id="hyperion::ReadWriteLock::readC"></span><span class="target" id="group__synchronization_1ga7877440991191eb0ead0ebfe37e5169b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">ReadLockGuard</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4NK8hyperion13ReadWriteLock4readEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns a <code class="docutils literal notranslate"><span class="pre">ReadLockGuard&lt;T&gt;</span></code> providing read-only access to the protected <code class="docutils literal notranslate"><span class="pre">T</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a <code class="docutils literal notranslate"><span class="pre">ReadLockGuard&lt;T&gt;</span></code> to the data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK8hyperion13ReadWriteLock8try_readEv">
+<span id="_CPPv3NK8hyperion13ReadWriteLock8try_readEv"></span><span id="_CPPv2NK8hyperion13ReadWriteLock8try_readEv"></span><span id="hyperion::ReadWriteLock::try_readC"></span><span class="target" id="group__synchronization_1gad82021a51627ce8a3b34d99c76bd85a5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_read</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="../error_handling/Result.html#_CPPv4I00EN8hyperion6ResultE" title="hyperion::Result"><span class="n"><span class="pre">Result</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">ReadLockGuard</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4NK8hyperion13ReadWriteLock8try_readEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Attempts to gain shared read-only access to the protected <code class="docutils literal notranslate"><span class="pre">T</span></code> </p>
+<p>If access is gained successfully, returns a <code class="docutils literal notranslate"><span class="pre">ReadLockGuard&lt;T&gt;</span></code> to the data, otherwise returns an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><a class="reference internal" href="../error_handling/Result.html#structhyperion_1_1Ok"><span class="std std-ref"><span class="pre">Ok</span></span></a><span class="pre">(ReadLockGuard&lt;T&gt;)</span></code> on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock5writeEv">
+<span id="_CPPv3N8hyperion13ReadWriteLock5writeEv"></span><span id="_CPPv2N8hyperion13ReadWriteLock5writeEv"></span><span id="hyperion::ReadWriteLock::write"></span><span class="target" id="group__synchronization_1ga17bfc381c9dea1e4a086d6967fed6cce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><span class="n"><span class="pre">WriteLockGuard</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock5writeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns a <code class="docutils literal notranslate"><span class="pre">WriteLockGuard&lt;T&gt;</span></code> providing exclusive read/write access to the protected <code class="docutils literal notranslate"><span class="pre">T</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a <code class="docutils literal notranslate"><span class="pre">WriteLockGuard&lt;T&gt;</span></code> the the data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLock9try_writeEv">
+<span id="_CPPv3N8hyperion13ReadWriteLock9try_writeEv"></span><span id="_CPPv2N8hyperion13ReadWriteLock9try_writeEv"></span><span id="hyperion::ReadWriteLock::try_write"></span><span class="target" id="group__synchronization_1ga0e10297bf8525c51a797c21a4ec4c444"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_write</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="../error_handling/Result.html#_CPPv4I00EN8hyperion6ResultE" title="hyperion::Result"><span class="n"><span class="pre">Result</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">WriteLockGuard</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLock9try_writeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Attempts to gain exclusive read/write access to the protected <code class="docutils literal notranslate"><span class="pre">T</span></code> </p>
+<p>If access is gained successfully, returns a <code class="docutils literal notranslate"><span class="pre">WriteLockGuard&lt;T&gt;</span></code> to the data, otherwise returns an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><a class="reference internal" href="../error_handling/Result.html#structhyperion_1_1Ok"><span class="std std-ref"><span class="pre">Ok</span></span></a><span class="pre">(WriteLockGuard&lt;T&gt;)</span></code> on success, <code class="docutils literal notranslate"><span class="pre">Err(error::SystemError)</span></code> on failure </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLockaSERK13ReadWriteLock">
+<span id="_CPPv3N8hyperion13ReadWriteLockaSERK13ReadWriteLock"></span><span id="_CPPv2N8hyperion13ReadWriteLockaSERK13ReadWriteLock"></span><span id="hyperion::ReadWriteLock::assign-operator__ReadWriteLockCR"></span><span class="target" id="group__synchronization_1gaa349671c7a9b394702db4ca82520a6e3"></span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lock</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLockaSERK13ReadWriteLock" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> is not copyable </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8hyperion13ReadWriteLockaSERR13ReadWriteLock">
+<span id="_CPPv3N8hyperion13ReadWriteLockaSERR13ReadWriteLock"></span><span id="_CPPv2N8hyperion13ReadWriteLockaSERR13ReadWriteLock"></span><span id="hyperion::ReadWriteLock::assign-operator__ReadWriteLockRR"></span><span class="target" id="group__synchronization_1ga5c0a919fe29b73e5e34324585e4acbd3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lock</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">concepts</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NoexceptMoveAssignable</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">-&gt;</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N8concepts12NotReferenceEEN8hyperion13ReadWriteLockE" title="hyperion::ReadWriteLock"><span class="n"><span class="pre">ReadWriteLock</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N8hyperion13ReadWriteLockaSERR13ReadWriteLock" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move-assigns this <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> from the given one Acquires exclusive access to the data in the given <code class="docutils literal notranslate"><span class="pre">lock</span></code> and moves its data into this one. </p>
+<section id="group__synchronization_1autotoc_md160">
+<h2>Requirements<a class="headerlink" href="#group__synchronization_1autotoc_md160" title="Permalink to this heading">#</a></h2>
+<p id="group__synchronization_1autotoc_md160"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">concepts::MoveAssignable&lt;T&gt;</span></code>: The protected <code class="docutils literal notranslate"><span class="pre">T</span></code> must be move assignable in order to move construct a <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> </p></li>
+</ul>
+</p>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lock</strong> – - The <code class="docutils literal notranslate"><a class="reference internal" href="#classhyperion_1_1ReadWriteLock"><span class="std std-ref"><span class="pre">ReadWriteLock</span></span></a><span class="pre">&lt;T&gt;</span></code> to move</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Synchronization Utilities</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="ScopedLockGuard.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">ScopedLockGuard</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Braxton Salyer &lt;braxtonsalyer@gmail.com&gt;.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
