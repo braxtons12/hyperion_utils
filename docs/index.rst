@@ -38,14 +38,19 @@ For an overview of each module, see the links in the left sidebar or below.
     genindex
 
 .. toctree::
-    :caption: Error Handling
-
-    error_handling/index
+    :caption: Enum
+    
+    enum
 
 .. toctree::
     :caption: Filesystem Access
 
     filesystem/index
+
+.. toctree::
+    :caption: Error Handling
+
+    error_handling/index
 
 .. toctree::
     :caption: Memory Utilities and Smart Pointers
@@ -58,6 +63,7 @@ For an overview of each module, see the links in the left sidebar or below.
     synchronization/index
 
 .. toctree::
-    :caption: Enum
-    
-    enum
+    :caption: Metaprogramming Utilities
+
+    meta_programming/index
+

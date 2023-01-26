@@ -1,6 +1,8 @@
 TypeTraits
 **********
 
+Note: All meta-programming type traits are contained in the namespace :cpp:`hyperion::type_traits`
+
 .. doxygenstruct:: hyperion::type_traits::equality_comparable
     :members:
 
