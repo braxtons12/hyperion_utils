@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Aliases for and additions to the C++20 standard concepts library
 /// @version 0.1
-/// @date 2022-07-29
+/// @date 2023-01-26
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +89,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotPointer = !std::is_pointer_v<T>;
+	concept NotPointer = (!std::is_pointer_v<T>);
 
 	/// @brief Concept requiring `T` is a reference (lvalue or rvalue)
 	/// @ingroup concepts
@@ -101,7 +101,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotReference = !Reference<T>;
+	concept NotReference = (!Reference<T>);
 
 	/// @brief Concept requiring `T` is an rvalue reference
 	/// @ingroup concepts
@@ -113,7 +113,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotRValueReference = !RValueReference<T>;
+	concept NotRValueReference = (!RValueReference<T>);
 
 	/// @brief Concept requiring `T` is an lvalue reference
 	/// @ingroup concepts
@@ -125,7 +125,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotLValueReference = !LValueReference<T>;
+	concept NotLValueReference = (!LValueReference<T>);
 
 	/// @brief Concept requiring that `T` is a function
 	/// @ingroup concepts
@@ -137,7 +137,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotFunction = !Function<T>;
+	concept NotFunction = (!Function<T>);
 
 	/// @brief Concept requiring that `Der` is derived from `Base`
 	///
@@ -165,7 +165,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename From, typename To>
-	concept NotConvertible = !Convertible<From, To>;
+	concept NotConvertible = (!Convertible<From, To>);
 
 	/// @brief Concept that requires `T` to be constructible from the parameter pack `Args`
 	/// @ingroup concepts
@@ -189,7 +189,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U>
-	concept NotSame = !Same<T, U>;
+	concept NotSame = (!Same<T, U>);
 
 	/// @brief Concept requiring `T` to be inequality comparable to `U`
 	/// (`T` has `operator!=` for `U`)
@@ -249,7 +249,8 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
-	concept AllCopyAssignable = mpl::all_types_satisfy_v<std::is_copy_assignable, std::true_type, List>;
+	concept AllCopyAssignable
+		= mpl::all_types_satisfy_v<std::is_copy_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is copy
 	/// assignable
@@ -297,7 +298,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotMoveConstructible = !std::is_move_constructible_v<T>;
+	concept NotMoveConstructible = (!std::is_move_constructible_v<T>);
 
 	/// @brief Concept that requires that `T` is move constructible
 	/// @ingroup concepts
@@ -331,7 +332,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotMoveAssignable = !std::is_move_assignable_v<T>;
+	concept NotMoveAssignable = (!std::is_move_assignable_v<T>);
 
 	/// @brief Concept that requires that `T` is move assignable
 	/// @ingroup concepts
@@ -344,7 +345,8 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename List>
-	concept AllMoveAssignable = mpl::all_types_satisfy_v<std::is_move_assignable, std::true_type, List>;
+	concept AllMoveAssignable
+		= mpl::all_types_satisfy_v<std::is_move_assignable, std::true_type, List>;
 
 	/// @brief Concept that requires that every type in the `mpl::list`, `List`, is move
 	/// assignable
@@ -439,7 +441,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotMovable = !Movable<T>;
+	concept NotMovable = (!Movable<T>);
 
 	/// @brief Concept that requires that `T` is noexcept move constructible and noexcept move
 	/// assignable
@@ -453,7 +455,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NoexceptNotMovable = !NoexceptMovable<T>;
+	concept NoexceptNotMovable = (!NoexceptMovable<T>);
 
 	/// @brief Concept that requires that `T` is copy constructible and copy assignable
 	/// @ingroup concepts
@@ -466,7 +468,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotCopyable = !Copyable<T>;
+	concept NotCopyable = (!Copyable<T>);
 
 	/// @brief Concept that requires that `T` is noexcept copy constructible and noexcept copy
 	/// assignable
@@ -480,7 +482,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotNoexceptCopyable = !NoexceptCopyable<T>;
+	concept NotNoexceptCopyable = (!NoexceptCopyable<T>);
 
 	/// @brief Concept that requires that `T` is default constructible
 	/// @ingroup concepts
@@ -528,7 +530,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotDefaultConstructible = !DefaultConstructible<T>;
+	concept NotDefaultConstructible = (!DefaultConstructible<T>);
 
 	/// @brief Concept requiring `T` is copyable or movable
 	/// @ingroup concepts
@@ -540,7 +542,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotCopyOrMovable = !CopyOrMovable<T>;
+	concept NotCopyOrMovable = (!CopyOrMovable<T>);
 
 	/// @brief Concept that requires `T` is swappable with `U`
 	/// @ingroup concepts
@@ -552,7 +554,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = T>
-	concept NotSwappable = !Swappable<T, U>;
+	concept NotSwappable = (!Swappable<T, U>);
 
 	/// @brief Concept that requires `T` is noexcept swappable with `U`
 	/// @ingroup concepts
@@ -564,7 +566,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = T>
-	concept NotNoexceptSwappable = !NoexceptSwappable<T, U>;
+	concept NotNoexceptSwappable = (!NoexceptSwappable<T, U>);
 
 	/// @brief Concept that requires `T` is constructible from `Args` in a constexpr context
 	/// EG: requires that `constexpr T(Args... args);`
@@ -576,9 +578,9 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename... Args>
 	concept ConstexprConstructibleFrom
-		= concepts::ConstructibleFrom<T, Args...> && std::bool_constant
-		  < type_traits::is_constexpr_constructible<T, Args...>(type_traits::declval<Args>()...)
-	> ::value;
+		= concepts::ConstructibleFrom<T, Args...>
+		  && std::bool_constant<type_traits::is_constexpr_constructible<T, Args...>(
+			  type_traits::declval<Args>()...)>::value;
 
 	/// @brief Concept that requires `T` is default constructible in a constexpr context
 	/// EG: requires that `constexpr T();`
@@ -616,10 +618,9 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U>
-	concept ConstexprAssignable
-		= concepts::Assignable<T, U> && std::bool_constant
-		  < type_traits::is_constexpr_assignable<T>(type_traits::declval<U>())
-	> ::value;
+	concept ConstexprAssignable = concepts::Assignable<T, U>
+								  && std::bool_constant<type_traits::is_constexpr_assignable<T>(
+									  type_traits::declval<U>())>::value;
 
 	/// @brief Concept that requires `T` is copy assignable in a constexpr context
 	/// EG: requires that `constexpr auto operator=(const T&) -> T&;`
@@ -651,7 +652,7 @@ namespace hyperion::concepts {
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
-	concept NotSemiRegular = !SemiRegular<T>;
+	concept NotSemiRegular = (!SemiRegular<T>);
 
 	/// @brief Concept that requires `Func` is invocable with arguments of types `Args`
 	/// @ingroup concepts
@@ -672,45 +673,41 @@ namespace hyperion::concepts {
 	template<typename T,
 			 typename Allocator = std::allocator<T>,
 			 typename U = std::remove_cv_t<std::remove_all_extents_t<T>>>
-	concept Allocatable = requires(Allocator alloc) {
-		// clang-format off
+	concept Allocatable
+		= requires(Allocator alloc) {
+			  // clang-format off
 		requires concepts::Same<std::decay_t<U>,typename std::allocator_traits<Allocator>::value_type> ||
 			concepts::Derived<typename std::allocator_traits<Allocator>::value_type, U>;
-		// clang-format on
-		std::allocator_traits<Allocator>::allocate(alloc, 1_usize);
-	};
+			  // clang-format on
+			  std::allocator_traits<Allocator>::allocate(alloc, 1_usize);
+		  };
 
 	/// @brief Concept that requires `T` is deletable
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = std::remove_all_extents_t<T>>
-	concept Deletable = (std::is_array_v<T> ?
-								requires(U * arr) {
-									delete[] arr; // NOLINT
-								} :
-								requires(U * ptr) {
-									delete ptr; // NOLINT
-								});
+	concept Deletable = (std::is_array_v<T> ? requires(U * arr) {
+												  delete[] arr; // NOLINT
+											  } : requires(U * ptr) {
+													  delete ptr; // NOLINT
+												  });
 
 	/// @brief Concept that requires `T` is noexcept deletable
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = std::remove_all_extents_t<T>>
-	concept NoexceptDeletable = Deletable<T> && (std::is_array_v<T> ?
-										requires(U * arr) {
-											noexcept(delete[] arr); // NOLINT
-										} :
-										requires(U * ptr) {
-											noexcept(delete ptr); // NOLINT
-										});
+	concept NoexceptDeletable
+		= Deletable<T> && (std::is_array_v<T> ? requires(U * arr) {
+													noexcept(delete[] arr); // NOLINT
+												} : requires(U * ptr) {
+														noexcept(delete ptr); // NOLINT
+													});
 
 	/// @brief Concept that requires `T` is equality comparable with `U`
 	/// @ingroup concepts
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T, typename U = T>
-	concept EqualityComparable = requires(T lhs, U rhs) {
-		lhs == rhs;
-	};
+	concept EqualityComparable = requires(T lhs, U rhs) { lhs == rhs; };
 
 	/// @brief Concept that requires that the single-extent removed `T` is equality comparable
 	///
@@ -720,7 +717,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
 	concept DerefEqualityComparable
-		= (Pointer<T> ? EqualityComparable<T> : EqualityComparable<std::remove_pointer_t<T>>);
+		= (Pointer<T> ? EqualityComparable<std::remove_pointer_t<T>> : EqualityComparable<T>);
 
 	/// @brief Concept that requires that the single-extent removed `T` is inequality comparable
 	///
@@ -730,7 +727,7 @@ namespace hyperion::concepts {
 	/// @headerfile "Hyperion/Concepts.h"
 	template<typename T>
 	concept DerefInequalityComparable
-		= (Pointer<T> ? InequalityComparable<T> : InequalityComparable<std::remove_pointer_t<T>>);
+		= (Pointer<T> ? InequalityComparable<std::remove_pointer_t<T>> : InequalityComparable<T>);
 
 	/// @brief Concept that requires `T` is implicitly convertible to `std::string` or
 	/// `std::string_view`
