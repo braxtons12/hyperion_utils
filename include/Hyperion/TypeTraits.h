@@ -2,7 +2,7 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file provides a small collection of type traits useful for meta-programming
 /// @version 0.1
-/// @date 2023-01-25
+/// @date 2023-01-26
 ///
 /// MIT License
 /// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -182,6 +182,14 @@ namespace hyperion::type_traits {
 
 	IGNORE_UNUSED_TEMPLATES_START
 
+    /// @ingroup type_traits
+    /// @{
+    ///	@defgroup constexpr_capable Constexpr Capable
+    /// Metaprogramming functions for checking whether certain (special) member functions are
+    /// available in a `constexpr` context
+    /// @headerfile "Hyperion/TypeTraits.h"
+    /// @}
+
 	/// @brief Test function to determine if `T` is constructible from `Args...`
 	/// in a constexpr context
 	///
@@ -193,7 +201,7 @@ namespace hyperion::type_traits {
 	///
 	/// @param args - The arguments to pass to `T`'s constructor
 	/// @return `true` if `T` is constexpr constructible from `Args`, false otherwise
-	/// @ingroup type_traits
+	/// @ingroup constexpr_capable
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename... Args>
 	static inline constexpr auto is_constexpr_constructible(Args&&... args) noexcept -> bool {
@@ -217,7 +225,7 @@ namespace hyperion::type_traits {
 	///
 	/// @param u - The argument to pass to `T`'s assignment operator
 	/// @return `true` if `T` is constexpr assignable from `U`, false otherwise
-	/// @ingroup type_traits
+	/// @ingroup constexpr_capable
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U>
 	// NOLINTNEXTLINE(readability-identifier-length)
