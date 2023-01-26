@@ -3,7 +3,7 @@
 /// @brief This file includes a reader/writer lock type that manages access to a single instance of
 /// a type
 /// @version 0.1
-/// @date 2023-01-25
+/// @date 2023-01-26
 ///
 /// MIT License
 /// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
@@ -49,7 +49,7 @@ namespace hyperion {
 	/// with `ScopedLockGuard<T, LockType>`s. `write()` and `try_write()` provide exclusive
 	/// read/write access via `ScopedLockGuard<T, std::unique_lock>`,
 	/// while `read()` and `try_read()` provide shared read-only access via
-	/// `ScopedLockGuard`<T, std::shared_lock>`
+	/// `ScopedLockGuard<T, std::shared_lock>`
 	///
 	/// Example:
 	/// @code {.cpp}
