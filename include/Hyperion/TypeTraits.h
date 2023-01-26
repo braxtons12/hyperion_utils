@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief This file provides a small collection of type traits useful for meta-programming
 /// @version 0.1
-/// @date 2021-10-15
+/// @date 2023-01-25
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -131,19 +131,35 @@ namespace hyperion::type_traits {
 		/// @tparam T - The type to decl
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
-		requires std::is_default_constructible_v<U>
 		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto declval([[maybe_unused]] int i) noexcept -> U {
-			return U();
+		constexpr auto declval([[maybe_unused]] i32 i) noexcept -> U {
+            if constexpr(std::is_default_constructible_v<U>) {
+                return U();
+            }
+
+            union {
+                i32 dummy;
+                U u; // NOLINT(readability-identifier-length)
+            } val;
+            val.dummy = 0_i32;
+            return val.dummy;
 		}
 		/// @brief Alternative declval implementation
 		/// @tparam T - The type to decl
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
-		requires std::is_default_constructible_v<U>
 		// NOLINTNEXTLINE(readability-identifier-length)
-		constexpr auto declval([[maybe_unused]] long i) noexcept -> U { // NOLINT
-			return U();
+		constexpr auto declval([[maybe_unused]] i64 i) noexcept -> U {
+            if constexpr(std::is_default_constructible_v<U>) {
+                return U();
+            }
+
+            union {
+                i32 dummy;
+                U u; // NOLINT(readability-identifier-length)
+            } val;
+            val.dummy = 0_i32;
+            return val.dummy;
 		}
 	} // namespace detail
 
@@ -151,12 +167,9 @@ namespace hyperion::type_traits {
 	///
 	/// An alternative to `std::declval<T>()` that can be used in evaluated contexts,
 	/// enabling further possibilities in meta-programming situations.
-	/// Its use comes with some caveats, mainly that `T` must be default constructible
-	/// for this to work. This is enforced with a concept requirement on the internal
-	/// implementation. This means that attempting to `declval` a non-default-constructible
-	/// `T` in a non-evaluated context will compile (but whatever is relying on it will always
-	/// fail), but attempting to do so __anywhere__ else will result in a compiler error because of
-	/// failed overload resolution
+	/// Its use comes with some caveats. Specifically, if `T` is not default constructible, it will
+    /// be returned uninitialized, so using and relying on the returned value being well-formed in
+    /// an evaulated context requires `T` to be default constructible.
 	///
 	/// @tparam T - The type to decl
 	/// @return a `T`
