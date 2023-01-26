@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Metaprogramming Utilities &#8212; hyperion-utils  documentation</title>
+    <title>Identity &#8212; hyperion-utils  documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,12 +38,11 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'meta_programming/index';</script>
-    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/meta_programming/index.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'meta_programming/Identity';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/meta_programming/Identity.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TypeTraits" href="TypeTraits.html" />
-    <link rel="prev" title="ScopedLockGuard" href="../synchronization/ScopedLockGuard.html" />
+    <link rel="prev" title="Concepts" href="Concepts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -168,7 +167,7 @@
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="index.html">
                         Metaprogramming Utilities
                     </a>
                 </li>
@@ -288,7 +287,7 @@
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="index.html">
                         Metaprogramming Utilities
                     </a>
                 </li>
@@ -389,7 +388,7 @@
                 
 
                 <li class="nav-item current active">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="index.html">
                         Metaprogramming Utilities
                     </a>
                 </li>
@@ -402,10 +401,10 @@
     Section Navigation
   </p>
   <div class="bd-toc-item navbar-nav">
-    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="nav bd-sidenav">
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="TypeTraits.html">TypeTraits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Identity.html">Identity</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Identity</a></li>
 </ul></li></ul>
   </div>
 </nav>
@@ -435,16 +434,30 @@
             
             <article class="bd-article" role="main">
               
-  <section id="metaprogramming-utilities">
-<h1>Metaprogramming Utilities<a class="headerlink" href="#metaprogramming-utilities" title="Permalink to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="TypeTraits.html">TypeTraits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Identity.html">Identity</a></li>
-</ul>
-</div>
+  <section id="identity">
+<h1>Identity<a class="headerlink" href="#identity" title="Permalink to this heading">#</a></h1>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion3mpl8identityE">
+<span id="_CPPv3I0EN8hyperion3mpl8identityE"></span><span id="_CPPv2I0EN8hyperion3mpl8identityE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structhyperion_1_1mpl_1_1identity"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">identity</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion3mpl8identityE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">identity</span></code> is basic metaprogramming type for performing the identity function. Useful for situations such as peforming a branching/conditional meta-function and the original type needs to be preserved in one (or more) branch(es). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – - The type to perform the identity function on </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion3mpl10identity_tE">
+<span id="_CPPv3I0EN8hyperion3mpl10identity_tE"></span><span id="_CPPv2I0EN8hyperion3mpl10identity_tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl_1ga4030549bc69cc8e90326cc4c2bb79125"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">hyperion</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mpl</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">identity_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN8hyperion3mpl8identityE" title="hyperion::mpl::identity"><span class="n"><span class="pre">identity</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN8hyperion3mpl10identity_tE" title="hyperion::mpl::identity_t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion3mpl10identity_tE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Convienence alias for <code class="docutils literal notranslate"><span class="pre">typename</span> <a class="reference internal" href="#structhyperion_1_1mpl_1_1identity"><span class="std std-ref"><span class="pre">hyperion::mpl::identity</span></span></a><span class="pre">&lt;T&gt;::type</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – - The type to perform the identity function on </p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -455,19 +468,12 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../synchronization/ScopedLockGuard.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="Concepts.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">ScopedLockGuard</p>
+          <p class="prev-next-title">Concepts</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="TypeTraits.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">TypeTraits</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
