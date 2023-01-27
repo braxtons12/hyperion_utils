@@ -81,25 +81,6 @@ namespace hyperion::mpl {
 		!any_type_satisfies_v<std::is_floating_point, std::true_type, mpl::list<u8, i32, usize>>,
 		"mpl::any_type_satisfies implementation failing");
 
-	namespace detail {
-		template<template<typename, typename...> typename ConditionType,
-				 typename RequirementType,
-				 typename CheckList,
-				 template<typename...>
-				 typename ArgList,
-				 typename... Args>
-		static inline constexpr auto
-		any_type_satisfies_with_arg_list(CheckList list,
-										 [[maybe_unused]] ArgList<Args...> arglist) noexcept {
-			constexpr auto satisfies = [](auto val) noexcept {
-				return RequirementType::value
-					   == ConditionType<typename decltype(val)::type, Args...>::value;
-			};
-
-			return hana::bool_c<hana::any_of(list, satisfies)>;
-		}
-	} // namespace detail
-
 	/// @brief Meta-programming function to determine that, given the `mpl::list` `CheckList`,
 	/// containing types `CheckTypes...`, and the `mpl::list` `ArgumentList`, containing types
 	/// `ArgumentTypes...`, at least one type, `Type`, in the `CheckList` satisfies that the
