@@ -3,10 +3,10 @@
 /// @brief Metaprogramming functions to call a single meta-function invocable with a
 /// runtime-provided index
 /// @version 0.1
-/// @date 2022-07-29
+/// @date 2023-01-26
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -29,22 +29,30 @@
 
 #include <Hyperion/HyperionDef.h>
 #include <Hyperion/error/Assert.h>
-#include <Hyperion/mpl/Index.h>
 #include <Hyperion/mpl/HasValue.h>
+#include <Hyperion/mpl/Index.h>
 #include <cassert>
 #include <type_traits>
 #include <utility>
 
 namespace hyperion::mpl {
 
+	/// @ingroup mpl
+	/// @{
+	///	@defgroup call_with_index Call With Index
+	/// Metaprogramming functions for calling a function that requires a compile-time index with a
+	/// runtime index value
+	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
+	/// @}
+
 	namespace detail {
 		template<usize Size>
 		struct call_with_index_impl {
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 				if(index < Size / 2) {
-					return call_with_index_impl<Size / 2>::template call<K>(index, std::forward<F>(func));
+					return call_with_index_impl<Size / 2>::template call<K>(index,
+																			std::forward<F>(func));
 				}
 
 				return call_with_index_impl<Size - Size / 2>::template call<K + Size / 2>(
@@ -59,8 +67,8 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<1> {
 			template<usize K, typename F>
-			inline static constexpr auto call(usize /** i **/, F&& func) noexcept
-				-> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto
+			call(usize /** i **/, F&& func) noexcept -> decltype(auto) {
 				return std::forward<F>(func)(mpl::index<K>());
 			}
 		};
@@ -68,8 +76,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<2> {
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -82,8 +89,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<3> {
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -97,8 +103,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<4> {
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -113,8 +118,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<5> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -130,8 +134,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<6> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -148,8 +151,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<7> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -167,8 +169,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<8> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -187,8 +188,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<9> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -208,8 +208,7 @@ namespace hyperion::mpl {
 		template<>
 		struct call_with_index_impl<10> { // NOLINT
 			template<usize K, typename F>
-			inline static constexpr auto
-			call(usize index, F&& func) noexcept -> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
+			static inline constexpr auto call(usize index, F&& func) noexcept -> decltype(auto) {
 
 				switch(index) {
 					case 0: return std::forward<F>(func)(mpl::index<K + 0>());
@@ -232,46 +231,50 @@ namespace hyperion::mpl {
 	IGNORE_UNUSED_TEMPLATES_START
 	/// @brief Invokes the function template `f` with an `mpl::index` with the value of `i`
 	///
-	/// `i` must be strictly less than `Size`
-	///
-	/// @tparam Size - The number of indices
-	/// @tparam F - The type of the function/function object to call
-	/// @param index - The index to use as the call parameter
-	/// @param func - The function/function object to call
+	/// `i` must be strictly less than `Bound`
+    ///
+    /// This has one alternative implementation that takes an `mpl::HasValue` type, `BoundType`
+    /// to specify the upper bound, as opposed to this implementation taking the `usize Bound`
+    ///
+	/// @tparam Bound  the uppder bound (non-inclusive) on `index`
+	/// @tparam F  The type of the function/function object to call
+	/// @param index  The index to use as the call parameter
+	/// @param func  The function/function object to call
 	///
 	/// @return The result of invoking `f` with the `mpl::index` of value `i`
-	/// @ingroup mpl
+	/// @ingroup call_with_index
 	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
-	template<usize Size, typename F>
+	template<usize Bound, typename F>
 	requires std::is_invocable_v<F, index<0>>
-	inline static constexpr auto call_with_index(usize index, F&& func) noexcept
-		-> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
-		HYPERION_ASSERT(index < Size, "index must be strictly less than size (index: {}, Size: {})", index, Size);
-		return detail::call_with_index_impl<Size>::template call<0>(index, std::forward<F>(func));
+	static inline constexpr auto call_with_index(usize index, F&& func) noexcept -> decltype(auto) {
+		HYPERION_ASSERT(index < Bound,
+						"index must be strictly less than Bound (index: {}, Bound: {})",
+						index,
+						Bound);
+		return detail::call_with_index_impl<Bound>::template call<0>(index, std::forward<F>(func));
 	}
 
 	/// @brief Invokes the function template `f` with an `mpl::index` with the value of `i`
 	///
-	/// `i` must be strictly less than `Size`
+	/// `i` must be strictly less than `BoundType::value`
 	///
-	/// @tparam SizeType - The type containing the `static constexpr usize value` representing the
-	/// number of indices
-	/// @tparam F - The type of the function/function object to call
-	/// @param index - The index to use as the call parameter
-	/// @param func - The function/function object to call
+	/// @tparam BoundType  The type containing the unsigned integral (preferably `usize`)
+	/// `static constexpr value` representing the upper bound (non-inclusive) on `index`
+	/// @tparam F  The type of the function/function object to call
+	/// @param index  The index to use as the call parameter
+	/// @param func  The function/function object to call
 	///
 	/// @return The result of invoking `f` with the `mpl::index` of value `i`
-	/// @ingroup mpl
+	/// @ingroup call_with_index
 	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
-	template<HasValue SizeType, typename F>
+	template<HasValue BoundType, typename F>
 	requires std::is_invocable_v<F, index<0>>
-	inline static constexpr auto call_with_index(usize index, F&& func) noexcept
-		-> decltype(std::declval<F>()(std::declval<mpl::index<0>>())) {
-		HYPERION_ASSERT(index < SizeType::Value,
-						"index must be strictly less than size (index: {}, Size: {})",
+	static inline constexpr auto call_with_index(usize index, F&& func) noexcept -> decltype(auto) {
+		HYPERION_ASSERT(index < BoundType::value,
+						"index must be strictly less than Bound (index: {}, Bound: {})",
 						index,
-						SizeType::value);
-		return call_with_index<SizeType::value, F>(index, std::forward<F>(func));
+						BoundType::value);
+		return call_with_index<BoundType::value, F>(index, std::forward<F>(func));
 	}
 	IGNORE_UNUSED_TEMPLATES_STOP
 
