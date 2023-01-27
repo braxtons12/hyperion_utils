@@ -1,0 +1,662 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Functions &#8212; hyperion-utils  documentation</title>
+  <script>
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1e1de1a1873e13ef5536" rel="stylesheet">
+
+  
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/6.1.2/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'meta_programming/Functions';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/meta_programming/Functions.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="HasValue" href="HasValue.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="dark">
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">hyperion-utils  documentation</p>
+  
+</a>
+    
+    <span class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" data-toggle="tooltip">
+    <a class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="fa-regular fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></a>
+</span>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../synchronization/index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Metaprogramming Utilities
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      <div class="navbar-end-item navbar-end__search-button-container">
+        
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  <div class="search-button-container--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+  </div>
+
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../synchronization/index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Metaprogramming Utilities
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/braxtons12/Hyperion-Utils" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-toggle="tooltip"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item">
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                <li class="nav-item">
+                    <a class="nav-link" href="../quick_start.html">
+                        Quick Start Guide
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../genindex.html">
+                        Index
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../enum.html">
+                        Enum
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../filesystem/index.html">
+                        Filesystem
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../error_handling/index.html">
+                        Error Handling
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../memory/index.html">
+                        Memory Utilities and Smart Pointers
+                    </a>
+                </li>
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../synchronization/index.html">
+                        Synchronization Utilities
+                    </a>
+                </li>
+                
+
+                <li class="nav-item current active">
+                    <a class="nav-link" href="index.html">
+                        Metaprogramming Utilities
+                    </a>
+                </li>
+                
+    </ul>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="list-caption"><li class="toctree-l0 has-children"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="label-parts" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="TypeTraits.html">TypeTraits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity.html">Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_Index.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CallWithIndex.html">CallWithIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HasValue.html">HasValue</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Functions</a></li>
+</ul></li></ul>
+  </div>
+</nav>
+    </div>
+    <div class="sidebar-start-items__item">
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+      </div>
+      <main class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h1>
+<p>Note: all hyperion meta-functions are contained in <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="o">::</span><span class="nn">mpl</span></code></p>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__mpl__functions"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">mpl_functions</span></span></dt>
+<dd><p>Various meta-functions for determining the validity of type traits and meta-functions on all/any of the elements in an <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4II0E000E18any_type_satisfiesDa4List">
+<span id="_CPPv3II0E000E18any_type_satisfies4List"></span><span id="_CPPv2II0E000E18any_type_satisfies4List"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">List</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1ga588bdd8b0988f42f4129552f2f773282"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">any_type_satisfies</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4II0E000E18any_type_satisfiesDa4List" title="any_type_satisfies::List"><span class="n"><span class="pre">List</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">list</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4II0E000E18any_type_satisfiesDa4List" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Meta-programming function to determine that at least one <code class="docutils literal notranslate"><span class="pre">Type</span></code> in the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code>, <code class="docutils literal notranslate"><span class="pre">List</span></code>, satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code>. For example: </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static_assert</span><span class="p">(</span>
+<span class="w">    </span><span class="n">any_type_satisfies</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_trivially_destructible</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">u8</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="o">&gt;&gt;</span>
+<span class="w">    </span><span class="o">::</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>Checks that <code class="docutils literal notranslate"><span class="pre">std::is_trivially_destructible&lt;T&gt;</span></code> is true for at least one of <code class="docutils literal notranslate"><span class="pre">u8</span></code>, <code class="docutils literal notranslate"><span class="pre">u16</span></code>, or <code class="docutils literal notranslate"><span class="pre">u32</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check </p></li>
+<li><p><strong>RequirementType</strong> – The required value of the condition </p></li>
+<li><p><strong>List</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of types to check the condition for </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4II0DpE0000E32any_type_satisfies_with_arg_listDa9CheckList7ArgList">
+<span id="_CPPv3II0DpE0000E32any_type_satisfies_with_arg_list9CheckList7ArgList"></span><span id="_CPPv2II0DpE0000E32any_type_satisfies_with_arg_list9CheckList7ArgList"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CheckList</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ArgList</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1ga0dd83bc7a01c40b2d1df461cc6fd2627"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">any_type_satisfies_with_arg_list</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4II0DpE0000E32any_type_satisfies_with_arg_listDa9CheckList7ArgList" title="any_type_satisfies_with_arg_list::CheckList"><span class="n"><span class="pre">CheckList</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">_list</span></span>, <a class="reference internal" href="#_CPPv4II0DpE0000E32any_type_satisfies_with_arg_listDa9CheckList7ArgList" title="any_type_satisfies_with_arg_list::ArgList"><span class="n"><span class="pre">ArgList</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">arglist</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4II0DpE0000E32any_type_satisfies_with_arg_listDa9CheckList7ArgList" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Meta-programming function to determine that, given the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> <code class="docutils literal notranslate"><span class="pre">CheckList</span></code>, containing types <code class="docutils literal notranslate"><span class="pre">CheckTypes...</span></code>, and the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> <code class="docutils literal notranslate"><span class="pre">ArgumentList</span></code>, containing types <code class="docutils literal notranslate"><span class="pre">ArgumentTypes...</span></code>, at least one type, <code class="docutils literal notranslate"><span class="pre">Type</span></code>, in the <code class="docutils literal notranslate"><span class="pre">CheckList</span></code> satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type,</span> <span class="pre">ArgumentTypes...&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code>, where <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code> is a type that <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> will compared against. For example: </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static_assert</span><span class="p">(</span>
+<span class="w">    </span><span class="n">any_type_satisfies_with_arg_list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_constructible</span><span class="p">,</span>
+<span class="w">                                     </span><span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">,</span>
+<span class="w">                                     </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">u64</span><span class="p">,</span><span class="w"> </span><span class="n">umax</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">                                     </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">u8</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&gt;::</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<p>will check that <code class="docutils literal notranslate"><span class="pre">std::is_constructible&lt;T,</span> <span class="pre">u8&gt;::value</span></code> is true for at least one of <code class="docutils literal notranslate"><span class="pre">T</span></code> equal <code class="docutils literal notranslate"><span class="pre">u64</span></code> and/or <code class="docutils literal notranslate"><span class="pre">umax</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check for each combination of <code class="docutils literal notranslate"><span class="pre">&lt;Evaluatee,</span> <span class="pre">Type&gt;</span></code> </p></li>
+<li><p><strong>RequirementType</strong> – The required value of <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+<li><p><strong>CheckList</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of each type to check <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> for </p></li>
+<li><p><strong>ArgList</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of argument types to use as the additional arguments for <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4II0E0_8HasValue0E17all_types_satisfyDa4List">
+<span id="_CPPv3II0E0_8HasValue0E17all_types_satisfy4List"></span><span id="_CPPv2II0E0_8HasValue0E17all_types_satisfy4List"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">HasValue</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">List</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1gac74f0f385537fcda434fd07ec9ed0eae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all_types_satisfy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4II0E0_8HasValue0E17all_types_satisfyDa4List" title="all_types_satisfy::List"><span class="n"><span class="pre">List</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">list</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4II0E0_8HasValue0E17all_types_satisfyDa4List" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Meta-programming function to determine that every type <code class="docutils literal notranslate"><span class="pre">Type</span></code> in the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code>, <code class="docutils literal notranslate"><span class="pre">List</span></code>, satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code>. For example: </p>
+<p><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">all_types_satisfy</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_trivially_destructible</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">,</span><span class="w"> </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">u8</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="p">,</span>
+<span class="n">u32</span><span class="o">&gt;&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+</p>
+<p>Checks that <code class="docutils literal notranslate"><span class="pre">std::is_trivially_destructible&lt;T&gt;</span></code> is true for each of <code class="docutils literal notranslate"><span class="pre">T</span></code> equal to <code class="docutils literal notranslate"><span class="pre">u8</span></code>, <code class="docutils literal notranslate"><span class="pre">u16</span></code>, and <code class="docutils literal notranslate"><span class="pre">u32</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check </p></li>
+<li><p><strong>RequirementType</strong> – The required value of the condition </p></li>
+<li><p><strong>List</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of types to check the condition for </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4II0DpE0_8HasValue00E26all_lists_satisfy_for_typeDa5Lists">
+<span id="_CPPv3II0DpE0_8HasValue00E26all_lists_satisfy_for_type5Lists"></span><span id="_CPPv2II0DpE0_8HasValue00E26all_lists_satisfy_for_type5Lists"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">HasValue</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Evaluatee</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lists</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1gaf250adec6025d0f84e7e27dc5c1547cc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all_lists_satisfy_for_type</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E26all_lists_satisfy_for_typeDa5Lists" title="all_lists_satisfy_for_type::Lists"><span class="n"><span class="pre">Lists</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">lists</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4II0DpE0_8HasValue00E26all_lists_satisfy_for_typeDa5Lists" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Meta-programming function to determine that for every list of types, <code class="docutils literal notranslate"><span class="pre">Types...</span></code> in <code class="docutils literal notranslate"><span class="pre">Lists</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Evaluatee,</span> <span class="pre">Types...&gt;</span></code> is equal to the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code> </p>
+<p>For example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">all_lists_satisfy_for_type</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">is_constructible</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">true_type</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span>
+<span class="w">    </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">usize</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">mpl</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">usize</span><span class="o">&gt;&gt;&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+</p>
+<p>will check that <code class="docutils literal notranslate"><span class="pre">std::is_constructible&lt;std::string,</span> <span class="pre">Types...&gt;::value</span></code> is true for <code class="docutils literal notranslate"><span class="pre">Types...</span></code> equal to the list <code class="docutils literal notranslate"><span class="pre">usize,</span> <span class="pre">char</span></code> and equal to the list <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char*,</span> <span class="pre">usize</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check for each combination of <code class="docutils literal notranslate"><span class="pre">&lt;Evaluatee,</span> <span class="pre">Types...&gt;</span></code> </p></li>
+<li><p><strong>RequirementType</strong> – The required value of <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+<li><p><strong>Evaluatee</strong> – The type that <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> should compare or evaluate each type, <code class="docutils literal notranslate"><span class="pre">Type</span></code>, in <code class="docutils literal notranslate"><span class="pre">List</span></code> against </p></li>
+<li><p><strong>Lists</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of each <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of types to pass to <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4II0E000E20any_type_satisfies_v">
+<span id="_CPPv3II0E000E20any_type_satisfies_v"></span><span id="_CPPv2II0E000E20any_type_satisfies_v"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">List</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1ga624133d8973c50a907f64130f39a5774"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">any_type_satisfies_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">hana</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_of</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0E000E18any_type_satisfiesDa4List" title="any_type_satisfies"><span class="n"><span class="pre">any_type_satisfies</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4II0E000E20any_type_satisfies_v" title="any_type_satisfies_v::ConditionType"><span class="n"><span class="pre">ConditionType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0E000E20any_type_satisfies_v" title="any_type_satisfies_v::RequirementType"><span class="n"><span class="pre">RequirementType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0E000E20any_type_satisfies_v" title="any_type_satisfies_v::List"><span class="n"><span class="pre">List</span></span></a><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4II0E000E20any_type_satisfies_v" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Value of Meta-programming function <code class="docutils literal notranslate"><span class="pre">any_type_satisfies</span></code>. Used to determine that at least one type “Type” in the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code>, <code class="docutils literal notranslate"><span class="pre">List</span></code>, satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check </p></li>
+<li><p><strong>RequirementType</strong> – The required value of the condition </p></li>
+<li><p><strong>List</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of types to check the condition for </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v">
+<span id="_CPPv3II0DpE0000E34any_type_satisfies_with_arg_list_v"></span><span id="_CPPv2II0DpE0000E34any_type_satisfies_with_arg_list_v"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CheckList</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ArgList</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1ga97c5fb15ed6966f4900447d71baadd7e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">any_type_satisfies_with_arg_list_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">hana</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_of</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0DpE0000E32any_type_satisfies_with_arg_listDa9CheckList7ArgList" title="any_type_satisfies_with_arg_list"><span class="n"><span class="pre">any_type_satisfies_with_arg_list</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v" title="any_type_satisfies_with_arg_list_v::ConditionType"><span class="n"><span class="pre">ConditionType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v" title="any_type_satisfies_with_arg_list_v::RequirementType"><span class="n"><span class="pre">RequirementType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v" title="any_type_satisfies_with_arg_list_v::CheckList"><span class="n"><span class="pre">CheckList</span></span></a><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v" title="any_type_satisfies_with_arg_list_v::ArgList"><span class="n"><span class="pre">ArgList</span></span></a><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4II0DpE0000E34any_type_satisfies_with_arg_list_v" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Value of Meta-programming function <code class="docutils literal notranslate"><span class="pre">any_type_satisfies_with_arg_list</span></code>. Used to check that, given the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> <code class="docutils literal notranslate"><span class="pre">CheckList</span></code>, containing types <code class="docutils literal notranslate"><span class="pre">CheckTypes...</span></code>, and the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> <code class="docutils literal notranslate"><span class="pre">ArgumentList</span></code>, containing types <code class="docutils literal notranslate"><span class="pre">ArgumentTypes...</span></code>, at least one type, <code class="docutils literal notranslate"><span class="pre">Type</span></code>, in the <code class="docutils literal notranslate"><span class="pre">CheckList</span></code> satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type,</span> <span class="pre">ArgumentTypes...&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ConditionType</strong> – The condition to check for each combination of <code class="docutils literal notranslate"><span class="pre">&lt;Evaluatee,</span> <span class="pre">Type&gt;</span></code> </p></li>
+<li><p><strong>RequirementType</strong> – The required value of <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+<li><p><strong>CheckList</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of each type to check <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> for </p></li>
+<li><p><strong>ArgList</strong> – The <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code> of argument types to use as the additional arguments for <code class="docutils literal notranslate"><span class="pre">ConditionType</span></code> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4II0E0_8HasValue0E19all_types_satisfy_v">
+<span id="_CPPv3II0E0_8HasValue0E19all_types_satisfy_v"></span><span id="_CPPv2II0E0_8HasValue0E19all_types_satisfy_v"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">HasValue</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">List</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1gad1242e8e646f4a9ccbca8bdf44013bc3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all_types_satisfy_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">hana</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_of</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0E0_8HasValue0E17all_types_satisfyDa4List" title="all_types_satisfy"><span class="n"><span class="pre">all_types_satisfy</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4II0E0_8HasValue0E19all_types_satisfy_v" title="all_types_satisfy_v::ConditionType"><span class="n"><span class="pre">ConditionType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0E0_8HasValue0E19all_types_satisfy_v" title="all_types_satisfy_v::RequirementType"><span class="n"><span class="pre">RequirementType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0E0_8HasValue0E19all_types_satisfy_v" title="all_types_satisfy_v::List"><span class="n"><span class="pre">List</span></span></a><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4II0E0_8HasValue0E19all_types_satisfy_v" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Value of Meta-programming function <code class="docutils literal notranslate"><span class="pre">all_types_satisfy</span></code>. Used to determine that every type “Type” in the <code class="docutils literal notranslate"><span class="pre">mpl::list</span></code>, <code class="docutils literal notranslate"><span class="pre">List</span></code>, satisfies that the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Type&gt;</span></code> equals the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code> </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v">
+<span id="_CPPv3II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v"></span><span id="_CPPv2II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">HasValue</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RequirementType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Evaluatee</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lists</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="group__mpl__functions_1ga473a532c60ca02eaba26b656fc9e99f6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all_lists_satisfy_for_type_v</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">hana</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value_of</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E26all_lists_satisfy_for_typeDa5Lists" title="all_lists_satisfy_for_type"><span class="n"><span class="pre">all_lists_satisfy_for_type</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v" title="all_lists_satisfy_for_type_v::ConditionType"><span class="n"><span class="pre">ConditionType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v" title="all_lists_satisfy_for_type_v::RequirementType"><span class="n"><span class="pre">RequirementType</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v" title="all_lists_satisfy_for_type_v::Evaluatee"><span class="n"><span class="pre">Evaluatee</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v" title="all_lists_satisfy_for_type_v::Lists"><span class="n"><span class="pre">Lists</span></span></a><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4II0DpE0_8HasValue00E28all_lists_satisfy_for_type_v" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Value of Meta-programming function <code class="docutils literal notranslate"><span class="pre">all_lists_satisfy_for_type</span></code>. Used to determine that for every list of types, <code class="docutils literal notranslate"><span class="pre">Types...</span></code> in <code class="docutils literal notranslate"><span class="pre">Lists</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">ConditionType&lt;Evaluatee,</span> <span class="pre">Types...&gt;</span></code> is equal to the value of <code class="docutils literal notranslate"><span class="pre">RequirementType</span></code> </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="HasValue.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">HasValue</p>
+      </div>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1e1de1a1873e13ef5536"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2022, Braxton Salyer &lt;braxtonsalyer@gmail.com&gt;.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+Last updated on None.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
