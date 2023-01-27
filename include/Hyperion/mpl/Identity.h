@@ -30,7 +30,7 @@ namespace hyperion::mpl {
     /// @brief `identity` is basic metaprogramming type for performing the identity function.
     /// Useful for situations such as peforming a branching/conditional meta-function and the
     /// original type needs to be preserved in one (or more) branch(es).
-    /// @tparam T - The type to perform the identity function on
+    /// @tparam T  The type to perform the identity function on
     /// @ingroup mpl
     /// @headerfile "Hyperion/Identity.h"
 	template<typename T>
@@ -39,7 +39,7 @@ namespace hyperion::mpl {
 	};
 
     /// @brief Convienence alias for `typename hyperion::mpl::identity<T>::type`
-    /// @tparam T - The type to perform the identity function on
+    /// @tparam T  The type to perform the identity function on
     /// @ingroup mpl
     /// @headerfile "Hyperion/Identity.h"
 	template<typename T>
