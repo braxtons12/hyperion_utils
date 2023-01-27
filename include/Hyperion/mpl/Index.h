@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief basic meta-programming index type
 /// @version 0.1
-/// @date 2022-12-02
+/// @date 2023-01-26
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -56,7 +56,7 @@ namespace hyperion::mpl {
 
 	/// @brief Basic meta-programming index type
 	///
-	/// @tparam N - The index
+	/// @tparam N  The index
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/Index.h"
 	template<usize N>
@@ -65,33 +65,15 @@ namespace hyperion::mpl {
 
 	/// @brief Instance of the Hyperion basic meta-programming index type
 	///
-	/// @tparam N - The index
+	/// @tparam N  The index
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/Index.h"
     template<usize N>
     static inline constexpr auto index_c = index<N>{};
-
-///// @brief An instance of `mpl::index_t<N>`
-///// @ingroup mpl
-///// @headerfile "Hyperion/mpl/Index.h"
-//template<usize N>
-//static inline constexpr index = index_t<N>{};
 
 	/// @brief Value of `mpl::index`
 	/// @ingroup mpl
 	/// @headerfile "Hyperion/mpl/Index.h"
 	template<usize N>
 	static inline constexpr usize index_v = index<N>::value;
-
-	template<usize LHS, usize RHS>
-	struct less_than : std::conditional_t<(LHS < RHS), std::true_type, std::false_type> { };
-
-	template<usize LHS, usize RHS>
-	static inline constexpr auto less_than_v = LHS < RHS;
-
-	template<usize LHS, usize RHS>
-	struct greater_than : std::conditional_t<(LHS > RHS), std::true_type, std::false_type> { };
-
-	template<usize LHS, usize RHS>
-	static inline constexpr auto greater_than_v = LHS > RHS;
 } // namespace hyperion::mpl
