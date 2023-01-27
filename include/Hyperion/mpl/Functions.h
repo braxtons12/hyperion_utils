@@ -3,10 +3,10 @@
 /// @brief meta-programming functions to determine if a given meta-condition matches the desired
 /// value for various sets of arguments
 /// @version 0.1
-/// @date 2022-11-12
+/// @date 2023-01-26
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -33,6 +33,14 @@
 
 namespace hyperion::mpl {
 
+	/// @ingroup mpl
+	/// @{
+	///	@defgroup mpl_functions Functions
+	/// Various meta-functions for determining the validity of  type traits and meta-functions on
+	/// all/any of the elements in an `mpl::list`
+	/// @headerfile "Hyperion/mpl/Functions.h"
+	/// @}
+
 	/// @brief Meta-programming function to determine that at least one `Type` in the `mpl::list`,
 	/// `List`, satisfies that the value of `ConditionType<Type>` equals the value of
 	/// `RequirementType`.
@@ -49,10 +57,11 @@ namespace hyperion::mpl {
 	/// Checks that `std::is_trivially_destructible<T>` is true for at least one of `u8`,
 	/// `u16`, or `u32`
 	///
-	/// @tparam ConditionType - The condition to check
-	/// @tparam RequirementType - The required value of the condition
-	/// @tparam List - The `mpl::list` of types to check the condition for
-	/// @ingroup mpl
+	/// @tparam ConditionType  The condition to check
+	/// @tparam RequirementType  The required value of the condition
+	/// @tparam List  The `mpl::list` of types to check the condition for
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr auto any_type_satisfies([[maybe_unused]] List list) {
@@ -66,10 +75,11 @@ namespace hyperion::mpl {
 	/// @brief Value of Meta-programming function `any_type_satisfies`. Used to determine that at
 	/// least one type "Type" in the `mpl::list`, `List`, satisfies that the value of
 	/// `ConditionType<Type>` equals the value of `RequirementType`
-	/// @tparam ConditionType - The condition to check
-	/// @tparam RequirementType - The required value of the condition
-	/// @tparam List - The `mpl::list` of types to check the condition for
-	/// @ingroup mpl
+	/// @tparam ConditionType  The condition to check
+	/// @tparam RequirementType  The required value of the condition
+	/// @tparam List  The `mpl::list` of types to check the condition for
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename> typename ConditionType, typename RequirementType, typename List>
 	requires mpl::HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr auto any_type_satisfies_v
@@ -100,13 +110,14 @@ namespace hyperion::mpl {
 	/// will check that `std::is_constructible<T, u8>::value` is true for at least one of `T`
 	/// equal `u64` and/or `umax`
 	///
-	/// @tparam ConditionType - The condition to check for each
+	/// @tparam ConditionType  The condition to check for each
 	/// combination of `<Evaluatee, Type>`
-	/// @tparam RequirementType - The required value of `ConditionType`
-	/// @tparam CheckList - The `mpl::list` of each type to check `ConditionType` for
-	/// @tparam ArgList - The `mpl::list` of argument types to use as the additional
+	/// @tparam RequirementType  The required value of `ConditionType`
+	/// @tparam CheckList  The `mpl::list` of each type to check `ConditionType` for
+	/// @tparam ArgList  The `mpl::list` of argument types to use as the additional
 	/// arguments for `ConditionType`
-	/// @ingroup mpl
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename, typename...> typename ConditionType,
 			 typename RequirementType,
 			 typename CheckList,
@@ -133,13 +144,14 @@ namespace hyperion::mpl {
 	/// `Type`, in the `CheckList` satisfies that the value of `ConditionType<Type,
 	/// ArgumentTypes...>` equals the value of `RequirementType`.
 	///
-	/// @tparam ConditionType - The condition to check for each
+	/// @tparam ConditionType  The condition to check for each
 	/// combination of `<Evaluatee, Type>`
-	/// @tparam RequirementType - The required value of `ConditionType`
-	/// @tparam CheckList - The `mpl::list` of each type to check `ConditionType` for
-	/// @tparam ArgList - The `mpl::list` of argument types to use as the additional
+	/// @tparam RequirementType  The required value of `ConditionType`
+	/// @tparam CheckList  The `mpl::list` of each type to check `ConditionType` for
+	/// @tparam ArgList  The `mpl::list` of argument types to use as the additional
 	/// arguments for `ConditionType`
-	/// @ingroup mpl
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename, typename...> typename ConditionType,
 			 typename RequirementType,
 			 typename CheckList,
@@ -180,10 +192,10 @@ namespace hyperion::mpl {
 	/// Checks that `std::is_trivially_destructible<T>` is true for each of `T` equal to `u8`,
 	/// `u16`, and `u32`
 	///
-	/// @tparam ConditionType - The condition to check
-	/// @tparam RequirementType - The required value of the condition
-	/// @tparam List - The `mpl::list` of types to check the condition for
-	/// @ingroup mpl
+	/// @tparam ConditionType  The condition to check
+	/// @tparam RequirementType  The required value of the condition
+	/// @tparam List  The `mpl::list` of types to check the condition for
+	/// @ingroup mpl_functions
 	/// @headerfile "Hyperion/mpl/ForAll.h"
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
@@ -195,9 +207,11 @@ namespace hyperion::mpl {
 		})>;
 	}
 
-	/// @brief Value of Meta-programming function `for_all`. Used to determine that every type
-	/// "Type" in the `mpl::list`, `List`, satisfies that the value of `ConditionType<Type>`
-	/// equals the value of `RequirementType`
+	/// @brief Value of Meta-programming function `all_types_satisfy`. Used to determine that
+	/// every type "Type" in the `mpl::list`, `List`, satisfies that the value of
+	/// `ConditionType<Type>` equals the value of `RequirementType`
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename> typename ConditionType, HasValue RequirementType, typename List>
 	requires HasValue<ConditionType<mpl::first_t<List>>>
 	static inline constexpr bool all_types_satisfy_v
@@ -222,12 +236,14 @@ namespace hyperion::mpl {
 	/// will check that `std::is_constructible<std::string, Types...>::value` is true for
 	/// `Types...` equal to the list `usize, char` and equal to the list `const char*, usize`.
 	///
-	/// @tparam ConditionType - The condition to check for each
+	/// @tparam ConditionType  The condition to check for each
 	/// combination of `<Evaluatee, Types...>`
-	/// @tparam RequirementType - The required value of `ConditionType`
-	/// @tparam Evaluatee - The type that `ConditionType` should compare or evaluate each type,
+	/// @tparam RequirementType  The required value of `ConditionType`
+	/// @tparam Evaluatee  The type that `ConditionType` should compare or evaluate each type,
 	/// `Type`, in `List` against
-	/// @tparam Lists - The `mpl::list` of each `mpl::list` of types to pass to `ConditionType`
+	/// @tparam Lists  The `mpl::list` of each `mpl::list` of types to pass to `ConditionType`
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename, typename...> typename ConditionType,
 			 HasValue RequirementType,
 			 typename Evaluatee,
@@ -244,6 +260,11 @@ namespace hyperion::mpl {
 		})>;
 	}
 
+	/// @brief Value of Meta-programming function `all_lists_satisfy_for_type`. Used to determine
+	/// that for every list of types, `Types...` in `Lists`, the value of
+    /// `ConditionType<Evaluatee, Types...>` is equal to the value of `RequirementType`
+	/// @ingroup mpl_functions
+	/// @headerfile "Hyperion/mpl/Functions.h"
 	template<template<typename, typename...> typename ConditionType,
 			 HasValue RequirementType,
 			 typename Evaluatee,
