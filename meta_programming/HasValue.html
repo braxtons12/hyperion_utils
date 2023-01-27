@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>CallWithIndex &#8212; hyperion-utils  documentation</title>
+    <title>HasValue &#8212; hyperion-utils  documentation</title>
   <script>
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
@@ -38,12 +38,11 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'meta_programming/CallWithIndex';</script>
-    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/meta_programming/CallWithIndex.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'meta_programming/HasValue';</script>
+    <link rel="canonical" href="braxtons12.github.io/Hyperion-Utils/meta_programming/HasValue.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="HasValue" href="HasValue.html" />
-    <link rel="prev" title="Index" href="_Index.html" />
+    <link rel="prev" title="CallWithIndex" href="CallWithIndex.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -407,8 +406,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Concepts.html">Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Identity.html">Identity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_Index.html">Index</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">CallWithIndex</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HasValue.html">HasValue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CallWithIndex.html">CallWithIndex</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">HasValue</a></li>
 </ul></li></ul>
   </div>
 </nav>
@@ -438,41 +437,15 @@
             
             <article class="bd-article" role="main">
               
-  <section id="callwithindex">
-<h1>CallWithIndex<a class="headerlink" href="#callwithindex" title="Permalink to this heading">#</a></h1>
-<p>Note: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">call_with_index</span></code> is contained in <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="o">::</span><span class="nn">mpl</span></code></p>
-<dl>
-<dt class="sig sig-object cpp">
-<span class="target" id="group__call__with__index"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">call_with_index</span></span></dt>
-<dd><p>Metaprogramming functions for calling a function that requires a compile-time index with a runtime index value </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="group__call__with__index_1ga388bea99ea766d6ef0b9c3d3045567f9"></span><span class="sig-name descname"><span class="pre">template&lt;usize</span> <span class="pre">Bound,</span> <span class="pre">typename</span> <span class="pre">F&gt;</span> <span class="pre">static</span> <span class="pre">inline</span> <span class="pre">IGNORE_UNUSED_TEMPLATES_START</span> <span class="pre">constexpr</span> <span class="pre">auto</span> <span class="pre">call_with_index</span> <span class="pre">(usize</span> <span class="pre">index,</span> <span class="pre">F</span> <span class="pre">&amp;&amp;func)</span> <span class="pre">noexcept</span> <span class="pre">-&gt;</span> <span class="pre">decltype(auto)</span></span></dt>
-<dd><p>Invokes the function template <code class="docutils literal notranslate"><span class="pre">f</span></code> with an <code class="docutils literal notranslate"><a class="reference internal" href="_Index.html#structhyperion_1_1mpl_1_1index"><span class="std std-ref"><span class="pre">mpl::index</span></span></a></code> with the value of <code class="docutils literal notranslate"><span class="pre">i</span></code> </p>
-<p><code class="docutils literal notranslate"><span class="pre">i</span></code> must be strictly less than <code class="docutils literal notranslate"><span class="pre">Bound</span></code></p>
-<p>This has one alternative implementation that takes an <code class="docutils literal notranslate"><span class="pre">mpl::HasValue</span></code> type, <code class="docutils literal notranslate"><span class="pre">BoundType</span></code> to specify the upper bound, as opposed to this implementation taking the <code class="docutils literal notranslate"><span class="pre">usize</span> <span class="pre">Bound</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Bound</strong> – the uppder bound (non-inclusive) on <code class="docutils literal notranslate"><span class="pre">index</span></code> </p></li>
-<li><p><strong>F</strong> – The type of the function/function object to call </p></li>
-</ul>
-</dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>index</strong> – The index to use as the call parameter </p></li>
-<li><p><strong>func</strong> – The function/function object to call</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The result of invoking <code class="docutils literal notranslate"><span class="pre">f</span></code> with the <code class="docutils literal notranslate"><a class="reference internal" href="_Index.html#structhyperion_1_1mpl_1_1index"><span class="std std-ref"><span class="pre">mpl::index</span></span></a></code> of value <code class="docutils literal notranslate"><span class="pre">i</span></code> </p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
+  <section id="hasvalue">
+<h1>HasValue<a class="headerlink" href="#hasvalue" title="Permalink to this heading">#</a></h1>
+<p>Note: <code class="code highlight cpp docutils literal highlight-cpp"><span class="n">HasValue</span></code> is contained in <code class="code highlight cpp docutils literal highlight-cpp"><span class="k">namespace</span><span class="w"> </span><span class="nn">hyperion</span><span class="o">::</span><span class="nn">mpl</span></code></p>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN8hyperion3mpl8HasValueE">
+<span id="_CPPv3I0EN8hyperion3mpl8HasValueE"></span><span id="_CPPv2I0EN8hyperion3mpl8HasValueE"></span><span class="target" id="concepthyperion_1_1mpl_1_1HasValue"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasValue</span></span></span><a class="headerlink" href="#_CPPv4I0EN8hyperion3mpl8HasValueE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include “Hyperion/mpl/HasValue.h”</em></div>
+<p>Concept that requires T is a type with a <code class="docutils literal notranslate"><span class="pre">static</span> <span class="pre">constexpr</span></code> member variable named <code class="docutils literal notranslate"><span class="pre">value</span></code> </p>
 </dd></dl>
 
 </section>
@@ -485,19 +458,12 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="_Index.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="CallWithIndex.html" title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Index</p>
+          <p class="prev-next-title">CallWithIndex</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="HasValue.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">HasValue</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
   </a>
 </div>
             </footer>
