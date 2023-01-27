@@ -446,8 +446,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>T</strong> – - The LHS type </p></li>
-<li><p><strong>U</strong> – - The RHS type </p></li>
+<li><p><strong>T</strong> – The LHS type </p></li>
+<li><p><strong>U</strong> – The RHS type </p></li>
 </ul>
 </dd>
 </dl>
@@ -466,8 +466,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>T</strong> – - The LHS type </p></li>
-<li><p><strong>U</strong> – - The RHS type </p></li>
+<li><p><strong>T</strong> – The LHS type </p></li>
+<li><p><strong>U</strong> – The RHS type </p></li>
 </ul>
 </dd>
 </dl>
@@ -486,7 +486,7 @@
 <p>An alternative to <code class="docutils literal notranslate"><span class="pre">std::declval&lt;T&gt;()</span></code> that can be used in evaluated contexts, enabling further possibilities in meta-programming situations. Its use comes with some caveats. Specifically, if <code class="docutils literal notranslate"><span class="pre">T</span></code> is not default constructible, it will be returned uninitialized, so using and relying on the returned value being well-formed in an evaulated context requires <code class="docutils literal notranslate"><span class="pre">T</span></code> to be default constructible.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> – - The type to decl </p>
+<dd class="field-odd"><p><strong>T</strong> – The type to decl </p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">T</span></code> </p>
@@ -502,12 +502,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>T</strong> – - The type to check </p></li>
-<li><p><strong>Args</strong> – - The types of arguments to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s constructor</p></li>
+<li><p><strong>T</strong> – The type to check </p></li>
+<li><p><strong>Args</strong> – The types of arguments to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s constructor</p></li>
 </ul>
 </dd>
 <dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>args</strong> – - The arguments to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s constructor </p>
+<dd class="field-even"><p><strong>args</strong> – The arguments to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s constructor </p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">T</span></code> is constexpr constructible from <code class="docutils literal notranslate"><span class="pre">Args</span></code>, false otherwise </p>
@@ -523,12 +523,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>T</strong> – - The type to check </p></li>
-<li><p><strong>U</strong> – - The type to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s assignment operator</p></li>
+<li><p><strong>T</strong> – The type to check </p></li>
+<li><p><strong>U</strong> – The type to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s assignment operator</p></li>
 </ul>
 </dd>
 <dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>u</strong> – - The argument to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s assignment operator </p>
+<dd class="field-even"><p><strong>u</strong> – The argument to pass to <code class="docutils literal notranslate"><span class="pre">T</span></code>’s assignment operator </p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">T</span></code> is constexpr assignable from <code class="docutils literal notranslate"><span class="pre">U</span></code>, false otherwise </p>
@@ -542,7 +542,7 @@
 <dd><p>Type Trait to determine if <code class="docutils literal notranslate"><span class="pre">T</span></code> is copyable or movable. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> – - The type to verify satisfies this Type Trait </p>
+<dd class="field-odd"><p><strong>T</strong> – The type to verify satisfies this Type Trait </p>
 </dd>
 </dl>
 </dd></dl>
@@ -559,7 +559,7 @@
 <dd><p>Type Trait to determine if <code class="docutils literal notranslate"><span class="pre">T</span></code> is copyable, movable, or a pointer type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> – - The type to verify satisfies this Type Trait </p>
+<dd class="field-odd"><p><strong>T</strong> – The type to verify satisfies this Type Trait </p>
 </dd>
 </dl>
 </dd></dl>

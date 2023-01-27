@@ -41,7 +41,7 @@
 namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if `T` is copyable or movable
 	///
-	/// @tparam T - The type to verify satisfies this Type Trait
+	/// @tparam T  The type to verify satisfies this Type Trait
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T>
@@ -57,7 +57,7 @@ namespace hyperion::type_traits {
 
 	/// @brief Type Trait to determine if `T` is copyable, movable, or a pointer type
 	///
-	/// @tparam T - The type to verify satisfies this Type Trait
+	/// @tparam T  The type to verify satisfies this Type Trait
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T>
@@ -73,8 +73,8 @@ namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if type `T` is equality comparable with type `U`,
 	/// where `U` defaults to `T`
 	///
-	/// @tparam T - The LHS type
-	/// @tparam U - The RHS type
+	/// @tparam T  The LHS type
+	/// @tparam U  The RHS type
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U = T, typename = std::void_t<>>
@@ -83,8 +83,8 @@ namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if type `T` is equality comparable with type `U`,
 	/// where `U` defaults to `T`
 	///
-	/// @tparam T - The LHS type
-	/// @tparam U - The RHS type
+	/// @tparam T  The LHS type
+	/// @tparam U  The RHS type
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U>
@@ -100,8 +100,8 @@ namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if type `T` is inequality comparable with type `U`,
 	/// where `U` defaults to `T`
 	///
-	/// @tparam T - The LHS type
-	/// @tparam U - The RHS type
+	/// @tparam T  The LHS type
+	/// @tparam U  The RHS type
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U = T, typename = std::void_t<>>
@@ -110,8 +110,8 @@ namespace hyperion::type_traits {
 	/// @brief Type Trait to determine if type `T` is inequality comparable with type `U`,
 	/// where `U` defaults to `T`
 	///
-	/// @tparam T - The LHS type
-	/// @tparam U - The RHS type
+	/// @tparam T  The LHS type
+	/// @tparam U  The RHS type
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
 	template<typename T, typename U>
@@ -128,7 +128,7 @@ namespace hyperion::type_traits {
 
 	namespace detail {
 		/// @brief Alternative declval implementation
-		/// @tparam T - The type to decl
+		/// @tparam T  The type to decl
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
 		// NOLINTNEXTLINE(readability-identifier-length)
@@ -145,7 +145,7 @@ namespace hyperion::type_traits {
             return val.dummy;
 		}
 		/// @brief Alternative declval implementation
-		/// @tparam T - The type to decl
+		/// @tparam T  The type to decl
 		/// @return a `T`
 		template<typename T, typename U = std::remove_cvref_t<T>>
 		// NOLINTNEXTLINE(readability-identifier-length)
@@ -171,7 +171,7 @@ namespace hyperion::type_traits {
     /// be returned uninitialized, so using and relying on the returned value being well-formed in
     /// an evaulated context requires `T` to be default constructible.
 	///
-	/// @tparam T - The type to decl
+	/// @tparam T  The type to decl
 	/// @return a `T`
 	/// @ingroup type_traits
 	/// @headerfile "Hyperion/TypeTraits.h"
@@ -196,10 +196,10 @@ namespace hyperion::type_traits {
 	/// This is used internally in our `ConstexprConstructibleFrom` and
 	/// `ConstexprXXXXConstructible` concepts
 	///
-	/// @tparam T - The type to check
-	/// @tparam Args - The types of arguments to pass to `T`'s constructor
+	/// @tparam T  The type to check
+	/// @tparam Args  The types of arguments to pass to `T`'s constructor
 	///
-	/// @param args - The arguments to pass to `T`'s constructor
+	/// @param args  The arguments to pass to `T`'s constructor
 	/// @return `true` if `T` is constexpr constructible from `Args`, false otherwise
 	/// @ingroup constexpr_capable
 	/// @headerfile "Hyperion/TypeTraits.h"
@@ -220,10 +220,10 @@ namespace hyperion::type_traits {
 	/// This is used internally in our `ConstexprAssignable` and
 	/// `ConstexprXXXXAssignable` concepts
 	///
-	/// @tparam T - The type to check
-	/// @tparam U - The type to pass to `T`'s assignment operator
+	/// @tparam T  The type to check
+	/// @tparam U  The type to pass to `T`'s assignment operator
 	///
-	/// @param u - The argument to pass to `T`'s assignment operator
+	/// @param u  The argument to pass to `T`'s assignment operator
 	/// @return `true` if `T` is constexpr assignable from `U`, false otherwise
 	/// @ingroup constexpr_capable
 	/// @headerfile "Hyperion/TypeTraits.h"
