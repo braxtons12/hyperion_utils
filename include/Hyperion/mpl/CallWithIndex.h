@@ -233,7 +233,7 @@ namespace hyperion::mpl {
 	///
 	/// `i` must be strictly less than `Bound`
     ///
-    /// This has one alternative implementation that takes an `mpl::HasValue` type, `BoundType`
+    /// This has one alternative implementation that takes an `mpl::HasValue` type, `BoundType`,
     /// to specify the upper bound, as opposed to this implementation taking the `usize Bound`
     ///
 	/// @tparam Bound  the uppder bound (non-inclusive) on `index`
