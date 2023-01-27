@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Meta-programming facilities for working with a list of types
 /// @version 0.1
-/// @date 2022-12-02
+/// @date 2023-01-26
 ///
 /// MIT License
-/// @copyright Copyright (c) 2022 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -31,44 +31,60 @@
 #include <Hyperion/mpl/Index.h>
 
 namespace hyperion::mpl {
+
+	/// @ingroup mpl
+	/// @{
+	///	@defgroup mpl_list List
+	/// Metaprogramming list type and associated functionality
+	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
+	/// @}
+
+	/// @ingroup mpl
+	/// @{
+	///	@defgroup mpl_list_functions List Functions
+	/// Functions associated with the metaprogramming list type
+	/// @headerfile "Hyperion/mpl/CallWithIndex.h"
+	/// @}
+
 	IGNORE_UNUSED_VALUES_START
 
 	/// @brief Basic meta-programming type list
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename... T>
 	using list = hana::tuple<hana::type<T>...>;
 
+	/// @brief Instance of `mpl::list<T...>`
+	/// @ingroup mpl_list
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename... T>
 	static constexpr auto list_v = hana::tuple_t<T...>;
 
 	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
 	///
-	/// @tparam List - The `mpl::list` to query the size of
-	/// @ingroup mpl
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename List>
-	static constexpr auto size(List list) noexcept {
+	static constexpr auto size(auto list) noexcept {
 		return hana::size(list);
 	}
 
 	/// @brief Used to determine the number of elements in the `mpl::list`, `List`
 	///
-	/// @tparam List - The `mpl::list` to query the size of
-	/// @ingroup mpl
+	/// @tparam List  The `mpl::list` to query the size of
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	static inline constexpr auto size_v = decltype(size(List{}))::value;
 
 	/// @brief Used to find the `N`th type in the `mpl::list`, `List`
 	///
-	/// @tparam N - The index into the list
-	/// @tparam List - The `mpl::list` to get a type from
-	/// @ingroup mpl
+	/// @tparam N  The index into the list
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<usize N, typename List>
-	requires(N < size_v<List>)
-	static inline constexpr auto at(List list) noexcept {
+	template<usize N>
+	static inline constexpr auto at(auto list) noexcept
+    requires(N < size_v<decltype(list)>)
+    {
 		return hana::at_c<N>(list);
 	}
 
@@ -76,9 +92,9 @@ namespace hyperion::mpl {
 
 	/// @brief Used to find the `N`th type in the `mpl::list`, `List`
 	///
-	/// @tparam N - The index into the list
-	/// @tparam List - The `mpl::list` to get a type from
-	/// @ingroup mpl
+	/// @tparam N  The index into the list
+	/// @tparam List  The `mpl::list` to get a type from
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<usize N, typename List>
 	using at_t = typename decltype(at<N>(List{}))::type;
@@ -90,14 +106,14 @@ namespace hyperion::mpl {
 
 	/// @brief Used to get the first type in the `mpl::list`, `List`
 	///
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
+	/// @tparam List  The `mpl::list` to search in
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
-	struct first : decltype(at<0>(List{})) { };
+	using first = decltype(at<0>(List{}));
 
 	/// @brief Alias to `mpl::first::type`. Used to get the first type in the `mpl::list`, `List`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	using first_t = typename first<List>::type;
@@ -109,15 +125,15 @@ namespace hyperion::mpl {
 
 	/// @brief Used to get the last type in the `mpl::list`, `List`
 	///
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
+	/// @tparam List  The `mpl::list` to search in
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
-	struct last : decltype(at < mpl::size_v<List> >= 1_usize ? mpl::size_v<List> - 1_usize :
-															   0_usize > (List{})) { };
+	using last = decltype(at < mpl::size_v<List> >= 1_usize ? mpl::size_v<List> - 1_usize :
+															  0_usize > (List{}));
 
 	/// @brief Alias to `mpl::last::type`. Used to get the last type in the `mpl::list`, `List`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	using last_t = typename last<List>::type;
@@ -129,20 +145,18 @@ namespace hyperion::mpl {
 
 	/// @brief Used to determine if the given `mpl::list`, `List`, contains the type `T`
 	///
-	/// @tparam T - The type to search for
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
+	/// @tparam T  The type to search for
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename T, typename List>
-	static inline constexpr auto contains([[maybe_unused]] List list) noexcept {
-		constexpr List _list{};
-		return hana::any_of(_list,
+	template<typename T>
+	static inline constexpr auto contains([[maybe_unused]] auto list) noexcept {
+		return hana::any_of(decltype(list){},
 							[](auto&& val) { return hana::traits::is_same(hana::type_c<T>, val); });
 	}
 
 	/// @brief Value of `mpl::contains`. Used to determine if the given `mpl::list`, `List`,
 	/// contains the given type `T`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	static inline constexpr auto contains_v = hana::value_of(contains<T>(List{}));
@@ -156,13 +170,13 @@ namespace hyperion::mpl {
 
 	/// @brief Used to get the index of the type `T` in the `mpl::list`, `List`
 	///
-	/// @tparam T - The type to search for
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
+	/// @tparam T  The type to search for
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename T, typename List>
-	requires(contains_v<T, List>)
-    static inline constexpr auto index_of(List list) noexcept {
+	template<typename T>
+    static inline constexpr auto index_of(auto list) noexcept
+    requires contains_v<T, decltype(list)>
+    {
         constexpr auto res = hana::index_if(list, hana::equal_t::to(hana::type_c<T>));
         return mpl::index<res.value()>{};
     }
@@ -170,7 +184,7 @@ namespace hyperion::mpl {
 
 	/// @brief Value of `mpl::index_of`. Used to determine the index of the type `T`
 	/// in the `mpl::list`, `List`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	requires(contains_v<T, List>)
@@ -186,7 +200,7 @@ namespace hyperion::mpl {
 	/// @brief Used to determine the largest type (the type with the largest `sizeof`)
 	/// in the `mpl::list`, `List`
 	///
-	/// @ingroup mpl
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
 	static inline constexpr auto largest_type_of([[maybe_unused]] auto list) noexcept {
 		return hana::maximum(decltype(list){}, [](auto left, auto right) noexcept {
@@ -198,7 +212,7 @@ namespace hyperion::mpl {
 	/// Used to determine the largest type (the type with the largest `sizeof`) in the `mpl::list`,
 	/// `List`
 	///
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	using largest_type_of_t = typename decltype(largest_type_of(List{}))::type;
@@ -210,7 +224,7 @@ namespace hyperion::mpl {
 
 	/// @brief Used to determine the size of the largest type in the `mpl::list`, `List`
 	///
-	/// @ingroup mpl
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
 	static inline consteval auto max_size_of([[maybe_unused]] auto list) noexcept {
 		return hana::sizeof_(largest_type_of(decltype(list){}));
@@ -218,7 +232,7 @@ namespace hyperion::mpl {
 
 	/// @brief Value of `mpl::max_size_of`. Used to determine the size of the largest type in
 	/// the `mpl::list`, `List`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename List>
 	static inline constexpr usize max_size_of_v = hana::value_of(max_size_of(List{}));
@@ -230,25 +244,27 @@ namespace hyperion::mpl {
 
 	/// @brief Used to determine the number of occurrences of `T` in the `mpl::list`, `List`
 	///
-	/// @tparam T - The type to get the number of occurrences of
-	/// @tparam List - The `mpl::list` to search in
-	/// @ingroup mpl
+	/// @tparam T  The type to get the number of occurrences of
+	/// @ingroup mpl_list_functions
 	/// @headerfile "Hyperion/mpl/List.h"
-	template<typename T, typename List>
-	static inline constexpr auto instances_of([[maybe_unused]] List list) noexcept {
-		return hana::size_c<
-			hana::fold_left(List{}, 0_usize, [](usize state, [[maybe_unused]] auto value) noexcept {
-				if constexpr(hana::traits::is_same(hana::type_c<T>, decltype(value){})) {
-					return state + 1_usize;
-				}
+	template<typename T>
+	static inline constexpr auto instances_of([[maybe_unused]] auto list) noexcept {
+		return hana::size_c<hana::fold_left(decltype(list){},
+											0_usize,
+											[](usize state, [[maybe_unused]] auto value) noexcept {
+												if constexpr(hana::traits::is_same(
+																 hana::type_c<T>,
+																 decltype(value){})) {
+													return state + 1_usize;
+												}
 
-				return state;
-			})>;
+												return state;
+											})>;
 	}
 
 	/// @brief Value of `instances_of`. Used to determine the number of occurrences of `T` in the
 	/// `mpl::list`, `List`
-	/// @ingroup mpl
+	/// @ingroup mpl_list
 	/// @headerfile "Hyperion/mpl/List.h"
 	template<typename T, typename List>
 	static inline constexpr usize instances_of_v = hana::value_of(instances_of<T>(List{}));
@@ -282,6 +298,12 @@ namespace hyperion::mpl {
 
 	} // namespace detail
 
+	/// @brief Applies the meta-function `T` to every member of the `mpl::list`, `List`, and returns
+	/// the result as a new `mpl::list`
+	/// @tparam T  The meta-function to apply to the elements of the list, `List`
+	/// @tparam List  The list of elements to apply the meta-function to
+	/// @ingroup mpl_list
+	/// @headerfile "Hyperion/mpl/List.h"
 	template<template<typename...> typename T, typename List>
 	using apply_to_list = decltype(detail::apply_to_list<T>(std::declval<List>()));
 
