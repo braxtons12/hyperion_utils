@@ -9,6 +9,6 @@ Metaprogramming Utilities
     Identity
     _Index
     CallWithIndex
-    List
     HasValue
     Functions
+    List
