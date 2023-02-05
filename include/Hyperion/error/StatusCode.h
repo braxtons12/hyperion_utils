@@ -85,10 +85,10 @@ namespace hyperion::error {
 
 	/// @brief The associated domain type of a `StatusCodeEnum`. Shorthand for
 	/// `is_status_code_enum<T>::domain_type` and `status_code_enum_info<T>::domain_type`
-    ///
-    /// # Requirements
-    /// * T must be a `StatusCodeEnum`
-    ///
+	///
+	/// # Requirements
+	/// * T must be a `StatusCodeEnum`
+	///
 	/// @tparam T - The `StatusCodeEnum` to get the associated domain type of
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCode.h"
@@ -98,10 +98,10 @@ namespace hyperion::error {
 
 	/// @brief Checked version of `status_code_enum_domain<T>` that fails if
 	/// `status_code_enum_info<T>::domain_type` is not a `StatusCodeDomain`
-    ///
-    /// # Requirements
-    /// * T must be a `StatusCodeEnum`
-    ///
+	///
+	/// # Requirements
+	/// * T must be a `StatusCodeEnum`
+	///
 	/// @tparam T - The `StatusCodeEnum` to get the associated domain type of
 	/// @ingroup error
 	/// @headerfile "Hyperion/error/StatusCode.h"
@@ -181,9 +181,9 @@ namespace hyperion::error {
 		constexpr StatusCode() noexcept = default;
 		/// @brief Constructs a `StatusCode` representing the given numeric code
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @param code - The numeric code representing the result of the operation
 		/// @param domain - The `StatusCodeDomain` to associate with the `StatusCode`
 		/// @ingroup error
@@ -199,9 +199,9 @@ namespace hyperion::error {
 
 		/// @brief Constructs a `StatusCode` representing the given `StatusCodeEnum`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @param code - The `StatusCodeEnum` representing the result of the operation
 		/// @param domain - The `StatusCodeDomain` to associate with the `StatusCode`
 		/// @ingroup error
@@ -215,38 +215,38 @@ namespace hyperion::error {
 		}
 
 		/// @brief Copy-constructor
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr StatusCode(const StatusCode&) noexcept
 		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-constructor
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr StatusCode(StatusCode &&) noexcept
 		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Destructor
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr ~StatusCode() noexcept
 		requires StatusCodeDomain<Domain>
 		= default;
 
 		/// @brief Sets this `StatusCode` to represent the given numeric code
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @param code - The numeric code representing the result of an operation
 		/// @ingroup error
 		[[maybe_unused]] inline constexpr auto assign(i64 code) noexcept -> void
@@ -256,11 +256,11 @@ namespace hyperion::error {
 		}
 
 		/// @brief Sets this `StatusCode` to represent the given `StatusCodeEnum`
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        /// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		/// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
+		///
 		/// @param code - The `StatusCodeEnum` representing the result of an operation
 		/// @ingroup error
 		[[maybe_unused]] inline constexpr auto assign(StatusCodeEnum auto code) noexcept -> void
@@ -274,10 +274,10 @@ namespace hyperion::error {
 
 		/// @brief Clears the error (if any) represented by this `StatusCode`, setting it to
 		/// represent success instead
-        ///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		[[maybe_unused]] inline constexpr auto clear() noexcept -> void
 		requires StatusCodeDomain<Domain>
@@ -287,9 +287,9 @@ namespace hyperion::error {
 
 		/// @brief Returns the numeric value of this `StatusCode`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Converts the `value_type` value represented by this `StatusCode` to an `i64` and returns
 		/// it.
 		/// @return The status represented by this `StatusCode`, as an `i64`
@@ -302,9 +302,9 @@ namespace hyperion::error {
 
 		/// @brief Returns the value of this `StatusCode` as its `value_type`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Returns the `value_type` value represented by this `StatusCode`.
 		/// @return The status represented by this `StatusCode` as its `value_type`.
 		/// @note While this may be equivalent to `value()` for `StatusCode`s whose `value_type`s
@@ -319,9 +319,9 @@ namespace hyperion::error {
 
 		/// @brief Returns the textual message associated with this `StatusCode`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @return The message associated with the value this `StatusCode` currently represents
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto message() const noexcept
@@ -332,9 +332,9 @@ namespace hyperion::error {
 
 		/// @brief Returns whether this `StatusCode` represents an error
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @return `true` if this represents an error, false otherwise
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto is_error() const noexcept -> bool
@@ -345,9 +345,9 @@ namespace hyperion::error {
 
 		/// @brief Returns whether this `StatusCode` represents success
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @return `true` if this represents success, false otherwise
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto is_success() const noexcept -> bool
@@ -358,9 +358,9 @@ namespace hyperion::error {
 
 		/// @brief Returns whether this `StatusCode` is semantically equivalent with the given one
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @tparam Domain2 - The `StatusCodeDomain` of `rhs`. May be a different domain than the
 		/// one associated with `this`
 		/// @param rhs - The `StatusCode` to compare this to
@@ -378,11 +378,11 @@ namespace hyperion::error {
 
 		/// @brief Converts this into a `GenericStatusCode` (a `StatusCode<GenericDomain>`)
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        /// * this must be convertible to a generic status code (`StatusCode<GenericDomain>`),
-        /// ie `Domain` must provide a generic code conversion `as_generic_code`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		/// * this must be convertible to a generic status code (`StatusCode<GenericDomain>`),
+		/// ie `Domain` must provide a generic code conversion `as_generic_code`
+		///
 		/// @return This, converted into a `GenericStatusCode`
 		/// @note This member function is disabled if this is not `ConvertibleToGenericStatusCode`
 		/// @ingroup error
@@ -394,9 +394,9 @@ namespace hyperion::error {
 
 		/// @brief Returns the `StatusCodeDomain` associated with this
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @return The `StatusCodeDomain` associated with this
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto domain() const noexcept -> const Domain&
@@ -407,9 +407,9 @@ namespace hyperion::error {
 
 		/// @brief Converts this `StatusCode` to a `bool`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Converts this `StatusCode` to a `bool`. This is equivalent to `is_success()`
 		/// @return this, as a `bool`
 		/// @ingroup error
@@ -421,9 +421,9 @@ namespace hyperion::error {
 
 		/// @brief Converts this `StatusCode` to its `value_type`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Converts this `StatusCode` to its `value_type`. This is equivalent to `code()`
 		/// @return this, as its `value_type`
 		/// @ingroup error
@@ -435,9 +435,9 @@ namespace hyperion::error {
 
 		/// @brief Equality Comparison operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Compares the left-hand-side `StatusCode`, `lhs`, and the right-hand-side `StatusCode`,
 		/// `rhs`, for semantic equivalence. `rhs` may be a `StatusCode` of a different domain than
 		/// `lhs`
@@ -459,9 +459,9 @@ namespace hyperion::error {
 
 		/// @brief Inequality Comparison operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// Compares the left-hand-side `StatusCode`, `lhs`, and the right-hand-side `StatusCode`,
 		/// `rhs`, for semantic inequivalence. `rhs` may be a `StatusCode` of a different domain
 		/// than `lhs`
@@ -483,18 +483,18 @@ namespace hyperion::error {
 
 		/// @brief Copy-assignment operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr auto operator=(const StatusCode& code) noexcept -> StatusCode&
 		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-assignment operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr auto operator=(StatusCode&&) noexcept -> StatusCode&
 		requires StatusCodeDomain<Domain>
@@ -503,10 +503,10 @@ namespace hyperion::error {
 		/// @brief Assigns the value of the `StatusCodeEnum`, `code`, to this as the value it should
 		/// represent
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        /// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		/// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
+		///
 		/// @param code - The `StatusCodeEnum` to assign to this
 		/// @return this, reassigned to represent `code`
 		/// @ingroup error
@@ -575,10 +575,10 @@ namespace hyperion::error {
 
 		/// @brief Constructs a `ErrorCode` representing the given `StatusCodeEnum`
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        /// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		/// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
+		///
 		/// @param code - The `StatusCodeEnum` representing the result of the operation
 		/// @param domain - The `StatusCodeDomain` to associate with the `ErrorCode`
 		/// @ingroup error
@@ -658,18 +658,18 @@ namespace hyperion::error {
 
 		/// @brief Copy-assignment operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr auto operator=(const ErrorCode& code) noexcept -> ErrorCode&
 		requires StatusCodeDomain<Domain>
 		= default;
 		/// @brief Move-assignment operator
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
 		/// @ingroup error
 		constexpr auto operator=(ErrorCode&&) noexcept -> ErrorCode&
 		requires StatusCodeDomain<Domain>
@@ -678,10 +678,10 @@ namespace hyperion::error {
 		/// @brief Assigns the value of the `StatusCodeEnum`, `code`, to this as the value it should
 		/// represent
 		///
-        /// # Requirements
-        /// * `Domain` must be a `StatusCodeDomain`
-        /// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
-        ///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		/// * `Domain` must be the `StatusCodeDomain` associated with the `StatusCodeEnum`, `code`
+		///
 		/// @param code - The `StatusCodeEnum` to assign to this
 		/// @return this, reassigned to represent `code`
 		/// @ingroup error
@@ -717,55 +717,114 @@ namespace hyperion::error {
 
 /// @brief Creates a `hyperion::error::StatusCode` from the given integer code
 ///
-/// @param code - The integer code to create a `hyperion::error::StatusCode`
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::StatusCode`
 /// from
 /// @return a `hyperion::error::StatusCode` associated with the given code
 /// @ingroup error
 /// @headerfile "Hyperion/error/StatusCode.h"
-template<typename Domain>
-constexpr auto
-make_status_code(hyperion::i64 code) noexcept -> hyperion::error::StatusCode<Domain> {
+template<hyperion::error::StatusCodeDomain Domain>
+requires(!hyperion::error::StatusCodeEnum<typename Domain::value_type>)
+constexpr auto make_status_code(const typename Domain::value_type& code) noexcept
+	-> hyperion::error::StatusCode<Domain> {
 	return hyperion::error::StatusCode<Domain>(code);
 }
 
 /// @brief Creates a `hyperion::error::StatusCode` from the given integer code
 ///
-/// @param code - The integer code to create a `hyperion::error::StatusCode`
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::StatusCode`
+/// from
+/// @return a `hyperion::error::StatusCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeDomain Domain>
+requires(!hyperion::error::StatusCodeEnum<typename Domain::value_type>)
+constexpr auto make_status_code(typename Domain::value_type&& code) noexcept
+	-> hyperion::error::StatusCode<Domain> {
+	return hyperion::error::StatusCode<Domain>(std::move(code));
+}
+
+/// @brief Creates a `hyperion::error::StatusCode` from the given integer code
+///
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::StatusCode`
 /// from
 /// @param domain - The `Domain` to associate with the `hyperion:error::StatusCode`
 /// @return a `hyperion::error::StatusCode` associated with the given code
 /// @ingroup error
 /// @headerfile "Hyperion/error/StatusCode.h"
-template<typename Domain>
-constexpr auto make_status_code(hyperion::i64 code, Domain&& domain) noexcept
+template<hyperion::error::StatusCodeDomain Domain>
+requires(!hyperion::error::StatusCodeEnum<typename Domain::value_type>)
+constexpr auto make_status_code(const typename Domain::value_type& code, Domain&& domain) noexcept
 	-> hyperion::error::StatusCode<Domain> {
 	return hyperion::error::StatusCode(code, std::forward<Domain>(domain));
 }
 
+/// @brief Creates a `hyperion::error::StatusCode` from the given integer code
+///
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::StatusCode`
+/// from
+/// @param domain - The `Domain` to associate with the `hyperion:error::StatusCode`
+/// @return a `hyperion::error::StatusCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeDomain Domain>
+requires(!hyperion::error::StatusCodeEnum<typename Domain::value_type>)
+constexpr auto make_status_code(typename Domain::value_type&& code, Domain&& domain) noexcept
+	-> hyperion::error::StatusCode<Domain> {
+	return hyperion::error::StatusCode(std::move(code), std::forward<Domain>(domain));
+}
+
 /// @brief Creates a `hyperion::error::ErrorCode` from the given integer code
 ///
-/// @param code - The integer code to create a `hyperion::error::ErrorCode`
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::ErrorCode`
 /// from
 /// @return a `hyperion::error::ErrorCode` associated with the given code
 /// @ingroup error
 /// @headerfile "Hyperion/error/StatusCode.h"
-template<typename Domain>
-constexpr auto make_error_code(hyperion::i64 code) noexcept -> hyperion::error::ErrorCode<Domain> {
+template<hyperion::error::StatusCodeDomain Domain>
+constexpr auto make_error_code(const typename Domain::value_type& code) noexcept
+	-> hyperion::error::ErrorCode<Domain> {
 	return hyperion::error::ErrorCode<Domain>(code);
 }
 
 /// @brief Creates a `hyperion::error::ErrorCode` from the given integer code
 ///
-/// @param code - The integer code to create a `hyperion::error::ErrorCode`
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::ErrorCode`
+/// from
+/// @return a `hyperion::error::ErrorCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeDomain Domain>
+constexpr auto
+make_error_code(typename Domain::value_type&& code) noexcept -> hyperion::error::ErrorCode<Domain> {
+	return hyperion::error::ErrorCode<Domain>(std::move(code));
+}
+
+/// @brief Creates a `hyperion::error::ErrorCode` from the given integer code
+///
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::ErrorCode`
 /// from
 /// @param domain - The `Domain` to associate with the `hyperion:error::ErrorCode`
 /// @return a `hyperion::error::ErrorCode` associated with the given code
 /// @ingroup error
 /// @headerfile "Hyperion/error/StatusCode.h"
-template<typename Domain>
-constexpr auto make_error_code(hyperion::i64 code, Domain&& domain) noexcept
+template<hyperion::error::StatusCodeDomain Domain>
+constexpr auto make_error_code(const typename Domain::value_type& code, Domain&& domain) noexcept
 	-> hyperion::error::ErrorCode<Domain> {
 	return hyperion::error::ErrorCode(code, std::forward<Domain>(domain));
+}
+
+/// @brief Creates a `hyperion::error::ErrorCode` from the given integer code
+///
+/// @param code - The `Domain::value_type` code to create a `hyperion::error::ErrorCode`
+/// from
+/// @param domain - The `Domain` to associate with the `hyperion:error::ErrorCode`
+/// @return a `hyperion::error::ErrorCode` associated with the given code
+/// @ingroup error
+/// @headerfile "Hyperion/error/StatusCode.h"
+template<hyperion::error::StatusCodeDomain Domain>
+constexpr auto make_error_code(typename Domain::value_type&& code, Domain&& domain) noexcept
+	-> hyperion::error::ErrorCode<Domain> {
+	return hyperion::error::ErrorCode(std::move(code), std::forward<Domain>(domain));
 }
 
 #if HYPERION_PLATFORM_COMPILER_MSVC
