@@ -117,13 +117,13 @@ local setup_link_libs = function(target)
 	if target:is_plat("windows") then
 		target:add("links", "ole32", "dbgeng", { public = true })
 		if target:has_tool("cxx", "gcc", "clang") then
-			target:add("defines", "BOOST_STACKTRACE_USE_WINDBG")
+			target:add("defines", "BOOST_STACKTRACE_USE_WINDBG", { public = true })
 		else
-			target:add("defines", "BOOST_STACKTRACE_USE_WINDBG_CACHED")
+			target:add("defines", "BOOST_STACKTRACE_USE_WINDBG_CACHED", { public = true })
 		end
 	else
 		target:add("links", "dl", "backtrace", { public = true })
-		target:add("defines", "BOOST_STACKTRACE_USE_BACKTRACE")
+		target:add("defines", "BOOST_STACKTRACE_USE_BACKTRACE", { public = true })
 	end
 end
 
