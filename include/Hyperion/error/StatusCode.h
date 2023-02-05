@@ -2,10 +2,10 @@
 /// @author Braxton Salyer <braxtonsalyer@gmail.com>
 /// @brief Types for reporting the result of a fallible operation
 /// @version 0.1
-/// @date 2022-11-14
+/// @date 2023-02-05
 ///
 /// MIT License
-/// @copyright Copyright (c) 2021 Braxton Salyer <braxtonsalyer@gmail.com>
+/// @copyright Copyright (c) 2023 Braxton Salyer <braxtonsalyer@gmail.com>
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to
@@ -187,12 +187,29 @@ namespace hyperion::error {
 		/// @param code - The numeric code representing the result of the operation
 		/// @param domain - The `StatusCodeDomain` to associate with the `StatusCode`
 		/// @ingroup error
-		explicit constexpr StatusCode(i64 code,
+		explicit constexpr StatusCode(const value_type& code,
 									  const Domain& domain
 									  = make_status_code_domain<Domain>()) noexcept
 			// clang-format off
 		requires StatusCodeDomain<Domain>
-			: m_domain(domain), m_code(static_cast<value_type>(code))
+			: m_domain(domain), m_code(code)
+		{
+			// clang-format on
+		}
+		/// @brief Constructs a `StatusCode` representing the given numeric code
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
+		/// @param code - The numeric code representing the result of the operation
+		/// @param domain - The `StatusCodeDomain` to associate with the `StatusCode`
+		/// @ingroup error
+		explicit constexpr StatusCode(value_type && code,
+									  const Domain& domain
+									  = make_status_code_domain<Domain>()) noexcept
+			// clang-format off
+		requires StatusCodeDomain<Domain>
+			: m_domain(domain), m_code(std::move(code))
 		{
 			// clang-format on
 		}
@@ -249,10 +266,23 @@ namespace hyperion::error {
 		///
 		/// @param code - The numeric code representing the result of an operation
 		/// @ingroup error
-		[[maybe_unused]] inline constexpr auto assign(i64 code) noexcept -> void
-		requires StatusCodeDomain<Domain>
+		[[maybe_unused]] inline constexpr auto assign(const value_type& code) noexcept -> void
+		requires StatusCodeDomain<Domain> && concepts::CopyAssignable<value_type>
+				 && (!concepts::Integral<value_type>)
 		{
-			m_code = static_cast<value_type>(code);
+			m_code = code;
+		}
+		/// @brief Sets this `StatusCode` to represent the given numeric code
+		///
+		/// # Requirements
+		/// * `Domain` must be a `StatusCodeDomain`
+		///
+		/// @param code - The numeric code representing the result of an operation
+		/// @ingroup error
+		[[maybe_unused]] inline constexpr auto assign(value_type && code) noexcept -> void
+		requires StatusCodeDomain<Domain> && concepts::MoveAssignable<value_type>
+		{
+			m_code = std::move(code);
 		}
 
 		/// @brief Sets this `StatusCode` to represent the given `StatusCodeEnum`
@@ -295,7 +325,7 @@ namespace hyperion::error {
 		/// @return The status represented by this `StatusCode`, as an `i64`
 		/// @ingroup error
 		[[nodiscard]] inline constexpr auto value() const noexcept -> i64
-		requires StatusCodeDomain<Domain>
+		requires StatusCodeDomain<Domain> && concepts::Convertible<value_type, i64>
 		{
 			return static_cast<i64>(m_code);
 		}
@@ -554,13 +584,33 @@ namespace hyperion::error {
 
 		/// @brief Constructs an `ErrorCode` representing the given numeric code
 		///
-		/// @param code - The numeric code representing the result of the operation
+		/// @param code - The code representing the result of the operation
 		/// @param domain - The `StatusCodeDomain` to associate with the `ErrorCode`
 		/// @ingroup error
-		explicit constexpr ErrorCode(i64 code, // NOLINT
+		explicit constexpr ErrorCode(const value_type& code, // NOLINT
 									 const Domain& domain
 									 = make_status_code_domain<Domain>()) noexcept
 			: StatusCode<Domain>(code, domain) {
+			if(std::is_constant_evaluated()) {
+				if(this->is_success()) {
+					throw "hyperion::error::ErrorCode must be an error value! " // NOLINT
+						  "(this->is_error() must be true, but was false";
+				}
+			}
+			else if(this->is_success()) {
+				panic("hyperion::error::ErrorCode must be an error value! (this->is_error() must "
+					  "be true, but was false");
+			}
+		}
+		/// @brief Constructs an `ErrorCode` representing the given numeric code
+		///
+		/// @param code - The code representing the result of the operation
+		/// @param domain - The `StatusCodeDomain` to associate with the `ErrorCode`
+		/// @ingroup error
+		explicit constexpr ErrorCode(value_type && code, // NOLINT
+									 const Domain& domain
+									 = make_status_code_domain<Domain>()) noexcept
+			: StatusCode<Domain>(std::move(code), domain) {
 			if(std::is_constant_evaluated()) {
 				if(this->is_success()) {
 					throw "hyperion::error::ErrorCode must be an error value! " // NOLINT

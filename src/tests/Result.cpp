@@ -133,7 +133,7 @@ namespace hyperion {
 
 			SUBCASE("or_else") {
 				auto next = ok.or_else([](const error::SystemError& error) noexcept -> Result<i32> {
-					return error::SystemError(error.value() * 2_i32);
+					return error::SystemError(error.code().value() * 2_i32);
 				});
 
 				CHECK(next.is_ok());
@@ -253,7 +253,7 @@ namespace hyperion {
 			SUBCASE("or_else") {
 				auto next
 					= err.or_else([](const error::SystemError& error) noexcept -> Result<i32> {
-						  return error::SystemError(error.value() * 2_i32);
+						  return error::SystemError(error.code().value() * 2_i32);
 					  });
 
 				CHECK_FALSE(next.is_ok());
