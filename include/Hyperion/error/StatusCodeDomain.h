@@ -159,15 +159,15 @@ namespace hyperion::error {
 														// cppcoreguidelines-avoid-c-arrays)
 			  {
 				  domain.id()
-				  } -> std::same_as<u64>;
+			  } -> std::same_as<u64>;
 			  {
 				  domain.name()
-				  } -> std::same_as<std::string_view>;
+			  } -> std::same_as<std::string_view>;
 			  // the return type of message must be implicitly convertible to `std::string` or
 			  // `std::string_view`
 			  {
 				  domain.message(code)
-				  } -> concepts::Stringable;
+			  } -> concepts::Stringable;
 			  // the return type of message must be implicitly convertible to `std::string` or
 			  // `std::string_view`
 			  //	{
@@ -175,22 +175,22 @@ namespace hyperion::error {
 			  //		} -> concepts::Stringable;
 			  {
 				  domain.are_equivalent(code, code)
-				  } -> std::same_as<bool>;
+			  } -> std::same_as<bool>;
 			  {
 				  domain.is_error(code)
-				  } -> std::same_as<bool>;
+			  } -> std::same_as<bool>;
 			  {
 				  domain.is_success(code)
-				  } -> std::same_as<bool>;
+			  } -> std::same_as<bool>;
 			  {
 				  Domain::success_value()
-				  } -> std::same_as<typename Domain::value_type>;
+			  } -> std::same_as<typename Domain::value_type>;
 			  domain == domain2;
 			  domain != domain2;
 
 			  {
 				  make_status_code_domain<Domain>()
-				  } -> std::same_as<Domain>;
+			  } -> std::same_as<Domain>;
 		  };
 
 	namespace detail {
@@ -226,10 +226,12 @@ namespace hyperion::error {
 		requires UUIDString<decltype(s)>
 		{
 
-			const char* uuid = s;														   // NOLINT
+			IGNORE_UNSAFE_BUFFER_WARNINGS_START
+			const auto* uuid = std::begin(s);											   // NOLINT
 			if constexpr(std::same_as<decltype(s), const char(&)[num_chars_in_ms_uuid]>) { // NOLINT
-				uuid = s + 1;
+				uuid += 1;
 			}
+			IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
 
 			return ((parse_byte_from_char(uuid[0]) << 0U)		  // NOLINT
 					| (parse_byte_from_char(uuid[1]) << 4U)		  // NOLINT
@@ -344,7 +346,8 @@ namespace hyperion::error {
 			}                                                                                      \
 			template<hyperion::error::UUIDString UUID>	  /** NOLINT**/                            \
 			explicit constexpr Name(UUID&& uuid) noexcept /** NOLINT **/                           \
-				: m_uuid(hyperion::error::parse_uuid_from_string(std::forward<UUID>(uuid))) { }    \
+				: m_uuid(hyperion::error::parse_uuid_from_string(std::forward<UUID>(uuid))) {      \
+			}                                                                                      \
 			constexpr Name(const Name&) noexcept = default;                                        \
 			constexpr Name(Name&&) noexcept = default;                                             \
 			constexpr ~/****/ Name() noexcept = default;                                           \
@@ -411,10 +414,9 @@ namespace hyperion::error {
 			template<typename U = Category##StatusCode>                                            \
 			requires hyperion::concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,     \
 											  Category##StatusCode>                                \
-					 [[nodiscard]] inline constexpr auto                                           \
-					 as_generic_code(const U& _code) const noexcept                                \
-					 -> hyperion::error::GenericStatusCode                                         \
-					 requires(IsConvertibleToGenericStatusCode)                                    \
+			[[nodiscard]] inline constexpr auto                                                    \
+			as_generic_code(const U& _code) const noexcept -> hyperion::error::GenericStatusCode   \
+			requires(IsConvertibleToGenericStatusCode)                                             \
 			{                                                                                      \
 				if constexpr(IsConvertibleToGenericStatusCode) {                                   \
 					return ___STATUS_CODE_FIRST(__VA_ARGS__)(_code.code());                        \
@@ -447,10 +449,10 @@ namespace hyperion::error {
 			template<typename U = Category##StatusCode>                                            \
 			requires hyperion::concepts::Same<std::remove_const_t<std::remove_reference_t<U>>,     \
 											  Category##StatusCode>                                \
-					 [[nodiscard]] inline constexpr auto as_generic_code(                          \
-						 [[maybe_unused]] const Category##StatusCode& code) const noexcept         \
-					 -> hyperion::error::GenericStatusCode                                         \
-					 requires(!IsConvertibleToGenericStatusCode)                                   \
+			[[nodiscard]] inline constexpr auto                                                    \
+			as_generic_code([[maybe_unused]] const Category##StatusCode& code) const noexcept      \
+				-> hyperion::error::GenericStatusCode                                              \
+			requires(!IsConvertibleToGenericStatusCode)                                            \
 			{                                                                                      \
 				return {};                                                                         \
 			}                                                                                      \

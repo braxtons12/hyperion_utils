@@ -41,14 +41,14 @@ namespace hyperion::error {
 	/// @headerfile "Hyperion/error/PosixDomain.h"
 	class [[nodiscard("A StatusCodeDomain should always be used")]] PosixDomain {
 	  public:
-        using PosixStatusCode = StatusCode<PosixDomain>;
-        using PosixErrorCode = ErrorCode<PosixDomain>;
+		using PosixStatusCode = StatusCode<PosixDomain>;
+		using PosixErrorCode = ErrorCode<PosixDomain>;
 
 		/// @brief The value type of `PosixDomain` status codes is `i64`
 		/// @ingroup error
 		using value_type = i64;
 
-		static const constexpr char(&UUID)[num_chars_in_uuid] // NOLINT
+		static const constexpr char (&UUID)[num_chars_in_uuid] // NOLINT
 			= "4a6a9b0f-c335-473e-bc42-d23974a25bb0";
 
 		static constexpr u64 ID = parse_uuid_from_string(UUID); // NOLINT
@@ -81,7 +81,7 @@ namespace hyperion::error {
 		/// @param uuid - The UUID to use for `PosixDomain`
 		/// @ingroup error
 		template<UUIDString UUID>
-		explicit constexpr PosixDomain(UUID && uuid) noexcept // NOLINT (forwarding reference)
+		explicit constexpr PosixDomain(UUID&& uuid) noexcept // NOLINT (forwarding reference)
 			: m_uuid(parse_uuid_from_string(std::forward<UUID>(uuid))) {
 		}
 		/// @brief Copy-Constructor
@@ -89,7 +89,7 @@ namespace hyperion::error {
 		constexpr PosixDomain(const PosixDomain&) noexcept = default;
 		/// @brief Move-Constructor
 		/// @ingroup error
-		constexpr PosixDomain(PosixDomain &&) noexcept = default;
+		constexpr PosixDomain(PosixDomain&&) noexcept = default;
 		/// @brief Destructor
 		/// @ingroup error
 		constexpr ~PosixDomain() noexcept = default;
@@ -98,7 +98,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain UUID
 		/// @ingroup error
-		[[nodiscard]] constexpr auto id() const noexcept->u64 {
+		[[nodiscard]] constexpr auto id() const noexcept -> u64 {
 			return m_uuid;
 		}
 
@@ -106,7 +106,7 @@ namespace hyperion::error {
 		///
 		/// @return the domain name
 		/// @ingroup error
-		[[nodiscard]] constexpr auto name() const noexcept->std::string_view { // NOLINT
+		[[nodiscard]] constexpr auto name() const noexcept -> std::string_view { // NOLINT
 			return "POSIX domain";
 		}
 
@@ -117,7 +117,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(value_type code) // NOLINT
-			const noexcept->std::string {
+			const noexcept -> std::string {
 
 			return as_string(code);
 		}
@@ -129,7 +129,7 @@ namespace hyperion::error {
 		/// @return the message associated with the code
 		/// @ingroup error
 		[[nodiscard]] auto message(const PosixStatusCode& code) // NOLINT
-			const noexcept->std::string {
+			const noexcept -> std::string {
 
 			return as_string(code.code());
 		}
@@ -141,7 +141,7 @@ namespace hyperion::error {
 		/// @return `true` if the code represents an error, otherwise `false`
 		/// @ingroup error
 		[[nodiscard]] constexpr auto is_error(const PosixStatusCode& code) // NOLINT
-			const noexcept->bool {
+			const noexcept -> bool {
 			return code.code() != 0;
 		}
 
@@ -152,7 +152,7 @@ namespace hyperion::error {
 		/// @return `true` if the code represents success, otherwise `false`
 		/// @ingroup error
 		[[nodiscard]] constexpr auto is_success(const PosixStatusCode& code) // NOLINT
-			const noexcept->bool {
+			const noexcept -> bool {
 			return code.code() == 0;
 		}
 
@@ -168,9 +168,9 @@ namespace hyperion::error {
 		/// @return `true` if the codes are semantically equivalent, `false` otherwise
 		/// @ingroup error
 		template<typename Domain>
-		[[nodiscard]] constexpr auto are_equivalent(const PosixStatusCode& lhs,
-													const StatusCode<Domain>& rhs)
-			const noexcept->bool {
+		[[nodiscard]] constexpr auto
+		are_equivalent(const PosixStatusCode& lhs, const StatusCode<Domain>& rhs) const noexcept
+			-> bool {
 			if constexpr(ConvertibleToGenericStatusCode<StatusCode<Domain>>) {
 				return as_generic_code(lhs) == rhs.as_generic_code();
 			}
@@ -197,7 +197,7 @@ namespace hyperion::error {
 		/// Codes of value `Errno::Unknown` will never compare as semantically equivalent.
 		/// @ingroup error
 		[[nodiscard]] constexpr auto as_generic_code(const PosixStatusCode& code) // NOLINT
-			const noexcept->GenericStatusCode {
+			const noexcept -> GenericStatusCode {
 			return make_status_code(to_generic_code(code.code()));
 		}
 
@@ -205,7 +205,7 @@ namespace hyperion::error {
 		///
 		/// @return The domain's success value
 		/// @ingroup error
-		[[nodiscard]] static inline constexpr auto success_value() noexcept->value_type {
+		[[nodiscard]] static inline constexpr auto success_value() noexcept -> value_type {
 			return 0;
 		}
 
@@ -213,7 +213,7 @@ namespace hyperion::error {
 		///
 		/// @return the value of `errno` at the time of the call
 		/// @ingroup error
-		[[nodiscard]] static inline auto get_last_error() noexcept->value_type {
+		[[nodiscard]] static inline auto get_last_error() noexcept -> value_type {
 			return errno;
 		}
 
@@ -227,7 +227,8 @@ namespace hyperion::error {
 		/// @return Whether the two domains are equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto operator==(const PosixDomain& lhs, const Domain& rhs) noexcept->bool {
+		friend constexpr auto
+		operator==(const PosixDomain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() == rhs.id();
 		}
 
@@ -241,22 +242,27 @@ namespace hyperion::error {
 		/// @return Whether the two domains are __not__ equal
 		/// @ingroup error
 		template<typename Domain>
-		friend constexpr auto operator!=(const PosixDomain& lhs, const Domain& rhs) noexcept->bool {
+		friend constexpr auto
+		operator!=(const PosixDomain& lhs, const Domain& rhs) noexcept -> bool {
 			return lhs.id() != rhs.id();
 		}
 
 		/// @brief Copy-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(const PosixDomain&) noexcept->PosixDomain& = default;
+		constexpr auto operator=(const PosixDomain&) noexcept -> PosixDomain& = default;
 		/// @brief Move-assignment operator
 		/// @ingroup error
-		constexpr auto operator=(PosixDomain&&) noexcept->PosixDomain& = default;
+		constexpr auto operator=(PosixDomain&&) noexcept -> PosixDomain& = default;
 
 	  private:
 		u64 m_uuid = ID;
 
-		[[nodiscard]] static inline auto as_string(value_type code) noexcept->std::string {
+		[[nodiscard]] static inline auto as_string(value_type code) noexcept -> std::string {
+
+			IGNORE_UNSAFE_BUFFER_WARNINGS_START
 			char buffer[1024]; // NOLINT
+			IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
+
 #if HYPERION_PLATFORM_WINDOWS
 			strerror_s(buffer, 1024, gsl::narrow_cast<i32>(code)); // NOLINT
 #elif defined(__gnu_linux__) && !defined(__ANDROID__)
@@ -272,8 +278,8 @@ namespace hyperion::error {
 			return std::string(buffer, length); // NOLINT
 		}
 
-		[[nodiscard]] static inline constexpr auto to_generic_code(
-			value_type code) noexcept->Errno {
+		[[nodiscard]] static inline constexpr auto
+		to_generic_code(value_type code) noexcept -> Errno {
 			switch(code) {
 				case 0: return Errno::Success;
 				case EAFNOSUPPORT: return Errno::AddressFamilyNotSupported;
@@ -363,12 +369,12 @@ namespace hyperion::error {
 		}
 	};
 
-    /// @brief Shorthand alias for `StatusCode`s of `PosixDomain`, ie `StatusCode<PosixDomain>`
-    /// @ingroup error
-    using PosixStatusCode = PosixDomain::PosixStatusCode;
-    /// @brief Shorthand alias for `ErrorCode`s of `PosixDomain`, ie `ErrorCode<PosixDomain>`
-    /// @ingroup error
-    using PosixErrorCode = PosixDomain::PosixErrorCode;
+	/// @brief Shorthand alias for `StatusCode`s of `PosixDomain`, ie `StatusCode<PosixDomain>`
+	/// @ingroup error
+	using PosixStatusCode = PosixDomain::PosixStatusCode;
+	/// @brief Shorthand alias for `ErrorCode`s of `PosixDomain`, ie `ErrorCode<PosixDomain>`
+	/// @ingroup error
+	using PosixErrorCode = PosixDomain::PosixErrorCode;
 } // namespace hyperion::error
 
 /// @defgroup posix_domain PosixDomain

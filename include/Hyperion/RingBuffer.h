@@ -961,8 +961,10 @@ namespace hyperion {
 		///
 		/// @return The iterator, at the beginning
 		[[nodiscard]] inline constexpr auto begin() -> Iterator {
+			IGNORE_UNSAFE_BUFFER_WARNINGS_START
 			// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 			T* ptr = std::addressof(m_buffer[m_start_index]);
+			IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
 
 			return Iterator(ptr, this, 0_usize);
 		}

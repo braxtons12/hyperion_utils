@@ -915,6 +915,29 @@ IGNORE_UNUSED_MACROS_START
 	#define IGNORE_COMMA_MISUSE_STOP
 #endif
 
+/// @def IGNORE_UNSAFE_BUFFER_WARNINGS_START
+/// @brief Use to disable warnings for usage of raw pointers for buffers
+/// (clang's '-Wunsafe-buffer-usage`)
+/// @ingroup defines
+/// @headerfile "Hyperion/HypeironDef.h"
+
+/// @def IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
+/// @brief Use to re-enable warnings for usage of raw pointers for buffers
+/// (clang's '-Wunsafe-buffer-usage`)
+/// @ingroup defines
+/// @headerfile "Hyperion/HypeironDef.h"
+
+#if HYPERION_PLATFORM_COMPILER_CLANG
+ #define IGNORE_UNSAFE_BUFFER_WARNINGS_START                     \
+	_Pragma("GCC diagnostic push")                              \
+	_Pragma("GCC diagnostic ignored \"-Wunsafe-buffer-usage\"")
+ #define IGNORE_UNSAFE_BUFFER_WARNINGS_STOP \
+	_Pragma("GCC diagnostic pop")
+#else
+ #define IGNORE_UNSAFE_BUFFER_WARNINGS_START
+ #define IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
+#endif // HYPERION_PLATFORM_COMPILER_CLANG
+
 // clang-format on
 
 #ifdef TRACY_ENABLE

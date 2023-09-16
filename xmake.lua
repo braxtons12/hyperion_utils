@@ -4,7 +4,7 @@ set_version("0.1.0")
 
 set_languages("cxx20")
 
-set_xmakever("2.6.9")
+set_xmakever("2.8.2")
 
 add_requires("doctest", {
     system = false,
@@ -38,14 +38,19 @@ add_requires("boost", {
         languages = "cxx20"
     },
 })
-add_requires("vcpkg::tracy", {
-    alias = "tracy",
+add_requires("tracy", {
     system = false,
     external = true,
     configs = {
         languages = "cxx20"
     }
 })
+if not is_plat("windows") then
+add_requires("libbacktrace", {
+    system = false,
+    external = true,
+})
+end
 
 add_rules("mode.debug", "mode.release")
 
@@ -60,7 +65,9 @@ elseif is_mode("debug") then
 end
 
 if is_plat("windows") then
-    add_defines(_CRT_SECURE_NO_WARNINGS)
+    add_defines("_CRT_SECURE_NO_WARNINGS")
+    add_defines("NOMINMAX")
+    add_defines("WIN32_LEAN_AND_MEAN")
 end
 
 if not is_plat("windows") then
@@ -76,6 +83,7 @@ local setup_compile_flags = function(target)
         target:add("cxflags", "/Zc:preprocessor", { public = true })
         target:add("cxflags", "/permissive-", { public = true })
         target:add("cxflags", "/Zc:rvalueCast", { public = true })
+        target:add("cxflags", "/Zc:__cplusplus", {public = true})
         target:add("cxflags", "/wd5104", { public = true })
         target:add("cxflags", "/WX", { public = false })
         target:add("cxflags", "/W4", { public = false })
@@ -123,7 +131,7 @@ local setup_link_libs = function(target)
         target:add("links", "ole32", "dbgeng", { public = true })
     else
         target:add("defines", "BOOST_STACKTRACE_USE_BACKTRACE", { public = true })
-        target:add("links", "backtrace", "dl", { public = true })
+        target:add("links", "dl", { public = true })
     end
 end
 
@@ -238,6 +246,9 @@ add_headerfiles(hyperion_utils_result_headers, { prefixdir = "Hyperion/result" }
 add_headerfiles(hyperion_utils_sync_headers, { prefixdir = "Hyperion/synchronization" })
 add_files(hyperion_utils_sources)
 add_packages("boost", "doctest", "fmt", "gsl", "tracy", { public = true })
+if not is_plat("windows") then 
+    add_packages("libbacktrace", {public = true})
+end
 set_default(true)
 add_options("hyperion_tracy_enable")
 on_config(function(target)

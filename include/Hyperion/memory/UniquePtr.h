@@ -452,8 +452,8 @@ namespace hyperion {
 		/// @ingroup UniquePtr
 		template<typename U>
 		requires concepts::Convertible<U, pointer>
-				 inline constexpr auto reset(U ptr) noexcept -> void
-				 requires(noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
+		inline constexpr auto reset(U ptr) noexcept -> void
+		requires(noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
 			m_ptr.first() = ptr;
@@ -742,8 +742,8 @@ namespace hyperion {
 
 		template<typename U>
 		requires concepts::Convertible<U, pointer>
-				 inline constexpr auto reset(U ptr) noexcept -> void
-				 requires(noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
+		inline constexpr auto reset(U ptr) noexcept -> void
+		requires(noexcept(std::declval<deleter_type>()(std::declval<pointer>()))) // NOLINT
 		{
 			gsl::owner<pointer> tmp = m_ptr.first(); // NOLINT
 			m_ptr.first() = ptr;
@@ -791,7 +791,9 @@ namespace hyperion {
 
 		inline constexpr auto operator[](concepts::Integral auto index) const noexcept
 			-> std::add_lvalue_reference_t<element_type> {
+			IGNORE_UNSAFE_BUFFER_WARNINGS_START
 			return m_ptr.first()[index];
+			IGNORE_UNSAFE_BUFFER_WARNINGS_STOP
 		}
 
 		auto operator=(const UniquePtr&) -> UniquePtr& = delete;
@@ -1101,7 +1103,7 @@ namespace hyperion {
 		usize m_num_elements = 1_usize;
 	};
 	IGNORE_PADDING_STOP
-    // clang-format off
+	// clang-format off
 
 	/// @ingroup UniquePtr
 	/// @{
